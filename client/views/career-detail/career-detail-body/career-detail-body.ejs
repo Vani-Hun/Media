@@ -1,0 +1,23 @@
+<div class="jd-container">
+    <h2 class="jd-info"> <%= career.position.toUpperCase() %> </h2>
+    <p class="jd-info">Department: <%= career.department.name.toUpperCase() %> </p>
+    <p class="jd-info">Deadline: <%= career.expired.toDateString() %> </p>
+    <% if (career.discription){ %>
+        <h3 class="jd-info">Job Discription: </h3>
+        <ul class="jd-info">
+            <% for(let item of career.discription.split('|')){
+                item = item.trim() %> 
+                <li><span><img src="/icon/check.svg" alt=""><%= item[0].toUpperCase() + item.slice(1) %></span></li>
+            <% } %> 
+        </ul>
+    <% } %>
+    <% if (career.requirement){ %>
+        <h3 class="jd-info">Requirement: </h3>
+        <ul class="jd-info">
+            <% for(let item of career.requirement.split('|')){
+                item = item.trim() %> 
+                <li><span><img src="/icon/check.svg" alt=""><%= item[0].toUpperCase() + item.slice(1) %></span></li>
+            <% } %> 
+        </ul>
+    <% } %>
+</div>

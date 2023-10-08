@@ -1,0 +1,7 @@
+<ul class="nav" id="nav-product">
+    <% products.forEach(product => { %>
+      <li class="nav-item">
+        <a class="nav-link link" href="/admin/product?productID=<%= product.id %>"><%= product.name %> </a>
+      </li>
+    <% }) %> 
+</ul>

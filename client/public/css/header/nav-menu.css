@@ -1,0 +1,201 @@
+.loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.loader.visible {
+    display: flex;
+}
+
+.semicircle,
+.semicircle div {
+    /*  Adjust the size of the entire animation here.
+      (Remove max size below to go above 300px.) */
+    width: 170px;
+    height: 170px;
+    /* Adjust the speed or timing function of the animation here. */
+    animation: 6s rotate141 infinite linear;
+    background-repeat: no-repeat;
+    border-radius: 50%;
+    position: relative;
+    overflow: hidden;
+}
+
+.semicircle div {
+    position: absolute;
+    top: 5%;
+    left: 5%;
+    width: 90%;
+    height: 90%;
+}
+
+.semicircle:before,
+.semicircle div:before {
+    content: '';
+    width: 100%;
+    height: 50%;
+    display: block;
+    background: radial-gradient(transparent, transparent 65%, #edf1ee 65%, #0991d5);
+    background-size: 100% 200%;
+}
+
+@keyframes rotate141 {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.nav-menu {
+    display: flex;
+    justify-content: space-between;
+    flex-flow: wrap;
+    padding: 12px 62px;
+    color: var(--primary-white);
+    align-items: center;
+    transition: 0.2s ease-in-out;
+    position: relative;
+    opacity: 1;
+    z-index: -10;
+    /* Đặt mặc định là không mờ */
+}
+
+.nav-menu.scrolled {
+    opacity: 0.3;
+    /* Đặt giá trị opacity khi cuộn chuột */
+}
+
+.normal-menu {
+    background-color: var(--primary-black);
+}
+
+.nav-menu .nav-menu-brand {
+    display: flex;
+}
+
+.nav-menu .nav-menu-brand .logo-brand {
+    margin-right: 20px;
+}
+
+.nav-menu .nav-menu-brand .logo-brand img {
+    width: 70px;
+}
+
+
+.menu-list {
+    margin-top: 30px;
+    /* Thay đổi giá trị này để điều chỉnh khoảng cách từ đỉnh của trang */
+}
+
+.menu-list .menu-item {
+    margin-right: 28px;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.menu-list .menu-item:last-child {
+    margin: 0;
+}
+
+.menu-list .menu-item a:hover {
+    font-weight: 700;
+    background: -webkit-linear-gradient(130.51deg, #EB9400 15.72%, #FFE600 84.94%);
+    background-clip: text;
+    -o-background-clip: text;
+    -moz-background-clip: text;
+    -webkit-background-clip: text;
+    -o-text-fill-color: transparent;
+    -moz-text-fill-color: transparent;
+    -webkit-text-fill-color: transparent;
+}
+
+.menu-list .menu-item a {
+    color: black;
+    /* Đổi màu chữ thành đỏ (#ff0000) hoặc màu bạn muốn */
+    font-weight: bold;
+    font-size: large;
+}
+
+#menu-responsive-btn {
+    display: none;
+}
+
+@media screen and (max-width: 500px) {
+    #menu-responsive-btn {
+        display: block;
+        background: var(--gradient-golden);
+        height: 30px;
+        border-radius: 2px;
+        cursor: pointer;
+    }
+
+    #menu-responsive-btn img {
+        width: 30px;
+    }
+
+    #menu-responsive-btn:hover {
+        background: var(--primary-black);
+    }
+
+    .menu-list {
+        transition: all 0.3s ease;
+        opacity: 0;
+        transform: translateY(-10px);
+        position: absolute;
+        top: 0px;
+        right: 60px;
+        display: none;
+        flex-direction: column;
+        text-align: center;
+        padding: 1px;
+        width: 100px;
+        z-index: 1;
+        background-color: #80808026;
+        border-radius: 20px;
+        line-height: 8px;
+    }
+
+    .menu-list.active {
+        opacity: 1;
+        transform: translateY(0);
+        display: flex;
+        flex-direction: column;
+        transform-origin: right;
+        transition: 0.3s;
+    }
+
+    .nav-menu-display {
+        transform: rotateY(0);
+    }
+
+    .menu-list .menu-item {
+        margin: 15px 0;
+    }
+
+    .menu-list .menu-item:last-child {
+        margin: 15px 0;
+    }
+
+    .nav-menu {
+        display: flex;
+        justify-content: space-between;
+        flex-flow: wrap;
+        padding: 12px 20px;
+        color: var(--primary-white);
+        align-items: center;
+        transition: 0.2s ease-in-out;
+    }
+
+    .menu-list .menu-item a {
+        color: black;
+        font-weight: bold;
+        font-size: small;
+    }
+}

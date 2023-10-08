@@ -1,0 +1,17 @@
+<div class="home-product">
+    <h1 class="home-product-title">EXPLORE OUR PRODUCTS</h1>
+    <div class="home-product-description">Below are the 3 main product groups that we provide, please read more to understand better</div>
+    <div class="products">
+        <% for( let i = 0; i < products.length; i++ ) { %>
+            <div class="card-home-product">
+                <a href="/product/<%= products[i].id %>">
+                    <div class="card-image"><img src="<%= products[i].banner %> " alt="GPT Cyber security"></div>
+                    <div class="card-title"><%= products[i].name %> </div>
+                    <div class="card-description">
+                        <%= products[i].description %>  
+                    </div>
+                </a>
+            </div>
+        <% } %>
+    </div>
+</div>

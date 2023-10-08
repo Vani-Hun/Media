@@ -1,0 +1,129 @@
+.product-container .card-features-name{
+    height: 370px;
+    max-height: 370px;
+    border-radius: 15px;
+    background-color: lightgray;
+    
+}
+
+*,
+*:before,
+*:after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+a {
+    text-decoration: none;
+}
+
+ul {
+    list-style-type: none;
+}
+
+body,
+input,
+button,
+textarea,
+select {
+    outline: none;
+    line-height: 1.5;
+    font-family: "Poppins", sans-serif;
+}
+
+input {
+    line-height: normal;
+}
+
+button {
+    cursor: pointer;
+}
+
+
+/* the cha chua*/
+
+.support_product {
+    background-color: #000;
+}
+
+.support_product .product {
+    max-width: 1336px;
+    margin: 0 auto;
+    padding: 50px;
+}
+
+/*Cac the image-item  */
+
+.support_product .slide-potenial .item-utility {
+    display: flex;
+    flex-direction: row;
+    background: white;
+    color: black;
+    border-radius: 12px;
+    height: 100%;
+    padding: 17px;
+    max-width: 367px;
+}
+
+.support_product .slide-potenial .item-title {
+    margin-left: 12px;
+}
+
+/* the con image item */
+
+.support_product .support_product .slide-potenial .potenial-title {
+    color: #FFF;
+    font-size: 48px;
+    text-align: center;
+    /* margin-bottom: 120px; */
+    text-decoration: underline;
+}
+
+.support_product .slide-potenial .circle {
+    border-radius: 12px;
+    background: orange;
+    border-radius: 50%;
+    height: 44px;
+    text-align: center;
+    width: 39%;
+    max-width: 44px;
+    min-width: 39px;
+    font-size: 24px;
+    line-height: calc(44px - 0px);
+}
+
+.support_product .slide-potenial .item-utility {
+    height: 125px;
+    font-size: 20px;
+    word-wrap: break-word;
+    color: black;
+    overflow-y: scroll;
+    padding-left: 12px;
+    width: 100%;
+}
+
+
+/* thiet ke scroll */
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: grey;
+    border-radius: 10px;
+}
+
+@media screen and (min-width: 510px) and (max-width: 767px) {
+    .support_product .product {
+        max-width: 400px;
+        padding: 0;
+    }
+}
+
+@media screen and (max-width: 519px) {
+    .support_product .product {
+        padding: 0;
+    }
+}

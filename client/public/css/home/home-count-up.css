@@ -1,0 +1,29 @@
+#home-count-up {
+    padding: 62px 100px;
+    display: flex;
+    justify-content: space-around;
+    flex-flow: wrap;
+    background: url('../../img/home/home-counter.svg');
+    color: var(--primary-white);
+}
+
+#home-count-up .count-up-item {
+    text-align: center;
+    font-size: 32px;
+    font-weight: 500;
+}
+
+#home-count-up .count-up-item:nth-child(2){
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+@media screen and (max-width: 1336px) {
+    #home-count-up {
+        padding: 20px 50px;
+    }
+
+    #home-count-up .count-up-item {
+        margin-top: 20px;
+    }
+}

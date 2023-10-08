@@ -1,0 +1,17 @@
+@import url(./common/root.css);
+@import url(./footer/footer.css);
+@import url(./customer/customer.css);
+@import url(./gird/gird.css);
+@import url(./aboutUs/aboutUs.css);
+@import url(./contact/contact.css);
+@import url(./header/header.css);
+@import url(./home/home.css);
+@import url(./common/btn.css);
+@import url(./pageError/pageError.css);
+@import url(./product/product.css);
+@import url(./common/nav-product/nav-product.css);
+@import url(./common/card-product/card-product.css);
+@import url(./product-detail/product-detail.css);
+@import url(./common/card-project/card-project.css);
+@import url(./career/career.css);
+@import url(./scroll/scroll.css);

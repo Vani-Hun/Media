@@ -1,0 +1,59 @@
+.product-detail-container .product-detail-contact{
+    background-color: #FFAB2D;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    margin-top: 32px;
+}
+.product-detail-container .start-project{
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 32px;
+    line-height: 72px;
+}
+.product-detail-container .contact-left{
+    display: flex;
+    flex-direction: column;
+}
+.product-detail-container .img-right{
+    width: 540px;
+}
+.product-detail-container .btn-softWare-contact{
+    width: 200px;
+    background-color: black;
+    padding: 10px;
+    margin-top: 30px;
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 24px;
+    display: flex;
+    justify-content: center;
+    border-radius: 60px;
+}
+
+@media screen and (max-width: 1180px) {
+    .product-detail-container .product-detail-contact{
+        justify-content: center;
+    }
+
+    .product-detail-container .img-right{
+        width: 400px;
+    }
+}
+
+@media screen and (max-width: 830px) {
+    .product-detail-container .btn-softWare-contact{
+        margin: 0 auto;
+    }
+
+    .product-detail-container .contact-left {
+        margin-bottom: 28px;
+    }
+
+    .product-detail-container .img-right{
+        display: none;
+    }
+}

@@ -1,0 +1,13 @@
+<div class="about-us-product">
+    <h1 class="category-aboutUs">OUR PRODUCTS</h2>
+    <div class="product">
+        <% products.forEach(product => { %>
+            <div class="card-product">
+                <a href="product/<%= product.id %> ">
+                    <img src="<%= product.banner %> " class="card-product-aboutus-img">
+                    <div class="card-product-name"><%= product.name %> </div>
+                </a>
+            </div>
+        <% }) %>
+    </div>
+</div>

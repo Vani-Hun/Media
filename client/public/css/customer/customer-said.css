@@ -1,0 +1,139 @@
+.container-upload {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-color: white;
+  flex-direction: column;
+  margin-top: 100px;
+  /* Màu nền của trang */
+}
+
+.container-file {
+  margin-top: 100px;
+  margin-bottom: 100px;
+  height: 90%;
+  border-radius: 10px;
+  box-shadow: 4px 4px 30px rgba(0, 0, 0, .2);
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  gap: 5px;
+  background-color: rgba(3, 12, 4, 0.041);
+}
+
+#file-container {
+  position: relative;
+}
+
+#video-description {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  font-size: 16px;
+  border: 2px solid #ced4da;
+  border-radius: 5px;
+}
+
+.header-file {
+  flex: 1;
+  width: 100%;
+  border: 2px dashed royalblue;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.header-file svg {
+  height: 100px;
+}
+
+.header-file p {
+  font-size: large;
+  text-align: center;
+  color: black;
+}
+
+.footer-file {
+  background-color: rgba(0, 110, 255, 0.075);
+  width: 100%;
+  height: 40px;
+  padding: 8px;
+  border-radius: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  color: black;
+  border: none;
+}
+
+.footer-file p {
+  font-size: large;
+  flex: 1;
+  text-align: center;
+}
+
+#file {
+  display: none;
+}
+
+#video-preview {
+  width: 100%;
+  height: 100%;
+  ;
+}
+
+
+#header-file svg {
+  width: 24px;
+  height: 24px;
+  /* Điều chỉnh kích thước của biểu tượng SVG */
+}
+
+
+.buttons-container {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 10px;
+}
+
+.button {
+  width: 6em;
+  height: 2em;
+  margin: 1em;
+  background: black;
+  color: white;
+  border: none;
+  border-radius: 0.625em;
+  font-size: 15px;
+  cursor: pointer;
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+}
+
+button:hover {
+  color: black;
+}
+
+button:after {
+  content: "";
+  background: white;
+  position: absolute;
+  z-index: -1;
+  left: -20%;
+  right: -20%;
+  top: 0;
+  bottom: 0;
+  transform: skewX(-45deg) scale(0, 1);
+  transition: all 0.5s;
+}
+
+button:hover:after {
+  transform: skewX(-45deg) scale(1, 1);
+  -webkit-transition: all 0.5s;
+  transition: all 0.5s;
+}

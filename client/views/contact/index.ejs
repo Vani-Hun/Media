@@ -1,0 +1,51 @@
+<%- include('../common/head.ejs', { title: "CONTACT | GPT GROUP", content: "Contacn Information GPT Group", keyword: "contact gpt group, gpt group,gpt"}); -%>
+    <%- include('../common/header/header.ejs', {phone, email, linkedin, facebook, instagram}) %> 
+    <main id="main">
+        <h1 class="img-contact">
+            GPT GROUP / CONTACT
+        </h1>
+        <div class="contact-body">  
+            <div class="contact-logo">
+                <img src="/img/logo.png" alt="Logo GPT">
+                <h3 class="contact-name">gpt group</h3>
+                <p>Global Platform Technology</p>
+                <hr>
+            </div>
+            <div class="contact-info">
+                <div class="address-contact">
+                    <h3>
+                        Contact Information
+                    </h3>
+                    <p><img src="/icon/ci_location.svg" alt=""><span>Address: <%= address %>  </span></p>
+        
+                    <div class="contact-social">
+                        <a href="<%= linkedin %> " target="_blank"><img src="/icon/linkedin.svg" alt="linkedin gpt group"></a>
+                        
+                        <a href="<%= instagram %> " target="_blank"><img src="/icon/instagram.svg" alt="instagram gpt group"></a>
+                            
+                        <a href="<%= facebook %> " target="_blank"><img src="/icon/facebook.svg" alt="facebook gpt group"></a>
+                    </div>
+        
+                </div>
+                <div class="contact-form">
+                    <h3>Ask us by filling out the form below</h3>
+                    <form action="">
+                        <input type="text" id="name" placeholder="Your Name">
+                        <input type="text" id="email" placeholder="Your Email">
+                        <textarea rows="5" id="message" placeholder="Your Messages" cols="10"></textarea>
+                    
+                        <button class="send">SEND</button>
+                        
+                    </form>
+                </div>
+            </div>
+        
+        
+        </div> 
+        <div class="address-map">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3918.6642111589736!2d106.67340681382305!3d10.83698856103859!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752921002be9d3%3A0x8d65e8b54bc09a01!2zMjM4IE5ndXnhu4VuIE9hbmgsIFBoxrDhu51uZyAxNywgR8OyIFbhuqVwLCBUaMOgbmggcGjhu5EgSOG7kyBDaMOtIE1pbmgsIFZp4buHdCBOYW0!5e0!3m2!1svi!2s!4v1680257986530!5m2!1svi!2s" width="100%" height="694px" style="border-radius:8px;" allowfullscreen="" loading="lazy"></iframe>
+        </div>
+    </main>
+
+    <%- include('../common/footer/footer.ejs', { address, email, phone }) %> 
+<%- include('../common/tail.ejs'); %>

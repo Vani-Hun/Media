@@ -1,0 +1,16 @@
+<div id="content-home" class="col-sm-8 col-lg-10">
+    <h2>Update Logo</h2>
+    <form action="/admin/logo" method="post" enctype="multipart/form-data">
+
+        <div class="mb-3">
+            <div class="mb-2">
+                <label for="Image" class="form-label">Logo GPT </label>
+                <input class="form-control" type="file" onchange="preview()" name="file" data-focus="logo">
+                <div onclick="clearImage()" class="btn btn-primary mt-3">Click me</div>
+            </div>
+            <img id="logo" src="/img/logo/logo.png" class="img-fluid" />
+        </div>
+        
+        <button class="btn btn-primary" type="submit">Update</button>
+    </form>
+</div>

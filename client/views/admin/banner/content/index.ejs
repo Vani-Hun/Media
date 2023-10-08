@@ -1,0 +1,31 @@
+<div id="content-home" class="col-sm-8 col-lg-10">
+    <h2 class="mt-3">Update Banner home</h2>
+    <form action="/admin/banner/home" method="post" enctype="multipart/form-data">
+
+        <div class="mb-3">
+            <div class="mb-2">
+                <label for="Image" class="form-label">Banner Home </label>
+                <input class="form-control" type="file" onchange="preview()" name="file" data-focus="banner-home">
+                <div onclick="clearImage()" class="btn btn-primary mt-3">Click me</div>
+            </div>
+            <img id="banner-home" src="/img/banner/bannerHome.jpg" class="img-fluid" />
+        </div>
+        
+        <button class="btn btn-primary" type="submit">Update</button>
+    </form>
+
+    <h2 class="mt-5">Update Banner page</h2>
+    <form action="/admin/banner/page" method="post" enctype="multipart/form-data">
+
+        <div class="mb-3">
+            <div class="mb-2">
+                <label for="Image" class="form-label">Banner Other Pages </label>
+                <input class="form-control" type="file" onchange="preview()" name="file" data-focus="banner-page">
+                <div onclick="clearImage()" class="btn btn-primary mt-3">Click me</div>
+            </div>
+            <img id="banner-page" src="/img/banner/bannerPage.jpg" class="img-fluid" />
+        </div>
+        
+        <button class="btn btn-primary" type="submit">Update</button>
+    </form>
+</div>

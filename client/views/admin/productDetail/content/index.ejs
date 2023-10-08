@@ -1,0 +1,59 @@
+<div id="content-edit-product" class="col-sm-8 col-lg-10 mt-5 mb-5">
+    <h2>Edit product <%= name %> </h2>
+    <form action="/admin/product/project" method="post" enctype="multipart/form-data">
+        <div class="mb-3">
+            <label class="form-label">ID</label>
+            <input class="form-control" name="id" value="<%= id %>" readonly>
+        </div>
+        <div class="mb-3">
+            <div class="mb-2">
+                <label for="Image" class="form-label">Banner</label>
+                <input class="form-control" type="file" id="formFile" onchange="preview()" name="file" data-focus="add-project">
+                <div onclick="clearImage()" class="btn btn-primary mt-3">Click me</div>
+            </div>
+            <img id="add-project" src="<%= banner %>" class="img-fluid" />
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Name</label>
+            <input class="form-control" name="name" value="<%= name %> ">
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Description</label>
+            <textarea class="form-control" name="description" rows="3"><%= description %> </textarea>
+        </div>
+        <div class="dynamic-form mb-3">
+            <label class="form-label">Features</label>
+            <div class="group-input" id="features-group">
+                <% feature.forEach(element => { %>
+                    <div class="mb-3">
+                        <input class="form-control" name="feature" value="<%= element %>">
+                    </div>
+                <% }) %>
+            </div>
+            <div class="btn btn-primary btn-plus" data-target="#features-group" data-name="feature"><i class="fa-solid fa-plus"></i></div>
+        </div>
+
+        <div class="dynamic-form mb-3">
+            <label class="form-label">Utilities</label>
+            <div class="group-input" id="utilities-group">
+                <% utility.forEach(element => { %>
+                    <div class="mb-3">
+                        <input class="form-control" name="utility" value="<%= element %>">
+                    </div>
+                <% }) %>
+            </div>
+            <div class="btn btn-primary btn-plus" data-target="#utilities-group" data-name="utility"><i class="fa-solid fa-plus"></i></div>
+        </div>
+
+        <div class="mb-3">
+            <select class="form-select" aria-label="Default select example" name="productID">
+                <option value="<%= product.id %> " selected><h3><%= product.name %> </h3></option>
+                <% products.forEach(product => { %>
+                    <option value="<%= product.id %> "><%= product.name %> </option>
+                <% }) %>
+            </select>
+        </div>
+        
+        <button class="btn btn-primary" type="submit">Update</button>
+    </form>
+</div>

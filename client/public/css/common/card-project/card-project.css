@@ -1,0 +1,124 @@
+.card-project {
+    background: var(--primary-black);
+    color: var(--primary-white);
+    padding: 100px 62px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.card-project .projects {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: center;
+    flex-flow: wrap;
+} 
+
+.card-project .projects .projects-card {
+    margin-left: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.card-project .project-content-title {
+    font-size: 48px;
+    font-weight: 600;
+    background: var(--gradient-golden) left bottom no-repeat;
+    background-size: 100% 4px;
+    text-align: center;
+    margin-bottom: 28px;
+}
+
+.card-project .project-content-description {
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 32px;
+    margin-top: 32px;
+    text-align: center;
+}
+
+.card-project .project-card {
+    position: relative;
+    /* height: fit-content; */
+}
+.card-project .project-card img {
+    border-radius: 12px;
+}
+
+.card-project .project-card .project-card-content {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.548);
+    border-radius: 12px;
+    font-size: 20px;
+    font-weight: 600;
+    padding: 24px;
+    overflow: hidden;
+    text-align: center;
+}
+
+@media screen and (min-width: 1024px) {
+    .card-project .project-card {
+        width: 360px;
+        margin: 20px;
+    }
+    
+    .card-project .project-card img {
+        width: 360px;
+    }
+
+    .card-project .project-card .project-card-content {
+        transform: rotateX(90deg);
+        transform-origin: bottom;
+        transition: 0.3s;
+    }
+
+    .card-project .project-card:hover .project-card-content {
+        transform: rotateX(0);
+    }
+}
+
+@media screen and (max-width: 1336px) {
+    .card-project .project-content-title {
+        font-size: 32px;
+        width: fit-content;
+        margin: 0 auto;
+    }
+    .card-project .project-content-description {
+        text-align: center;
+    }
+
+    .card-project {
+        padding: 50px 20px;
+    }
+    .card-project .project-card {
+        width: 300px;
+        margin: 20px;
+    }
+    
+    .card-project .project-card img {
+        width: 300px;
+    }
+
+    .card-project .project-card .project-card-content {
+        font-size: 16px;
+    }
+}
+
+@media screen and (max-width: 1070px) {
+    .card-project {
+        padding: 50px 10px;
+    }
+    .card-project .project-card {
+        width: 260px;
+        margin: 10px;
+    }
+    
+    .card-project .project-card img {
+        width: 260px;
+    }
+}

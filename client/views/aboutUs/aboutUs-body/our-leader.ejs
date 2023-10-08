@@ -1,0 +1,17 @@
+<div class="about-us-leader">
+    <h1 class="category-aboutUs">OUR LEADER</h2>
+    <div class="leaders">
+        <% for(let i = 0; i < personnels.length; i++) { %>
+            <div class="card">
+                <img src="<%= personnels[i].img %> " alt="" class="card-img">
+                <div class="card-name"><%= personnels[i].name %> </div>
+                <div class="card-work"><%= personnels[i].position %> </div>
+                <div class="card-description">
+                    <% for(let item of personnels[i].bio.split('|')) { %>
+                        <p><%= item %></p>
+                    <% } %> 
+                </div>
+            </div>
+        <% } %> 
+    </div>
+</div>

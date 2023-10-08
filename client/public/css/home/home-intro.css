@@ -1,0 +1,150 @@
+.home-intro {
+    position: relative;
+    width: 100%;
+    height: 936px;
+    overflow: hidden;
+}
+
+.home-intro video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
+    /* Đặt video xuống layer dưới để cho phép các phần tử khác nằm trên trên video */
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    /* Lớp mờ overlay để tăng sự tương phản với văn bản */
+}
+
+.intro-info {
+    position: relative;
+    z-index: 1;
+    /* Đảm bảo văn bản và các phần tử nội dung hiển thị trên cùng của video */
+    /* Các thiết lập CSS cho intro-info */
+}
+
+.home-intro .intro-info {
+    margin: auto 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+}
+
+.home-intro .intro-info .intro-info-title {
+    color: aliceblue;
+    white-space: nowrap;
+    text-align: center;
+    display: flex;
+    font-size: 48px;
+    font-weight: 700;
+    animation: fly-in 10s infinite;
+}
+
+@keyframes fly-in {
+    0% {
+        transform: translate(0, 0);
+    }
+
+    25% {
+        transform: translate(100%, 0);
+    }
+
+    50% {
+        transform: translate(100%, 100%);
+    }
+
+    75% {
+        transform: translate(0, 100%);
+    }
+
+    100% {
+        transform: translate(0, 0);
+    }
+}
+
+@keyframes shake {
+    0% {
+        transform: translateX(0);
+    }
+
+    25% {
+        transform: translateX(-5px);
+    }
+
+    50% {
+        transform: translateX(5px);
+    }
+
+    75% {
+        transform: translateX(-5px);
+    }
+
+    100% {
+        transform: translateX(0);
+    }
+}
+
+.home-intro .intro-info .intro-info-description {
+    font-size: 24px;
+    font-weight: 400;
+    margin-top: 24px;
+    color: red;
+    animation: shake 0.2s infinite;
+}
+
+.home-intro .intro-info .intro-info-action {
+    display: flex;
+    margin-top: 24px;
+}
+
+@media screen and (max-width: 1024px) {
+    .home-intro {
+        padding: 0 20px;
+    }
+
+    .home-intro .intro-info {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        height: 100%;
+    }
+
+    .home-intro .intro-info .intro-info-description {
+        font-size: 16px;
+        font-weight: 400;
+        margin-top: 24px;
+        text-align: center;
+    }
+
+    .home-intro .intro-info .intro-info-action {
+        display: flex;
+        margin-top: 16px;
+    }
+}
+
+@media screen and (max-width: 470px) {
+    .home-intro .intro-info .intro-info-action {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .home-intro .intro-info .intro-info-action .btn {
+        margin-top: 12px;
+        margin-right: 0;
+    }
+}

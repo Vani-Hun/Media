@@ -1,0 +1,16 @@
+@import url(./aboutUs-contact-img.css);
+@import url(./aboutUs-description.css);
+@import url(./aboutUs-our-leader.css);
+@import url(./aboutUs-our-department.css);
+@import url(./aboutUs-our-product.css);
+@import url(./aboutUs-contact.css);
+
+.category-aboutUs{
+    padding: 20px 16px;
+    color: white;
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 48px;
+    line-height: 72px;
+}

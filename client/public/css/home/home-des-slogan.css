@@ -1,0 +1,75 @@
+#home-des-slogan {
+    background: var(--primary-black);
+    color: var(--primary-white);
+    padding: 100px 62px;
+    overflow: hidden;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    flex-flow: wrap;
+}
+
+#home-des-slogan .des-img img {
+    border: 8px solid #FFE600;
+    max-width: 550px;
+    margin-left: 44px;
+}
+
+#home-des-slogan .des-slogan-title {
+    font-size: 48px;
+    font-weight: 700;
+    background: var(--gradient-golden) left bottom no-repeat;
+    background-size: 100% 4px;
+    width: fit-content;
+    margin-bottom: 28px;
+}
+
+#home-des-slogan .home-des-content {
+    margin-left: 20px;
+}
+
+#home-des-slogan .des-slogan-content {
+    margin-bottom: 28px;
+    font-size: 16px;
+    font-weight: 400;
+    max-width: 600px;
+}
+
+@media screen and (max-width: 1400px) {
+    
+    #home-des-slogan .des-img img {
+        max-width: 400px;
+    }
+}
+
+@media screen and (max-width: 1210px) {
+
+    #home-des-slogan {
+        padding: 50px 20px;
+    }
+
+    #home-des-slogan .des-img {
+        display: none;
+        font-weight: 600;
+    }
+
+    #home-des-slogan .des-slogan-title {
+        font-size: 20px;
+    }
+
+    #home-des-slogan .home-des-content {
+        margin: auto 0;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+    #home-des-slogan .home-des-content {
+        margin: 0;
+    }
+
+    #home-des-slogan .home-des-content .btn {
+        margin-right: 0;
+    }
+}

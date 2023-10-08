@@ -1,0 +1,35 @@
+<%- include('../common/head.ejs', {title, description, keyword: "GPT Group, GPT, gpt, gpt group" , content: "page error"
+    }) %>
+    <div class="page-error">
+        <div class="page-error-logo">
+            <a href="/home" class="logo-img">
+                <img src="/img/logo.png" alt="Logo GPT">
+            </a>
+        </div>
+
+        <!-- Main -->
+        <div class="page-error-main">
+            <div class="page-error-content">
+                <h1 class="status-error">
+                    <%= title %>
+                </h1>
+                <h2 class="description-error">
+                    <%= description %>
+                </h2>
+                <p>
+                    <%= message %>
+                </p>
+                <div class="btn-group">
+                    <div class="btn btn-cta"><a href="#">Back to Homepage</a></div>
+                    <div class="btn btn-white"><a href="#">Contact us</a></div>
+                </div>
+            </div>
+        </div>
+        <div class="page-error-social">
+            <a href="#"><img src="/icon/linkedin.svg" alt=""></a>
+            <a href="#"><img src="/icon/instagram.svg" alt=""></a>
+            <a href="#"><img src="/icon/facebook.svg" alt=""></a>
+        </div>
+    </div>
+
+    <%- include('../common/tail.ejs') %>

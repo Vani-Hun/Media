@@ -1,0 +1,22 @@
+<div id="content-addnew-custmer" class="col-sm-8 col-lg-10 mt-5 mb-5">
+    <h2>Add new Customer</h2>
+    <form action="/admin/customer" method="post" enctype="multipart/form-data">
+        <div class="mb-3">
+            <div class="mb-2">
+                <label for="Image" class="form-label">Banner</label>
+                <input class="form-control" type="file" id="formFile" onchange="preview()" name="file" data-focus="banner-customer-add">
+                <div onclick="clearImage()" class="btn btn-primary mt-3">Click me</div>
+            </div>
+            <img id="banner-customer-add" src="" class="img-fluid" />
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Name</label>
+            <input class="form-control" name="name" required>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Description</label>
+            <textarea class="form-control" name="shortDes" rows="3"></textarea>
+        </div>
+        <button class="btn btn-primary" type="submit">Update</button>
+    </form>
+</div>

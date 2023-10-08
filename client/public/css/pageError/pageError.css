@@ -1,0 +1,44 @@
+.page-error {
+    background-image: url(../../img/Background.jpg);
+    color: var(--primary-white);
+    height: 100vh;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 0 62px;
+}
+
+.page-error .page-error-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.page-error-content .status-error {
+    font-size: 300px;
+    white-space: 0;
+}
+
+.page-error .description-error {
+    font-size: 48px;
+    font-weight: 500;
+}
+
+.page-error p {
+    margin-bottom: 20px;
+}
+
+.page-error .btn-group {
+    display: flex;
+}
+
+.page-error .page-error-social {
+    margin-bottom: 20px;
+}
+
+.page-error .page-error-social img{
+    width: 50px;
+}

@@ -1,0 +1,9 @@
+<div class="product-detail-container">
+    <%- include('./detail-img-contact.ejs', project) %>
+    <%- include('../../common/nav-product/nav-product.ejs', {products, index}) %>
+    <%- include('./detail-descritption.ejs', project) %>   
+    <%- include('./detail-features.ejs', project) %>
+    <%- include('./detail-contact.ejs') %>   
+    <%- include('./detail-makeForU.ejs', project) %>
+    <%- include('./detail-similar-project.ejs', {product: products[index], thisProductId: project.id}) %>   
+</div>

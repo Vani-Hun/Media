@@ -1,0 +1,31 @@
+<div id="content-addnew-personnel" class="col-sm-8 col-lg-10 mt-5 mb-5">
+    <h2>Add new Leader</h2>
+    <form action="/admin/personnel" method="post" enctype="multipart/form-data">
+        <div class="mb-3">
+            <div class="mb-2">
+                <label for="Image" class="form-label">Image</label>
+                <input class="form-control" type="file" id="formFile" onchange="preview()" name="file" data-focus="image-leader-add">
+                <div onclick="clearImage()" class="btn btn-primary mt-3">Click me</div>
+            </div>
+            <img id="image-leader-add" src="" class="img-fluid" />
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Name</label>
+            <input class="form-control" name="name" required>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Position</label>
+            <input class="form-control" name="position" required>
+        </div>
+        <div class="dynamic-form mb-3">
+            <label class="form-label">Bio</label>
+            <div class="group-input" id="utilities-group">
+                <div class="mb-3">
+                    <input class="form-control" name="bio">
+                </div>
+            </div>
+            <div class="btn btn-primary btn-plus" data-target="#utilities-group" data-name="bio"><i class="fa-solid fa-plus"></i></div>
+        </div>
+        <button class="btn btn-primary" type="submit">Update</button>
+    </form>
+</div>

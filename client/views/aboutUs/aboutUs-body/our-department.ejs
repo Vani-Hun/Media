@@ -1,0 +1,16 @@
+<div class="about-us-department">
+    <h1 class="category-aboutUs">OUR DEPARTMENTS</h2>
+    <div class="department">
+        <% departments.forEach(department => { %>
+            <div class="card-department">
+                <a href="#">
+                    <img src="<%= department.logo %>" alt="" class="card-department-img">
+                    <div class="card-department-name"><%= department.name %> </div>
+                    <p class="card-department-desctiption">
+                        <%= department.description %>
+                    </p>
+                </a>
+            </div>
+        <% }) %>
+    </div>
+</div>

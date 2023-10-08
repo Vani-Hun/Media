@@ -1,0 +1,27 @@
+<%- include('../common/head.ejs', {title: "GPT Group | Career" , content: "Information of GPT Group" ,
+    keyword: "GPT, GPT Group" }) %>
+    <%- include('../common/header/header.ejs', contact) %>
+        <main id="main">
+            <h1 class="img-contact">
+                GPT GROUP / CAREER
+                <br>
+                <%= (career.department.name + " department").toUpperCase() %> 
+            </h1>
+            <div class="career-body">
+                <%- include('./career-detail-body/career-detail-body.ejs', career) %>
+                <div class="career-info">
+                    <div class="career-form">
+                        <%- include('./career-detail-body/apply-form.ejs', career) %>
+                    </div>
+                </div>
+            </div>
+        </main>
+    <%- include('../common/footer/footer.ejs', contact) %>
+<%- include('../common/tail.ejs') %>
+<script>
+    const error = '<%= error %>'
+    if(error.length > 0){
+        alert(error)
+    }
+</script>
+<script src="/javascript/validated.js"></script>

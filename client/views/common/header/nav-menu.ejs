@@ -1,0 +1,86 @@
+<menu class="nav-menu">
+    <div class="nav-menu-brand">
+        <div class="logo-brand"><a id="home-link" href="/home"><img src="/img/logo/logo.png" alt="logo vani"></a></div>
+    </div>
+    <div id="menu-responsive-btn"><img src="/icon/menu.svg"></div>
+    <div class="menu-list">
+        <span class="menu-item"><a href="/aboutus">VIDEO</a></span>
+        <span class="menu-item"><a href="/product">MUSIC</a></span>
+        <span class="menu-item"><a href="/contact">CHATTING</a></span>
+    </div>
+</menu>
+<div class="loader">
+    <div class="semicircle">
+        <div>
+            <div>
+                <div>
+                    <div>
+                        <div>
+                            <div>
+                                <div>
+                                    <div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    const navMenu = document.querySelector('.nav-menu');
+
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 0) {
+            navMenu.classList.add('scrolled');
+        } else {
+            navMenu.classList.remove('scrolled');
+        }
+    });
+
+    const menuButton = document.getElementById('menu-responsive-btn');
+    const menuList = document.querySelector('.menu-list');
+
+    menuButton.addEventListener('click', function () {
+        console.log('Click event triggered!'); // Kiểm tra xem sự kiện click có được gọi không
+        menuList.classList.toggle('active');
+    });
+
+
+    document.addEventListener("DOMContentLoaded", function () {
+        var body = document.body;
+
+        function showLoader() {
+            var loader = document.querySelector('.loader');
+            loader.classList.add('visible');
+        }
+
+        function hideLoader() {
+            var loader = document.querySelector('.loader');
+            loader.classList.remove('visible');
+        }
+
+        function redirectToHome() {
+            showLoader();
+            setTimeout(function () {
+                window.location.href = homeLink.getAttribute('href');
+                setTimeout(function () {
+                    hideLoader();
+                }, 500);
+            }, 2000);
+        }
+
+        var homeLink = document.getElementById('home-link');
+        if (homeLink) {
+            homeLink.addEventListener('click', function (event) {
+                event.preventDefault();
+                redirectToHome();
+            });
+        }
+
+    });
+
+</script>

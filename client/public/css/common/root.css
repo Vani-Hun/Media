@@ -1,0 +1,23 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins';
+}
+
+:root {
+    --primary-gray: #616161;
+    --primary-black: #000000;
+    --primary-white: #ffffff;
+
+    --primary-cta: #EB9400;
+
+    --gradient-golden: linear-gradient(130.51deg, #FFE600 15.72%, #EB9400 84.94%);
+
+    --fontsize-48: 48px;
+    --fontsize-28: 28px;
+}
+
+a {
+    text-decoration: none;
+    color: var(--primary-white);
+}

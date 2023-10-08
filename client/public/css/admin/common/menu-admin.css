@@ -1,0 +1,17 @@
+#admin-menu {
+    background-color: #203239;
+    height: 100vh;
+    color: #fff;
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
+#admin-menu .head-menu {
+    border-bottom: 1px solid #fff;
+    text-align: center;
+}
+
+#admin-menu .item-menu a i {
+    margin-right: 12px;
+}

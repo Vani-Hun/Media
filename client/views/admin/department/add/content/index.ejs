@@ -1,0 +1,22 @@
+<div id="content-addnew-department" class="col-sm-8 col-lg-10 mt-5 mb-5">
+    <h2>Add new Department</h2>
+    <form action="/admin/department" method="post" enctype="multipart/form-data">
+        <div class="mb-3">
+            <div class="mb-2">
+                <label for="Image" class="form-label">Logo</label>
+                <input class="form-control" type="file" id="formFile" onchange="preview()" name="file" data-focus="logo-department-add">
+                <div onclick="clearImage()" class="btn btn-primary mt-3">Click me</div>
+            </div>
+            <img id="logo-department-add" src="" class="img-fluid" />
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Name</label>
+            <input class="form-control" name="name" required>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Description</label>
+            <textarea class="form-control" name="description" rows="3"></textarea>
+        </div>
+        <button class="btn btn-primary" type="submit">Update</button>
+    </form>
+</div>

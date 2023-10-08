@@ -1,0 +1,47 @@
+.about-us-product {
+    max-width: 1336px;
+    margin:  0 auto;
+}
+.about-us-product .product{
+    display: flex;
+    justify-content: center;
+    flex-flow: wrap;
+}
+.about-us-product .card-product{
+    background-color: white;
+    border-radius: 15px;
+    margin: 10px 15px;
+    width: 360px;
+}
+
+.about-us-product .card-product a {
+    color: var(--primary-black);
+}
+
+.about-us-product .card-product-aboutus-img{
+    width: 100%;
+}
+.about-us-product .card-product-name{
+    font-style: normal;
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 40px;
+    text-align: center;
+    padding: 20px 20px;
+}
+
+@media screen and (max-width: 1120px) {
+    .about-us-product .card-product{
+        width: 260px;
+    }
+
+    .about-us-product .card-product-name {
+        font-size: 16px;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .about-us-product .category-aboutUs {
+        font-size: 32px;
+    }
+}

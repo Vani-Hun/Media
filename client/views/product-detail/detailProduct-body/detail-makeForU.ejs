@@ -1,0 +1,13 @@
+<div class="support_product">
+    <div class="features-function slide-potenial">
+        <h3 class="title-features">We can support for you</h3>
+        <div class="product">
+            <% utility.forEach((element, index) => { %>
+                <div class="item-utility">
+                    <div class="circle"><%= index + 1 %> </div>
+                    <h3 class="item-title"><%= element %></h3>
+                </div>
+            <% }) %>
+        </div>
+    </div>
+</div>
