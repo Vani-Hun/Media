@@ -9,7 +9,7 @@ import {
 import { join } from 'path';
 import { staticFolder } from '../utils/constant';
 import * as _ from 'lodash';
-import { firebaseAdmin } from '../utils/firebase.config';
+import { firebaseAdmin, bucket } from '../utils/firebase.config';
 
 
 export class UtilService {
@@ -61,7 +61,13 @@ export class UtilService {
     // Tạo Buffer từ dữ liệu video
     const videoBuffer = Buffer.from(videoData);
     console.log("videoBuffer:", videoBuffer)
-    const bucket = firebaseAdmin.storage().bucket();
+    bucket.setCorsConfiguration([
+      {
+        origin: ["http://localhost:3000"],
+        method: ["GET", "POST", "PUT", "DELETE"],
+        responseHeader: ["Content-Type"]
+      }
+    ]);
     const file = bucket.file(`videos/${input.video.filename}`);
 
     await file.save(videoBuffer, {
@@ -75,6 +81,10 @@ export class UtilService {
     // console.log("publicUrl:", publicUrl)
     // Lưu publicUrl vào cơ sở dữ liệu hoặc trả về cho client nếu cần thiết
     return publicUrl;
+  }
+
+  async loadVideo(input: string) {
+
   }
   checkExist(path: string): boolean {
     return path && existsSync(join(staticFolder, path))

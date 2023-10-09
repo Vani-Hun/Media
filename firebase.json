@@ -1,5 +1,14 @@
 {
   "storage": {
-    "rules": "storage.rules"
+    "rules": "storage.rules",
+    "storageBucket": {
+      ".read": "auth != null",
+      ".write": "auth != null",
+      ".options": {
+        "origin": [
+          "http://localhost:3000"
+        ]
+      }
+    }
   }
 }

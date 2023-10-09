@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TikTok Video Page</title>
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
     <style>
         body {
             margin: 0;
@@ -671,8 +672,7 @@
     <div class="video-container" id="video-container">
         <!-- Video tag sẽ được chèn ở đây -->
         <video id="myVideo" controls>
-            <source src=".\..\audio\donut.mp4" type="video/mp4">
-            Your browser does not support the video tag.
+
         </video>
         <button data-e2e="arrow-right" class="scroll-down-btn"><svg viewBox="0 0 48 48" fill="#fff">
                 <path
@@ -899,8 +899,25 @@
 
 
     <script>
+
+
         const video = document.getElementById("myVideo");
 
+        const hls = new Hls();
+        var videoUrl = 'https://storage.googleapis.com/fir-76c15.appspot.com/videos/admin_1696779762364'; // Đặt URL bạn nhận được từ server ở đây
+
+        // Kiểm tra xem trình duyệt hỗ trợ HLS hay không
+        if (Hls.isSupported()) {
+            // Thiết lập video source bằng URL của video
+            hls.loadSource(videoUrl);
+            // Kết nối hls.js với thẻ video
+            hls.attachMedia(video);
+        } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+            // Nếu không hỗ trợ HLS, thử sử dụng một định dạng khác (Apple HLS)
+            video.src = videoUrl;
+        } else {
+            console.error('Trình duyệt không hỗ trợ streaming video.');
+        }
         // Bắt đầu phát video khi trang tải
         video.addEventListener("loadedmetadata", () => {
             video.play();
