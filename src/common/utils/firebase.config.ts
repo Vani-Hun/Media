@@ -8,6 +8,14 @@ admin.initializeApp({
 });
 
 // Cấu hình CORS cho Firebase Storage
-export const bucket = admin.storage().bucket();
-
+const bucket = admin.storage().bucket()
+bucket.setCorsConfiguration([
+    {
+        origin: ["http://localhost:3000"],
+        method: ["GET", "POST", "PUT", "DELETE"],
+        responseHeader: ["Content-Type"]
+    }
+]);
+export { bucket }
+export const videoFile = admin.storage().bucket().file(`videos/admin_1696780201555`);
 export const firebaseAdmin = admin;

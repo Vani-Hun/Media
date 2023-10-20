@@ -8,6 +8,16 @@
         <span class="menu-item"><a href="/product">MUSIC</a></span>
         <span class="menu-item"><a href="/contact">CHATTING</a></span>
     </div>
+    <div class="dropdown-container"></div>
+    <div data-e2e="profile-icon" id="header-more-menu-icon" tabindex="0" role="button" aria-label="Open settings menu"
+        aria-expanded="false" aria-haspopup="true" aria-controls="" class="DivProfileContainer"></div>
+    <div class="dropdown-menu" id="dropdown-menu">
+        <!-- Các mục trong dropdown menu -->
+        <a href="/customer/profile">View profile</a>
+        <a href="/customer/log-out">Log Out</a>
+        <!-- ...Thêm các mục khác nếu cần... -->
+    </div>
+    </div>
 </menu>
 <div class="loader">
     <div class="semicircle">
@@ -81,6 +91,40 @@
             });
         }
 
+    });
+    // Lấy tham chiếu đến dropdown menu và phần tử kích hoạt dropdown
+    var dropdownMenu = document.getElementById("dropdown-menu");
+    var profileIcon = document.getElementById("header-more-menu-icon");
+    document.addEventListener("DOMContentLoaded", function () {
+        var customer;
+        // Gọi API để lấy dữ liệu của khách hàng
+        fetch('/customer/header') // Thay thế '/api/customer' bằng endpoint của API của bạn
+            .then(response => response.json())
+            .then(data => {
+                // Xử lý dữ liệu nhận được từ API
+                var customerLogo = data.customer.logo;
+                if (customerLogo) {
+                    customer = customerLogo
+                    profileIcon.style = `background-image:url( ${customerLogo} )`
+                } else {
+                    profileIcon.style = "background-image:url(/img/logo/logo.png)";
+                    dropdownMenu.style.display = "none";
+                }
+            })
+            .catch(error => {
+                profileIcon.style = "background-image:url(/img/logo/logo.png)";
+                console.error('Error:', error);
+            });
+
+    });
+
+
+    profileIcon.addEventListener("click", function () {
+        if (dropdownMenu.style.display === "none") {
+            dropdownMenu.style.display = "block";
+        } else {
+            dropdownMenu.style.display = "none";
+        }
     });
 
 </script>

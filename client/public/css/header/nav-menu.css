@@ -55,15 +55,14 @@
 
 .nav-menu {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     flex-flow: wrap;
-    padding: 12px 62px;
-    color: var(--primary-white);
+    color: rgba(32, 185, 114, 0);
     align-items: center;
     transition: 0.2s ease-in-out;
     position: relative;
     opacity: 1;
-    z-index: -10;
+    z-index: 10;
     /* Đặt mặc định là không mờ */
 }
 
@@ -127,8 +126,8 @@
     display: none;
 }
 
-@media screen and (max-width: 500px) {
-    #menu-responsive-btn {
+@media screen and (max-width: 550px) {
+    /* #menu-responsive-btn {
         display: block;
         background: var(--gradient-golden);
         height: 30px;
@@ -142,7 +141,7 @@
 
     #menu-responsive-btn:hover {
         background: var(--primary-black);
-    }
+    } */
 
     .menu-list {
         transition: all 0.3s ease;
@@ -162,14 +161,14 @@
         line-height: 8px;
     }
 
-    .menu-list.active {
+    /* .menu-list.active {
         opacity: 1;
         transform: translateY(0);
         display: flex;
         flex-direction: column;
         transform-origin: right;
         transition: 0.3s;
-    }
+    } */
 
     .nav-menu-display {
         transform: rotateY(0);
@@ -198,4 +197,57 @@
         font-weight: bold;
         font-size: small;
     }
+}
+
+.DivProfileContainer {
+    margin-left: 24px;
+    /* margin-top: 5%;
+    margin-bottom: 2%; */
+    position: relative;
+    width: 32px;
+    height: 32px;
+    background: center no-repeat;
+    -webkit-background-size: cover;
+    background-size: cover;
+    border-radius: 50%;
+    cursor: pointer;
+    -webkit-app-region: no-drag;
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 95%;
+    right: 10%;
+    background-color: #80808026;
+    /* min-width: 100px; */
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    flex-direction: column;
+    text-align: center;
+    padding: 1px;
+    width: 100px;
+    border-radius: 20px;
+    line-height: 50px;
+    font-size: medium;
+    color: black;
+    font-weight: bold;
+}
+
+.dropdown-menu a {
+    font-size: medium;
+    color: black;
+    font-weight: bold;
+}
+
+/* CSS cho phần tử gốc */
+.dropdown-container {
+    position: relative;
+    display: inline-block;
+}
+
+/* Hiển thị dropdown menu khi phần tử gốc được hover hoặc click */
+.dropdown-container:hover .dropdown-menu,
+.dropdown-container:focus-within .dropdown-menu {
+    display: block;
 }

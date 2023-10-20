@@ -12,6 +12,7 @@ export class BaseService<T> extends UtilService {
 
     if (options) {
       result = await this.repo.findOne(id, options);
+      console.log("result:", result)
     } else {
       result = await this.repo.findOne(id);
     }

@@ -9,8 +9,20 @@ export class Customer extends BaseEntityUUID {
   @Column({ nullable: true })
   name: string;
 
+  @Column({ default: 0 })
+  following: number;
+
+  @Column({ default: 0 })
+  followers: number;
+
+  @Column({ default: 0 })
+  likes: number;
+
   @Column()
   username: string;
+
+  @Column({ nullable: true })
+  bio: string;
 
   @Column()
   password: string;

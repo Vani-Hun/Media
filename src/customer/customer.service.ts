@@ -56,64 +56,50 @@ export class CustomerService extends BaseService<Customer> {
 
   }
 
-  async get() {
-    const contact = await this.contactService.get()
-    return { contact }
+  async get(input: InputSetCustomer) {
+    const customer = await this.findById(input.id)
+    return { customer }
   }
   async getVideo() {
     const video = await this.videoService.get()
-    console.log("video:", video[0].video)
-    // const loadVideo = await this.repo.loadVideo(video[0].video)
+    console.log("video:", video)
+    const loadVideo = await this.loadVideo()
+    console.log("loadVideo:", loadVideo)
     return
+  }
+
+  async getProfile(user) {
+    const customer = await this.repo.findOneOrFail(user.id, { relations: ['videos'] });
+    console.log("customer:", customer)
+    return { customer }
+  }
+
+  async postProfile(user) {
+    const url = await this.uploadFile(user)
+    const updateData = {
+      /* Các trường dữ liệu bạn muốn cập nhật, ví dụ: */
+      logo: url,
+      username: user.username,
+      name: user.name,
+      bio: user.bio
+    };
+    const customer = await this.repo.update({ id: user.user.id }, updateData)
+    return { customer }
   }
   getAll() {
     return this.repo.find();
   }
 
-  create(input: InputSetCustomer) {
-    const logo = input.logo
-      ? this.handleUploadFile(input.logo, 'img/customer/logo', [
-        'jpg',
-        'png',
-        'wepb',
-      ])
-      : null;
-
-    const customer = this.repo.create({
-      ...input,
-      logo,
-    });
-
-    return this.repo.save(customer);
-  }
-
-  async uploadVideo(input) {
-    const up = await this.uploadVani(input)
-    console.log("up:", up)
-    if (up) {
-      await this.videoService.create(up, input)
-      return true
-    }
+  async upVideo(input) {
+    const url = await this.uploadVideo(input)
+    // if (url) {
+    //   console.log("url:", url)
+    //   const saveVideo = await this.videoService.create(url, input)
+    //   console.log("saveVideo:", saveVideo)
+    // return true
+    // }
 
 
-  }
-  async update(input: InputSetCustomer) {
-    const customer = await this.findById(input.id);
-    const logo = input.logo
-      ? this.handleUploadFile(
-        input.logo,
-        'img/customer/logo',
-        ['jpg', 'png', 'webp'],
-        customer.logo,
-      )
-      : customer.logo;
-
-    _.forOwn(input, (value, key) => {
-      if (key === 'logo') customer.logo = logo;
-      else if (key !== 'id') customer[key] = value;
-    });
-
-    return this.repo.save(customer);
   }
 
   async delete(id: string) {

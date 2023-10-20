@@ -5,7 +5,6 @@ import { FindOneOptions, Repository } from 'typeorm';
 import { AboutUs } from './aboutUs.entity';
 import * as _ from 'lodash';
 import { ContactService } from 'src/contact/contact.service';
-import { ProductService } from 'src/product/product.service';
 import { InputSetAboutUs } from './aboutUs.model';
 
 @Injectable()
@@ -13,8 +12,6 @@ export class AboutUsService extends BaseService<AboutUs> {
   constructor(
     @InjectRepository(AboutUs) aboutUsRepo: Repository<AboutUs>,
     private contactService: ContactService,
-    @Inject(forwardRef(() => ProductService))
-    private categoryService: ProductService,
   ) {
     super(aboutUsRepo);
   }
@@ -30,13 +27,12 @@ export class AboutUsService extends BaseService<AboutUs> {
   }
 
   async getPage(options?: FindOneOptions<AboutUs>) {
-    const [aboutUs, contact, products] = await Promise.all([
+    const [aboutUs, contact] = await Promise.all([
       this.get(options),
-      this.contactService.get(),
-      this.categoryService.getAll(),
+      this.contactService.get()
     ]);
 
-    return { aboutUs, contact, products };
+    return { aboutUs, contact };
   }
 
   async update(input: InputSetAboutUs) {

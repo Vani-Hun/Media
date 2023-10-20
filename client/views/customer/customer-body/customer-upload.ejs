@@ -1,0 +1,438 @@
+<div class="main-body">
+    <div class="jsx-4163898440 layout">
+        <div class="jsx-2746295041 layout" style="width: 90%;">
+            <div class="jsx-2977532431 container-v2" style="width: 100%;">
+                <div class="jsx-2977532431 post-title">
+                    <h1 class="css-n23t8l">Upload video</h1>
+                    <div class="jsx-2977532431 sub-title-v2"><span class="css-nyj7ur">Post a video to your
+                            account</span></div>
+                </div>
+                <div class="jsx-2977532431 contents-v2">
+                    <div class="jsx-2977532431 uploader">
+                        <div aria-live="polite" aria-atomic="true" aria-relevant="text" class="jsx-2834184006 upload">
+                            <div role="button" class="jsx-2834184006"><input type="file" accept="video/*"
+                                    class="jsx-2834184006" style="display: none;">
+                                <div class="jsx-2834184006 upload-card before-upload-stage upload-card-narrow"><svg
+                                        fill="currentColor" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg"
+                                        width="1em" height="1em"
+                                        style="color: var(--tux-colorTextQuaternary); width: 48px; height: 48px;">
+                                        <path
+                                            d="M25.84 37h8.66a9.5 9.5 0 0 0 1.35-18.9A12 12 0 0 0 12 20v.01A8.5 8.5 0 0 0 12.5 37h10.34V25.6l-1.72 1.74a1 1 0 0 1-1.42 0l-.7-.7a1 1 0 0 1 0-1.41l4.4-4.4c.68-.76 1.22-.77 2 .08l4.28 4.32a1 1 0 0 1 0 1.4l-.7.72a1 1 0 0 1-1.42 0l-1.72-1.75V37Z">
+                                        </path>
+                                    </svg>
+                                    <div class="jsx-2834184006 text-main"><span class="css-1q42136">Select video to
+                                            upload</span></div>
+                                    <div class="jsx-2834184006 text-sub"><span class="css-1wbo2p7">Or drag and drop a
+                                            file</span></div>
+                                    <div class="jsx-2834184006 text-video-info">
+                                        <div class="jsx-2834184006"><span class="css-162omej">MP4 or WebM</span></div>
+                                        <div class="jsx-2834184006"><span class="css-162omej">720x1280 resolution or
+                                                higher</span></div>
+                                        <div class="jsx-2834184006 children-vertical-center"><span
+                                                class="css-162omej">Up to 10 minutes</span></div>
+                                        <div class="jsx-2834184006"><span class="css-162omej">Less than 10 GB</span>
+                                        </div>
+                                    </div>
+                                    <div class="jsx-2834184006 file-select-button"><button class="css-byn4hh"
+                                            aria-label="Select file">
+                                            <div class="css-1db5cpb">
+                                                <div class="css-1z070dx">Select file</div>
+                                            </div>
+                                        </button></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="jsx-2977532431 preview" style="display: none;">
+                        <div class="jsx-308560071 mobile-preview-player">
+                            <div class="jsx-308560071 tiktok-app-frame">
+                                <div class="jsx-308560071 app-tab fyp-tab"></div>
+                            </div>
+                            <div class="jsx-308560071 feed-page show">
+                                <div class="jsx-308560071 video-player">
+                                    <div class="jsx-308560071 canvas-container"><canvas id="mobile-preview-canvas"
+                                            class="jsx-308560071 mobile-preview-canvas" width="450"
+                                            height="798"></canvas></div>
+                                    <div class="jsx-308560071 video-player-control">
+                                        <div class="jsx-308560071 control-container">
+                                            <div class="jsx-308560071 control-operation">
+                                                <div class="jsx-308560071 play-info">
+                                                    <div class="jsx-308560071 play-btn play"></div>
+                                                    <div class="jsx-308560071 play-time">00:00:34<span
+                                                            class="jsx-308560071"> /
+                                                        </span>00:04:02</div>
+                                                </div>
+                                                <div class="jsx-308560071 operation-btn">
+                                                    <div class="jsx-308560071 volume-btn"></div>
+                                                    <div class="jsx-308560071 fullscreen-btn"></div>
+                                                </div>
+                                            </div>
+                                            <div class="jsx-308560071 progress-bar-container">
+                                                <div class="jsx-308560071 progress-bar" style="width: 14.2086%;"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="jsx-308560071 tiktok-page-layout pause">
+                                    <div class="jsx-308560071 header-title"><img
+                                            src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjYiIGhlaWdodD0iMjYiIHZpZXdCb3g9IjAgMCAyNiAyNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGcgY2xpcC1wYXRoPSJ1cmwoI2NsaXAwXzI1NzFfMTI5MjMpIiBmaWx0ZXI9InVybCgjZmlsdGVyMF9kXzI1NzFfMTI5MjMpIj4KPHBhdGggZD0iTTguNTgyMTEgMS43MDI2MUwxMC42MjQzIDQuMDAwMTJINC41OTcxN0MzLjYxOTUgNC4wMDAxMiAyLjc4NTEyIDQuNzA2OTUgMi42MjQzOSA1LjY3MTMyTDIuMzYwNjkgNy4yNTM1MkMyLjMwOTg5IDcuNTU4MjkgMi41NDQ5MSA3LjgzNTcyIDIuODUzODggNy44MzU3MkgzLjg2NzY4QzQuMTEyMSA3LjgzNTcyIDQuMzIwNjkgNy42NTkwMiA0LjM2MDg3IDcuNDE3OTJMNC41NjIzNiA2LjIwOTAyQzQuNTgyNDUgNi4wODg0OCA0LjY4Njc1IDYuMDAwMTIgNC44MDg5NiA2LjAwMDEySDIxLjE5MTFDMjEuMzEzMyA2LjAwMDEyIDIxLjQxNzYgNi4wODg0OCAyMS40Mzc3IDYuMjA5MDJMMjEuNjM5MiA3LjQxNzkyQzIxLjY3OTQgNy42NTkwMiAyMS44ODggNy44MzU3MiAyMi4xMzI0IDcuODM1NzJIMjMuMTQ2MkMyMy40NTUyIDcuODM1NzIgMjMuNjkwMiA3LjU1ODI5IDIzLjYzOTQgNy4yNTM1MkwyMy4zNzU3IDUuNjcxMzJDMjMuMjE1IDQuNzA2OTUgMjIuMzgwNiA0LjAwMDEyIDIxLjQwMjkgNC4wMDAxMkgxNS4zNzAzTDE3LjQxMjYgMS43MDI2MUMxNy41OTYgMS40OTYyMSAxNy41Nzc0IDEuMTgwMTggMTcuMzcxIDAuOTk2NzE5TDE2LjYyMzYgMC4zMzIzNTZDMTYuNDE3MiAwLjE0ODg5NiAxNi4xMDEyIDAuMTY3NDg3IDE1LjkxNzcgMC4zNzM4NzhMMTIuOTk3MyAzLjY1OTM0TDEwLjA3NjkgMC4zNzM4NzhDOS44OTM0NyAwLjE2NzQ4NyA5LjU3NzQzIDAuMTQ4ODk2IDkuMzcxMDQgMC4zMzIzNTVMOC42MjM2MyAwLjk5NjcxOUM4LjQxNzI0IDEuMTgwMTggOC4zOTg2NSAxLjQ5NjIxIDguNTgyMTEgMS43MDI2MVoiIGZpbGw9IndoaXRlIi8+CjxwYXRoIGQ9Ik0yMC40NTA1IDkuODUwMTJDMjAuMTc0NCA5Ljg1MDEyIDE5Ljk1MDUgMTAuMDc0IDE5Ljk1MDUgMTAuMzUwMVYxNy4zNTAxQzE5Ljk1MDUgMTcuNjI2MyAyMC4xNzQ0IDE3Ljg1MDEgMjAuNDUwNSAxNy44NTAxSDI0LjE1QzI0LjQyNjEgMTcuODUwMSAyNC42NSAxNy42MjYzIDI0LjY1IDE3LjM1MDFWMTYuMzUwMUMyNC42NSAxNi4wNzQgMjQuNDI2MSAxNS44NTAxIDI0LjE1IDE1Ljg1MDFIMjEuOTcyNVYxNC44NTAxSDI0LjE1QzI0LjQyNjEgMTQuODUwMSAyNC42NSAxNC42MjYzIDI0LjY1IDE0LjM1MDFWMTMuMzUwMUMyNC42NSAxMy4wNzQgMjQuNDI2MSAxMi44NTAxIDI0LjE1IDEyLjg1MDFIMjEuOTcyNVYxMS44NTAxSDI0LjE1QzI0LjQyNjEgMTEuODUwMSAyNC42NSAxMS42MjYzIDI0LjY1IDExLjM1MDFWMTAuMzUwMUMyNC42NSAxMC4wNzQgMjQuNDI2MSA5Ljg1MDEyIDI0LjE1IDkuODUwMTJIMjAuNDUwNVoiIGZpbGw9IndoaXRlIi8+CjxwYXRoIGQ9Ik0yIDkuODUwMTJDMS43MjM4NiA5Ljg1MDEyIDEuNSAxMC4wNzQgMS41IDEwLjM1MDFWMTcuMzUwMUMxLjUgMTcuNjI2MyAxLjcyMzg2IDE3Ljg1MDEgMiAxNy44NTAxSDUuODAyMkM2LjA3ODM0IDE3Ljg1MDEgNi4zMDIyIDE3LjYyNjMgNi4zMDIyIDE3LjM1MDFWMTYuMzUwMUM2LjMwMjIgMTYuMDc0IDYuMDc4MzQgMTUuODUwMSA1LjgwMjIgMTUuODUwMUgzLjUyMTk4VjEwLjM1MDFDMy41MjE5OCAxMC4wNzQgMy4yOTgxMiA5Ljg1MDEyIDMuMDIxOTggOS44NTAxMkgyWiIgZmlsbD0id2hpdGUiLz4KPHBhdGggZD0iTTcuNTY1OTMgMTcuMzUwMUM3LjU2NTkzIDE3LjYyNjMgNy43ODk3OSAxNy44NTAxIDguMDY1OTMgMTcuODUwMUg5LjA4NzkxQzkuMzY0MDUgMTcuODUwMSA5LjU4NzkxIDE3LjYyNjMgOS41ODc5MSAxNy4zNTAxVjEwLjM1MDFDOS41ODc5MSAxMC4wNzQgOS4zNjQwNSA5Ljg1MDEyIDkuMDg3OTEgOS44NTAxMkg4LjA2NTkzQzcuNzg5NzkgOS44NTAxMiA3LjU2NTkzIDEwLjA3NCA3LjU2NTkzIDEwLjM1MDFWMTcuMzUwMVoiIGZpbGw9IndoaXRlIi8+CjxwYXRoIGQ9Ik0xNC45ODY3IDE1Ljg2MjZIMTQuNzQwMkwxMy4wOTkzIDEwLjIxMDdDMTMuMDM3MyA5Ljk5NzA5IDEyLjg0MTYgOS44NTAxMiAxMi42MTkyIDkuODUwMTJIMTEuNTkwOEMxMS4yNTc3IDkuODUwMTIgMTEuMDE3OCAxMC4xNjk3IDExLjExMDYgMTAuNDg5NUwxMy4xNDI5IDE3LjQ4OTVDMTMuMjA0OSAxNy43MDMyIDEzLjQwMDYgMTcuODUwMSAxMy42MjMxIDE3Ljg1MDFIMTYuMTAzOEMxNi4zMjYzIDE3Ljg1MDEgMTYuNTIyIDE3LjcwMzIgMTYuNTg0IDE3LjQ4OTVMMTguNjE2MiAxMC40ODk1QzE4LjcwOTEgMTAuMTY5NyAxOC40NjkxIDkuODUwMTIgMTguMTM2MSA5Ljg1MDEySDE3LjEwNzdDMTYuODg1MyA5Ljg1MDEyIDE2LjY4OTYgOS45OTcwOSAxNi42Mjc2IDEwLjIxMDdMMTQuOTg2NyAxNS44NjI2WiIgZmlsbD0id2hpdGUiLz4KPHBhdGggZD0iTTIzLjM3NTkgMjEuOTE0NUMyMy4yMTUxIDIyLjg3ODkgMjIuMzgwNyAyMy41ODU3IDIxLjQwMzEgMjMuNTg1N0w0LjU5NzMzIDIzLjU4NTdDMy42MTk2NSAyMy41ODU3IDIuNzg1MjcgMjIuODc4OSAyLjYyNDU0IDIxLjkxNDVMMi4zNjA4NCAyMC4zMzIzQzIuMzEwMDQgMjAuMDI3NiAyLjU0NTA3IDE5Ljc1MDEgMi44NTQwNCAxOS43NTAxSDMuODY3ODNDNC4xMTIyNSAxOS43NTAxIDQuMzIwODQgMTkuOTI2OCA0LjM2MTAzIDIwLjE2NzlMNC41NjI1MSAyMS4zNzY4QzQuNTgyNiAyMS40OTc0IDQuNjg2OSAyMS41ODU3IDQuODA5MTEgMjEuNTg1N0wyMS4xOTEzIDIxLjU4NTdDMjEuMzEzNSAyMS41ODU3IDIxLjQxNzggMjEuNDk3NCAyMS40Mzc5IDIxLjM3NjhMMjEuNjM5NCAyMC4xNjc5QzIxLjY3OTYgMTkuOTI2OCAyMS44ODgxIDE5Ljc1MDEgMjIuMTMyNiAxOS43NTAxSDIzLjE0NjRDMjMuNDU1MyAxOS43NTAxIDIzLjY5MDQgMjAuMDI3NiAyMy42Mzk2IDIwLjMzMjNMMjMuMzc1OSAyMS45MTQ1WiIgZmlsbD0id2hpdGUiLz4KPC9nPgo8ZGVmcz4KPGZpbHRlciBpZD0iZmlsdGVyMF9kXzI1NzFfMTI5MjMiIHg9IjAiIHk9IjAiIHdpZHRoPSIyNiIgaGVpZ2h0PSIyNiIgZmlsdGVyVW5pdHM9InVzZXJTcGFjZU9uVXNlIiBjb2xvci1pbnRlcnBvbGF0aW9uLWZpbHRlcnM9InNSR0IiPgo8ZmVGbG9vZCBmbG9vZC1vcGFjaXR5PSIwIiByZXN1bHQ9IkJhY2tncm91bmRJbWFnZUZpeCIvPgo8ZmVDb2xvck1hdHJpeCBpbj0iU291cmNlQWxwaGEiIHR5cGU9Im1hdHJpeCIgdmFsdWVzPSIwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAxMjcgMCIgcmVzdWx0PSJoYXJkQWxwaGEiLz4KPGZlT2Zmc2V0IGR5PSIxIi8+CjxmZUdhdXNzaWFuQmx1ciBzdGREZXZpYXRpb249IjAuNSIvPgo8ZmVDb2xvck1hdHJpeCB0eXBlPSJtYXRyaXgiIHZhbHVlcz0iMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMC4xMiAwIi8+CjxmZUJsZW5kIG1vZGU9Im5vcm1hbCIgaW4yPSJCYWNrZ3JvdW5kSW1hZ2VGaXgiIHJlc3VsdD0iZWZmZWN0MV9kcm9wU2hhZG93XzI1NzFfMTI5MjMiLz4KPGZlQmxlbmQgbW9kZT0ibm9ybWFsIiBpbj0iU291cmNlR3JhcGhpYyIgaW4yPSJlZmZlY3QxX2Ryb3BTaGFkb3dfMjU3MV8xMjkyMyIgcmVzdWx0PSJzaGFwZSIvPgo8L2ZpbHRlcj4KPGNsaXBQYXRoIGlkPSJjbGlwMF8yNTcxXzEyOTIzIj4KPHJlY3Qgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0IiBmaWxsPSJ3aGl0ZSIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMSkiLz4KPC9jbGlwUGF0aD4KPC9kZWZzPgo8L3N2Zz4K"
+                                            alt="live" class="jsx-308560071">
+                                        <div class="jsx-308560071 title-tab">
+                                            <div class="jsx-308560071 following">Following</div>
+                                            <div class="jsx-308560071 for-you">For You</div>
+                                        </div><img
+                                            src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjUiIGhlaWdodD0iMjYiIHZpZXdCb3g9IjAgMCAyNSAyNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGcgZmlsdGVyPSJ1cmwoI2ZpbHRlcjBfZF8yNTcxXzEyOTI3KSI+CjxwYXRoIGZpbGwtcnVsZT0iZXZlbm9kZCIgY2xpcC1ydWxlPSJldmVub2RkIiBkPSJNMTAuNjMxNiAzLjVDNi40MTY3NyAzLjUgMyA2LjkxNjc3IDMgMTEuMTMxNkMzIDE1LjM0NjQgNi40MTY3NyAxOC43NjMyIDEwLjYzMTYgMTguNzYzMkMxNC44NDY0IDE4Ljc2MzIgMTguMjYzMiAxNS4zNDY0IDE4LjI2MzIgMTEuMTMxNkMxOC4yNjMyIDYuOTE2NzcgMTQuODQ2NCAzLjUgMTAuNjMxNiAzLjVaTTEgMTEuMTMxNkMxIDUuODEyMiA1LjMxMjIgMS41IDEwLjYzMTYgMS41QzE1Ljk1MSAxLjUgMjAuMjYzMiA1LjgxMjIgMjAuMjYzMiAxMS4xMzE2QzIwLjI2MzIgMTMuNDMxMSAxOS40NTczIDE1LjU0MjQgMTguMTEyNyAxNy4xOTg0TDIyLjk0MTkgMjIuMDI3N0MyMy4wODg0IDIyLjE3NDIgMjMuMDg4NCAyMi40MTE2IDIyLjk0MTkgMjIuNTU4MUwyMi4wNTgxIDIzLjQ0MTlDMjEuOTExNiAyMy41ODg0IDIxLjY3NDIgMjMuNTg4NCAyMS41Mjc3IDIzLjQ0MTlMMTYuNjk4NCAxOC42MTI3QzE1LjA0MjQgMTkuOTU3MyAxMi45MzExIDIwLjc2MzIgMTAuNjMxNiAyMC43NjMyQzUuMzEyMiAyMC43NjMyIDEgMTYuNDUxIDEgMTEuMTMxNloiIGZpbGw9IndoaXRlIi8+CjwvZz4KPGRlZnM+CjxmaWx0ZXIgaWQ9ImZpbHRlcjBfZF8yNTcxXzEyOTI3IiB4PSItMSIgeT0iMCIgd2lkdGg9IjI2IiBoZWlnaHQ9IjI2IiBmaWx0ZXJVbml0cz0idXNlclNwYWNlT25Vc2UiIGNvbG9yLWludGVycG9sYXRpb24tZmlsdGVycz0ic1JHQiI+CjxmZUZsb29kIGZsb29kLW9wYWNpdHk9IjAiIHJlc3VsdD0iQmFja2dyb3VuZEltYWdlRml4Ii8+CjxmZUNvbG9yTWF0cml4IGluPSJTb3VyY2VBbHBoYSIgdHlwZT0ibWF0cml4IiB2YWx1ZXM9IjAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDEyNyAwIiByZXN1bHQ9ImhhcmRBbHBoYSIvPgo8ZmVPZmZzZXQgZHk9IjEiLz4KPGZlR2F1c3NpYW5CbHVyIHN0ZERldmlhdGlvbj0iMC41Ii8+CjxmZUNvbG9yTWF0cml4IHR5cGU9Im1hdHJpeCIgdmFsdWVzPSIwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwLjEyIDAiLz4KPGZlQmxlbmQgbW9kZT0ibm9ybWFsIiBpbjI9IkJhY2tncm91bmRJbWFnZUZpeCIgcmVzdWx0PSJlZmZlY3QxX2Ryb3BTaGFkb3dfMjU3MV8xMjkyNyIvPgo8ZmVCbGVuZCBtb2RlPSJub3JtYWwiIGluPSJTb3VyY2VHcmFwaGljIiBpbjI9ImVmZmVjdDFfZHJvcFNoYWRvd18yNTcxXzEyOTI3IiByZXN1bHQ9InNoYXBlIi8+CjwvZmlsdGVyPgo8L2RlZnM+Cjwvc3ZnPgo="
+                                            alt="search" class="jsx-308560071">
+                                    </div>
+                                    <div class="jsx-308560071 video-overlay-container">
+                                        <div class="jsx-308560071 sidebar-metadata-container">
+                                            <div class="jsx-308560071 overlay-sidebar">
+                                                <div class="jsx-308560071 avatar-container"><img
+                                                        src="https://p16-sign-sg.tiktokcdn.com/aweme/720x720/tos-alisg-avt-0068/7100595017613312001.jpeg?x-expires=1697907600&amp;x-signature=75920uJFty69BqJ1lXwFGZG%2FUsg%3D"
+                                                        class="jsx-308560071 avatar "></div>
+                                                <div class="jsx-308560071 music-bar-icon"><img
+                                                        src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjkiIGhlaWdodD0iMTI1IiB2aWV3Qm94PSIwIDAgMjkgMTI1IiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8ZyBjbGlwLXBhdGg9InVybCgjY2xpcDApIj4KPGcgZmlsdGVyPSJ1cmwoI2ZpbHRlcjBfZCkiPgo8cGF0aCBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZD0iTTkuNzAzMTMgMy41ODI2NEMxMy4yMDMxIDMuNTgyNjQgMTQuOTUzMSA1LjkxNTk3IDE0Ljk1MzEgNS45MTU5N0MxNC45NTMxIDUuOTE1OTcgMTYuNzAzMSAzLjU4MjY0IDIwLjIwMzEgMy41ODI2NEMyNC4yODY1IDMuNTgyNjQgMjcuMjAzMSA2Ljc5MDk2IDI3LjIwMzEgMTAuODc0M0MyNy4yMDMxIDE1LjU0MSAyMy4zODk0IDE5LjcwMSAxOS45MTE1IDIyLjgzMjZDMTcuNzY0MyAyNC43NjYxIDE2LjExOTggMjYuMDQxIDE0Ljk1MzEgMjYuMDQxQzEzLjc4NjUgMjYuMDQxIDEyLjA5NTQgMjQuNzU2NCA5Ljk5NDc5IDIyLjgzMjZDNi41NzU4NiAxOS43MDE2IDIuNzAzMTIgMTUuNTQxIDIuNzAzMTIgMTAuODc0M0MyLjcwMzEyIDYuNzkwOTYgNS42MTk3OSAzLjU4MjY0IDkuNzAzMTMgMy41ODI2NFoiIGZpbGw9IndoaXRlIiBmaWxsLW9wYWNpdHk9IjAuOSIvPgo8L2c+CjxwYXRoIGZpbGwtcnVsZT0iZXZlbm9kZCIgY2xpcC1ydWxlPSJldmVub2RkIiBkPSJNMy43NTU4NiAxNS4xOTExQzUuMTQwOTggMTguMTAzOSA3LjY3Mjc3IDIwLjcwNTggOS45OTUxNiAyMi44MzI3QzEyLjA5NTggMjQuNzU2NCAxMy43ODY4IDI2LjA0MSAxNC45NTM1IDI2LjA0MUMxNi4xMjAyIDI2LjA0MSAxNy43NjQ2IDI0Ljc2NjEgMTkuOTExOCAyMi44MzI3QzIzLjM4OTggMTkuNzAxIDI3LjIwMzUgMTUuNTQxIDI3LjIwMzUgMTAuODc0M0MyNy4yMDM1IDEwLjc3MjMgMjcuMjAxNyAxMC42NzA4IDI3LjE5ODEgMTAuNTY5OEMyNC45NDg4IDE2Ljg5NjQgMTYuOTEyIDIyLjU0MSAxNC42NjE4IDIyLjU0MUMxMi45ODUgMjIuNTQxIDcuNDk5NzggMTkuNDA2NSAzLjc1NTg2IDE1LjE5MTFaIiBmaWxsPSJibGFjayIgZmlsbC1vcGFjaXR5PSIwLjAzIi8+CjwvZz4KPGcgY2xpcC1wYXRoPSJ1cmwoI2NsaXAxKSI+CjxnIG9wYWNpdHk9IjAuOSIgZmlsdGVyPSJ1cmwoI2ZpbHRlcjFfZCkiPgo8cGF0aCBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZD0iTTIzLjQwODEgNjkuNTU2OEMyNS44MDMxIDY3LjE1NzYgMjcuMjAzMSA2NC42NTg3IDI3LjIwMzEgNjEuNzQ4OUMyNy4yMDMxIDU1Ljg0NDIgMjEuNzk3NCA1MS4wNTc2IDE1LjEyODEgNTEuMDU3NkM4LjQ1ODkzIDUxLjA1NzYgMy4wNTMxMyA1NS44NDQyIDMuMDUzMTMgNjEuNzQ5MUMzLjA1MzEzIDY3LjY1NCA4LjYzMzgzIDcxLjcwNzYgMTUuMzAzMSA3MS43MDc2VjcyLjcwNjdDMTUuMzAzMSA3My43NzAzIDE2LjQwNzMgNzQuNDQ5NCAxNy4zMzE4IDczLjkyMzVDMTkuMTAzIDcyLjkxNiAyMS42NTcyIDcxLjMxMDcgMjMuNDA4MSA2OS41NTY4Wk05LjI2MjUgNjAuMzA3MkMxMC4yMTU2IDYwLjMwNzIgMTAuOTg4MyA2MS4wNzQzIDEwLjk4ODMgNjIuMDE5MUMxMC45ODgzIDYyLjk2NTkgMTAuMjE1NiA2My43MzI5IDkuMjYyNSA2My43MzI5QzguMzEwOTcgNjMuNzMyOSA3LjUzODI4IDYyLjk2NTkgNy41MzgyOCA2Mi4wMTkxQzcuNTM4MjggNjEuMDc0MyA4LjMxMDk3IDYwLjMwNzIgOS4yNjI1IDYwLjMwNzJaTTE2Ljg1MTYgNjIuMDE5MkMxNi44NTE2IDYxLjA3NDMgMTYuMDc5MiA2MC4zMDcyIDE1LjEyNjUgNjAuMzA3MkMxNC4xNzM5IDYwLjMwNzIgMTMuNDAxNiA2MS4wNzQzIDEzLjQwMTYgNjIuMDE5MkMxMy40MDE2IDYyLjk2NTkgMTQuMTc0IDYzLjczMyAxNS4xMjY1IDYzLjczM0MxNi4wNzkyIDYzLjczMyAxNi44NTE2IDYyLjk2NTkgMTYuODUxNiA2Mi4wMTkyWk0yMC45OTMzIDYwLjMwNzJDMjEuOTQ2MiA2MC4zMDcyIDIyLjcxNzggNjEuMDc0MyAyMi43MTc4IDYyLjAxOTFDMjIuNzE3OCA2Mi45NjU5IDIxLjk0NjMgNjMuNzMyOSAyMC45OTMzIDYzLjczMjlDMjAuMDQwMyA2My43MzI5IDE5LjI2NzcgNjIuOTY1OSAxOS4yNjc4IDYyLjAxOTFDMTkuMjY3OCA2MS4wNzQzIDIwLjA0MDMgNjAuMzA3MiAyMC45OTMzIDYwLjMwNzJaIiBmaWxsPSJ3aGl0ZSIvPgo8L2c+CjxwYXRoIG9wYWNpdHk9IjAuMSIgZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik0xNS4zMDM5IDcxLjcwNzdDMTUuMzAzOSA3MS43MDc3IDIxLjk5MjkgNzEuMTkwOCAyNC43ODg5IDY3LjYxMDZDMjEuOTkyOSA3MS41NDg4IDE5LjE5NjkgNzMuNjk2OSAxNi43NTAzIDc0LjQxM0MxNC4zMDM4IDc1LjEyOSAxNS4zMDM5IDcxLjcwNzcgMTUuMzAzOSA3MS43MDc3WiIgZmlsbD0idXJsKCNwYWludDBfbGluZWFyKSIvPgo8L2c+CjxnIG9wYWNpdHk9IjAuOSIgZmlsdGVyPSJ1cmwoI2ZpbHRlcjJfZCkiPgo8cGF0aCBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZD0iTTE2LjAwMjMgMTA0LjM3MUMxNi4wMDIzIDEwMy4xMDUgMTcuNTE4NiAxMDIuNDU1IDE4LjQzNTQgMTAzLjMyOEwyNC42MDY5IDEwOS4yMDVDMjUuODM0NyAxMTAuMzc1IDI1Ljc5MTggMTEyLjM0NiAyNC41MTQzIDExMy40NjFMMTguMzg5MSAxMTguODA2QzE3LjQ1NzYgMTE5LjYxOCAxNi4wMDIzIDExOC45NTcgMTYuMDAyMyAxMTcuNzIxVjExNS44MzNDMTYuMDAyMyAxMTUuODMzIDcuMjkyOTQgMTE0LjI2NCA0LjQ5OTE5IDExOS4zOTJDNC4yMzg3MiAxMTkuODcgMy4yMjM0NSAxMjAuMDM4IDMuNDI5ODIgMTE3LjY1MkM0LjI5MjgyIDExMy4yNjIgNi4wNTY1NCAxMDYuNDA4IDE2LjAwMjMgMTA2LjQwOFYxMDQuMzcxWiIgZmlsbD0id2hpdGUiLz4KPC9nPgo8cGF0aCBvcGFjaXR5PSIwLjAzIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZD0iTTIyLjAwNiAxMDYuNzU4TDIzLjI3NDEgMTA5LjI5NEMyMy43NjM4IDExMC4yNzMgMjMuNTI4NSAxMTEuNDYgMjIuNzAyMyAxMTIuMTc4TDE2LjA1NiAxMTcuOTU4QzE2LjA1NiAxMTcuOTU4IDE1LjcwNiAxMTkuNzA4IDE2Ljc1NiAxMTkuNzA4QzE3LjgwNiAxMTkuNzA4IDI2LjIwNiAxMTIuMDA4IDI2LjIwNiAxMTIuMDA4QzI2LjIwNiAxMTIuMDA4IDI2LjU1NiAxMTAuOTU4IDI1LjUwNiAxMDkuOTA4QzI0LjQ1NiAxMDguODU4IDIyLjAwNiAxMDYuNzU4IDIyLjAwNiAxMDYuNzU4WiIgZmlsbD0iIzE2MTgyMyIvPgo8cGF0aCBvcGFjaXR5PSIwLjA5IiBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZD0iTTE2LjAwMjMgMTA2Ljc4VjExNS44OEMxNi4wMDIzIDExNS44OCA3LjY2NzQ3IDExNC43MDYgNS4wNTcwNSAxMTguNjhDMi41NDUyNiAxMjIuNTA1IDIuNzc1OTUgMTE0LjM2MSA2LjU1NzI4IDExMC4zMDZDMTAuMzM4NiAxMDYuMjUxIDE2LjAwMjMgMTA2Ljc4IDE2LjAwMjMgMTA2Ljc4WiIgZmlsbD0idXJsKCNwYWludDFfcmFkaWFsKSIvPgo8ZGVmcz4KPGZpbHRlciBpZD0iZmlsdGVyMF9kIiB4PSIwLjMwMzEyNSIgeT0iMi4zODI2NCIgd2lkdGg9IjI5LjMiIGhlaWdodD0iMjcuMjU4MyIgZmlsdGVyVW5pdHM9InVzZXJTcGFjZU9uVXNlIiBjb2xvci1pbnRlcnBvbGF0aW9uLWZpbHRlcnM9InNSR0IiPgo8ZmVGbG9vZCBmbG9vZC1vcGFjaXR5PSIwIiByZXN1bHQ9IkJhY2tncm91bmRJbWFnZUZpeCIvPgo8ZmVDb2xvck1hdHJpeCBpbj0iU291cmNlQWxwaGEiIHR5cGU9Im1hdHJpeCIgdmFsdWVzPSIwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAxMjcgMCIgcmVzdWx0PSJoYXJkQWxwaGEiLz4KPGZlT2Zmc2V0IGR5PSIxLjIiLz4KPGZlR2F1c3NpYW5CbHVyIHN0ZERldmlhdGlvbj0iMS4yIi8+CjxmZUNvbG9yTWF0cml4IHR5cGU9Im1hdHJpeCIgdmFsdWVzPSIwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwLjE1IDAiLz4KPGZlQmxlbmQgbW9kZT0ibm9ybWFsIiBpbjI9IkJhY2tncm91bmRJbWFnZUZpeCIgcmVzdWx0PSJlZmZlY3QxX2Ryb3BTaGFkb3ciLz4KPGZlQmxlbmQgbW9kZT0ibm9ybWFsIiBpbj0iU291cmNlR3JhcGhpYyIgaW4yPSJlZmZlY3QxX2Ryb3BTaGFkb3ciIHJlc3VsdD0ic2hhcGUiLz4KPC9maWx0ZXI+CjxmaWx0ZXIgaWQ9ImZpbHRlcjFfZCIgeD0iMC42NTI3MzQiIHk9IjQ5Ljg1NzYiIHdpZHRoPSIyOC45NSIgaGVpZ2h0PSIyNy44NDc3IiBmaWx0ZXJVbml0cz0idXNlclNwYWNlT25Vc2UiIGNvbG9yLWludGVycG9sYXRpb24tZmlsdGVycz0ic1JHQiI+CjxmZUZsb29kIGZsb29kLW9wYWNpdHk9IjAiIHJlc3VsdD0iQmFja2dyb3VuZEltYWdlRml4Ii8+CjxmZUNvbG9yTWF0cml4IGluPSJTb3VyY2VBbHBoYSIgdHlwZT0ibWF0cml4IiB2YWx1ZXM9IjAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDEyNyAwIiByZXN1bHQ9ImhhcmRBbHBoYSIvPgo8ZmVPZmZzZXQgZHk9IjEuMiIvPgo8ZmVHYXVzc2lhbkJsdXIgc3RkRGV2aWF0aW9uPSIxLjIiLz4KPGZlQ29sb3JNYXRyaXggdHlwZT0ibWF0cml4IiB2YWx1ZXM9IjAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAuMTUgMCIvPgo8ZmVCbGVuZCBtb2RlPSJub3JtYWwiIGluMj0iQmFja2dyb3VuZEltYWdlRml4IiByZXN1bHQ9ImVmZmVjdDFfZHJvcFNoYWRvdyIvPgo8ZmVCbGVuZCBtb2RlPSJub3JtYWwiIGluPSJTb3VyY2VHcmFwaGljIiBpbjI9ImVmZmVjdDFfZHJvcFNoYWRvdyIgcmVzdWx0PSJzaGFwZSIvPgo8L2ZpbHRlcj4KPGZpbHRlciBpZD0iZmlsdGVyMl9kIiB4PSIxLjAwMjM0IiB5PSIxMDEuNzI4IiB3aWR0aD0iMjYuODk4NCIgaGVpZ2h0PSIyMS41NTYiIGZpbHRlclVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgY29sb3ItaW50ZXJwb2xhdGlvbi1maWx0ZXJzPSJzUkdCIj4KPGZlRmxvb2QgZmxvb2Qtb3BhY2l0eT0iMCIgcmVzdWx0PSJCYWNrZ3JvdW5kSW1hZ2VGaXgiLz4KPGZlQ29sb3JNYXRyaXggaW49IlNvdXJjZUFscGhhIiB0eXBlPSJtYXRyaXgiIHZhbHVlcz0iMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMTI3IDAiIHJlc3VsdD0iaGFyZEFscGhhIi8+CjxmZU9mZnNldCBkeT0iMS4yIi8+CjxmZUdhdXNzaWFuQmx1ciBzdGREZXZpYXRpb249IjEuMiIvPgo8ZmVDb2xvck1hdHJpeCB0eXBlPSJtYXRyaXgiIHZhbHVlcz0iMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMC4xNSAwIi8+CjxmZUJsZW5kIG1vZGU9Im5vcm1hbCIgaW4yPSJCYWNrZ3JvdW5kSW1hZ2VGaXgiIHJlc3VsdD0iZWZmZWN0MV9kcm9wU2hhZG93Ii8+CjxmZUJsZW5kIG1vZGU9Im5vcm1hbCIgaW49IlNvdXJjZUdyYXBoaWMiIGluMj0iZWZmZWN0MV9kcm9wU2hhZG93IiByZXN1bHQ9InNoYXBlIi8+CjwvZmlsdGVyPgo8bGluZWFyR3JhZGllbnQgaWQ9InBhaW50MF9saW5lYXIiIHgxPSIxMi44NTk5IiB5MT0iNzAuOTMxOCIgeDI9IjEzLjk2NjkiIHkyPSI3NC40MTA2IiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+CjxzdG9wLz4KPHN0b3Agb2Zmc2V0PSIxIiBzdG9wLW9wYWNpdHk9IjAuMDEiLz4KPC9saW5lYXJHcmFkaWVudD4KPHJhZGlhbEdyYWRpZW50IGlkPSJwYWludDFfcmFkaWFsIiBjeD0iMCIgY3k9IjAiIHI9IjEiIGdyYWRpZW50VW5pdHM9InVzZXJTcGFjZU9uVXNlIiBncmFkaWVudFRyYW5zZm9ybT0idHJhbnNsYXRlKDE2LjMwODIgMTIxLjc3Nikgcm90YXRlKC0xMTMuMDQ2KSBzY2FsZSgxMS4xMzkxIDEwLjk0OTgpIj4KPHN0b3AvPgo8c3RvcCBvZmZzZXQ9IjAuOTk1NDk2IiBzdG9wLW9wYWNpdHk9IjAuMDEiLz4KPHN0b3Agb2Zmc2V0PSIxIiBzdG9wLW9wYWNpdHk9IjAuMDEiLz4KPC9yYWRpYWxHcmFkaWVudD4KPGNsaXBQYXRoIGlkPSJjbGlwMCI+CjxyZWN0IHdpZHRoPSIyOCIgaGVpZ2h0PSIyOCIgZmlsbD0id2hpdGUiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDAuOTUzMTI1IDAuOTU3NjQyKSIvPgo8L2NsaXBQYXRoPgo8Y2xpcFBhdGggaWQ9ImNsaXAxIj4KPHJlY3Qgd2lkdGg9IjI4IiBoZWlnaHQ9IjI4IiBmaWxsPSJ3aGl0ZSIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMC45NTMxMjUgNDguOTU3NikiLz4KPC9jbGlwUGF0aD4KPC9kZWZzPgo8L3N2Zz4K"
+                                                        class="jsx-308560071"></div>
+                                                <div class="jsx-308560071 album-container">
+                                                    <div class="jsx-308560071 album"><img
+                                                            src="https://p16-sign-sg.tiktokcdn.com/aweme/720x720/tos-alisg-avt-0068/7100595017613312001.jpeg?x-expires=1697907600&amp;x-signature=75920uJFty69BqJ1lXwFGZG%2FUsg%3D"
+                                                            class="jsx-308560071 avatar rotate"></div>
+                                                    <div class="jsx-308560071 music-symbols">
+                                                        <div class="jsx-308560071 music-symbol1"></div>
+                                                        <div class="jsx-308560071 music-symbol2"></div>
+                                                        <div class="jsx-308560071 music-symbol3"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="jsx-308560071 meta-data">
+                                                <div class="jsx-308560071 username">@Hùng Nguyễn23652</div>
+                                                <div class="jsx-308560071 caption">Download (1)</div>
+                                                <div class="jsx-308560071 sound-container">
+                                                    <div class="jsx-308560071 music-icon"></div>
+                                                    <div class="jsx-308560071 sound">
+                                                        <div class="jsx-308560071 marquee">
+                                                            <p class="jsx-308560071">Original sound - Hùng
+                                                                Nguyễn23652<span class="jsx-308560071">&nbsp;</span></p>
+                                                            <p class="jsx-308560071">Original sound - Hùng
+                                                                Nguyễn23652<span class="jsx-308560071">&nbsp;</span></p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="jsx-3536812553 change-video-btn card">
+                            <div class="jsx-3536812553 file"><img
+                                    src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik03Ljk5OTM1IDAuNjY2NjI2QzUuOTc0NDkgMC42NjY2MjYgNC4xNDAyNCAxLjQ4ODE3IDIuODEzOSAyLjgxNDUxQzEuNDg3NTYgNC4xNDA4NSAwLjY2NjAxNiA1Ljk3NTEgMC42NjYwMTYgNy45OTk5NkMwLjY2NjAxNiAxMC4wMjQ4IDEuNDg3NTYgMTEuODU5MSAyLjgxMzkgMTMuMTg1NEM0LjE0MDI0IDE0LjUxMTggNS45NzQ0OSAxNS4zMzMzIDcuOTk5MzUgMTUuMzMzM0MxMC4wMjQyIDE1LjMzMzMgMTEuODU4NSAxNC41MTE4IDEzLjE4NDggMTMuMTg1NEMxNC41MTExIDExLjg1OTEgMTUuMzMyNyAxMC4wMjQ4IDE1LjMzMjcgNy45OTk5NkMxNS4zMzI3IDUuOTc1MSAxNC41MTExIDQuMTQwODUgMTMuMTg0OCAyLjgxNDUxQzExLjg1ODUgMS40ODgxNyAxMC4wMjQyIDAuNjY2NjI2IDcuOTk5MzUgMC42NjY2MjZaTTMuNzU2NzEgMy43NTczMkM0Ljg0MzIyIDIuNjcwOCA2LjM0MjMxIDEuOTk5OTYgNy45OTkzNSAxLjk5OTk2QzkuNjU2MzkgMS45OTk5NiAxMS4xNTU1IDIuNjcwOCAxMi4yNDIgMy43NTczMkMxMy4zMjg1IDQuODQzODMgMTMuOTk5MyA2LjM0MjkyIDEzLjk5OTMgNy45OTk5NkMxMy45OTkzIDkuNjU3IDEzLjMyODUgMTEuMTU2MSAxMi4yNDIgMTIuMjQyNkMxMS4xNTU1IDEzLjMyOTEgOS42NTYzOSAxNCA3Ljk5OTM1IDE0QzYuMzQyMzEgMTQgNC44NDMyMiAxMy4zMjkxIDMuNzU2NzEgMTIuMjQyNkMyLjY3MDE5IDExLjE1NjEgMS45OTkzNSA5LjY1NyAxLjk5OTM1IDcuOTk5OTZDMS45OTkzNSA2LjM0MjkyIDIuNjcwMTkgNC44NDM4MyAzLjc1NjcxIDMuNzU3MzJaTTEwLjk0ODQgNi43MTQ5NkMxMS4wMTYzIDYuNjQ2MTUgMTEuMDE2MyA2LjUzNDU5IDEwLjk0ODQgNi40NjU3OEwxMC4yMTAyIDUuNzE4MjNDMTAuMTQyMyA1LjY0OTQyIDEwLjAzMjEgNS42NDk0MiA5Ljk2NDE3IDUuNzE4MjNMNy4zMDM0IDguNDEyODJMNi4wMzQ1MyA3LjEyNzgyQzUuOTY2NTggNy4wNTkwMSA1Ljg1NjQyIDcuMDU5MDEgNS43ODg0NyA3LjEyNzgyTDUuMDUwMzEgNy44NzUzN0M0Ljk4MjM2IDcuOTQ0MTggNC45ODIzNiA4LjA1NTc0IDUuMDUwMzEgOC4xMjQ1NUw3LjE4MDM3IDEwLjI4MTdDNy4yNDgzMiAxMC4zNTA1IDcuMzU4NDggMTAuMzUwNSA3LjQyNjQzIDEwLjI4MTdMMTAuOTQ4NCA2LjcxNDk2WiIgZmlsbD0iIzE2MTgyMyIgZmlsbC1vcGFjaXR5PSIwLjc1Ii8+Cjwvc3ZnPgo="
+                                    class="jsx-3536812553">
+                                <div title="Download (1).mp4" class="jsx-3536812553 file-text">Download (1).mp4</div>
+                            </div><button type="button" class="jsx-3536812553 btn">Change video</button>
+                        </div>
+                    </div>
+                    <div class="jsx-3366794632 form-v2">
+                        <div class="jsx-3366794632 caption-wrap-v2">
+                            <div class="jsx-1768246377 container">
+                                <div class="jsx-1768246377 ">
+                                    <div class="jsx-1768246377 text-container"><span
+                                            class="css-wpwnoe">Caption</span><span
+                                            class="jsx-1768246377 require-font"><span class="jsx-1768246377 ">0 </span>/
+                                            X</span></div>
+                                    <div class="jsx-1768246377 margin-t-4">
+                                        <div tabindex="0"
+                                            class="jsx-4056857548 jsx-3119853737 jsx-3734900869 jsx-403562581 container-v2">
+                                            <div aria-label="Caption"
+                                                class="jsx-4056857548 jsx-3119853737 jsx-3734900869 jsx-403562581 editor">
+                                                <div role="textbox" aria-multiline="true"
+                                                    class="jsx-4056857548 jsx-3119853737 jsx-3734900869 jsx-403562581">
+                                                    <div class="DraftEditor-root DraftEditor-alignLeft">
+                                                        <div class="DraftEditor-editorContainer">
+                                                            <div aria-autocomplete="list" aria-expanded="false"
+                                                                class="notranslate public-DraftEditor-content"
+                                                                contenteditable="true" role="combobox"
+                                                                spellcheck="false"
+                                                                style="outline: none; user-select: text; white-space: pre-wrap; overflow-wrap: break-word;">
+                                                                <!-- <div data-contents="true">
+                                                                    <div class="" data-block="true" data-editor="aeim3"
+                                                                        data-offset-key="bjmma-0-0">
+                                                                        <div data-offset-key="bjmma-0-0"
+                                                                            class="public-DraftStyleDefault-block public-DraftStyleDefault-ltr">
+                                                                            <span data-offset-key="bjmma-0-0"><br
+                                                                                    data-text="true"></span>
+                                                                        </div>
+                                                                    </div>
+                                                                </div> -->
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div><button type="button" aria-label="@mention"
+                                                class="jsx-4056857548 jsx-3119853737 jsx-3734900869 jsx-403562581 icon-style at"><svg
+                                                    fill="currentColor" font-size="18" viewBox="0 0 48 48"
+                                                    xmlns="http://www.w3.org/2000/svg" width="1em" height="1em">
+                                                    <path
+                                                        d="M24.28 44.54c-4.32 0-8.1-.87-11.33-2.6a18.05 18.05 0 0 1-7.49-7.2A21.94 21.94 0 0 1 2.87 23.9c0-4.04.87-7.57 2.6-10.61a18.21 18.21 0 0 1 7.43-7.15c3.2-1.7 6.88-2.55 11.04-2.55 4.04 0 7.59.77 10.66 2.3 3.1 1.51 5.5 3.67 7.2 6.49a18.19 18.19 0 0 1 2.6 9.79c0 3.52-.82 6.4-2.46 8.64-1.63 2.2-3.93 3.31-6.9 3.31-1.86 0-3.34-.4-4.42-1.2a4.6 4.6 0 0 1-1.73-3.7l.67.3a6.42 6.42 0 0 1-2.64 3.4 8.28 8.28 0 0 1-4.56 1.2 8.52 8.52 0 0 1-7.97-4.75 11.24 11.24 0 0 1-1.15-5.19c0-1.95.37-3.66 1.1-5.13a8.52 8.52 0 0 1 7.92-4.75c1.8 0 3.3.41 4.52 1.24 1.24.8 2.1 1.94 2.54 3.41l-.67.82v-4.04a1 1 0 0 1 1-1h2.27a1 1 0 0 1 1 1v12.05c0 .87.22 1.5.67 1.92.48.39 1.12.58 1.92.58 1.38 0 2.45-.75 3.22-2.26.8-1.53 1.2-3.44 1.2-5.7 0-3.05-.67-5.69-2.02-7.93a12.98 12.98 0 0 0-5.52-5.13 17.94 17.94 0 0 0-8.3-1.83c-3.3 0-6.23.69-8.79 2.07a14.82 14.82 0 0 0-5.9 5.76 17.02 17.02 0 0 0-2.11 8.59c0 3.39.7 6.35 2.11 8.88 1.4 2.5 3.4 4.41 6 5.76a19.66 19.66 0 0 0 9.17 2.01h10.09a1 1 0 0 1 1 1v2.04a1 1 0 0 1-1 1H24.28Zm-1-14.12c1.72 0 3.08-.56 4.07-1.68 1.03-1.12 1.54-2.64 1.54-4.56 0-1.92-.51-3.44-1.54-4.56a5.17 5.17 0 0 0-4.08-1.68c-1.7 0-3.05.56-4.08 1.68-.99 1.12-1.49 2.64-1.49 4.56 0 1.92.5 3.44 1.5 4.56a5.26 5.26 0 0 0 4.07 1.68Z">
+                                                    </path>
+                                                </svg></button><button type="button" aria-label="Hashtag"
+                                                class="jsx-4056857548 jsx-3119853737 jsx-3734900869 jsx-403562581 icon-style hash"><svg
+                                                    fill="currentColor" font-size="20" viewBox="0 0 48 48"
+                                                    xmlns="http://www.w3.org/2000/svg" width="1em" height="1em">
+                                                    <path fill-rule="evenodd" clip-rule="evenodd"
+                                                        d="m17.74 15.5.68-6.6a1 1 0 0 1 1-.9h.97a1 1 0 0 1 1 1.1l-.63 6.4h7.98l.68-6.6a1 1 0 0 1 1-.9h.97a1 1 0 0 1 1 1.1l-.63 6.4H37a1 1 0 0 1 1 1v1a1 1 0 0 1-1 1h-5.54l-.8 8H36a1 1 0 0 1 1 1v1a1 1 0 0 1-1 1h-5.64l-.78 7.6a1 1 0 0 1-1 .9h-.97a1 1 0 0 1-1-1.1l.73-7.4h-7.98l-.78 7.6a1 1 0 0 1-1 .9h-.97a1 1 0 0 1-1-1.1l.73-7.4H11a1 1 0 0 1-1-1v-1a1 1 0 0 1 1-1h5.64l.8-8H12a1 1 0 0 1-1-1v-1a1 1 0 0 1 1-1h5.74Zm2.72 3-.8 8h7.98l.8-8h-7.98Z">
+                                                    </path>
+                                                </svg></button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="jsx-1768246377 container-at hide-display"><span
+                                        class="jsx-1768246377 title-font-v2">@Friends</span>
+                                    <div class="jsx-1768246377 margin-t-4">
+                                        <div class="jsx-2893442251">
+                                            <div tabindex="0" class="jsx-2893442251 input-container-v2"><img
+                                                    src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik0xMS4yNSAxNi43NUMxNC4yODc2IDE2Ljc1IDE2Ljc1IDE0LjI4NzYgMTYuNzUgMTEuMjVDMTYuNzUgOC4yMTI0MyAxNC4yODc2IDUuNzUgMTEuMjUgNS43NUM4LjIxMjQzIDUuNzUgNS43NSA4LjIxMjQzIDUuNzUgMTEuMjVDNS43NSAxNC4yODc2IDguMjEyNDMgMTYuNzUgMTEuMjUgMTYuNzVaIiBzdHJva2U9IiMxNjE4MjMiIHN0cm9rZS13aWR0aD0iMS41Ii8+CjxwYXRoIGQ9Ik0xNC45Njg4IDE2LjAzMDRMMTYuMDI5NCAxNC45Njk3TDE5LjM3NTkgMTguMzE2MkMxOS41NzExIDE4LjUxMTQgMTkuNTcxMSAxOC44MjggMTkuMzc1OSAxOS4wMjMzTDE5LjAyMjMgMTkuMzc2OEMxOC44MjcxIDE5LjU3MjEgMTguNTEwNSAxOS41NzIxIDE4LjMxNTIgMTkuMzc2OEwxNC45Njg4IDE2LjAzMDRaIiBmaWxsPSIjMTYxODIzIi8+Cjwvc3ZnPgo="
+                                                    class="jsx-2893442251 search-icon"><input
+                                                    class="jsx-2893442251 search-friends" value=""><img
+                                                    src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjYiIGhlaWdodD0iMjYiIHZpZXdCb3g9IjAgMCAyNiAyNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik0xOS43MTc1IDcuNjk2MDlDMTkuOTEyOCA3LjUwMDgzIDE5LjkxMjggNy4xODQyNSAxOS43MTc1IDYuOTg4OThMMTkuMDEwNCA2LjI4MTg4QzE4LjgxNTEgNi4wODY2MiAxOC40OTg1IDYuMDg2NjIgMTguMzAzMyA2LjI4MTg4TDEzIDExLjU4NTJMNy42OTY2OSA2LjI4MTkxQzcuNTAxNDIgNi4wODY2NCA3LjE4NDg0IDYuMDg2NjQgNi45ODk1OCA2LjI4MTkxTDYuMjgyNDcgNi45ODkwMUM2LjA4NzIxIDcuMTg0MjcgNi4wODcyMSA3LjUwMDg2IDYuMjgyNDcgNy42OTYxMkwxMS41ODU4IDEyLjk5OTRMNi4yODI0NyAxOC4zMDI3QzYuMDg3MjEgMTguNDk4IDYuMDg3MjEgMTguODE0NSA2LjI4MjQ3IDE5LjAwOThMNi45ODk1OCAxOS43MTY5QzcuMTg0ODQgMTkuOTEyMiA3LjUwMTQyIDE5LjkxMjIgNy42OTY2OCAxOS43MTY5TDEzIDE0LjQxMzZMMTguMzAzMyAxOS43MTY5QzE4LjQ5ODUgMTkuOTEyMiAxOC44MTUxIDE5LjkxMjIgMTkuMDEwNCAxOS43MTY5TDE5LjcxNzUgMTkuMDA5OEMxOS45MTI4IDE4LjgxNDYgMTkuOTEyOCAxOC40OTggMTkuNzE3NSAxOC4zMDI3TDE0LjQxNDIgMTIuOTk5NEwxOS43MTc1IDcuNjk2MDlaIiBmaWxsPSIjMTYxODIzIi8+Cjwvc3ZnPgo="
+                                                    class="jsx-2893442251 close-icon"></div>
+                                            <div class="jsx-2893442251 hidden">
+                                                <div class="scroll-parent">
+                                                    <div>
+                                                        <div class="jsx-4101445897 container">
+                                                            <div class="jsx-4101445897 user-col full-width">
+                                                                <div class="jsx-4101445897 title">Following</div>
+                                                                <div class="jsx-2459045678 container focused"><img
+                                                                        src="https://p16-sign-va.tiktokcdn.com/tos-maliva-avt-0068/1619d801cacb8f56a4a26b77c5551463~c5_100x100.jpeg?x-expires=1697785200&amp;x-signature=L%2FD6q2uTnEsVlVygu3n%2BtBe0TG8%3D"
+                                                                        class="jsx-2459045678 avatar">
+                                                                    <div class="jsx-2459045678 user-info">
+                                                                        <div class="jsx-2459045678 name">Gia Huy</div>
+                                                                        <div class="jsx-2459045678 user-id">@huygia19503
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="loader"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="jsx-3366794632 margin-t-24 margin-b-4"><span class="css-1rssc4n">Cover</span>
+                            <div aria-live="polite" aria-atomic="true"
+                                class="jsx-4041099907 jsx-1469740349 container-v2">
+                                <div class="jsx-4041099907 jsx-1469740349 bg-container-v2 empty">
+                                    <div class="jsx-4041099907 jsx-1469740349 candidate-v2 empty"></div>
+                                </div>
+                                <div class="jsx-4041099907 jsx-1469740349 chosen-v2 empty"
+                                    style="transform: translate3d(77.2px, 1px, 0px) scaleX(1.1) scaleY(1.1);">
+                                    <div class="jsx-4041099907 jsx-1469740349"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="jsx-1548554119 margin-t-24">
+                            <div class="jsx-1548554119 title-v2"><span class="css-1rssc4n">Who can watch this
+                                    video</span></div>
+                            <div class="tiktok-select" style="width: 300px; height: 36px;">
+                                <div class="tiktok-select-selector"
+                                    style="width: 300px; height: 36px; border: 1px solid rgba(22, 24, 35, 0.12); background: rgb(255, 255, 255); font-family: var(--tux-fontFamilyParagraph);">
+                                    <div class="tiktok-select-selector-left" style="max-width: 90%;">
+                                        <div class="tiktok-select-selector-prefix-icon" style="flex-shrink: 0;"></div>
+                                        <span class="tiktok-select-selector-text tiktok-select-selector-text-checked"
+                                            style="overflow: hidden; text-overflow: ellipsis;">Public</span>
+                                    </div>
+                                    <div class="tiktok-select-selector-postfix-icon"
+                                        style="transform: rotate(0deg); transition: all 0.5s cubic-bezier(0.075, 0.82, 0.165, 1) 0s; display: flex; justify-content: center; align-items: center; transform-origin: center center; flex-shrink: 0;">
+                                        <svg width="14" height="14" viewBox="0 0 48 48" fill="currentColor"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                                d="M25.5187 35.2284C24.7205 36.1596 23.2798 36.1596 22.4816 35.2284L8.83008 19.3016C7.71807 18.0042 8.63988 16 10.3486 16H37.6517C39.3604 16 40.2822 18.0042 39.1702 19.3016L25.5187 35.2284Z">
+                                            </path>
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="jsx-1548554119 title-v2  margin-t-24"><span class="css-1rssc4n">Allow users
+                                    to:</span></div>
+                            <div class="jsx-1548554119 checkbox-container">
+                                <div class="jsx-1548554119 checkbox">
+                                    <div class="css-ypesld"><label for="tux-0" data-tux-checkbox-label="true"
+                                            class="css-14gj7xv"><span class="css-cnt6wy">Comment</span></label>
+                                        <div data-tux-checkbox-input-wrapper="true" class="css-4pkwts"><input id="tux-0"
+                                                type="checkbox" data-tux-checkbox-input="true" class="css-1pzrh5a"
+                                                checked="">
+                                            <div class="css-mbgljv"><svg width="12" height="9.600000000000001"
+                                                    viewBox="0 0 10 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path
+                                                        d="M3.88632 5.95189L8.77465 0.915431C8.96697 0.717276 9.28352 0.712552 9.48168 0.904878L9.67738 1.09483C9.87553 1.28715 9.88026 1.6037 9.68793 1.80185L4.34296 7.3088C4.093 7.56633 3.67963 7.56633 3.42967 7.3088L0.948335 4.75227C0.756009 4.55411 0.760734 4.23757 0.958888 4.04524L1.15459 3.85529C1.35275 3.66297 1.66929 3.66769 1.86162 3.86584L3.88632 5.95189Z"
+                                                        fill="currentColor"></path>
+                                                </svg></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="jsx-1548554119 checkbox">
+                                    <div class="css-ypesld"><label for="tux-1" data-tux-checkbox-label="true"
+                                            class="css-14gj7xv"><span class="css-cnt6wy">Duet</span></label>
+                                        <div data-tux-checkbox-input-wrapper="true" class="css-4pkwts"><input id="tux-1"
+                                                type="checkbox" data-tux-checkbox-input="true" class="css-1pzrh5a"
+                                                checked="">
+                                            <div class="css-mbgljv"><svg width="12" height="9.600000000000001"
+                                                    viewBox="0 0 10 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path
+                                                        d="M3.88632 5.95189L8.77465 0.915431C8.96697 0.717276 9.28352 0.712552 9.48168 0.904878L9.67738 1.09483C9.87553 1.28715 9.88026 1.6037 9.68793 1.80185L4.34296 7.3088C4.093 7.56633 3.67963 7.56633 3.42967 7.3088L0.948335 4.75227C0.756009 4.55411 0.760734 4.23757 0.958888 4.04524L1.15459 3.85529C1.35275 3.66297 1.66929 3.66769 1.86162 3.86584L3.88632 5.95189Z"
+                                                        fill="currentColor"></path>
+                                                </svg></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div data-debug="false" class="jsx-1548554119 checkbox">
+                                    <div class="css-ypesld"><label for="tux-2" data-tux-checkbox-label="true"
+                                            class="css-14gj7xv"><span class="css-cnt6wy">Stitch</span></label>
+                                        <div data-tux-checkbox-input-wrapper="true" class="css-4pkwts"><input id="tux-2"
+                                                type="checkbox" data-tux-checkbox-input="true" class="css-1pzrh5a"
+                                                checked="">
+                                            <div class="css-mbgljv"><svg width="12" height="9.600000000000001"
+                                                    viewBox="0 0 10 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path
+                                                        d="M3.88632 5.95189L8.77465 0.915431C8.96697 0.717276 9.28352 0.712552 9.48168 0.904878L9.67738 1.09483C9.87553 1.28715 9.88026 1.6037 9.68793 1.80185L4.34296 7.3088C4.093 7.56633 3.67963 7.56633 3.42967 7.3088L0.948335 4.75227C0.756009 4.55411 0.760734 4.23757 0.958888 4.04524L1.15459 3.85529C1.35275 3.66297 1.66929 3.66769 1.86162 3.86584L3.88632 5.95189Z"
+                                                        fill="currentColor"></path>
+                                                </svg></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="jsx-1548554119 hint"><span class="css-tad11f"></span></div>
+                        </div>
+                        <div class="jsx-3471246984">
+                            <div class="jsx-3471246984 scheduled-container">
+                                <div class="jsx-3471246984 title-v2 scheduled-title-container"><span
+                                        class="css-1rssc4n">Schedule video</span>
+                                    <div class="jsx-3471246984"
+                                        style="display: inline-flex; position: relative; margin-left: 5px; margin-right: 13px; cursor: pointer;">
+                                        <svg width="18.33" height="18.33" viewBox="0 0 48 48" fill="currentColor"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            style="fill: rgb(22, 24, 35); opacity: 0.34;">
+                                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                                d="M24 6C14.0589 6 6 14.0589 6 24C6 33.9411 14.0589 42 24 42C33.9411 42 42 33.9411 42 24C42 14.0589 33.9411 6 24 6ZM2 24C2 11.8497 11.8497 2 24 2C36.1503 2 46 11.8497 46 24C46 36.1503 36.1503 46 24 46C11.8497 46 2 36.1503 2 24ZM27 16C27 17.6569 25.6569 19 24 19C22.3431 19 21 17.6569 21 16C21 14.3431 22.3431 13 24 13C25.6569 13 27 14.3431 27 16ZM23 22C22.4477 22 22 22.4477 22 23V34C22 34.5523 22.4477 35 23 35H25C25.5523 35 26 34.5523 26 34V23C26 22.4477 25.5523 22 25 22H23Z">
+                                            </path>
+                                        </svg>
+                                    </div>
+                                    <div class="css-sncxrr">
+                                        <div class="css-1ka1qw0"><input id="tux-3" data-tux-switch-input="true"
+                                                role="switch" type="checkbox" class="css-16wbn0f">
+                                            <div class="css-17qembd"></div>
+                                        </div><label for="tux-3" class="css-1wh6lcu"><span class="css-cnt6wy">Schedule
+                                                video</span></label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="jsx-1619456260 container"><span class="css-1rssc4n">Disclose post content</span>
+                            <div class="jsx-1619456260 switch">
+                                <div class="tiktok-switch" role="switch" aria-checked="false" aria-disabled="false">
+                                    <div class="tiktok-switch__switch-wrapper" style="width: 44px; height: 24px;"><span
+                                            class="tiktok-switch__switch-inner"
+                                            style="width: 20px; height: 20px; left: 2px;"></span></div>
+                                </div>
+                            </div>
+                        </div><span class="css-1gv9ukn">Let others know this post promotes a brand, product or
+                            service.</span>
+                        <div class="jsx-3299492902 switch-wrap">
+                            <div class="jsx-3299492902 switch-text"><span class="css-1rssc4n">Run a copyright
+                                    check</span></div>
+                            <div class="css-sncxrr">
+                                <div class="css-1ka1qw0"><input id="tux-4" data-tux-switch-input="true" role="switch"
+                                        type="checkbox" class="css-16wbn0f">
+                                    <div class="css-17qembd"></div>
+                                </div><label for="tux-4" class="css-1wh6lcu"><span class="css-cnt6wy">Run a copyright
+                                        check</span></label>
+                            </div>
+                        </div>
+                        <div class="jsx-3299492902 copyright"><span class="css-1gv9ukn">We'll check your video for
+                                potential copyright infringements on used sounds. If infringements are found, you can
+                                edit the video before posting. </span><button type="button" aria-haspopup="true"
+                                role="button" class="jsx-3299492902 learn-more"><span class="css-1iab0r1">Learn
+                                    more</span></button></div>
+                        <div class="jsx-3366794632 button-row">
+                            <div class="jsx-3366794632 btn-cancel"><button class="css-35jbna">
+                                    <div class="css-1db5cpb">
+                                        <div class="css-1z070dx">Discard</div>
+                                    </div>
+                                </button></div>
+                            <div class="jsx-3366794632 btn-post"><button class="css-y1m958" disabled="">
+                                    <div class="css-1db5cpb">
+                                        <div class="css-1z070dx">Post</div>
+                                    </div>
+                                </button></div>
+                        </div>
+                    </div>
+                    <div class="jsx-691756701"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var inputBox = document.querySelector('.public-DraftEditor-content');
+
+        inputBox.addEventListener('input', function (event) {
+
+            // Giới hạn số kí tự tối đa
+            var maxLength = 100;
+
+            // Lấy nội dung hiện tại của ô nhập liệu
+            var content = this.textContent
+            console.log("content:", content.length)
+
+            var contentHeight = this.scrollHeight;
+            if (contentHeight > 200) {
+                this.style.height = '200px';
+                this.style.overflowY = 'auto';
+            } else {
+                this.style.height = contentHeight + 'px';
+            }
+        });
+    });
+
+    // Lấy đối tượng form và nút "Select file" bằng class
+    var videoForm = document.querySelector('.jsx-2834184006');
+    var videoFormBefore = document.querySelector('.jsx-2977532431.uploader');
+    var selectFileButton = videoForm.querySelector('input[type="file"]');
+    var videoFormaAfter = document.querySelector('.jsx-2977532431.preview');
+    // Gán sự kiện click cho form
+    videoForm.addEventListener('click', function (event) {
+        console.log("event:", event)
+        // Kiểm tra xem sự kiện click có được gửi từ nút "Select file" không
+        if (event.target !== selectFileButton) {
+            // Kích hoạt sự kiện click của nút "Select file"
+            selectFileButton.click();
+        }
+    });
+    selectFileButton.addEventListener('change', function (event) {
+        // Kiểm tra xem đã chọn file chưa
+        if (event.target.files && event.target.files[0]) {
+            videoFormBefore.style.display = 'none'
+            videoFormaAfter.style.display = 'block'
+            // Đọc nội dung của file (ví dụ: đọc nội dung từ file văn bản)
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                // Hiển thị nội dung video caption từ file
+                videoCaptionElement.innerText = e.target.result;
+            };
+
+            // Đọc nội dung của file đang chọn
+            reader.readAsText(event.target.files[0]);
+
+            // Thay đổi hình ảnh của logo (ví dụ: đường dẫn đến hình ảnh trong file)
+            logoElement.src = 'đường_dẫn_đến_hình_ảnh_mới';
+        }
+    });
+</script>

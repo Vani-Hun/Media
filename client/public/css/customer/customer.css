@@ -1,4 +1,5 @@
-@import url(./customer-said.css);
+@import url(./customer-upload.css);
+@import url(./customer-profile.css);
 
 .input-group {
     margin-bottom: 20px;
@@ -16,7 +17,7 @@
     text-align: center;
 }
 
-.container {
+.container2 {
     position: relative;
     object-fit: cover;
     width: 100%;

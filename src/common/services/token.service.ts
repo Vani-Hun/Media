@@ -9,7 +9,8 @@ export class TokenService {
   sign(payload: string | object | Buffer) {
     console.log('payload:', payload)
     let secret: string = "vani"
-    return this.jwtService.sign(payload, { secret });
+    let expiresIn: string = "2 days";
+    return this.jwtService.sign(payload, { secret, expiresIn });
   }
 
   verify(token: string) {

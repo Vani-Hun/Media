@@ -24,13 +24,38 @@ export class CustomerController {
     if (error) {
       return { message: error };
     }
-    return this.customerService.get();
+    return
   }
 
   @Get()
   @Render('scroll/index')
   getVideo() {
     return this.customerService.getVideo()
+  }
+
+  @Get('profile')
+  @UseGuards(CusAuthGuard)
+  @Render('customer/profile')
+  async getProfile(@Req() request: Request) {
+    const user = await request['user']
+    return this.customerService.getProfile(user)
+  }
+
+
+  @Get('header')
+  @UseGuards(CusAuthGuard)
+  async getHeader(@Req() request: Request) {
+    const user = await request['user']
+    return this.customerService.get(user)
+  }
+
+  @Post('profile/update')
+  @UseGuards(CusAuthGuard)
+  @UseInterceptors(FileInterceptor('avatar'))
+  async updateProfile(@UploadedFile() avatar: Express.Multer.File, @Body() body: InputSetCustomer, @Req() request: Request) {
+    body['user'] = request['user']
+    body['avatar'] = avatar
+    return this.customerService.postProfile(body)
   }
 
   @Get('sign-in')
@@ -41,8 +66,15 @@ export class CustomerController {
     }
     return { message: null };
   }
+  @Get('log-out')
+  getLogout(@Res() res: Response) {
+    res.cookie('accessToken', '', { expires: new Date(0), httpOnly: true });
+
+    return res.redirect('/');
+
+  }
   @Get('sign-up')
-  @Render('customer/auth')
+  @Render('customer/sign-up')
   getSignup(@Query('error') error: string) {
     if (error) {
       return { message: error };
@@ -69,25 +101,10 @@ export class CustomerController {
     if (video) {
       body.user = request['user']
       body.video = video
-      return this.customerService.uploadVideo(body)
+      return this.customerService.upVideo(body)
     }
 
 
-  }
-
-  @Post()
-  @UseInterceptors(FileInterceptor('file'))
-  post(
-    @Body() body: InputSetCustomer,
-    @UploadedFile() logo: Express.Multer.File,
-  ) {
-    if (logo) {
-      body.logo = logo;
-    }
-    if (body.id) {
-      return this.customerService.update(body);
-    }
-    return this.customerService.create(body);
   }
 
   @Delete()

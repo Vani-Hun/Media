@@ -28,9 +28,10 @@
         }
 
         video {
-            width: 45%;
+            width: 100%;
             height: 100%;
-            object-fit: cover;
+            object-fit: contain;
+            display: block;
         }
 
 
@@ -671,8 +672,7 @@
 <body>
     <div class="video-container" id="video-container">
         <!-- Video tag sẽ được chèn ở đây -->
-        <video id="myVideo" controls>
-
+        <video playsinline preload="auto" id="myVideo" muted>
         </video>
         <button data-e2e="arrow-right" class="scroll-down-btn"><svg viewBox="0 0 48 48" fill="#fff">
                 <path
@@ -901,33 +901,41 @@
     <script>
 
 
-        const video = document.getElementById("myVideo");
+
 
         const hls = new Hls();
-        var videoUrl = 'https://storage.googleapis.com/fir-76c15.appspot.com/videos/admin_1696779762364'; // Đặt URL bạn nhận được từ server ở đây
+
+        var videoUrl = 'https://storage.googleapis.com/fir-76c15.appspot.com/videos/admin_1696780201555'
+
+        var video = document.getElementById('myVideo'); // Lấy thẻ video bằng id
+
+        console.log("Video metadata loaded");
+        video.src = videoUrl; // Thiết lập URL của video
+        video.play(); // Phát video khi metadata được tải xong
+
+        video.addEventListener('ended', function () {
+            console.log('Video ended, replaying...');
+            video.play(); // Phát lại video khi video kết thúc
+        });
+
 
         // Kiểm tra xem trình duyệt hỗ trợ HLS hay không
-        if (Hls.isSupported()) {
-            // Thiết lập video source bằng URL của video
-            hls.loadSource(videoUrl);
-            // Kết nối hls.js với thẻ video
-            hls.attachMedia(video);
-        } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-            // Nếu không hỗ trợ HLS, thử sử dụng một định dạng khác (Apple HLS)
-            video.src = videoUrl;
-        } else {
-            console.error('Trình duyệt không hỗ trợ streaming video.');
-        }
-        // Bắt đầu phát video khi trang tải
-        video.addEventListener("loadedmetadata", () => {
-            video.play();
-        });
+        // if (Hls.isSupported()) {
 
-        // Khi video kết thúc, chạy lại video (lặp lại)
-        video.addEventListener("ended", () => {
-            video.currentTime = 0; // Đặt lại thời gian video về 0 để chơi lại từ đầu
-            video.play();
-        });
+        //     // Thiết lập video source bằng URL của video
+        //     hls.loadSource(videoUrl);
+        //     console.log("hls.loadSource(videoUrl);:", hls.loadSource(videoUrl))
+        //     // Kết nối hls.js với thẻ video
+        //     hls.attachMedia(video);
+        //     console.log("hls.attachMedia(video);:", hls.attachMedia(video))
+
+        // } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+        //     // Nếu không hỗ trợ HLS, thử sử dụng một định dạng khác (Apple HLS)
+        //     video.src = videoUrl;
+        //     console.log("video.src = videoUrl;:", video.src = videoUrl)
+        // } else {
+        //     console.error('Trình duyệt không hỗ trợ streaming video.');
+        // }s
     </script>
 </body>
 

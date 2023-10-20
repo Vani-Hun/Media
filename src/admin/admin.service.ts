@@ -10,16 +10,8 @@ import { InputSetContact } from 'src/contact/contact.model';
 import { ContactService } from 'src/contact/contact.service';
 import { InputSetCustomer } from 'src/customer/customer.model';
 import { CustomerService } from 'src/customer/customer.service';
-import { InputSetDepartment } from 'src/department/department.model';
-import { DepartmentService } from 'src/department/department.service';
 import { InputSetHome } from 'src/home/home.model';
 import { HomeService } from 'src/home/home.service';
-import { InputSetPersonnel } from 'src/personnel/personnel.model';
-import { PersonnelService } from 'src/personnel/personnel.service';
-import { InputGetRequest, InputSetProduct } from 'src/product/product.model';
-import { ProductService } from 'src/product/product.service';
-import { InputSetProject } from 'src/project/project.model';
-import { ProjectService } from 'src/project/project.service';
 import { Repository } from 'typeorm';
 import { Admin } from './admin.entity';
 import { InputSetLogin, InputSetRegister } from './admin.model';
@@ -33,11 +25,7 @@ export class AdminService extends BaseService<Admin> {
     private cacheService: CacheService,
     private homeService: HomeService,
     private aboutUsService: AboutUsService,
-    private productService: ProductService,
-    private projectService: ProjectService,
     private customerService: CustomerService,
-    private departmentService: DepartmentService,
-    private personnelService: PersonnelService,
     private contactService: ContactService
   ) {
     super(repo);
@@ -60,58 +48,6 @@ export class AdminService extends BaseService<Admin> {
     return this.aboutUsService.update(input);
   }
 
-  // Product
-
-  async getProduct(input?: InputGetRequest, page?: string) {
-    let data;
-    if (input) {
-      data = await this.productService.getRequest(input);
-    } else {
-      data = await this.productService.getRequest();
-    }
-
-    if (page) {
-      return { ...data, start: parseInt(page) * 4 };
-    }
-
-    return { ...data, start: 0 };
-  }
-
-  async getProducts(page?: string) {
-    const products = await this.productService.getAll();
-    if (page) {
-      return { products, start: parseInt(page) * 5 };
-    }
-
-    return { products, start: 0 };
-  }
-
-  // Category
-
-  async getCategory(id: string) {
-    return this.productService.getOne(id);
-  }
-
-  setCategory(input: InputSetProduct) {
-    if (input.id) {
-      return this.productService.update(input);
-    }
-    return this.productService.create(input);
-  }
-
-  deleteCategory(id: string) {
-    return this.productService.delete(id);
-  }
-
-  // Project
-
-  getProject(input: InputGetRequest) {
-    return this.productService.getRequest(input);
-  }
-
-
-  // Customer
-
   async getCustomer(page?: string) {
     const customers = await this.customerService.getAll();
     if (page) {
@@ -122,15 +58,10 @@ export class AdminService extends BaseService<Admin> {
   }
 
   getDetailCustomer(id: string) {
-    return this.customerService.get();
+    return
   }
 
-  setCustomer(input: InputSetCustomer) {
-    if (input.id) {
-      return this.customerService.update(input);
-    }
-    return this.customerService.create(input);
-  }
+
 
   deleteCustomer(id: string) {
     return this.customerService.delete(id);
@@ -139,59 +70,6 @@ export class AdminService extends BaseService<Admin> {
 
   getAddPartner() {
     return this.customerService.getAll();
-  }
-
-
-  // Department
-
-  async getDepartment(page: string) {
-    const departments = await this.departmentService.getAll();
-    if (page) {
-      return { departments, start: parseInt(page) * 4 };
-    }
-
-    return { departments, start: 0 };
-  }
-
-  getDetailDepartment(id: string) {
-    return this.departmentService.get(id);
-  }
-
-  setDepartment(input: InputSetDepartment) {
-    if (input.id) {
-      return this.departmentService.update(input);
-    }
-    return this.departmentService.create(input);
-  }
-
-  deleteDepartment(id: string) {
-    return this.departmentService.delete(id);
-  }
-
-  // Personnel
-
-  async getPersonnel(page: string) {
-    const personnels = await this.personnelService.getAll();
-    if (page) {
-      return { personnels, start: parseInt(page) * 4 };
-    }
-
-    return { personnels, start: 0 };
-  }
-
-  getDetailPersonnel(id: string) {
-    return this.personnelService.get(id);
-  }
-
-  setPersonnel(input: InputSetPersonnel) {
-    if (input.id) {
-      return this.personnelService.update(input);
-    }
-    return this.personnelService.create(input);
-  }
-
-  deletePersonnel(id: string) {
-    return this.personnelService.delete(id);
   }
 
   // logo

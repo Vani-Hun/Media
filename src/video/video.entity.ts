@@ -17,6 +17,9 @@ export class Video extends BaseEntityUUID {
     commentsCount: number;
 
     @Column()
+    title: string;
+
+    @Column()
     description: string;
 
     @OneToMany(() => Comment, comment => comment.video)
