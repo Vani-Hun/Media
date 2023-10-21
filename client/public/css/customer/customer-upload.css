@@ -120,7 +120,7 @@
 
 .layout.jsx-2746295041 {
   margin: 0px auto;
-  width: 1100px;
+  max-width: 1100px;
   padding-top: 16px;
   padding-bottom: 48px;
   background-color: var(--bg-color-secondary);
@@ -594,6 +594,11 @@ button.jsx-4056857548 {
   border-radius: 4px;
 }
 
+.candidate-v2.bg {
+  opacity: 0.3;
+  user-select: none;
+}
+
 .bg-container-v2.jsx-4041099907 {
   display: flex;
   border: 2px solid var(--tux-colorLineSecondary);
@@ -610,7 +615,7 @@ button.jsx-4056857548 {
 }
 
 .candidate-v2 {
-  width: 85.75px;
+  width: 91px;
   height: 150px;
   object-fit: cover;
 }

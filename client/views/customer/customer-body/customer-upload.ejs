@@ -406,33 +406,95 @@
     var videoFormBefore = document.querySelector('.jsx-2977532431.uploader');
     var selectFileButton = videoForm.querySelector('input[type="file"]');
     var videoFormaAfter = document.querySelector('.jsx-2977532431.preview');
+    var canvas = document.getElementById('mobile-preview-canvas');
+    var ctx = canvas.getContext('2d');
+    var video = document.createElement('video');
+    var changeButton = document.querySelector('.jsx-3536812553.btn')
+    var coverEmpty = document.querySelector('.candidate-v2');
+    var coverContainer = document.querySelector('.bg-container-v2');
+    video.setAttribute('controls', 'true');
+    // Hàm để thêm frames vào mục cover
+    function addFrameToCover(frameDataURL) {
+        coverEmpty.style.display = 'none'
+        var frameImage = document.createElement('img');
+        frameImage.src = frameDataURL;
+        frameImage.className = 'candidate-v2 bg';
+        frameImage.draggable = false;
+        coverContainer.appendChild(frameImage);
+    }
     // Gán sự kiện click cho form
     videoForm.addEventListener('click', function (event) {
-        console.log("event:", event)
         // Kiểm tra xem sự kiện click có được gửi từ nút "Select file" không
         if (event.target !== selectFileButton) {
             // Kích hoạt sự kiện click của nút "Select file"
             selectFileButton.click();
         }
     });
+    changeButton.addEventListener('click', function (event) {
+        window.location.href = '/customer/upload'
+    });
     selectFileButton.addEventListener('change', function (event) {
-        // Kiểm tra xem đã chọn file chưa
-        if (event.target.files && event.target.files[0]) {
-            videoFormBefore.style.display = 'none'
-            videoFormaAfter.style.display = 'block'
-            // Đọc nội dung của file (ví dụ: đọc nội dung từ file văn bản)
+        var selectedFile = event.target.files[0];
+
+        if (selectedFile) {
+            videoFormBefore.style.display = 'none';
+            videoFormaAfter.style.display = 'block';
             var reader = new FileReader();
 
-            reader.onload = function (e) {
-                // Hiển thị nội dung video caption từ file
-                videoCaptionElement.innerText = e.target.result;
+            reader.onload = function (event) {
+                var video = document.createElement('video');
+                video.src = event.target.result;
+                video.crossOrigin = "anonymous";
+                video.controls = true;
+
+                // Chờ cho sự kiện 'loadedmetadata' của video trước khi vẽ hình ảnh
+                video.addEventListener("loadedmetadata", function () {
+                    // Vẽ khung hình đầu tiên của video lên canvas khi video đã sẵn sàng
+                    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+                });
+
+                // Sự kiện 'play' của video để vẽ lại canvas khi video được chơi
+                video.addEventListener("play", function () {
+                    function drawFrame() {
+                        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+                        requestAnimationFrame(drawFrame);
+                    }
+
+                    // Bắt đầu vẽ liên tục khi video được chơi
+                    drawFrame();
+                });
+
+                // Kích hoạt sự kiện 'play' để bắt đầu vẽ canvas
+                video.play();
+                video.onloadedmetadata = function (selectedFile) {
+                    var duration = video.duration;
+                    console.log("duration:", duration)
+                    var numFrames = 7; // Số lượng frames bạn muốn chụp từ video
+                    var interval = duration / numFrames;
+                    console.log("interval:", interval)
+
+                    // Lặp qua video và chụp frames
+                    for (var i = 0; i < numFrames; i++) {
+                        setTimeout(function (index) {
+                            video.currentTime = index * interval;
+                            video.onseeked = function () {
+                                // Vẽ frame vào canvas
+                                ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+                                // Chuyển canvas thành data URL (ảnh) và thêm vào mục cover
+                                var frameDataURL = canvas.toDataURL('image/jpeg');
+                                addFrameToCover(frameDataURL);
+                            };
+                        }, i * interval * 1000, i);
+                    }
+                };
             };
+            // Đọc dữ liệu từ tệp video được chọn
+            reader.readAsDataURL(selectedFile);
 
-            // Đọc nội dung của file đang chọn
-            reader.readAsText(event.target.files[0]);
 
-            // Thay đổi hình ảnh của logo (ví dụ: đường dẫn đến hình ảnh trong file)
-            logoElement.src = 'đường_dẫn_đến_hình_ảnh_mới';
         }
+
     });
+
 </script>

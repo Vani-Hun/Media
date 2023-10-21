@@ -39,7 +39,7 @@ export class CustomerService extends BaseService<Customer> {
           // Thêm các thuộc tính khác nếu cần
         };
         const sign = this.tokenService.sign(payload)
-        return res.cookie('accessToken', sign, { httpOnly: true });
+        return res.cookie('accessToken', sign, { httpOnly: true, maxAge: 2 * 24 * 60 * 60 * 1000 });
       }
     }
   }
