@@ -1846,3 +1846,45 @@ h5 {
   border: none;
   background-color: transparent;
 }
+
+/* CSS */
+.selected-image {
+  border: 2px solid #ff1764;
+  /* Thiết lập viền xanh khi ảnh được chọn */
+  border-width: 5px;
+}
+
+.tiktok-select-dropdown {
+  position: absolute;
+  top: 36px;
+  max-height: 1000px;
+  left: 0px;
+  display: inline-flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  margin-top: 4px;
+  border-radius: 4px;
+  padding: 4px 0px;
+  background: rgb(255, 255, 255);
+  box-shadow: rgba(0, 0, 0, 0.12) 0px 2px 12px;
+  transition: all 0.2s cubic-bezier(0.075, 0.82, 0.165, 1) 0s;
+  overflow: overlay;
+  z-index: 1111;
+}
+
+.tiktok-select-dropdown .tiktok-select-dropdown-item.is-selected {
+  background: rgba(22, 24, 35, 0.06) !important;
+}
+
+.tiktok-select-dropdown .tiktok-select-dropdown-item {
+  width: 100%;
+  display: flex;
+  background: rgb(255, 255, 255);
+  padding: 10px 12px;
+  font-family: TikTokFont;
+  font-size: 16px;
+  line-height: 22px;
+  box-sizing: border-box;
+  color: rgb(22, 24, 35);
+  cursor: pointer;
+}

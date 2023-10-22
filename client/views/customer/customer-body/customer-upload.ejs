@@ -245,17 +245,15 @@
                                         <span class="tiktok-select-selector-text tiktok-select-selector-text-checked"
                                             style="overflow: hidden; text-overflow: ellipsis;">Public</span>
                                     </div>
-                                    <div class="tiktok-select-selector-postfix-icon"
-                                        style="transform: rotate(0deg); transition: all 0.5s cubic-bezier(0.075, 0.82, 0.165, 1) 0s; display: flex; justify-content: center; align-items: center; transform-origin: center center; flex-shrink: 0;">
-                                        <svg width="14" height="14" viewBox="0 0 48 48" fill="currentColor"
-                                            xmlns="http://www.w3.org/2000/svg">
-                                            <path fill-rule="evenodd" clip-rule="evenodd"
-                                                d="M25.5187 35.2284C24.7205 36.1596 23.2798 36.1596 22.4816 35.2284L8.83008 19.3016C7.71807 18.0042 8.63988 16 10.3486 16H37.6517C39.3604 16 40.2822 18.0042 39.1702 19.3016L25.5187 35.2284Z">
-                                            </path>
-                                        </svg>
-                                    </div>
+
+                                </div>
+                                <div class="tiktok-select-dropdown" style="direction: ltr; width: 300px;display: none;">
+                                    <span class="tiktok-select-dropdown-item is-selected">Public</span><span
+                                        class="tiktok-select-dropdown-item">Friends</span><span
+                                        class="tiktok-select-dropdown-item">Private</span>
                                 </div>
                             </div>
+
                             <div class="jsx-1548554119 title-v2  margin-t-24"><span class="css-1rssc4n">Allow users
                                     to:</span></div>
                             <div class="jsx-1548554119 checkbox-container">
@@ -412,6 +410,36 @@
     var changeButton = document.querySelector('.jsx-3536812553.btn')
     var coverEmpty = document.querySelector('.candidate-v2');
     var coverContainer = document.querySelector('.bg-container-v2');
+    var selector = document.querySelector('.tiktok-select-selector');
+    var dropdown = document.querySelector('.tiktok-select-dropdown');
+
+    // Biến để kiểm tra trạng thái hiển thị của dropdown
+    var isDropdownVisible = false;
+
+    // Sự kiện click cho selector để hiển thị hoặc ẩn dropdown
+    selector.addEventListener('click', function () {
+        if (isDropdownVisible) {
+            dropdown.style.display = 'none';
+        } else {
+            dropdown.style.display = 'block';
+        }
+        // Đảo ngược giá trị của biến isDropdownVisible
+        isDropdownVisible = !isDropdownVisible;
+    });
+
+    // Sự kiện click cho các mục trong dropdown
+    var dropdownItems = document.querySelectorAll('.tiktok-select-dropdown-item');
+    dropdownItems.forEach(function (item) {
+        item.addEventListener('click', function () {
+            // Khi chọn một mục, cập nhật nội dung của selector và ẩn dropdown
+            selector.textContent = item.textContent;
+            dropdown.style.display = 'none';
+            // Đặt giá trị của biến isDropdownVisible về false khi dropdown được ẩn
+            isDropdownVisible = false;
+        });
+    });
+
+
     video.setAttribute('controls', 'true');
     // Hàm để thêm frames vào mục cover
     function addFrameToCover(frameDataURL) {
@@ -484,8 +512,30 @@
                                 // Chuyển canvas thành data URL (ảnh) và thêm vào mục cover
                                 var frameDataURL = canvas.toDataURL('image/jpeg');
                                 addFrameToCover(frameDataURL);
+                                var images = document.querySelectorAll('.candidate-v2.bg');
+
+                                images.forEach(function (img) {
+                                    img.addEventListener('click', function () {
+                                        // Loại bỏ lớp selected-image từ tất cả các ảnh
+                                        images.forEach(function (image) {
+                                            image.classList.remove('selected-image');
+                                        });
+
+                                        // Thêm lớp selected-image chỉ vào ảnh được chọn
+                                        img.classList.add('selected-image');
+
+                                        // Lưu lại đường dẫn của ảnh được chọn
+                                        var selectedImageSrc = img.src;
+                                        console.log('Đường dẫn ảnh được chọn:', selectedImageSrc);
+
+                                        // Thực hiện các hành động khác khi ảnh được chọn
+                                        // ...
+                                    });
+                                });
+
                             };
                         }, i * interval * 1000, i);
+
                     }
                 };
             };
