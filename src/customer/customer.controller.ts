@@ -20,11 +20,9 @@ export class CustomerController {
   @Get('upload')
   @UseGuards(CusAuthGuard)
   @Render('customer/upload')
-  getUpload(@Query('error') error: string) {
-    if (error) {
-      return { message: error };
-    }
-    return
+  async getUpload(@Req() request: Request) {
+    const user = await request['user']
+    return this.customerService.get(user)
   }
 
   @Get()

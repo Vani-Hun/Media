@@ -757,13 +757,44 @@ button.jsx-4056857548 {
 
 .css-1pzrh5a {
   box-sizing: border-box;
-  appearance: none;
+  /* appearance: none; */
   height: 100%;
   width: 100%;
   position: absolute;
   cursor: pointer;
   margin: 0px;
 }
+
+.checkbox-container.jsx-1548554119 .checkbox.jsx-1548554119 {
+  margin-right: 32px;
+}
+
+.css-14gj7xv {
+  box-sizing: border-box;
+  -webkit-box-flex: 1;
+  flex-grow: 1;
+  padding-inline: 12px 0px;
+  order: 1;
+}
+
+.css-cnt6wy {
+  box-sizing: border-box;
+  margin-block: 0px;
+  font-size: var(--tux-fontSizeP3);
+  line-height: 1.5;
+  font-family: var(--tux-fontFamilyParagraph);
+  font-weight: var(--tux-fontWeightRegular);
+}
+
+.css-4pkwts {
+  box-sizing: border-box;
+  position: relative;
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  margin-block-start: 3px;
+}
+
 
 .css-mbgljv {
   box-sizing: border-box;
@@ -814,98 +845,6 @@ button.jsx-4056857548 {
   height: 16px;
   flex-shrink: 0;
   margin-block-start: 3px;
-}
-
-.css-1pzrh5a {
-  box-sizing: border-box;
-  appearance: none;
-  height: 100%;
-  width: 100%;
-  position: absolute;
-  cursor: pointer;
-  margin: 0px;
-}
-
-.css-mbgljv {
-  box-sizing: border-box;
-  position: relative;
-  height: 100%;
-  width: 100%;
-  display: flex;
-  -webkit-box-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  justify-content: center;
-  border-radius: 2px;
-  pointer-events: none;
-  color: var(--tux-colorBGPrimary);
-  border: none;
-  background: var(--tux-colorPrimary);
-}
-
-.css-mbgljv>svg {
-  visibility: visible;
-}
-
-.checkbox-container.jsx-1548554119 .checkbox.jsx-1548554119 {
-  margin-right: 32px;
-}
-
-.css-14gj7xv {
-  box-sizing: border-box;
-  -webkit-box-flex: 1;
-  flex-grow: 1;
-  padding-inline: 12px 0px;
-  order: 1;
-}
-
-.css-cnt6wy {
-  box-sizing: border-box;
-  margin-block: 0px;
-  font-size: var(--tux-fontSizeP3);
-  line-height: 1.5;
-  font-family: var(--tux-fontFamilyParagraph);
-  font-weight: var(--tux-fontWeightRegular);
-}
-
-.css-4pkwts {
-  box-sizing: border-box;
-  position: relative;
-  width: 16px;
-  height: 16px;
-  flex-shrink: 0;
-  margin-block-start: 3px;
-}
-
-.css-1pzrh5a {
-  box-sizing: border-box;
-  appearance: none;
-  height: 100%;
-  width: 100%;
-  position: absolute;
-  cursor: pointer;
-  margin: 0px;
-}
-
-.css-mbgljv {
-  box-sizing: border-box;
-  position: relative;
-  height: 100%;
-  width: 100%;
-  display: flex;
-  -webkit-box-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  justify-content: center;
-  border-radius: 2px;
-  pointer-events: none;
-  color: var(--tux-colorBGPrimary);
-  border: none;
-  background: var(--tux-colorPrimary);
-}
-
-.css-mbgljv>svg {
-  visibility: visible;
 }
 
 .hint.jsx-1548554119 {
@@ -1887,4 +1826,35 @@ h5 {
   box-sizing: border-box;
   color: rgb(22, 24, 35);
   cursor: pointer;
+}
+
+.css-3wpmrz:hover,
+[data-tux-checkbox-input]:focus-visible+.css-3wpmrz,
+[data-tux-checkbox-input]:hover+.css-3wpmrz {
+  border: 1.5px solid rgb(234, 40, 78);
+}
+
+[data-tux-checkbox-input]:focus-visible+.css-mbgljv,
+[data-tux-checkbox-input]:hover+.css-mbgljv {
+  background: rgb(234, 40, 78);
+}
+
+.css-3wpmrz {
+  box-sizing: border-box;
+  position: relative;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  pointer-events: none;
+  color: var(--tux-colorBGPrimary);
+  border: 1.5px solid var(--tux-colorLineSecondary);
+}
+
+.css-3wpmrz>svg {
+  visibility: hidden;
 }
