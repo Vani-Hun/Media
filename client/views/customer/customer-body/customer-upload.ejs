@@ -379,7 +379,6 @@
 
 
 <script>
-
     var inputBox = document.querySelector('.public-DraftEditor-content');
     inputBox.addEventListener('input', function (event) {
 
@@ -468,14 +467,13 @@
                 image.classList.remove('selected-image');
             });
             frameImage.classList.add('selected-image');
-            var selectedImageSrc = frameImage.src;
         });
         coverContainer.appendChild(frameImage);
     }
 
-
+    var selectedFile;
     selectFileButton.addEventListener('change', function (event) {
-        var selectedFile = event.target.files[0];
+        selectedFile = event.target.files[0];
 
         if (selectedFile) {
 
@@ -527,7 +525,7 @@
                         video.currentTime = currentTime;
                         video.onseeked = function () {
                             ctxCapture.drawImage(video, 0, 0, canvasCapture.width, canvasCapture.height);
-                            var frameDataURL = canvasCapture.toDataURL('image/jpeg');
+                            var frameDataURL = canvasCapture.toDataURL('image/jpeg', 0.7);
                             addFrameToCover(frameDataURL);
                             if (currentTime + interval <= videoDuration) {
                                 captureFrames(currentTime + interval);
@@ -545,6 +543,48 @@
             reader.readAsDataURL(selectedFile);
         }
     });
+
+    // Lấy tham chiếu đến nút "Post"
+    var postButton = document.querySelector('.jsx-3366794632.btn-post button');
+
+    // Lắng nghe sự kiện click trên nút "Post"
+    postButton.addEventListener('click', function () {
+        // Gọi hàm gửi API khi nút "Post" được nhấn
+        sendApiRequest();
+    });
+
+    // Hàm gửi API
+    function sendApiRequest() {
+
+        var checkbox = document.querySelector('.css-mbgljv')
+        var allowUsers;
+        var caption = document.querySelector('.public-DraftEditor-content').textContent.trim();
+        var selectedImageSrc = document.querySelector('.selected-image').src;
+
+        if (checkbox) {
+            allowUsers = true;
+        } else { allowUsers = false; }
+
+        var formData = new FormData();
+        formData.append('video', selectedFile);
+        formData.append('caption', caption);
+        formData.append('image', selectedImageSrc);
+        formData.append('allowUsers', allowUsers);
+
+        // Sử dụng fetch để gửi yêu cầu POST
+        fetch('/customer/upload', {
+            method: 'POST',
+            body: formData
+        })
+            .then((data) => {
+                console.log("data:", data)
+                // window.location.href = '/customer/profile'
+            })
+            .catch(error => {
+                // Xử lý lỗi nếu có
+                console.error('There has been a problem with your fetch operation:', error);
+            });
+    }
 
 
 </script>

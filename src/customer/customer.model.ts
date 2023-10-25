@@ -10,8 +10,8 @@ export type InputSetAuth = {
   password: string;
 };
 export type InputUpLoad = {
-  description: string;
-  title: string;
+  caption: string;
+  image: string;
   video: Express.Multer.File;
   user: object
 };

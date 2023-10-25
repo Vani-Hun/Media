@@ -6,7 +6,8 @@ import * as _ from 'lodash';
 import { bucket, firebaseAdmin, videoFile } from '../utils/firebase.config';
 const { Storage } = require('@google-cloud/storage');
 const { getStorage, getDownloadURL } = require('firebase-admin/storage');
-
+import * as fs from 'fs';
+import * as path from 'path';
 
 export class UtilService {
 
@@ -33,26 +34,37 @@ export class UtilService {
 
 
   async uploadVideo(input) {
-    console.log("input:", input)
+    const base64Data = input.image.replace(/^data:image\/jpeg;base64,/, '');
+    const imageBuffer = Buffer.from(base64Data, 'base64');
+    // Tạo tên tệp hình ảnh ngẫu nhiên hoặc theo yêu cầu của bạn
+    const imageName = 'image_' + Date.now() + '.jpg';
+    const imagePath = path.join(__dirname, '..', '..', '..', 'client', 'public', 'audio', 'video', imageName);
+    fs.writeFileSync(imagePath, imageBuffer);
+    const filePath = `cover/${input.video.filename}`;
+    const img = bucket.file(filePath);
+    await img.save(imageBuffer, {
+      metadata: {
+        contentType: 'image/jpeg',
+      },
+    });
+    await this.clearTmp(imagePath);
+    const imgRef = await getStorage().bucket(`${bucket.name}`).file(`${img.name}`);
+    const imgURL = await getDownloadURL(imgRef);
     const videoData = readFileSync(input.video.path);
-
     // Tạo Buffer từ dữ liệu video
     const videoBuffer = Buffer.from(videoData);
     const file = bucket.file(`videos/${input.video.filename}`);
-
-
     await file.save(videoBuffer, {
       metadata: {
         contentType: 'video/mp4',
       },
     });
-
-
     await this.clearTmp(input.video.path);
     const fileRef = await getStorage().bucket(`${bucket.name}`).file(`${file.name}`);
-    const downloadURL = await getDownloadURL(fileRef);
-    // return downloadURL;
+    const videoURL = await getDownloadURL(fileRef);
+    return { imgURL, videoURL };
   }
+
   async uploadFile(input) {
     const data = readFileSync(input.avatar.path);
     const fileBuffer = Buffer.from(data);

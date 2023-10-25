@@ -10,7 +10,7 @@ export const DatabaseModule = TypeOrmModule.forRootAsync({
     password: configService.get<string>('DB_PASS'),
     database: configService.get<string>('DB_NAME'),
     entities: ['dist/**/*.entity.js'],
-    autoLoadEntities: true,
+    autoLoadEntities: false,
     logging: true,
     migrationsTableName: 'migration_table_dev',
     migrations: ['dist/migrations/*.js'],

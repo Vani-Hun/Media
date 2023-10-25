@@ -17,10 +17,13 @@ export class Video extends BaseEntityUUID {
     commentsCount: number;
 
     @Column()
-    title: string;
+    caption: string;
 
     @Column()
-    description: string;
+    cover: string;
+
+    @Column()
+    allowComment: boolean;
 
     @OneToMany(() => Comment, comment => comment.video)
     comments: Comment[];
