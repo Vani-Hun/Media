@@ -215,7 +215,6 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div class="loader"></div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -376,14 +375,33 @@
         </div>
     </div>
 </div>
+<div class="loader">
+    <div class="semicircle">
+        <div>
+            <div>
+                <div>
+                    <div>
+                        <div>
+                            <div>
+                                <div>
+                                    <div>
 
-
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <script>
     var inputBox = document.querySelector('.public-DraftEditor-content');
     inputBox.addEventListener('input', function (event) {
 
         // Lấy nội dung hiện tại của ô nhập liệu
-        var content = this.textContent
+        var content = this.textContent.trim()
         console.log("content:", content.length)
 
         var contentHeight = this.scrollHeight;
@@ -546,9 +564,17 @@
 
     // Lấy tham chiếu đến nút "Post"
     var postButton = document.querySelector('.jsx-3366794632.btn-post button');
-
+    function showLoader() {
+        var loader = document.querySelector('.loader');
+        loader.classList.add('visible');
+    }
+    function hideLoader() {
+        var loader = document.querySelector('.loader');
+        loader.classList.remove('visible');
+    }
     // Lắng nghe sự kiện click trên nút "Post"
     postButton.addEventListener('click', function () {
+        showLoader()
         // Gọi hàm gửi API khi nút "Post" được nhấn
         sendApiRequest();
     });
@@ -570,6 +596,7 @@
         formData.append('caption', caption);
         formData.append('image', selectedImageSrc);
         formData.append('allowUsers', allowUsers);
+        formData.append('who', selector.textContent);
 
         // Sử dụng fetch để gửi yêu cầu POST
         fetch('/customer/upload', {
@@ -577,8 +604,8 @@
             body: formData
         })
             .then((data) => {
-                console.log("data:", data)
-                // window.location.href = '/customer/profile'
+                hideLoader()
+                window.location.href = '/customer/profile'
             })
             .catch(error => {
                 // Xử lý lỗi nếu có

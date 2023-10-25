@@ -70,6 +70,12 @@ export class CustomerService extends BaseService<Customer> {
 
   async getProfile(user) {
     const customer = await this.repo.findOneOrFail(user.id, { relations: ['videos'] });
+    // Sắp xếp các video trong mảng videos của customer
+    customer.videos = customer.videos.sort((a, b) => {
+      if (a.updateAt > b.updateAt) return -1;
+      if (a.updateAt < b.updateAt) return 1;
+      return 0;
+    });
     return { customer }
   }
 
@@ -91,10 +97,8 @@ export class CustomerService extends BaseService<Customer> {
 
   async upVideo(input) {
     const url = await this.uploadVideo(input)
-    console.log("url:", url)
     if (url) {
       const saveVideo = await this.videoService.create(url, input)
-      console.log("saveVideo:", saveVideo)
       return true
     }
   }

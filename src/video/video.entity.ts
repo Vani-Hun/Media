@@ -20,6 +20,9 @@ export class Video extends BaseEntityUUID {
     caption: string;
 
     @Column()
+    who: string;
+
+    @Column()
     cover: string;
 
     @Column()

@@ -30,6 +30,9 @@ export class Customer extends BaseEntityUUID {
   @Column({ nullable: true })
   permission: string;
 
-  @OneToMany(() => Video, video => video.user)
+  @OneToMany(() => Video, video => video.user, {
+    cascade: true, // Tùy chọn này để tự động lưu video khi lưu customer
+    eager: true, // Tùy chọn này để tự động load video khi truy vấn customer
+  })
   videos: Video[];
 }
