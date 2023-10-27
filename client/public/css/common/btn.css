@@ -10,7 +10,7 @@
 }
 
 .btn-cta {
-    background: var(--primary-cta);
+    background: rgb(238, 194, 141);
     margin-right: 28px;
     transition: 0.2s;
 }

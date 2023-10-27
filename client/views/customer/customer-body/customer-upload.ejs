@@ -155,7 +155,7 @@
                                                                 class="notranslate public-DraftEditor-content"
                                                                 contenteditable="true" role="combobox"
                                                                 spellcheck="false"
-                                                                style="outline: none; user-select: text; white-space: pre-wrap; overflow-wrap: break-word;">
+                                                                style="outline: none; user-select: text; overflow-wrap: break-word;">
                                                                 <!-- <div data-contents="true">
                                                                     <div class="" data-block="true" data-editor="aeim3"
                                                                         data-offset-key="bjmma-0-0">
@@ -398,20 +398,6 @@
 </div>
 <script>
     var inputBox = document.querySelector('.public-DraftEditor-content');
-    inputBox.addEventListener('input', function (event) {
-
-        // Lấy nội dung hiện tại của ô nhập liệu
-        var content = this.textContent.trim()
-        console.log("content:", content.length)
-
-        var contentHeight = this.scrollHeight;
-        if (contentHeight > 200) {
-            this.style.height = '200px';
-            this.style.overflowY = 'auto';
-        } else {
-            this.style.height = contentHeight + 'px';
-        }
-    });
 
     // Lấy đối tượng form và nút "Select file" bằng class
     var videoForm = document.querySelector('.jsx-2834184006');
