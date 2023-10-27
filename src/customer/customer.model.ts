@@ -5,10 +5,12 @@ export type InputSetCustomer = {
   username: string;
   bio: string;
 };
+
 export type InputSetAuth = {
   username: string;
   password: string;
 };
+
 export type InputUpLoad = {
   caption: string;
   image: string;

@@ -60,6 +60,10 @@ export class CustomerService extends BaseService<Customer> {
     const customer = await this.findById(input.id)
     return { customer }
   }
+  async getVideoById(videoId) {
+    return await this.videoService.getVideoById(videoId)
+  }
+
   async getVideo() {
     const video = await this.videoService.get()
     console.log("video:", video)

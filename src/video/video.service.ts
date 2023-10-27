@@ -23,18 +23,18 @@ export class VideoService extends BaseService<Video> {
         const video = await this.repo.find({ relations: ['user'] })
         return video
     }
-    async getVideoById(id: string) {
-        const videos = await this.repo.find({
+    async getVideoById(id) {
+        const video = await this.repo.findOne({
             where: {
-                user: { id: id }
+                id: id
             }
         });
-        if (!videos) {
-            console.log("video:", videos)
-            throw new UnauthorizedException('Your username is exist!!');
+        if (!video) {
+            throw new UnauthorizedException('Your video is not exist!!');
         }
-        return videos;
+        return video;
     }
+
     async likeVideo(videoId: string, userId: string): Promise<void> {
         // Xử lý logic khi có sự kiện thích video
         // ...

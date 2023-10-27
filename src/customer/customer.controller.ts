@@ -6,7 +6,7 @@ import {
   Post,
   Render,
   UploadedFile,
-  UseInterceptors, Query, Redirect, UseGuards, Res, Req
+  UseInterceptors, Query, Redirect, UseGuards, Res, Req, Param
 } from '@nestjs/common';
 import { CusAuthGuard } from 'src/common/guard/customer.auth.guard';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -30,6 +30,14 @@ export class CustomerController {
   getVideo() {
     return this.customerService.getVideo()
   }
+
+
+  @Get('video/:videoId')
+  @Render('scroll/index')
+  getVideoById(@Param('videoId') videoId: string) {
+    return this.customerService.getVideoById(videoId)
+  }
+
 
   @Get('profile')
   @UseGuards(CusAuthGuard)
