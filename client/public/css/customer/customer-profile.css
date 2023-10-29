@@ -988,3 +988,22 @@ body.modal-open {
     padding: 16px 0px;
     display: flex;
 }
+
+/* CSS */
+.tiktok-6mttet-ButtonVoiceControlNew {
+    /* Thêm các thuộc tính khác của nút âm lượng */
+    /* ... */
+
+    /* Hiệu ứng hover */
+    transition: background-color 0.3s ease;
+}
+
+.tiktok-6mttet-ButtonVoiceControlNew:hover {
+    background-color: #f1f1f150;
+    /* Màu nền khi hover */
+}
+
+.tiktok-6mttet-ButtonVoiceControlNew:active {
+    background-color: #f1f1f150;
+    /* Màu nền khi click */
+}
