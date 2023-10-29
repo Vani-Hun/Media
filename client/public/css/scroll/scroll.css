@@ -913,7 +913,7 @@
   .tiktok-h5r7le-DivTabMenuWrapper {
       position: sticky;
       top: -28px;
-      background: rgb(255, 255, 255);
+      /* background: rgb(255, 255, 255); */
       z-index: 1;
       margin-bottom: 24px;
   }

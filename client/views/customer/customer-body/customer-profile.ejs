@@ -467,6 +467,109 @@
                 const updateVideo = document.querySelector('.updateVideo')
                 const xButton = document.querySelector('.tiktok-yg0pvs-ButtonBasicButtonContainer-StyledCloseIconContainer');
                 const volumeButton = document.querySelector('.tiktok-6mttet-ButtonVoiceControlNew');
+                const threeDot = document.querySelector(".tiktok-1dcgmzm-DivActionContainer");
+                const editVideo = document.querySelector(".tiktok-uoaz8g-DivContainer");
+                const popupButton = document.querySelector('.tiktok-u9i5ik-LiPopupItem .tiktok-1bsywin-ButtonAction');
+                const modalContent = document.querySelector('.tiktok-17s26nl-ModalContentContainer');
+                popupButton.addEventListener('click', function () {
+                    // Thay đổi nội dung của modal khi nút được click
+                    editProfileForm.style.display = 'block'
+                    modalContent.innerHTML = `
+       <div  class="tiktok-15neh3t-ModalContentVerticalPositionContainer e1wuf0b32">
+    <div class="tiktok-ihckm8-ModalContentVerticalPositionPadding e1wuf0b33">
+        <section role="dialog" aria-modal="true" aria-labelledby="tux-14_header" aria-describedby="tux-14_body"
+            class="tiktok-19l8hzs-ModalContentSection e1wuf0b34">
+            <div class="tiktok-19su1n8-DivContentWrapper e1i2llgv1">
+                <h2 class="tiktok-185q4cy-H2Title e1i2llgv2">Privacy settings</h2>
+                <p class="tiktok-jvtlsx-PDesc e1i2llgv3">Who can watch this video</p>
+                <div class="tiktok-17hfips-DivContainer e1rwytmq0">
+                    <div data-e2e="video-setting-choose" class="tiktok-xutyu3-DivSelectionContainer e1rwytmq1">
+                        <p class="tiktok-1bi8eji-PSelected e1rwytmq2">Private</p><svg
+                            class="tiktok-njdtma-StyledChevronDown e1rwytmq3" width="24" data-e2e="" height="24"
+                            viewBox="0 0 48 48" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                d="M22.5858 32.4142L8.29289 18.1213C7.90237 17.7308 7.90237 17.0976 8.29289 16.7071L9.70711 15.2929C10.0976 14.9024 10.7308 14.9024 11.1213 15.2929L24 28.1716L36.8787 15.2929C37.2692 14.9024 37.9024 14.9024 38.2929 15.2929L39.7071 16.7071C40.0976 17.0976 40.0976 17.7308 39.7071 18.1213L25.4142 32.4142C24.6332 33.1953 23.3668 33.1953 22.5858 32.4142Z">
+                            </path>
+                        </svg>
+                    </div>
+                </div>
+                <div class="tiktok-jeip9v-DivSwitchGroupContainer e1i2llgv4">
+                    <div class="tiktok-3uij16-DivSwitchItemContainer e1i2llgv5"><span
+                            class="tiktok-1r9aifx-SpanSwitchText e1i2llgv6">Allow comments </span><button
+                            data-e2e="video-setting-comment" type="button" role="switch" aria-checked="true"
+                            class="tiktok-ge3lma-ButtonSwitchContainer eoeunh02">
+                            <div width="44px" height="24px" class="tiktok-12xzmck-DivSwitchWrapper eoeunh00"><span
+                                    width="20px" height="20px" class="tiktok-9lvgjp-SpanSwitchIcon eoeunh01"></span>
+                            </div>
+                        </button></div>
+                    <div class="tiktok-3uij16-DivSwitchItemContainer e1i2llgv5"><span
+                            class="tiktok-1r9aifx-SpanSwitchText e1i2llgv6">Allow Duet</span><button
+                            data-e2e="video-setting-duet" type="button" role="switch" disabled="" aria-checked="false"
+                            class="tiktok-ge3lma-ButtonSwitchContainer eoeunh02">
+                            <div width="44px" height="24px" class="tiktok-q2tggl-DivSwitchWrapper eoeunh00"><span
+                                    width="20px" height="20px" class="tiktok-1k71ajl-SpanSwitchIcon eoeunh01"></span>
+                            </div>
+                        </button></div>
+                    <div class="tiktok-3uij16-DivSwitchItemContainer e1i2llgv5"><span
+                            class="tiktok-1r9aifx-SpanSwitchText e1i2llgv6">Allow Stitch </span><button
+                            data-e2e="video-setting-stitch" type="button" role="switch" disabled="" aria-checked="false"
+                            class="tiktok-ge3lma-ButtonSwitchContainer eoeunh02">
+                            <div width="44px" height="24px" class="tiktok-q2tggl-DivSwitchWrapper eoeunh00"><span
+                                    width="20px" height="20px" class="tiktok-1k71ajl-SpanSwitchIcon eoeunh01"></span>
+                            </div>
+                        </button></div>
+                </div>
+                <p class="tiktok-1u1dhg0-PHint e1i2llgv7">Duet and Stitch not available for videos over 60s</p>
+            </div><button data-e2e="video-setting-down" class="tiktok-6fnltj-ButtonSave e1i2llgv8">Done</button>
+        </section>
+    </div>
+</div>
+    `;
+
+                    const doneButton = document.querySelector('.tiktok-6fnltj-ButtonSave')
+                    doneButton.addEventListener('click', function () {
+                        editProfileForm.style.display = 'none'
+                    })
+                    // Thêm các xử lý sự kiện hoặc nội dung khác vào đây nếu cần
+                    const editWho = document.querySelector('.tiktok-17hfips-DivContainer')
+                    editWho.addEventListener('click', function () {
+                        editWho.innerHTML = `    
+<div data-e2e="video-setting-choose" class="tiktok-xutyu3-DivSelectionContainer e1rwytmq1">
+    <p class="tiktok-1bi8eji-PSelected e1rwytmq2">Private</p><svg class="tiktok-njdtma-StyledChevronDown e1rwytmq3"
+        width="24" data-e2e="" height="24" viewBox="0 0 48 48" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+        <path fill-rule="evenodd" clip-rule="evenodd"
+            d="M22.5858 32.4142L8.29289 18.1213C7.90237 17.7308 7.90237 17.0976 8.29289 16.7071L9.70711 15.2929C10.0976 14.9024 10.7308 14.9024 11.1213 15.2929L24 28.1716L36.8787 15.2929C37.2692 14.9024 37.9024 14.9024 38.2929 15.2929L39.7071 16.7071C40.0976 17.0976 40.0976 17.7308 39.7071 18.1213L25.4142 32.4142C24.6332 33.1953 23.3668 33.1953 22.5858 32.4142Z">
+        </path>
+    </svg>
+</div>          
+<div class="tiktok-1c5c336-DivSelectMask e1rwytmq4"></div>
+<ul class="tiktok-cyte9w-UlOptionsContainer e1rwytmq5">
+    <li data-e2e="video-watch-list" title="Public" class="tiktok-162z403-LiOptionsItem e1rwytmq6">
+        <p class="tiktok-12d79cw-POptionsTitle e1rwytmq7">Public</p>
+        <p class="tiktok-omp3j8-POptionsDesc e1rwytmq8">Anyone on TikTok</p>
+    </li>
+    <li data-e2e="video-watch-list" title="Friends" class="tiktok-162z403-LiOptionsItem e1rwytmq6">
+        <p class="tiktok-12d79cw-POptionsTitle e1rwytmq7">Friends</p>
+        <p class="tiktok-omp3j8-POptionsDesc e1rwytmq8">Followers that you follow back</p>
+    </li>
+    <li data-e2e="video-watch-list" title="Private" class="tiktok-162z403-LiOptionsItem e1rwytmq6">
+        <p class="tiktok-12d79cw-POptionsTitle e1rwytmq7">Private</p>
+        <p class="tiktok-omp3j8-POptionsDesc e1rwytmq8">Visible to me only</p>
+    </li>
+</ul>
+                       `
+                    })
+                });
+
+                threeDot.addEventListener('click', function () {
+                    if (editVideo.style.display === "flex") {
+                        // Nếu editVideo hiển thị, ẩn nó đi
+                        editVideo.style.display = "none";
+                    } else {
+                        // Nếu editVideo ẩn hoặc không được thiết lập display, hiển thị nó
+                        editVideo.style.display = "flex";
+                    }
+                });
 
                 // Hàm để cập nhật biểu tượng loa dựa trên trạng thái muted
                 function updateVolumeIcon(isMuted) {
@@ -753,7 +856,21 @@
                                     <path fill-rule="evenodd" clip-rule="evenodd"
                                         d="M4 24C4 21.7909 5.79086 20 8 20C10.2091 20 12 21.7909 12 24C12 26.2091 10.2091 28 8 28C5.79086 28 4 26.2091 4 24ZM20 24C20 21.7909 21.7909 20 24 20C26.2091 20 28 21.7909 28 24C28 26.2091 26.2091 28 24 28C21.7909 28 20 26.2091 20 24ZM36 24C36 21.7909 37.7909 20 40 20C42.2091 20 44 21.7909 44 24C44 26.2091 42.2091 28 40 28C37.7909 28 36 26.2091 36 24Z">
                                     </path>
-                                </svg></div>
+                                </svg>
+                                <div style="display:none"  tabindex="-1" class="tiktok-uoaz8g-DivContainer e2ipgxl0"
+    style="background-color: rgb(255, 255, 255); right: -11px;"><svg xmlns="http://www.w3.org/2000/svg" width="1em"
+        height="1em" fill="rgba(255, 255, 255, 1)" verticalPropKey="top" class="tiktok-znnspw-StyledTopArrow e2ipgxl1"
+        style="right: 10px;">
+        <use xlink:href="#tip_arrow_white-99f4b53c"></use>
+    </svg>
+    <ul class="tiktok-1n18b5h-UlPopupContainer e161jvwg2">
+        <li data-e2e="video-privacy-settings" class="tiktok-u9i5ik-LiPopupItem e161jvwg3"><button type="button"
+                class="tiktok-1bsywin-ButtonAction e161jvwg4">Privacy settings</button></li>
+        <li data-e2e="video-delete" class="tiktok-u9i5ik-LiPopupItem e161jvwg3"><button type="button"
+                class="tiktok-1bsywin-ButtonAction e161jvwg4">Delete</button></li>
+    </ul>
+</div>
+                                </div>
                         </div>
                         <div class="tiktok-1nst91u-DivMainContent e1mecfx01">
                             <div class="tiktok-bs495z-DivWrapper e1mzilcj0">

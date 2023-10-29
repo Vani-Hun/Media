@@ -371,32 +371,6 @@
   padding: 0px 80px 0px 16px;
 }
 
-.DraftEditor-root {
-  position: relative;
-}
-
-.DraftEditor-editorContainer {
-  background-color: rgba(255, 255, 255, 0);
-  border-left: 0.1px solid transparent;
-  position: relative;
-  z-index: 1;
-}
-
-.DraftEditor-editorContainer,
-.DraftEditor-root,
-.public-DraftEditor-content {
-  height: inherit;
-  text-align: initial;
-}
-
-.editor .public-DraftEditor-content {
-  border-style: none;
-  outline-style: none;
-  padding: 12px 0px;
-  max-height: 200px;
-  direction: ltr;
-}
-
 .DraftEditor-alignLeft .public-DraftStyleDefault-block {
   text-align: left;
 }
