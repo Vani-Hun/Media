@@ -280,6 +280,7 @@
     </div>
 </form>
 <script>
+
     const logo = document.querySelector('.tiktok-1zpj2q-ImgAvatar')
     const userName = document.querySelector('.tiktok-1xo9k5n-H1ShareTitle');
     const userSubtitle = document.querySelector('.tiktok-10pb43i-H2ShareSubTitle');
@@ -287,129 +288,125 @@
     const followingCount = document.querySelector('[data-e2e="following-count"]');
     const likesCount = document.querySelector('[data-e2e="likes-count"]');
     const userBio = document.querySelector('.tiktok-4ac4gk-H2ShareDesc');
-    const editProfileButton = document.querySelector('.tiktok-16gecda-Button-StyledEditButton');
     const editProfileForm = document.getElementById('editProfileForm');
-    const closeButton = document.querySelector('[data-e2e="edit-profile-close"]');
-    const cancelButton = document.querySelector('[data-e2e="edit-profile-cancel"]');
-    const profileBioInput = document.getElementById('profileBioInput');
-    const charCountElement = document.getElementById('charCount');
-    const saveButton = document.getElementById('saveButton');
-    var usernameInput = document.getElementById("profileUsernameInput");
-    var errorElement = document.getElementById("usernameError");
-    var customer = JSON.parse('<%- JSON.stringify(customer) %>');
-    if (customer) { displayVideos(customer.videos) }
-
-
-    // Thêm sự kiện 'input' để kiểm tra ngay khi người dùng nhập
-    usernameInput.addEventListener("input", function () {
-        // Lấy giá trị từ ô tên người dùng
-        var username = usernameInput.value;
-        // Kiểm tra xem tên người dùng hợp lệ không
-        var isValid = /^[a-zA-Z0-9_]+$/.test(username);
-        if (!isValid) {
-            errorElement.textContent = "Tên người dùng chỉ được chứa chữ cái, số, dấu gạch dưới và dấu chấm.";
-            document.getElementById("saveButton").disabled = true;
-        } else {
-            errorElement.textContent = ""; // Xóa thông báo lỗi nếu tên người dùng hợp lệ
-            document.getElementById("saveButton").disabled = false;
-        }
-    });
-
-    saveButton.disabled = false;
-    // Lấy phần tử chỉnh sửa hình đại diện
-    const editAvatarIcon = document.querySelector('[data-e2e="edit-profile-avatar-edit-icon"]');
-
-    // Lấy input file để chọn hình đại diện
-    const avatarInput = document.querySelector('.tiktok-4jv9vo-InputUpload.e13yu7jj22');
-
-    // Thêm sự kiện click vào biểu tượng chỉnh sửa
-    editAvatarIcon.addEventListener('click', function () {
-        // Khi biểu tượng chỉnh sửa được nhấp, kích hoạt sự kiện click trên input file
-        avatarInput.click();
-    });
-
-    // Thêm sự kiện change vào input file để xử lý việc chọn hình đại diện mới
-    avatarInput.addEventListener('change', function (event) {
-        const selectedFile = event.target.files[0];
-        if (selectedFile) {
-            // Xử lý file được chọn ở đây, ví dụ: hiển thị trước hình ảnh đã chọn
-            const reader = new FileReader();
-            reader.onload = function (e) {
-                const avatarPreview = document.querySelector('.tiktok-1zpj2q-ImgAvatarUpdate');
-                avatarPreview.src = e.target.result;
-            };
-            reader.readAsDataURL(selectedFile);
-        }
-    });
-
-    profileBioInput.addEventListener('input', function () {
-        const charCount = profileBioInput.value.length;
-        charCountElement.textContent = charCount;
-
-        // Kiểm tra số ký tự và tắt hoặc bật nút lưu dựa trên giới hạn ký tự (80 trong trường hợp này)
-        const saveButton = document.getElementById('saveButton'); // Đặt ID của nút lưu ở đây
-        if (charCount > 80) {
-            // Vượt quá giới hạn, tắt nút lưu
-            saveButton.disabled = true;
-        }
-    });
-
-    editProfileButton.addEventListener('click', function () {
-        // Hiển thị biểu mẫu chỉnh sửa thông tin người dùng khi nút "Edit profile" được nhấp
-        editProfileForm.style.display = 'block';
-        navMenu.style.display = 'none'
-
-
-        document.body.classList.add('modal-open');
-    });
-    // Ẩn biểu mẫu chỉnh sửa khi nút "Cancel" hoặc nút "X" được nhấp
-    function hideEditProfileForm() {
-        editProfileForm.style.display = 'none';
-        navMenu.style.display = 'flex'
-        document.body.classList.remove('modal-open');
+    const customer = JSON.parse('<%- JSON.stringify(customer) %>');
+    if (customer) {
+        logo.src = customer.logo;
+        userName.textContent = customer.username;
+        userSubtitle.textContent = customer.name;
+        followersCount.textContent = customer.followers;
+        followingCount.textContent = customer.following;
+        likesCount.textContent = customer.likes;
+        userBio.textContent = customer.bio;
+        displayVideos(customer.videos)
     }
 
-    closeButton.addEventListener('click', hideEditProfileForm);
-    cancelButton.addEventListener('click', hideEditProfileForm);
-    // Cập nhật thông tin người dùng
-    logo.src = '<%= customer.logo %>';
-    userName.textContent = '<%= customer.username %>';
-    userSubtitle.textContent = '<%= customer.name %>';
-    followersCount.textContent = '<%= customer.followers %>';
-    followingCount.textContent = '<%= customer.following %>';
-    likesCount.textContent = '<%= customer.likes %>';
-    userBio.textContent = '<%= customer.bio %>';
-    const Form = document.getElementById('Form');
-    // Sử dụng sự kiện click cho nút Save
-    Form.addEventListener('submit', function (event) {
-        event.preventDefault();
-        // Lấy dữ liệu từ các trường trong biểu mẫu
-        const avatar = document.querySelector('.tiktok-4jv9vo-InputUpload.e13yu7jj22').files[0];
-        const username = document.getElementById('profileUsernameInput').value;
-        const name = document.getElementById('profileNameInput').value;
-        const bio = document.getElementById('profileBioInput').value;
 
-        // Tạo đối tượng FormData và thêm dữ liệu vào đó
-        const formData = new FormData();
-        formData.append('avatar', avatar);
-        formData.append('username', username);
-        formData.append('name', name);
-        formData.append('bio', bio);
 
-        // Gửi yêu cầu API sử dụng Fetch API
-        fetch('/customer/profile/update', {
-            method: 'POST',
-            body: formData
-        })
-            .then((data) => {
-                console.log("data:", data)
-                window.location.href = '/customer/profile'
+    const editProfileButton = document.querySelector('.tiktok-16gecda-Button-StyledEditButton');
+    editProfileButton.addEventListener('click', function () {
+        const closeButton = document.querySelector('[data-e2e="edit-profile-close"]');
+        const cancelButton = document.querySelector('[data-e2e="edit-profile-cancel"]');
+        const errorElement = document.getElementById("usernameError");
+        const saveButton = document.getElementById('saveButton');
+        const usernameInput = document.getElementById("profileUsernameInput");
+        const profileBioInput = document.getElementById('profileBioInput');
+        const charCountElement = document.getElementById('charCount');
+        const editAvatarIcon = document.querySelector('[data-e2e="edit-profile-avatar-edit-icon"]');
+        const avatarInput = document.querySelector('.tiktok-4jv9vo-InputUpload.e13yu7jj22');
+
+        document.body.classList.add('modal-open');
+        saveButton.disabled = true;
+        editProfileForm.style.display = 'block';
+        navMenu.style.display = 'none'
+        charCountElement.textContent = `${profileBioInput.value.length}/80`
+        closeButton.addEventListener('click', hideEditProfileForm);
+        cancelButton.addEventListener('click', hideEditProfileForm);
+
+        usernameInput.addEventListener("input", function () {
+            // Lấy giá trị từ ô tên người dùng
+            const username = usernameInput.value;
+            // Kiểm tra xem tên người dùng hợp lệ không
+            const isValid = /^[a-zA-Z0-9_]+$/.test(username);
+            if (!isValid) {
+                errorElement.textContent = "Tên người dùng chỉ được chứa chữ cái, số, dấu gạch dưới và dấu chấm.";
+                saveButton.disabled = true;
+            } else {
+                errorElement.textContent = ""; // Xóa thông báo lỗi nếu tên người dùng hợp lệ
+                saveButton.disabled = false;
+            }
+        });
+
+        editAvatarIcon.addEventListener('click', function () {
+            avatarInput.click();
+        });
+
+        avatarInput.addEventListener('change', function (event) {
+            const selectedFile = event.target.files[0];
+            if (selectedFile) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const avatarPreview = document.querySelector('.tiktok-1zpj2q-ImgAvatarUpdate');
+                    avatarPreview.src = e.target.result;
+                };
+                reader.readAsDataURL(selectedFile);
+                saveButton.disabled = false;
+            }
+        });
+
+        profileBioInput.addEventListener('input', function () {
+            const charCount = profileBioInput.value.length;
+            charCountElement.textContent = charCount;
+            if (charCount > 80) {
+                saveButton.disabled = true;
+            } else { saveButton.disabled = false; }
+        });
+
+        function hideEditProfileForm() {
+            editProfileForm.style.display = 'none';
+            navMenu.style.display = 'flex'
+            document.body.classList.remove('modal-open');
+            editProfileButton.removeEventListener('click', this);
+        }
+        const Form = document.getElementById('Form');
+        // Sử dụng sự kiện click cho nút Save
+        Form.addEventListener('submit', function (event) {
+            event.preventDefault();
+            // Lấy dữ liệu từ các trường trong biểu mẫu
+            const avatar = document.querySelector('.tiktok-4jv9vo-InputUpload.e13yu7jj22').files[0];
+            const username = document.getElementById('profileUsernameInput').value;
+            const name = document.getElementById('profileNameInput').value;
+            const bio = document.getElementById('profileBioInput').value;
+
+            // Tạo đối tượng FormData và thêm dữ liệu vào đó
+            const formData = new FormData();
+            formData.append('avatar', avatar);
+            formData.append('username', username);
+            formData.append('name', name);
+            formData.append('bio', bio);
+
+            // Gửi yêu cầu API sử dụng Fetch API
+            fetch('/customer/profile/update', {
+                method: 'POST',
+                body: formData
             })
-            .catch(error => {
-                // Xử lý lỗi nếu có
-                console.error('Error:', error);
-            });
+                .then((data) => {
+                    console.log("data:", data)
+                    window.location.href = '/customer/profile'
+                })
+                .catch(error => {
+                    // Xử lý lỗi nếu có
+                    console.error('Error:', error);
+                });
+
+        });
     });
+
+
+
+
+
+
     function displayVideos(videos) {
         // Lặp qua danh sách video và tạo các phần tử HTML động
         const videoContainer = document.querySelector('[data-e2e="user-post-item-list"]');
@@ -484,14 +481,27 @@
                 <p class="tiktok-jvtlsx-PDesc e1i2llgv3">Who can watch this video</p>
                 <div class="tiktok-17hfips-DivContainer e1rwytmq0">
                     <div data-e2e="video-setting-choose" class="tiktok-xutyu3-DivSelectionContainer e1rwytmq1">
-                        <p class="tiktok-1bi8eji-PSelected e1rwytmq2">Private</p><svg
-                            class="tiktok-njdtma-StyledChevronDown e1rwytmq3" width="24" data-e2e="" height="24"
-                            viewBox="0 0 48 48" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                            <path fill-rule="evenodd" clip-rule="evenodd"
-                                d="M22.5858 32.4142L8.29289 18.1213C7.90237 17.7308 7.90237 17.0976 8.29289 16.7071L9.70711 15.2929C10.0976 14.9024 10.7308 14.9024 11.1213 15.2929L24 28.1716L36.8787 15.2929C37.2692 14.9024 37.9024 14.9024 38.2929 15.2929L39.7071 16.7071C40.0976 17.0976 40.0976 17.7308 39.7071 18.1213L25.4142 32.4142C24.6332 33.1953 23.3668 33.1953 22.5858 32.4142Z">
-                            </path>
-                        </svg>
-                    </div>
+    <p class="tiktok-1bi8eji-PSelected e1rwytmq2">${video.who}</p><svg class="tiktok-njdtma-StyledChevronDown e1rwytmq3"
+        width="24" data-e2e="" height="24" viewBox="0 0 48 48" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+        <path fill-rule="evenodd" clip-rule="evenodd"
+            d="M22.5858 32.4142L8.29289 18.1213C7.90237 17.7308 7.90237 17.0976 8.29289 16.7071L9.70711 15.2929C10.0976 14.9024 10.7308 14.9024 11.1213 15.2929L24 28.1716L36.8787 15.2929C37.2692 14.9024 37.9024 14.9024 38.2929 15.2929L39.7071 16.7071C40.0976 17.0976 40.0976 17.7308 39.7071 18.1213L25.4142 32.4142C24.6332 33.1953 23.3668 33.1953 22.5858 32.4142Z">
+        </path>
+    </svg>
+</div>          
+<ul style='display:none' class="tiktok-cyte9w-UlOptionsContainer e1rwytmq5">
+    <li data-e2e="video-watch-list" title="Public" class="tiktok-162z403-LiOptionsItem e1rwytmq6">
+        <p class="tiktok-12d79cw-POptionsTitle e1rwytmq7">Public</p>
+        <p class="tiktok-omp3j8-POptionsDesc e1rwytmq8">Anyone on TikTok</p>
+    </li>
+    <li data-e2e="video-watch-list" title="Friends" class="tiktok-162z403-LiOptionsItem e1rwytmq6">
+        <p class="tiktok-12d79cw-POptionsTitle e1rwytmq7">Friends</p>
+        <p class="tiktok-omp3j8-POptionsDesc e1rwytmq8">Followers that you follow back</p>
+    </li>
+    <li data-e2e="video-watch-list" title="Private" class="tiktok-162z403-LiOptionsItem e1rwytmq6">
+        <p class="tiktok-12d79cw-POptionsTitle e1rwytmq7">Private</p>
+        <p class="tiktok-omp3j8-POptionsDesc e1rwytmq8">Visible to me only</p>
+    </li>
+</ul>
                 </div>
                 <div class="tiktok-jeip9v-DivSwitchGroupContainer e1i2llgv4">
                     <div class="tiktok-3uij16-DivSwitchItemContainer e1i2llgv5"><span
@@ -533,32 +543,63 @@
                     // Thêm các xử lý sự kiện hoặc nội dung khác vào đây nếu cần
                     const editWho = document.querySelector('.tiktok-17hfips-DivContainer')
                     editWho.addEventListener('click', function () {
-                        editWho.innerHTML = `    
-<div data-e2e="video-setting-choose" class="tiktok-xutyu3-DivSelectionContainer e1rwytmq1">
-    <p class="tiktok-1bi8eji-PSelected e1rwytmq2">Private</p><svg class="tiktok-njdtma-StyledChevronDown e1rwytmq3"
-        width="24" data-e2e="" height="24" viewBox="0 0 48 48" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-        <path fill-rule="evenodd" clip-rule="evenodd"
-            d="M22.5858 32.4142L8.29289 18.1213C7.90237 17.7308 7.90237 17.0976 8.29289 16.7071L9.70711 15.2929C10.0976 14.9024 10.7308 14.9024 11.1213 15.2929L24 28.1716L36.8787 15.2929C37.2692 14.9024 37.9024 14.9024 38.2929 15.2929L39.7071 16.7071C40.0976 17.0976 40.0976 17.7308 39.7071 18.1213L25.4142 32.4142C24.6332 33.1953 23.3668 33.1953 22.5858 32.4142Z">
-        </path>
-    </svg>
-</div>          
-<div class="tiktok-1c5c336-DivSelectMask e1rwytmq4"></div>
-<ul class="tiktok-cyte9w-UlOptionsContainer e1rwytmq5">
-    <li data-e2e="video-watch-list" title="Public" class="tiktok-162z403-LiOptionsItem e1rwytmq6">
-        <p class="tiktok-12d79cw-POptionsTitle e1rwytmq7">Public</p>
-        <p class="tiktok-omp3j8-POptionsDesc e1rwytmq8">Anyone on TikTok</p>
-    </li>
-    <li data-e2e="video-watch-list" title="Friends" class="tiktok-162z403-LiOptionsItem e1rwytmq6">
-        <p class="tiktok-12d79cw-POptionsTitle e1rwytmq7">Friends</p>
-        <p class="tiktok-omp3j8-POptionsDesc e1rwytmq8">Followers that you follow back</p>
-    </li>
-    <li data-e2e="video-watch-list" title="Private" class="tiktok-162z403-LiOptionsItem e1rwytmq6">
-        <p class="tiktok-12d79cw-POptionsTitle e1rwytmq7">Private</p>
-        <p class="tiktok-omp3j8-POptionsDesc e1rwytmq8">Visible to me only</p>
-    </li>
-</ul>
-                       `
+                        const edit = document.querySelector('.tiktok-cyte9w-UlOptionsContainer')
+                        if (edit.style.display == 'none') {
+                            edit.style.display = 'block'
+                        } else {
+                            edit.style.display = 'none'
+                        }
+                        // Lấy tất cả các mục trong danh sách
+                        const optionsItems = document.querySelectorAll('.tiktok-162z403-LiOptionsItem');
+
+                        // Lặp qua từng mục và thêm sự kiện click
+                        optionsItems.forEach(item => {
+                            item.addEventListener('click', function () {
+                                // Lấy tiêu đề của mục đã chọn
+                                const selectedTitle = this.getAttribute('title');
+
+                                // Lấy phần tử <p> cần thay đổi nội dung
+                                const selectedElement = document.querySelector('.tiktok-1bi8eji-PSelected');
+
+                                // Thay đổi nội dung của phần tử <p> thành tiêu đề của mục đã chọn
+                                selectedElement.textContent = selectedTitle;
+
+                            });
+                        })
                     })
+                    // Lấy ra nút chuyển đổi và các phần tử con bên trong
+                    const switchButton = document.querySelector('.tiktok-ge3lma-ButtonSwitchContainer');
+                    const switchWrapper = document.querySelector('.tiktok-12xzmck-DivSwitchWrapper');
+                    const switchIcon = document.querySelector('.tiktok-9lvgjp-SpanSwitchIcon');
+
+                    // Sử dụng biến để theo dõi trạng thái của công tắc
+                    let isSwitchOn = video.allowComment;
+                    if (isSwitchOn) {
+                        switchWrapper.style.background = 'rgb(11, 224, 155)';
+                        switchIcon.style.left = 'calc(100% - 2px)';
+                    } else {
+                        switchWrapper.style.background = 'gray';
+                        switchIcon.style.left = '23px';
+                    }
+                    // Thêm sự kiện click vào nút chuyển đổi
+                    switchButton.addEventListener('click', function () {
+                        // Đảo ngược trạng thái
+                        isSwitchOn = !isSwitchOn;
+                        // Cập nhật thuộc tính aria-checked để thể hiện trạng thái
+                        switchButton.setAttribute('aria-checked', isSwitchOn);
+
+                        // Thay đổi màu sắc và vị trí của vùng bao bọc
+                        if (isSwitchOn) {
+                            switchWrapper.style.background = 'rgb(11, 224, 155)';
+                            switchIcon.style.left = 'calc(100% - 2px)';
+                            isSwitchOn = true
+                        } else {
+                            switchWrapper.style.background = 'gray';
+                            switchIcon.style.left = '23px';
+                            isSwitchOn = false
+                        }
+
+                    });
                 });
 
                 threeDot.addEventListener('click', function () {
@@ -611,7 +652,7 @@
                         svg.appendChild(path3);
                     }
                 }
-                var isMuted = false
+                const isMuted = false
                 const videoPlay = document.querySelector('.optionVideo'); // Lấy thẻ video
                 const playIcon = document.getElementById('playIcon');
                 // Thêm sự kiện click listener vào div chứa video
@@ -1090,6 +1131,4 @@
         const body = document.querySelector('body');
         body.appendChild(newHTMLContainer);
     }
-
-
 </script>
