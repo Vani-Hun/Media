@@ -325,15 +325,13 @@
         cancelButton.addEventListener('click', hideEditProfileForm);
 
         usernameInput.addEventListener("input", function () {
-            // Lấy giá trị từ ô tên người dùng
             const username = usernameInput.value;
-            // Kiểm tra xem tên người dùng hợp lệ không
             const isValid = /^[a-zA-Z0-9_]+$/.test(username);
             if (!isValid) {
                 errorElement.textContent = "Tên người dùng chỉ được chứa chữ cái, số, dấu gạch dưới và dấu chấm.";
                 saveButton.disabled = true;
             } else {
-                errorElement.textContent = ""; // Xóa thông báo lỗi nếu tên người dùng hợp lệ
+                errorElement.textContent = "";
                 saveButton.disabled = false;
             }
         });
@@ -373,23 +371,17 @@
             editProfileButton.removeEventListener('click', this);
         }
         const Form = document.getElementById('Form');
-        // Sử dụng sự kiện click cho nút Save
         Form.addEventListener('submit', function (event) {
             event.preventDefault();
-            // Lấy dữ liệu từ các trường trong biểu mẫu
             const avatar = document.querySelector('.tiktok-4jv9vo-InputUpload.e13yu7jj22').files[0];
             const username = document.getElementById('profileUsernameInput').value;
             const name = document.getElementById('profileNameInput').value;
             const bio = document.getElementById('profileBioInput').value;
-
-            // Tạo đối tượng FormData và thêm dữ liệu vào đó
             const formData = new FormData();
             formData.append('avatar', avatar);
             formData.append('username', username);
             formData.append('name', name);
             formData.append('bio', bio);
-
-            // Gửi yêu cầu API sử dụng Fetch API
             fetch('/customer/profile/update', {
                 method: 'POST',
                 body: formData
@@ -399,7 +391,6 @@
                     window.location.href = '/customer/profile'
                 })
                 .catch(error => {
-                    // Xử lý lỗi nếu có
                     console.error('Error:', error);
                 });
 
@@ -407,7 +398,6 @@
     });
 
     function displayVideos(videos) {
-        // Lặp qua danh sách video và tạo các phần tử HTML động
         const videoContainer = document.querySelector('[data-e2e="user-post-item-list"]');
         const videoElementClass = 'tiktok-x6y88p-DivItemContainerV2';
         const displayVideosTemplate = (video) => {
@@ -449,10 +439,8 @@
             return template;
         }
         function renderNewHTML(video, customer) {
-            // Tạo một div chứa HTML mới
             const newHTMLContainer = document.createElement('div');
             newHTMLContainer.classList = 'updateVideo'
-            // Tạo HTML mới dựa trên dữ liệu video (ví dụ)
             newHTMLContainer.innerHTML = `
         <div tabindex="0" role="dialog" aria-modal="true" class="tiktok-1qg2388-DivBrowserModeContainer e11s2kul0"
     style="z-index: 1000;">
@@ -589,11 +577,11 @@
         style="right: 10px;">
         <use xlink:href="#tip_arrow_white-99f4b53c"></use>
     </svg>
-    <ul class="tiktok-1n18b5h-UlPopupContainer e161jvwg2">
+    <ul class="tiktok-1n18b5h-UlPopupContainer">
         <li data-e2e="video-privacy-settings" class="tiktok-u9i5ik-LiPopupItem e161jvwg3"><button type="button"
                 class="tiktok-1bsywin-ButtonAction e161jvwg4">Privacy settings</button></li>
         <li data-e2e="video-delete" class="tiktok-u9i5ik-LiPopupItem e161jvwg3"><button type="button"
-                class="tiktok-1bsywin-ButtonAction e161jvwg4">Delete</button></li>
+                id="deleteVideo" class="tiktok-1bsywin-ButtonAction e161jvwg4">Delete</button></li>
     </ul>
 </div>
                                 </div>
@@ -612,7 +600,7 @@
                             <h4 data-e2e="browse-music" class="tiktok-17nfpht-H4Link epjbyn0"><a target="_self"
                                     rel="opener" class="epjbyn1 tiktok-v80f7r-StyledLink-StyledLink er1vbsz0"
                                     aria-label="Watch more videos with music nhạc nền  - Hùng Nguyễn23652"
-                                    href="/music/nhạc-nền-Hùng-Nguyễn23652-7293898245409917697"><svg
+                                    href="/music/nhạc-nền-${customer.name}"><svg
                                         xmlns="http://www.w3.org/2000/svg" width="1em" height="1em"
                                         fill="rgba(22, 24, 35, 1)" styleType="1"
                                         class="tiktok-ftrwfo-MusicNoteIcon epjbyn4">
@@ -664,7 +652,7 @@
                                                 d="M12.313 7.96568C12.3665 7.65966 12.658 7.45498 12.964 7.50851C13.27 7.56203 13.4747 7.8535 13.4211 8.15951L12.0506 15.9952C11.997 16.3012 11.7056 16.5059 11.3996 16.4523C11.0936 16.3988 10.8889 16.1073 10.9424 15.8013L12.313 7.96568ZM16.2402 8.77448C15.96 8.48453 15.5058 8.48453 15.2256 8.77448C14.9454 9.06443 14.9454 9.53454 15.2256 9.82449L17.454 12.1307L15.2262 14.4364C14.946 14.7263 14.946 15.1964 15.2262 15.4864C15.5063 15.7763 15.9606 15.7763 16.2407 15.4864L19.4551 12.1598C19.4704 12.1439 19.4704 12.1182 19.4551 12.1023L19.2233 11.8623L19.2201 11.8586L19.2158 11.854L16.2402 8.77448ZM8.88972 15.4867C8.59977 15.7766 8.12966 15.7766 7.83971 15.4867L5.4207 13.0677L4.76017 12.4071L4.51191 12.1589C4.49603 12.143 4.49603 12.1173 4.51191 12.1014L7.83853 8.77477C8.12848 8.48482 8.59859 8.48482 8.88854 8.77477C9.17849 9.06472 9.17849 9.53482 8.88854 9.82478L6.58318 12.1301L8.88972 14.4367C9.17967 14.7266 9.17967 15.1967 8.88972 15.4867Z"
                                                 fill="white"></path>
                                         </svg></a><a id="icon-element-facebook" mode="0"
-                                        href="https://www.facebook.com/sharer/sharer.php?app_id=113869198637480&amp;display=popup&amp;sdk=joey&amp;u=https%3A%2F%2Fwww.tiktok.com%2F%40usern38c5prdf4%2Fvideo%2F7293898113478053127%3Fis_from_webapp%3D1%26sender_device%3Dpc%26web_id%3D7187579998407149058"
+                                        href="https://www.facebook.com"
                                         target="_blank" rel="noopener noreferrer" data-e2e="video-share-facebook"
                                         aria-label="Share to Facebook" class="tiktok-vy3jtp-AShareLink e15mchsh0"><svg
                                             width="24" data-e2e="" height="24" viewBox="0 0 48 48" fill="none"
@@ -811,79 +799,19 @@
     </div>
 </div>
     `;
-
-            // Chèn HTML mới vào trang web
             const body = document.querySelector('body');
             body.appendChild(newHTMLContainer);
         }
         videos.forEach(video => {
-
             const videoElement = document.createElement('div');
             videoElement.className = videoElementClass
-            // Tạo phần tử video động với dữ liệu từ máy chủ
             videoElement.innerHTML = displayVideosTemplate(video)
             videoContainer.appendChild(videoElement);
-            // Thêm sự kiện click listener
             videoElement.addEventListener('click', () => {
                 renderNewHTML(video, customer);
-                const profile = document.getElementById('main-content-others_homepage')
-                const inputElement = document.querySelector('.public-DraftEditor-content');
-                const placeholderDiv = document.querySelector('.public-DraftEditorPlaceholder-root');
-                const updateVideo = document.querySelector('.updateVideo')
-                const xButton = document.querySelector('.tiktok-yg0pvs-ButtonBasicButtonContainer-StyledCloseIconContainer');
-                const volumeButton = document.querySelector('.tiktok-6mttet-ButtonVoiceControlNew');
-                const threeDot = document.querySelector(".tiktok-1dcgmzm-DivActionContainer");
-                const editVideo = document.querySelector(".tiktok-uoaz8g-DivContainer");
-                const popupButton = document.querySelector('.tiktok-u9i5ik-LiPopupItem .tiktok-1bsywin-ButtonAction');
-                const modalContent = document.querySelector('.tiktok-17s26nl-ModalContentContainer');
-                const spanOtherInfos = document.querySelector('.tiktok-gg0x0w-SpanOtherInfos');
-                let isMuted = false
-                const dateObject = new Date(video.createAt);
-                console.log("dateObject:", dateObject)
-                const today = new Date();
-                const timeDifference = today - dateObject;
-                let daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
-                if (daysDifference > 7) {
-                    const day = dateObject.getDate();
-                    const month = dateObject.getMonth() + 1; // Tháng bắt đầu từ 0 (0 - 11)
-                    const year = dateObject.getFullYear();
-                    const daysDifference = `${month}-${day}`;
-                } else {
-                    daysDifference = `${daysDifference}d ago`
-                }
-                profile.style.display = 'none'
-                // Kiểm tra giá trị của selectedTitle
-                if (video.who === 'Private') {
-                    // Thay đổi nội dung của phần tử privateIcon thành biểu tượng SVG của Private
-                    spanOtherInfos.innerHTML = `<span class="tiktok-pocgy1-SpanEllipsis evv7pft2">${customer.name}</span>
-                                    <span style="margin: 0px 4px;"> · </span><span>${daysDifference} </span>
-                                        <span style="margin: 0px 4px;"> · </span><svg width="16" data-e2e="" height="16"
-                                        viewBox="0 0 48 48" fill="currentColor" xmlns="http://www.w3.org/2000/svg"
-                                        style="fill: rgb(22, 24, 35); opacity: 0.5; margin: 0px 4px;">
-                                        <path fill-rule="evenodd" clip-rule="evenodd"
-                                            d="M24 3C17.9249 3 13 7.92487 13 14V21H8C6.89543 21 6 21.8954 6 23V41C6 42.1046 6.89543 43 8 43H40C41.1046 43 42 42.1046 42 41V23C42 21.8954 41.1046 21 40 21H35V14C35 7.92487 30.0751 3 24 3ZM31 21V14C31 10.134 27.866 7 24 7C20.134 7 17 10.134 17 14V21H31Z">
-                                        </path>
-                                    </svg><span>${video.who}</span></span>`;
-                } else if (video.who === 'Friends') {
-                    spanOtherInfos.innerHTML = `<span class="tiktok-pocgy1-SpanEllipsis evv7pft2">${customer.name}</span>
-                                    <span style="margin: 0px 4px;"> · </span><span>${daysDifference} </span>
-                                        <span style="margin: 0px 4px;"> · </span><svg width="20" height="20" viewBox="0 0 48 48" fill="currentColor" xmlns="http://www.w3.org/2000/svg" style="margin: 0px 4px;">
-                                    <path d="M25.5 17C25.5 21.1421 22.1421 24.5 18 24.5C13.8579 24.5 10.5 21.1421 10.5 17C10.5 12.8579 13.8579 9.5 18 9.5C22.1421 9.5 25.5 12.8579 25.5 17Z"></path>
-                                    <path d="M7.10396 34.7906C8.78769 30.2189 12.8204 27 18.0009 27C23.1818 27 27.2107 30.2213 28.8958 34.7898C29.3075 35.906 28.6141 37 27.5 37H8.5C7.38629 37 6.69289 35.9067 7.10396 34.7906Z"></path>
-                                    <path d="M40.6308 37H32C31.2264 34.1633 30.0098 31.5927 28.144 29.7682C29.5384 28.9406 31.1829 28.5 33 28.5C37.239 28.5 40.536 30.8992 41.9148 35.0108C42.2516 36.0154 41.5423 37 40.6308 37Z"></path>
-                                    <path d="M33 26.5C36.0376 26.5 38.5 24.0376 38.5 21C38.5 17.9624 36.0376 15.5 33 15.5C29.9624 15.5 27.5 17.9624 27.5 21C27.5 24.0376 29.9624 26.5 33 26.5Z"></path>
-                                </svg><span>${video.who}</span></span>`;
-                } else {
-                    spanOtherInfos.innerHTML = `<span class="tiktok-pocgy1-SpanEllipsis evv7pft2">${customer.name}</span>
-                                    <span style="margin: 0px 4px;"> · </span><span>${daysDifference} </span>`;
-                }
-
-                // Hàm để cập nhật biểu tượng loa dựa trên trạng thái muted
                 function updateVolumeIcon(isMuted) {
                     const svg = volumeButton.querySelector('svg');
-                    // Loại bỏ các path hiện có
                     svg.innerHTML = '';
-                    // Tạo path mới tùy thuộc vào trạng thái muted
                     if (isMuted) {
                         const path1 = document.createElementNS("http://www.w3.org/2000/svg", "path");
                         path1.setAttribute('fill-rule', 'evenodd');
@@ -905,85 +833,102 @@
                         path1.setAttribute('fill', 'white');
                         svg.appendChild(path1);
                         const path2 = document.createElementNS("http://www.w3.org/2000/svg", "path");
-                        path2.setAttribute('d', 'M30.6653 15C32.7348 17.2304 34.0001 20.2174 34.0001 23.5C34.0001 26.7826 32.7348 29.7696 30.6653 32'); // Đường dẫn path cho trạng thái unmuted
+                        path2.setAttribute('d', 'M30.6653 15C32.7348 17.2304 34.0001 20.2174 34.0001 23.5C34.0001 26.7826 32.7348 29.7696 30.6653 32');
                         path2.setAttribute('stroke', 'white');
                         path2.setAttribute('stroke-width', '2.5');
                         path2.setAttribute('stroke-linecap', 'round');
                         svg.appendChild(path2);
                         const path3 = document.createElementNS("http://www.w3.org/2000/svg", "path");
-                        path3.setAttribute('d', 'M26.8799 17.8833C28.1994 19.381 28.9999 21.347 28.9999 23.5C28.9999 25.653 28.1994 27.6191 26.8799 29.1168'); // Đường dẫn path cho trạng thái unmuted
+                        path3.setAttribute('d', 'M26.8799 17.8833C28.1994 19.381 28.9999 21.347 28.9999 23.5C28.9999 25.653 28.1994 27.6191 26.8799 29.1168');
                         path3.setAttribute('stroke', 'white');
                         path3.setAttribute('stroke-width', '2.5');
                         path3.setAttribute('stroke-linecap', 'round');
                         svg.appendChild(path3);
                     }
                 }
+                const profile = document.getElementById('main-content-others_homepage')
+                const inputElement = document.querySelector('.public-DraftEditor-content');
+                const placeholderDiv = document.querySelector('.public-DraftEditorPlaceholder-root');
+                const updateVideo = document.querySelector('.updateVideo')
+                const xButton = document.querySelector('.tiktok-yg0pvs-ButtonBasicButtonContainer-StyledCloseIconContainer');
+                const volumeButton = document.querySelector('.tiktok-6mttet-ButtonVoiceControlNew');
+                const threeDot = document.querySelector(".tiktok-1dcgmzm-DivActionContainer");
+                const editVideo = document.querySelector(".tiktok-uoaz8g-DivContainer");
+                const popupButton = document.querySelector('.tiktok-u9i5ik-LiPopupItem .tiktok-1bsywin-ButtonAction');
+                const deleteVideoButton = document.getElementById('deleteVideo');
+                const deleteButton = document.querySelector('.tiktok-u9i5ik-LiPopupItem .tiktok-1bsywin-ButtonAction');
+                const modalContent = document.querySelector('.tiktok-17s26nl-ModalContentContainer');
+                const spanOtherInfos = document.querySelector('.tiktok-gg0x0w-SpanOtherInfos');
+                const videoPlay = document.querySelector('.optionVideo');
+                const playIcon = document.getElementById('playIcon');
+                const xgwrapper = document.getElementById('xgwrapper-2-7293898113478053127')
+                let isMuted = false
 
-                // Bắt sự kiện click trên nút âm lượng
+                const dateObject = new Date(video.createAt);
+                const today = new Date();
+                const timeDifference = today - dateObject;
+                if (timeDifference < 1000 * 60 * 60) { // Nếu thời gian chênh lệch dưới 1 giờ
+                    const minutesDifference = Math.floor(timeDifference / (1000 * 60));
+                    daysDifference = `${minutesDifference}m ago`;
+                } else if (timeDifference < 1000 * 60 * 60 * 24) { // Nếu thời gian chênh lệch dưới 1 ngày
+                    const hoursDifference = Math.floor(timeDifference / (1000 * 60 * 60));
+                    daysDifference = `${hoursDifference}h ago`;
+                } else if (timeDifference > 1000 * 60 * 60 * 24 * 7) { // Nếu thời gian chênh lệch trên 1 tuần
+                    const day = dateObject.getDate();
+                    const month = dateObject.getMonth() + 1;
+                    daysDifference = `${month}-${day}`;
+                } else {
+                    const daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+                    daysDifference = `${daysDifference}d ago`;
+                }
+
+                profile.style.display = 'none'
+
                 volumeButton.addEventListener('click', () => {
-
-                    isMuted = !isMuted; // Đảo ngược trạng thái khi nút được nhấp
-                    // Thay đổi đường dẫn path dựa trên trạng thái mute/unmute
+                    isMuted = !isMuted;
                     if (isMuted) {
                         updateVolumeIcon(isMuted)
                     } else {
                         updateVolumeIcon(isMuted)
                     }
                     if (videoPlay) {
-                        // Kiểm tra xem âm thanh đang được mute hay không
                         if (videoPlay.muted) {
-                            // Nếu đã mute, bật lại âm thanh
                             videoPlay.muted = false;
                         } else {
-                            // Nếu chưa mute, tắt âm thanh
                             videoPlay.muted = true;
                         }
                     }
                 });
-                const videoPlay = document.querySelector('.optionVideo'); // Lấy thẻ video
-                const playIcon = document.getElementById('playIcon');
-                // Thêm sự kiện click listener vào div chứa video
-                document.getElementById('xgwrapper-2-7293898113478053127').addEventListener('click', function () {
+                xgwrapper.addEventListener('click', function () {
                     if (videoPlay.paused) {
                         playIcon.style.display = 'none';
-                        // Nếu video đang tắt, bật video và loại bỏ thuộc tính loop để ngừng lặp
                         videoPlay.play();
                         videoPlay.removeAttribute('loop');
                     } else {
                         playIcon.style.display = 'block';
-                        // Nếu video đang chạy, tắt video và thêm thuộc tính loop để lặp video
                         videoPlay.pause();
                         videoPlay.setAttribute('loop', '');
                     }
                 });
-
-
                 xButton.addEventListener('click', function () {
                     window.location.href = '/customer/profile'
                 })
-                // Thêm sự kiện input để theo dõi việc nhập liệu
                 inputElement.addEventListener('input', function () {
-                    // Kiểm tra nếu nội dung không rỗng
                     if (inputElement.textContent.trim() !== '') {
-                        // Ẩn div placeholder
                         placeholderDiv.style.display = 'none';
                     } else {
-                        // Hiển thị div placeholder
                         placeholderDiv.style.display = 'block';
                     }
                 });
                 threeDot.addEventListener('click', function () {
                     if (editVideo.style.display === "flex") {
-                        // Nếu editVideo hiển thị, ẩn nó đi
                         editVideo.style.display = "none";
                     } else {
-                        // Nếu editVideo ẩn hoặc không được thiết lập display, hiển thị nó
                         editVideo.style.display = "flex";
                     }
                 });
 
                 popupButton.addEventListener('click', function () {
-                    // Thay đổi nội dung của modal khi nút được click
                     editProfileForm.style.display = 'block'
                     modalContent.innerHTML = `
        <div  class="tiktok-15neh3t-ModalContentVerticalPositionContainer e1wuf0b32">
@@ -1044,18 +989,13 @@
                         </button></div>
                 </div>
                 <p class="tiktok-1u1dhg0-PHint e1i2llgv7">Duet and Stitch not available for videos over 60s</p>
-            </div><button data-e2e="video-setting-down" class="tiktok-6fnltj-ButtonSave e1i2llgv8">Done</button>
+            </div><button data-e2e="video-setting-down" class="tiktok-6fnltj-ButtonSave">Done</button>
         </section>
     </div>
 </div>
     `;
-
-                    const doneButton = document.querySelector('.tiktok-6fnltj-ButtonSave')
-                    doneButton.addEventListener('click', function () {
-                        editProfileForm.style.display = 'none'
-                    })
-                    // Thêm các xử lý sự kiện hoặc nội dung khác vào đây nếu cần
                     const editWho = document.querySelector('.tiktok-17hfips-DivContainer')
+                    const selectedElement = document.querySelector('.tiktok-1bi8eji-PSelected');
                     editWho.addEventListener('click', function () {
                         const edit = document.querySelector('.tiktok-cyte9w-UlOptionsContainer')
                         if (edit.style.display == 'none') {
@@ -1063,30 +1003,17 @@
                         } else {
                             edit.style.display = 'none'
                         }
-                        // Lấy tất cả các mục trong danh sách
                         const optionsItems = document.querySelectorAll('.tiktok-162z403-LiOptionsItem');
-
-                        // Lặp qua từng mục và thêm sự kiện click
                         optionsItems.forEach(item => {
                             item.addEventListener('click', function () {
-                                // Lấy tiêu đề của mục đã chọn
                                 const selectedTitle = this.getAttribute('title');
-
-                                // Lấy phần tử <p> cần thay đổi nội dung
-                                const selectedElement = document.querySelector('.tiktok-1bi8eji-PSelected');
-
-                                // Thay đổi nội dung của phần tử <p> thành tiêu đề của mục đã chọn
                                 selectedElement.textContent = selectedTitle;
-
                             });
                         })
                     })
-                    // Lấy ra nút chuyển đổi và các phần tử con bên trong
                     const switchButton = document.querySelector('.tiktok-ge3lma-ButtonSwitchContainer');
                     const switchWrapper = document.querySelector('.tiktok-12xzmck-DivSwitchWrapper');
                     const switchIcon = document.querySelector('.tiktok-9lvgjp-SpanSwitchIcon');
-
-                    // Sử dụng biến để theo dõi trạng thái của công tắc
                     let isSwitchOn = video.allowComment;
                     if (isSwitchOn) {
                         switchWrapper.style.background = 'rgb(11, 224, 155)';
@@ -1095,14 +1022,9 @@
                         switchWrapper.style.background = 'gray';
                         switchIcon.style.left = '23px';
                     }
-                    // Thêm sự kiện click vào nút chuyển đổi
                     switchButton.addEventListener('click', function () {
-                        // Đảo ngược trạng thái
                         isSwitchOn = !isSwitchOn;
-                        // Cập nhật thuộc tính aria-checked để thể hiện trạng thái
                         switchButton.setAttribute('aria-checked', isSwitchOn);
-
-                        // Thay đổi màu sắc và vị trí của vùng bao bọc
                         if (isSwitchOn) {
                             switchWrapper.style.background = 'rgb(11, 224, 155)';
                             switchIcon.style.left = 'calc(100% - 2px)';
@@ -1114,7 +1036,55 @@
                         }
 
                     });
+
+                    const doneButton = document.querySelector('.tiktok-6fnltj-ButtonSave')
+                    doneButton.addEventListener('click', function (event) {
+                        const data = {
+                            video: video.id,
+                            allowComment: isSwitchOn,
+                            who: selectedElement.textContent
+                        };
+
+                        fetch('/customer/video/update', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json' // Định dạng dữ liệu gửi đi là JSON
+                            },
+                            body: JSON.stringify(data) // Chuyển đối tượng thành chuỗi JSON và gửi đi
+                        })
+                            .catch(error => {
+                                console.error('Error:', error);
+                            });
+                    });
                 });
+                deleteVideoButton.addEventListener('click', function () {
+                    fetch('/customer/video/delete', {
+                        method: 'DELETE',
+                    })
+                })
+                if (video.who === 'Private') {
+                    spanOtherInfos.innerHTML = `<span class="tiktok-pocgy1-SpanEllipsis evv7pft2">${customer.name}</span>
+                                    <span style="margin: 0px 4px;"> · </span><span>${daysDifference} </span>
+                                        <span style="margin: 0px 4px;"> · </span><svg width="16" data-e2e="" height="16"
+                                        viewBox="0 0 48 48" fill="currentColor" xmlns="http://www.w3.org/2000/svg"
+                                        style="fill: rgb(22, 24, 35); opacity: 0.5; margin: 0px 4px;">
+                                        <path fill-rule="evenodd" clip-rule="evenodd"
+                                            d="M24 3C17.9249 3 13 7.92487 13 14V21H8C6.89543 21 6 21.8954 6 23V41C6 42.1046 6.89543 43 8 43H40C41.1046 43 42 42.1046 42 41V23C42 21.8954 41.1046 21 40 21H35V14C35 7.92487 30.0751 3 24 3ZM31 21V14C31 10.134 27.866 7 24 7C20.134 7 17 10.134 17 14V21H31Z">
+                                        </path>
+                                    </svg><span>${video.who}</span></span>`;
+                } else if (video.who === 'Friends') {
+                    spanOtherInfos.innerHTML = `<span class="tiktok-pocgy1-SpanEllipsis evv7pft2">${customer.name}</span>
+                                    <span style="margin: 0px 4px;"> · </span><span>${daysDifference} </span>
+                                        <span style="margin: 0px 4px;"> · </span><svg width="20" height="20" viewBox="0 0 48 48" fill="currentColor" xmlns="http://www.w3.org/2000/svg" style="margin: 0px 4px;">
+                                    <path d="M25.5 17C25.5 21.1421 22.1421 24.5 18 24.5C13.8579 24.5 10.5 21.1421 10.5 17C10.5 12.8579 13.8579 9.5 18 9.5C22.1421 9.5 25.5 12.8579 25.5 17Z"></path>
+                                    <path d="M7.10396 34.7906C8.78769 30.2189 12.8204 27 18.0009 27C23.1818 27 27.2107 30.2213 28.8958 34.7898C29.3075 35.906 28.6141 37 27.5 37H8.5C7.38629 37 6.69289 35.9067 7.10396 34.7906Z"></path>
+                                    <path d="M40.6308 37H32C31.2264 34.1633 30.0098 31.5927 28.144 29.7682C29.5384 28.9406 31.1829 28.5 33 28.5C37.239 28.5 40.536 30.8992 41.9148 35.0108C42.2516 36.0154 41.5423 37 40.6308 37Z"></path>
+                                    <path d="M33 26.5C36.0376 26.5 38.5 24.0376 38.5 21C38.5 17.9624 36.0376 15.5 33 15.5C29.9624 15.5 27.5 17.9624 27.5 21C27.5 24.0376 29.9624 26.5 33 26.5Z"></path>
+                                </svg><span>${video.who}</span></span>`;
+                } else {
+                    spanOtherInfos.innerHTML = `<span class="tiktok-pocgy1-SpanEllipsis evv7pft2">${customer.name}</span>
+                                    <span style="margin: 0px 4px;"> · </span><span>${daysDifference} </span>`;
+                }
             });
         });
     }

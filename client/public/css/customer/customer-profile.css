@@ -841,6 +841,20 @@ body strong {
     border-top: 1px solid rgba(22, 24, 35, 0.12);
     cursor: pointer;
     color: rgb(22, 24, 35);
+    transition: all 0.3s ease;
+    /* Thêm hiệu ứng chuyển động 0.3 giây */
+}
+
+.tiktok-6fnltj-ButtonSave:hover {
+    background-color: rgba(22, 24, 35, 0.1);
+    /* Màu nền khi hover */
+}
+
+.tiktok-6fnltj-ButtonSave:active {
+    background-color: rgba(22, 24, 35, 0.2);
+    /* Màu nền khi click */
+    border-top-color: transparent;
+    /* Ẩn viền trên khi click */
 }
 
 .tiktok-ge3lma-ButtonSwitchContainer {

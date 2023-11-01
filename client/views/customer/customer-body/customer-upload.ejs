@@ -581,8 +581,8 @@
         formData.append('video', selectedFile);
         formData.append('caption', caption);
         formData.append('image', selectedImageSrc);
-        formData.append('allowUsers', allowUsers);
-        formData.append('who', selector.textContent);
+        formData.append('allowComment', allowUsers);
+        formData.append('who', selector.textContent.trim());
 
         // Sử dụng fetch để gửi yêu cầu POST
         fetch('/customer/upload', {

@@ -10,7 +10,7 @@ import {
 } from '@nestjs/common';
 import { CusAuthGuard } from 'src/common/guard/customer.auth.guard';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { InputSetAuth, InputSetCustomer, InputUpLoad } from './customer.model';
+import { InputSetAuth, InputSetCustomer, InputUpLoad, InputUpaDateVideo } from './customer.model';
 import { CustomerService } from './customer.service';
 import { Response } from 'express';
 @Controller('customer')
@@ -109,8 +109,21 @@ export class CustomerController {
       body.video = video
       return this.customerService.upVideo(body)
     }
+  }
 
+  @Post('video/update')
+  @UseGuards(CusAuthGuard)
+  updateVideo(@Body() body: InputUpaDateVideo, @Req() request: Request) {
+    if (body) {
+      body.user = request['user']
+      return this.customerService.upDateVideo(body)
+    }
+  }
 
+  @Delete('video/delete')
+  @UseGuards(CusAuthGuard)
+  deleteVideo() {
+    return this.customerService.deleteVideo()
   }
 
   @Delete()

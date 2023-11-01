@@ -102,11 +102,18 @@ export class CustomerService extends BaseService<Customer> {
   async upVideo(input) {
     const url = await this.uploadVideo(input)
     if (url) {
-      const saveVideo = await this.videoService.create(url, input)
-      return true
+      return await this.videoService.create(url, input)
     }
   }
 
+  async upDateVideo(input) {
+    const saveVideo = await this.videoService.update(input)
+    return true
+  }
+
+  async deleteVideo() {
+    console.log('vodayroi')
+  }
   async delete(id: string) {
     const customer = await this.findById(id);
     customer.logo && this.clearFile(customer.logo);

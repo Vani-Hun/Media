@@ -12,8 +12,16 @@ export type InputSetAuth = {
 };
 
 export type InputUpLoad = {
+  who: string,
   caption: string;
   image: string;
   video: Express.Multer.File;
+  user: object
+};
+
+export type InputUpaDateVideo = {
+  video: string,
+  who: string;
+  allowComment: boolean;
   user: object
 };
