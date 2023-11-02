@@ -17,7 +17,7 @@ export class VideoService extends BaseService<Video> {
     async create(url: object, input) {
         const video = await this.repo.create({
             video: url['videoURL'],
-            cover: url['imgURL'],
+            cover: url['imageURL'],
             user: input.user.id,
             who: input.who,
             allowComment: Boolean(input.allowComment),

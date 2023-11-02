@@ -155,8 +155,8 @@
                                                                 class="notranslate public-DraftEditor-content"
                                                                 contenteditable="true" role="combobox"
                                                                 spellcheck="false"
-                                                                style="outline: none; user-select: text; overflow-wrap: break-word;">
-                                                                <!-- <div data-contents="true">
+                                                                style="outline: none; user-select: text;overflow: hidden; overflow-wrap: break-word;">
+                                                                <div data-contents="true">
                                                                     <div class="" data-block="true" data-editor="aeim3"
                                                                         data-offset-key="bjmma-0-0">
                                                                         <div data-offset-key="bjmma-0-0"
@@ -165,7 +165,7 @@
                                                                                     data-text="true"></span>
                                                                         </div>
                                                                     </div>
-                                                                </div> -->
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -397,14 +397,10 @@
     </div>
 </div>
 <script>
-    var inputBox = document.querySelector('.public-DraftEditor-content');
-
-    // Lấy đối tượng form và nút "Select file" bằng class
     var videoForm = document.querySelector('.jsx-2834184006');
     var videoFormBefore = document.querySelector('.jsx-2977532431.uploader');
     var selectFileButton = videoForm.querySelector('input[type="file"]');
     var videoFormaAfter = document.querySelector('.jsx-2977532431.preview');
-
     var changeButton = document.querySelector('.jsx-3536812553.btn')
     var coverEmpty = document.querySelector('.candidate-v2');
     var coverContainer = document.querySelector('.bg-container-v2');
@@ -547,6 +543,17 @@
             reader.readAsDataURL(selectedFile);
         }
     });
+    const textBox = document.querySelector('.public-DraftEditor-content');
+
+    textBox.addEventListener('input', function (event) {
+        let inputValue = event.target.innerText.trim();
+        const MAX_CHARACTERS = 50; // Số kí tự tối đa cho phép
+        if (inputValue.length > MAX_CHARACTERS) {
+            // Cắt bớt văn bản để chỉ chứa số kí tự tối đa cho phép
+            inputValue = inputValue.substring(0, MAX_CHARACTERS);
+            event.target.innerText = inputValue;
+        }
+    });
 
     // Lấy tham chiếu đến nút "Post"
     var postButton = document.querySelector('.jsx-3366794632.btn-post button');
@@ -570,7 +577,6 @@
 
         var checkbox = document.querySelector('.css-mbgljv')
         var allowUsers;
-        var caption = document.querySelector('.public-DraftEditor-content').textContent.trim();
         var selectedImageSrc = document.querySelector('.selected-image').src;
 
         if (checkbox) {
@@ -579,7 +585,7 @@
 
         var formData = new FormData();
         formData.append('video', selectedFile);
-        formData.append('caption', caption);
+        formData.append('caption', textBox.textContent.trim());
         formData.append('image', selectedImageSrc);
         formData.append('allowComment', allowUsers);
         formData.append('who', selector.textContent.trim());

@@ -28,41 +28,63 @@ export class UtilService {
     readStream.pipe(writeSteam)
 
     this.clearTmp(file.path)
+    console.log("file.path:", file.path)
 
     return `/${oldFile}`
   }
 
 
   async uploadVideo(input) {
-    const base64Data = input.image.replace(/^data:image\/jpeg;base64,/, '');
-    const imageBuffer = Buffer.from(base64Data, 'base64');
-    // Tạo tên tệp hình ảnh ngẫu nhiên hoặc theo yêu cầu của bạn
-    const imageName = 'image_' + Date.now() + '.jpg';
-    const imagePath = path.join(__dirname, '..', '..', '..', 'client', 'public', 'audio', 'video', imageName);
-    fs.writeFileSync(imagePath, imageBuffer);
-    const filePath = `cover/${input.video.filename}`;
-    const img = bucket.file(filePath);
-    await img.save(imageBuffer, {
-      metadata: {
-        contentType: 'image/jpeg',
-      },
-    });
-    await this.clearTmp(imagePath);
-    const imgRef = await getStorage().bucket(`${bucket.name}`).file(`${img.name}`);
-    const imgURL = await getDownloadURL(imgRef);
-    const videoData = readFileSync(input.video.path);
-    // Tạo Buffer từ dữ liệu video
-    const videoBuffer = Buffer.from(videoData);
-    const file = bucket.file(`videos/${input.video.filename}`);
-    await file.save(videoBuffer, {
-      metadata: {
-        contentType: 'video/mp4',
-      },
-    });
-    await this.clearTmp(input.video.path);
-    const fileRef = await getStorage().bucket(`${bucket.name}`).file(`${file.name}`);
-    const videoURL = await getDownloadURL(fileRef);
-    return { imgURL, videoURL };
+    try {
+      const base64Data = input.image.replace(/^data:image\/jpeg;base64,/, '');
+      const imageBuffer = Buffer.from(base64Data, 'base64');
+      const videoStream = createReadStream(input.video.path);
+      const videoFile = bucket.file(`videos/${input.video.filename}`);
+      const imageFile = bucket.file(`cover/${input.video.filename}`);
+      const uploadStream = await videoFile.createWriteStream({
+        metadata: {
+          contentType: 'video/mp4',
+        },
+      })
+      // Sử dụng Promise.allSettled() để đảm bảo rằng tất cả các promise đã được giải quyết
+      const results = await Promise.allSettled([
+        new Promise((resolve, reject) => {
+          videoStream.pipe(uploadStream)
+            .on('finish', resolve)
+            .on('error', reject);
+        }),
+        imageFile.save(imageBuffer, {
+          metadata: {
+            contentType: 'image/jpeg',
+          },
+        }),
+      ]);
+
+      // Kiểm tra kết quả của các promise
+      for (const result of results) {
+        if (result.status === 'rejected') {
+          throw result.reason;
+        }
+      }
+
+
+      await uploadStream.end();
+      await this.clearTmp(input.video.path);
+
+      const [imgRef, fileRef] = await Promise.all([
+        getStorage().bucket(`${bucket.name}`).file(`${imageFile.name}`),
+        getStorage().bucket(`${bucket.name}`).file(`${videoFile.name}`),
+      ]);
+      const [imageURL, videoURL] = await Promise.all([
+        getDownloadURL(imgRef),
+        getDownloadURL(fileRef),
+      ]);
+      if (imageURL && videoURL) {
+        return { imageURL, videoURL };
+      }
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   async uploadFile(input) {
