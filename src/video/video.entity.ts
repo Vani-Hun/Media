@@ -1,10 +1,11 @@
 import { BaseEntityUUID } from 'src/common/entities/base.entity';
-import { Column, Entity, OneToMany, ManyToOne } from 'typeorm';
+import { Column, Entity, OneToMany, ManyToOne, JoinColumn } from 'typeorm';
 import { Comment } from 'src/comment/comment.entity';
 import { Customer } from 'src/customer/customer.entity';
 @Entity()
 export class Video extends BaseEntityUUID {
-    @ManyToOne(() => Customer, user => user.videos)
+    @ManyToOne(() => Customer)
+    @JoinColumn({ name: 'user' })
     user: Customer;
 
     @Column()

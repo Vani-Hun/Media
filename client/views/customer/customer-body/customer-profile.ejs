@@ -1058,7 +1058,7 @@
                     });
                 });
                 deleteVideoButton.addEventListener('click', function () {
-                    fetch('/customer/video/delete', {
+                    fetch(`/customer/video/delete/${video.id}`, {
                         method: 'DELETE',
                     })
                 })

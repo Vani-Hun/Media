@@ -50,7 +50,17 @@ export class VideoService extends BaseService<Video> {
         }
         return video;
     }
+    async delete(id, user) {
+        const video = await this.repo
+            .createQueryBuilder('video')
+            .leftJoinAndSelect('video.user', 'user') // Join bảng video với bảng user và select thông tin user
+            .where('video.id = :id', { id: id })
+            .getOne();
+        if (video.user.id === user.id) {
+            return await this.repo.delete(id)
+        }
 
+    }
     async likeVideo(videoId: string, userId: string): Promise<void> {
         // Xử lý logic khi có sự kiện thích video
         // ...

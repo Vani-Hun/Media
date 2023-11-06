@@ -120,10 +120,11 @@ export class CustomerController {
     }
   }
 
-  @Delete('video/delete')
+  @Delete('video/delete/:videoId')
   @UseGuards(CusAuthGuard)
-  deleteVideo() {
-    return this.customerService.deleteVideo()
+  deleteVideo(@Param('videoId') videoId: string, @Req() request: Request) {
+
+    return this.customerService.deleteVideo(videoId, request['user'])
   }
 
   @Delete()

@@ -111,8 +111,9 @@ export class CustomerService extends BaseService<Customer> {
     return true
   }
 
-  async deleteVideo() {
-    console.log('vodayroi')
+  async deleteVideo(video, user) {
+    return await this.videoService.delete(video, user)
+
   }
   async delete(id: string) {
     const customer = await this.findById(id);
