@@ -9,6 +9,9 @@ export class Video extends BaseEntityUUID {
     user: Customer;
 
     @Column()
+    name: string;
+
+    @Column()
     video: string;
 
     @Column({ default: 0 }) // Số lượt like, mặc định là 0

@@ -19,3 +19,4 @@ bucket.setCorsConfiguration([
 export { bucket }
 export const videoFile = admin.storage().bucket().file(`videos/admin_1696780201555`);
 export const firebaseAdmin = admin;
+

@@ -376,26 +376,11 @@
     </div>
 </div>
 <div class="loader">
-    <div class="semicircle">
-        <div>
-            <div>
-                <div>
-                    <div>
-                        <div>
-                            <div>
-                                <div>
-                                    <div>
-
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    <li class="ball"></li>
+    <li class="ball"></li>
+    <li class="ball"></li>
 </div>
+
 <script>
     var videoForm = document.querySelector('.jsx-2834184006');
     var videoFormBefore = document.querySelector('.jsx-2977532431.uploader');
@@ -525,7 +510,7 @@
                         video.currentTime = currentTime;
                         video.onseeked = function () {
                             ctxCapture.drawImage(video, 0, 0, canvasCapture.width, canvasCapture.height);
-                            var frameDataURL = canvasCapture.toDataURL('image/jpeg', 0.7);
+                            var frameDataURL = canvasCapture.toDataURL('image/jpeg', 0.5);
                             addFrameToCover(frameDataURL);
                             if (currentTime + interval <= videoDuration) {
                                 captureFrames(currentTime + interval);

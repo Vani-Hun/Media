@@ -22,20 +22,20 @@ export class CustomerController {
   @Render('customer/upload')
   async getUpload(@Req() request: Request) {
     const user = await request['user']
-    return this.customerService.get(user)
+    return await this.customerService.get(user)
   }
 
   @Get()
   @Render('scroll/index')
-  getVideo() {
-    return this.customerService.getVideo()
+  async getVideo() {
+    return await this.customerService.getVideo()
   }
 
 
   @Get('video/:videoId')
   @Render('scroll/index')
-  getVideoById(@Param('videoId') videoId: string) {
-    return this.customerService.getVideoById(videoId)
+  async getVideoById(@Param('videoId') videoId: string) {
+    return await this.customerService.getVideoById(videoId)
   }
 
 
@@ -44,7 +44,7 @@ export class CustomerController {
   @Render('customer/profile')
   async getProfile(@Req() request: Request) {
     const user = await request['user']
-    return this.customerService.getProfile(user)
+    return await this.customerService.getProfile(user)
   }
 
 
@@ -52,7 +52,7 @@ export class CustomerController {
   @UseGuards(CusAuthGuard)
   async getHeader(@Req() request: Request) {
     const user = await request['user']
-    return this.customerService.get(user)
+    return await this.customerService.get(user)
   }
 
   @Post('profile/update')
@@ -61,7 +61,7 @@ export class CustomerController {
   async updateProfile(@UploadedFile() avatar: Express.Multer.File, @Body() body: InputSetCustomer, @Req() request: Request) {
     body['user'] = request['user']
     body['avatar'] = avatar
-    return this.customerService.postProfile(body)
+    return await this.customerService.postProfile(body)
   }
 
   @Get('sign-in')
@@ -96,39 +96,38 @@ export class CustomerController {
 
   @Post('sign-up')
   @Redirect('/customer/upload')
-  signUp(@Body() body: InputSetAuth) {
-    return this.customerService.signUp(body)
+  async signUp(@Body() body: InputSetAuth) {
+    return await this.customerService.signUp(body)
   }
 
   @Post('upload')
   @UseGuards(CusAuthGuard)
   @UseInterceptors(FileInterceptor('video'))
-  upLoad(@Body() body: InputUpLoad, @UploadedFile() video: Express.Multer.File, @Req() request: Request) {
+  async upLoad(@Body() body: InputUpLoad, @UploadedFile() video: Express.Multer.File, @Req() request: Request) {
     if (video) {
       body.user = request['user']
       body.video = video
-      return this.customerService.upVideo(body)
+      return await this.customerService.upVideo(body)
     }
   }
 
   @Post('video/update')
   @UseGuards(CusAuthGuard)
-  updateVideo(@Body() body: InputUpaDateVideo, @Req() request: Request) {
+  async updateVideo(@Body() body: InputUpaDateVideo, @Req() request: Request) {
     if (body) {
       body.user = request['user']
-      return this.customerService.upDateVideo(body)
+      return await this.customerService.upDateVideo(body)
     }
   }
 
   @Delete('video/delete/:videoId')
   @UseGuards(CusAuthGuard)
-  deleteVideo(@Param('videoId') videoId: string, @Req() request: Request) {
-
-    return this.customerService.deleteVideo(videoId, request['user'])
+  async deleteVideo(@Param('videoId') videoId: string, @Req() request: Request) {
+    return await this.customerService.deleteVideo(videoId, request['user'])
   }
 
   @Delete()
-  delete(@Body('id') id: string) {
-    return this.customerService.delete(id);
+  async delete(@Body('id') id: string) {
+    return await this.customerService.delete(id);
   }
 }

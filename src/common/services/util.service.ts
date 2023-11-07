@@ -3,11 +3,9 @@ import { createReadStream, createWriteStream, existsSync, mkdirSync, unlinkSync,
 import { join } from 'path';
 import { staticFolder } from '../utils/constant';
 import * as _ from 'lodash';
-import { bucket, firebaseAdmin, videoFile } from '../utils/firebase.config';
+import { bucket, videoFile } from '../utils/firebase.config';
 const { Storage } = require('@google-cloud/storage');
 const { getStorage, getDownloadURL } = require('firebase-admin/storage');
-import * as fs from 'fs';
-import * as path from 'path';
 
 export class UtilService {
 
@@ -31,60 +29,6 @@ export class UtilService {
     console.log("file.path:", file.path)
 
     return `/${oldFile}`
-  }
-
-
-  async uploadVideo(input) {
-    try {
-      const base64Data = input.image.replace(/^data:image\/jpeg;base64,/, '');
-      const imageBuffer = Buffer.from(base64Data, 'base64');
-      const videoStream = createReadStream(input.video.path);
-      const videoFile = bucket.file(`videos/${input.video.filename}`);
-      const imageFile = bucket.file(`cover/${input.video.filename}`);
-      const uploadStream = await videoFile.createWriteStream({
-        metadata: {
-          contentType: 'video/mp4',
-        },
-      })
-      // Sử dụng Promise.allSettled() để đảm bảo rằng tất cả các promise đã được giải quyết
-      const results = await Promise.allSettled([
-        new Promise((resolve, reject) => {
-          videoStream.pipe(uploadStream)
-            .on('finish', resolve)
-            .on('error', reject);
-        }),
-        imageFile.save(imageBuffer, {
-          metadata: {
-            contentType: 'image/jpeg',
-          },
-        }),
-      ]);
-
-      // Kiểm tra kết quả của các promise
-      for (const result of results) {
-        if (result.status === 'rejected') {
-          throw result.reason;
-        }
-      }
-
-
-      await uploadStream.end();
-      await this.clearTmp(input.video.path);
-
-      const [imgRef, fileRef] = await Promise.all([
-        getStorage().bucket(`${bucket.name}`).file(`${imageFile.name}`),
-        getStorage().bucket(`${bucket.name}`).file(`${videoFile.name}`),
-      ]);
-      const [imageURL, videoURL] = await Promise.all([
-        getDownloadURL(imgRef),
-        getDownloadURL(fileRef),
-      ]);
-      if (imageURL && videoURL) {
-        return { imageURL, videoURL };
-      }
-    } catch (error) {
-      console.error(error);
-    }
   }
 
   async uploadFile(input) {

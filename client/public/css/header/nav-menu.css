@@ -2,55 +2,69 @@
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
+    right: 0;
+    bottom: 0;
     background-color: rgba(0, 0, 0, 0.5);
-    display: none;
+    z-index: 9999;
+    display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 9999;
+    opacity: 0;
+    visibility: hidden;
 }
 
 .loader.visible {
-    display: flex;
+    opacity: 1;
+    visibility: visible;
 }
 
-.semicircle,
-.semicircle div {
-    /*  Adjust the size of the entire animation here.
-      (Remove max size below to go above 300px.) */
-    width: 170px;
-    height: 170px;
-    /* Adjust the speed or timing function of the animation here. */
-    animation: 6s rotate141 infinite linear;
-    background-repeat: no-repeat;
+.ball {
+    list-style: none;
+    width: 12px;
+    height: 12px;
     border-radius: 50%;
-    position: relative;
-    overflow: hidden;
+    background-color: #fff;
+    z-index: 20;
 }
 
-.semicircle div {
-    position: absolute;
-    top: 5%;
-    left: 5%;
-    width: 90%;
-    height: 90%;
+.ball:nth-child(1) {
+    animation: bounce-1 2.1s ease-in-out infinite;
 }
 
-.semicircle:before,
-.semicircle div:before {
-    content: '';
-    width: 100%;
-    height: 50%;
-    display: block;
-    background: radial-gradient(transparent, transparent 65%, #edf1ee 65%, #0991d5);
-    background-size: 100% 200%;
+@keyframes bounce-1 {
+    50% {
+        transform: translateY(-18px);
+    }
+}
+
+.ball:nth-child(2) {
+    animation: bounce-3 2.1s ease-in-out 0.3s infinite;
+}
+
+@keyframes bounce-2 {
+    50% {
+        transform: translateY(-18px);
+    }
+}
+
+.ball:nth-child(3) {
+    animation: bounce-3 2.1s ease-in-out 0.6s infinite;
+}
+
+@keyframes bounce-3 {
+    50% {
+        transform: translateY(-18px);
+    }
 }
 
 @keyframes rotate141 {
     to {
         transform: rotate(360deg);
     }
+}
+
+#home-body {
+    position: relative;
 }
 
 .nav-menu {

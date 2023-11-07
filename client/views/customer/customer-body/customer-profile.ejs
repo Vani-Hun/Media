@@ -279,6 +279,11 @@
         </div>
     </div>
 </form>
+<div class="loader">
+    <li class="ball"></li>
+    <li class="ball"></li>
+    <li class="ball"></li>
+</div>
 <script>
 
     const logo = document.querySelector('.tiktok-1zpj2q-ImgAvatar')
@@ -867,6 +872,7 @@
                 const dateObject = new Date(video.createAt);
                 const today = new Date();
                 const timeDifference = today - dateObject;
+                let daysDifference;
                 if (timeDifference < 1000 * 60 * 60) { // Nếu thời gian chênh lệch dưới 1 giờ
                     const minutesDifference = Math.floor(timeDifference / (1000 * 60));
                     daysDifference = `${minutesDifference}m ago`;
@@ -878,8 +884,8 @@
                     const month = dateObject.getMonth() + 1;
                     daysDifference = `${month}-${day}`;
                 } else {
-                    const daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
-                    daysDifference = `${daysDifference}d ago`;
+                    const difference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+                    daysDifference = `${difference}d ago`;
                 }
 
                 profile.style.display = 'none'
@@ -1052,15 +1058,35 @@
                             },
                             body: JSON.stringify(data) // Chuyển đối tượng thành chuỗi JSON và gửi đi
                         })
+                            .then((data) => {
+                                console.log("data:", data)
+                                window.location.href = '/customer/profile'
+                            })
                             .catch(error => {
                                 console.error('Error:', error);
                             });
                     });
                 });
                 deleteVideoButton.addEventListener('click', function () {
+                    function showLoader() {
+                        var loader = document.querySelector('.loader');
+                        loader.classList.add('visible');
+                    }
+
+                    function hideLoader() {
+                        var loader = document.querySelector('.loader');
+                        loader.classList.remove('visible');
+                    }
+                    showLoader()
                     fetch(`/customer/video/delete/${video.id}`, {
                         method: 'DELETE',
+                    }).then((data) => {
+                        hideLoader()
+                        window.location.href = '/customer/profile'
                     })
+                        .catch(error => {
+                            console.error('Error:', error);
+                        });
                 })
                 if (video.who === 'Private') {
                     spanOtherInfos.innerHTML = `<span class="tiktok-pocgy1-SpanEllipsis evv7pft2">${customer.name}</span>

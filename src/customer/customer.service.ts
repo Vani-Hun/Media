@@ -100,7 +100,7 @@ export class CustomerService extends BaseService<Customer> {
   }
 
   async upVideo(input) {
-    const url = await this.uploadVideo(input)
+    const url = await this.videoService.uploadVideo(input)
     if (url) {
       return await this.videoService.create(url, input)
     }
