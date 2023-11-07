@@ -2400,9 +2400,15 @@
 </div>
 
 <script>
-    // Chọn ô nhập liệu văn bản
+    const videos = JSON.parse('<%- JSON.stringify(video) %>');
     const inputElement = document.querySelector('.public-DraftEditor-content');
+    const scrollBottom = document.querySelector('.tiktok-1s9jpf8-ButtonBasicButtonContainer-StyledVideoSwitch')
+    scrollBottom.addEventListener('click', () => {
 
+        videos.forEach((video) => {
+            console.log(video)
+        })
+    })
     // Chọn div chứa class "public-DraftEditorPlaceholder-root"
     const placeholderDiv = document.querySelector('.public-DraftEditorPlaceholder-root');
     // Thêm sự kiện input để theo dõi việc nhập liệu

@@ -52,15 +52,7 @@ export class UtilService {
     return downloadURL;
   }
 
-  async loadVideo() {
-    const url = await videoFile.getSignedUrl({
-      action: 'read',
-      expires: '03-17-2025' // Thời gian URL sẽ hết hạn
-    });
 
-    console.log('Video URL:', url);
-    return
-  }
   checkExist(path: string): boolean {
     return path && existsSync(join(staticFolder, path))
   }
