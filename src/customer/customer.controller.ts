@@ -26,6 +26,7 @@ export class CustomerController {
   }
 
   @Get()
+  @UseGuards(CusAuthGuard)
   @Render('scroll/index')
   async getVideo() {
     return await this.customerService.getVideo()
