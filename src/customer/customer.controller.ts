@@ -32,9 +32,9 @@ export class CustomerController {
     return await this.customerService.getVideo()
   }
 
-
   @Get('video/:videoId')
-  @Render('scroll/index')
+  @UseGuards(CusAuthGuard)
+  @Render('scroll/detail')
   async getVideoById(@Param('videoId') videoId: string) {
     return await this.customerService.getVideoById(videoId)
   }

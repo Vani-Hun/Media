@@ -99,15 +99,12 @@ export class VideoService extends BaseService<Video> {
         return video
     }
     async getVideoById(id) {
-        const video = await this.repo.findOne({
+        return await this.repo.findOne({
             where: {
                 id: id
-            }
+            }, relations: ['user']
         });
-        if (!video) {
-            throw new UnauthorizedException('Your video is not exist!!');
-        };
-        return video;
+
     }
 
     async delete(id, user) {

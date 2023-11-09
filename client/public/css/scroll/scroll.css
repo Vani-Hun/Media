@@ -253,22 +253,6 @@
       cursor: pointer;
   }
 
-  .tiktok-1jxhpnd-DivContainer {
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-      position: relative;
-      background-color: rgba(22, 24, 35, 0.06);
-      background-size: cover;
-      background-repeat: no-repeat;
-      background-position: center center;
-      display: flex;
-      -webkit-box-align: center;
-      align-items: center;
-      -webkit-box-pack: center;
-      justify-content: center;
-  }
-
   .tiktok-sq145r {
       width: 100%;
       height: 100%;
@@ -1258,4 +1242,445 @@
       line-height: 39px;
       text-align: right;
       margin-right: 4px;
+  }
+
+  .css-1t4vwes-DivMainContainer {
+      position: relative;
+      margin: 0px auto;
+      width: 100%;
+      min-width: 420px;
+      flex-shrink: 1;
+      display: flex;
+      -webkit-box-pack: start;
+      justify-content: flex-start;
+      flex-direction: column;
+      -webkit-box-align: center;
+      align-items: center;
+  }
+
+  @media screen and (max-width: 1071px) {
+      .css-14bp9b0-DivItemContainer {
+          width: 592px;
+          max-width: 592px;
+      }
+  }
+
+  @media screen and (max-width: 1079px) {
+      .css-14bp9b0-DivItemContainer {
+          width: calc(100vw - 388px);
+      }
+  }
+
+  .css-14bp9b0-DivItemContainer {
+      display: flex;
+      flex-direction: row;
+      align-items: flex-start;
+      padding: 20px 0px;
+      position: relative;
+      max-width: 692px;
+      height: unset;
+      width: unset;
+      transition-property: margin;
+      transition-duration: 0.3s;
+      margin-bottom: 0px;
+  }
+
+  .css-m1rpgs-StyledLink {
+      flex: 0 0 auto;
+  }
+
+  .css-uha12h-DivContainer {
+      position: relative;
+      display: flex;
+      -webkit-box-align: center;
+      align-items: center;
+      -webkit-box-pack: center;
+      justify-content: center;
+  }
+
+  .css-1zpj2q-ImgAvatar {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+  }
+
+  .css-1l0odge-DivContentContainer {
+      margin-left: 12px;
+      width: 624px;
+      flex: 1 1 624px;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+  }
+
+  .css-1hhj6ie-DivTextInfoContainer {
+      margin-right: 114px;
+  }
+
+  .css-1mnwhn0-DivAuthorContainer {
+      display: flex;
+      flex-direction: row;
+      -webkit-box-align: center;
+      align-items: center;
+  }
+
+  .css-1mnwhn0-DivAuthorContainer .avatar-anchor {
+      display: none;
+      margin-right: 12px;
+  }
+
+  .css-1ew4g6u-StyledLink-StyledAuthorAnchor {
+      display: block;
+  }
+
+  .css-1k5oywg-H3AuthorTitle {
+      font-family: TikTokFont, Arial, Tahoma, PingFangSC, sans-serif;
+      font-weight: 700;
+      font-size: 18px;
+      line-height: 24px;
+      display: inline-block;
+      margin-right: 4px;
+  }
+
+  .css-mc6xrz-H4AuthorName {
+      font-family: TikTokFont, Arial, Tahoma, PingFangSC, sans-serif;
+      font-weight: 400;
+      font-size: 14px;
+      display: inline-block;
+      line-height: 28px;
+  }
+
+  .css-1847gtm-Button-StyledFollowButtonTux {
+      box-sizing: border-box;
+      appearance: none;
+      min-width: 96px;
+      display: inline-flex;
+      -webkit-box-pack: center;
+      justify-content: center;
+      -webkit-box-align: center;
+      align-items: center;
+      border-style: solid;
+      border-width: 1px;
+      border-radius: 2px;
+      font-family: var(--tux-fontFamilyParagraph);
+      font-weight: var(--tux-fontWeightSemibold);
+      text-decoration: none;
+      cursor: pointer;
+      background-clip: padding-box;
+      font-size: var(--tux-fontSizeP3);
+      height: 36px;
+      padding-inline: 15px;
+      color: var(--tux-colorPrimary);
+      background-color: var(--tux-colorPrimary-opacity-0);
+      border-color: var(--tux-colorPrimary);
+      right: 0px;
+      position: absolute;
+      top: 28px px;
+  }
+
+  .css-jp3752-ButtonContent {
+      box-sizing: border-box;
+      width: 100%;
+      display: flex;
+      -webkit-box-pack: center;
+      justify-content: center;
+      -webkit-box-align: center;
+      align-items: center;
+      opacity: 1;
+      overflow: hidden;
+      gap: 6px;
+  }
+
+  .css-1djnsui-ButtonLabel {
+      box-sizing: border-box;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+  }
+
+  .css-bs495z-DivWrapper {
+      display: flex;
+      width: 100%;
+      overflow: hidden;
+      position: relative;
+      padding-bottom: unset;
+  }
+
+  .css-1rhses0-DivText {
+      width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+  }
+
+  .css-1rhses0-DivText::before {
+      content: "";
+      height: calc(100% - 21px);
+      float: right;
+      width: 0px;
+      margin-top: 0px;
+  }
+
+  .css-mokgbx-DivBtnWrapper {
+      float: right;
+      clear: both;
+      cursor: pointer;
+      display: none;
+      -webkit-box-align: center;
+      align-items: center;
+      line-height: 21px;
+      position: relative;
+      bottom: 1px;
+  }
+
+  .css-1rhses0-DivText * {
+      fill: rgb(22, 24, 35);
+  }
+
+  .css-1r94cis-ButtonExpand {
+      color: rgb(22, 24, 35);
+      font-family: TikTokFont, Arial, Tahoma, PingFangSC, sans-serif;
+      font-weight: 600;
+      font-size: 16px;
+      line-height: 21px;
+      border: none;
+      outline: none;
+      background: none;
+      cursor: pointer;
+  }
+
+  .css-1iy6zew-DivContainer {
+      font-size: 16px;
+      line-height: 21px;
+      word-break: break-word;
+  }
+
+  .css-g8ml1x-StyledLink-StyledCommonLink {
+      display: inline-block;
+  }
+
+  .css-1p6dp51-StrongText {
+      font-weight: 600;
+      color: rgb(43, 93, 185);
+  }
+
+  .css-1rhses0-DivText span {
+      display: inline;
+  }
+
+  .css-j2a19r-SpanText {
+      font-weight: 400;
+  }
+
+  .css-1rhses0-DivText * {
+      fill: rgb(22, 24, 35);
+  }
+
+  .css-9s4tdv-DivMusicTagsWrapper {
+      margin-bottom: 12px;
+  }
+
+  .css-1dx8yl-H4Link {
+      font-family: TikTokFont, Arial, Tahoma, PingFangSC, sans-serif;
+      line-height: 21px;
+      margin-top: 2px;
+      margin-left: 2px;
+      font-weight: 400;
+      font-size: 14px;
+  }
+
+  .css-v80f7r-StyledLink-StyledLink {
+      display: flex;
+      -webkit-box-align: center;
+      align-items: center;
+  }
+
+  .css-wyuo16-MusicNoteIcon {
+      flex-shrink: 0;
+      margin-right: 5px;
+  }
+
+  .css-pvx3oa-DivMusicText {
+      -webkit-line-clamp: 1;
+      overflow: hidden;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+  }
+
+  .css-1483eyc-DivAnchorTagWrapper {
+      display: flex;
+      gap: 2px 6px;
+      flex-wrap: wrap;
+      margin-left: -2px;
+  }
+
+  .css-1kep9d3-DivVideoWrapper {
+      display: flex;
+      flex-direction: row;
+      align-items: flex-end;
+      height: 100%;
+      margin: unset;
+  }
+
+  @media screen and (max-width: 1919px) {
+      .css-9oopl7-DivVideoCardContainer {
+          height: calc(450px + ((100vw - 768px) / 1152) * 200);
+      }
+  }
+
+  .css-9oopl7-DivVideoCardContainer {
+      position: relative;
+      box-sizing: border-box;
+      background-size: cover;
+      cursor: pointer;
+      margin-right: 20px;
+      height: 600px;
+  }
+
+  .css-196h150-CanvasVideoCardPlaceholder {
+      display: block;
+      visibility: hidden;
+      height: 100%;
+  }
+
+  .css-rnjquf-DivVideoPlayerContainer {
+      position: absolute;
+      left: 0px;
+      top: 0px;
+      width: 100%;
+      height: 100%;
+  }
+
+  .css-yf3ohr-DivContainer {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      position: relative;
+      background-color: rgba(22, 24, 35, 0.06);
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center center;
+  }
+
+  .css-41hm0z {
+      width: 100%;
+      height: 100%;
+      position: relative;
+  }
+
+  .css-1fofj7p-DivBasicPlayerWrapper {
+      position: absolute;
+      left: 0px;
+      top: 0px;
+      width: 100%;
+      height: 100%;
+  }
+
+  .css-1fofj7p-DivBasicPlayerWrapper .tiktok-web-player video {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+  }
+
+  .css-mlcjt3-DivPlayIconContainer-StyledDivPlayIconContainer {
+      left: 12px;
+      position: absolute;
+      padding: 10px;
+      width: 40px;
+      height: 40px;
+      transition: opacity 0.3s ease 0s;
+      opacity: 0;
+      bottom: 26px;
+  }
+
+  .css-q09c19-DivVoiceControlContainer {
+      position: absolute;
+      bottom: 26px;
+      left: unset;
+      right: 12px;
+  }
+
+  .css-1vkl2c4-DivMuteIconContainer {
+      padding: 8px;
+      opacity: 1;
+      width: 40px;
+      height: 40px;
+      transition: opacity 0.3s ease 0s;
+  }
+
+  .css-fxqf0v-DivVideoControlBottom {
+      width: 100%;
+      height: 12px;
+      position: absolute;
+      bottom: 0px;
+      cursor: initial;
+  }
+
+  .css-1n67qnj-DivIconWrapper {
+      color: rgb(255, 255, 255);
+      font-family: TikTokFont, Arial, Tahoma, PingFangSC, sans-serif;
+      font-weight: 600;
+      font-size: 16px;
+      line-height: 21px;
+      right: 16px;
+      position: absolute;
+      top: 16px;
+      transition: opacity 0.3s ease 0s;
+      opacity: 0;
+  }
+
+  .css-1cifsuk-DivActionItemContainer {
+      display: flex;
+      flex-direction: column;
+  }
+
+  .css-1ok4pbl-ButtonActionItem {
+      border: none;
+      background: none;
+      outline: none;
+      padding: 0px;
+      position: relative;
+      display: flex;
+      -webkit-box-align: center;
+      align-items: center;
+      cursor: pointer;
+      flex-direction: column;
+  }
+
+  .css-6jur1x-SpanIconWrapper {
+      display: flex;
+      -webkit-box-pack: center;
+      justify-content: center;
+      -webkit-box-align: center;
+      align-items: center;
+      font-size: 0px;
+      border-radius: 50%;
+      transition: all 200ms ease-in-out 0s;
+      width: 48px;
+      height: 48px;
+      background-color: rgba(22, 24, 35, 0.06);
+      margin-top: 8px;
+      margin-bottom: 6px;
+  }
+
+  .css-w1dlre-StrongText {
+      color: rgba(22, 24, 35, 0.75);
+      font-family: TikTokFont, Arial, Tahoma, PingFangSC, sans-serif;
+      font-size: 12px;
+      line-height: 16px;
+      text-align: center;
+  }
+
+  .css-14bp9b0-DivItemContainer::after {
+      content: "";
+      position: absolute;
+      left: 0px;
+      bottom: 0px;
+      width: 100%;
+      height: 1px;
+      transform: scaleY(0.5);
+      background: rgba(22, 24, 35, 0.2);
   }

@@ -61,12 +61,13 @@ export class CustomerService extends BaseService<Customer> {
     return { customer }
   }
   async getVideoById(videoId) {
-    return await this.videoService.getVideoById(videoId)
+    const video = await this.videoService.getVideoById(videoId)
+    return { video }
   }
 
   async getVideo() {
-    const video = await this.videoService.get()
-    return { video }
+    const videos = await this.videoService.get()
+    return { videos }
   }
 
   async getProfile(user) {
