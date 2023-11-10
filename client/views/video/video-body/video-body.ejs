@@ -118,7 +118,6 @@
 
 <script>
     const videos = JSON.parse('<%- JSON.stringify(videos) %>');
-
     if (videos) {
         const videoContainer = document.querySelector('.css-9fq6q2-DivOneColumnContainer');
         videos.forEach(video => {
@@ -207,39 +206,4 @@
             })
         });
     }
-
-
-    // let currentVideoIndex = 0;
-    // const scrollBottom = document.querySelector('.tiktok-1s9jpf8-ButtonBasicButtonContainer-StyledVideoSwitch');
-    // scrollBottom.addEventListener('click', () => {
-    //     if (currentVideoIndex < videos.length) {
-    //         const videoElement = document.getElementById('xgwrapper-2-7273303434869198082').querySelector('video');
-    //         videoElement.src = videos[currentVideoIndex].video;
-    //         videoElement.muted = false;
-    //         console.log("video.muted:", videoElement.muted);
-    //         currentVideoIndex++;
-    //     }
-    // });
-    const inputElement = document.querySelector('.public-DraftEditor-content');
-
-    // Lấy các thẻ hình ảnh và video
-    const imageElement = document.querySelector('.tiktok-xhj3u2-StyledVideoBlurBackground picture img');
-
-
-    // Chọn div chứa class "public-DraftEditorPlaceholder-root"
-    // const placeholderDiv = document.querySelector('.public-DraftEditorPlaceholder-root');
-    // Thêm sự kiện input để theo dõi việc nhập liệu
-    // inputElement.addEventListener('input', function () {
-    //     // Kiểm tra nếu nội dung không rỗng
-    //     if (inputElement.textContent.trim() !== '') {
-    //         // Ẩn div placeholder
-    //         placeholderDiv.style.display = 'none';
-    //     } else {
-    //         // Hiển thị div placeholder
-    //         placeholderDiv.style.display = 'block';
-    //     }
-    // });
-
-
-
 </script>

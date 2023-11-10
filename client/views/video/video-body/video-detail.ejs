@@ -100,29 +100,18 @@
         </defs>
     </symbol>
 </svg>
-<div id="main-content-homepage_hot" class="css-1t4vwes-DivMainContainer ec6jhlz0">
-    <div class="css-9fq6q2-DivOneColumnContainer e108hwin0">
-    </div>
-    <div class="css-hpmci4-DivBottomContainer ew8lpw50"><button aria-label="Scroll to the top"
-            class="css-sv88au-ButtonIconContainer ejylfo50"><svg width="16" data-e2e="" height="16" viewBox="0 0 48 48"
-                fill="#FFF" xmlns="http://www.w3.org/2000/svg">
-                <path fill-rule="evenodd" clip-rule="evenodd"
-                    d="M22.1086 20.3412C23.1028 19.2196 24.8972 19.2196 25.8914 20.3412L42.8955 39.5236C44.2806 41.0861 43.1324 43.5 41.004 43.5L6.99596 43.5C4.86764 43.5 3.71945 41.0861 5.10454 39.5235L22.1086 20.3412Z">
-                </path>
-                <path
-                    d="M4.5 7.5C4.5 5.84315 5.84315 4.5 7.5 4.5L40.5 4.5C42.1569 4.5 43.5 5.84315 43.5 7.5C43.5 9.15685 42.1569 10.5 40.5 10.5L7.5 10.5C5.84315 10.5 4.5 9.15685 4.5 7.5Z">
-                </path>
-            </svg></button></div>
+<div class="loader">
+    <li class="ball"></li>
+    <li class="ball"></li>
+    <li class="ball"></li>
 </div>
 
 <script>
-
-    const videoDetail = '<%= user %>'
-    console.log("video==:", videoDetail)
-    function renderNewHTML(video, customer) {
-        const newHTMLContainer = document.createElement('div');
-        newHTMLContainer.classList = 'updateVideo'
-        newHTMLContainer.innerHTML = `
+    const video = JSON.parse('<%- JSON.stringify(video) %>');
+    if (video) {
+        function renderNewHTML(video, customer) {
+            const newHTMLContainer = document.createElement('div');
+            newHTMLContainer.innerHTML = `
                     <div tabindex="0" role="dialog" aria-modal="true"
     class="tiktok-1qg2388-DivBrowserModeContainer e11s2kul0" style="z-index: 1000;">
     <div class="tiktok-1tunefa-DivVideoContainer e11s2kul23">
@@ -164,7 +153,7 @@
                 <div data-e2e="browse-video" class="tiktok-8lv75m-DivBasicPlayerWrapper e1yey0rl2">
                     <div id="xgwrapper-2-7273303434869198082" class="tiktok-web-player no-controls"
                         style="width: 100%; height: 100%;"><video src="${video.video}" playsinline="" preload="auto" crossorigin="anonymous"
-                            style="width: 100%; height: 100%;" autoplay loop></video>
+                            style="width: 100%; height: 100%;" muted autoplay loop></video>
                     </div>
                 </div>
             </div>
@@ -204,7 +193,7 @@
                     d="M34.4142 22.5858L18.1213 6.29289C17.7308 5.90237 17.0976 5.90237 16.7071 6.29289L15.2929 7.70711C14.9024 8.09763 14.9024 8.7308 15.2929 9.12132L30.1716 24L15.2929 38.8787C14.9024 39.2692 14.9024 39.9024 15.2929 40.2929L16.7071 41.7071C17.0976 42.0976 17.7308 42.0976 18.1213 41.7071L34.4142 25.4142C35.1953 24.6332 35.1953 23.3668 34.4142 22.5858Z">
                 </path>
             </svg></button><button data-e2e="arrow-right" role="button" aria-label="Go to next video"
-            class="tiktok-1s9jpf8-ButtonBasicButtonContainer-StyledVideoSwitch e11s2kul11"><svg width="26" data-e2e=""
+            class="tiktok-1s9jpf8-ButtonBasicButtonContainer-StyledVideoSwitch"><svg width="26" data-e2e=""
                 height="26" viewBox="0 0 48 48" fill="#fff" xmlns="http://www.w3.org/2000/svg">
                 <path fill-rule="evenodd" clip-rule="evenodd"
                     d="M34.4142 22.5858L18.1213 6.29289C17.7308 5.90237 17.0976 5.90237 16.7071 6.29289L15.2929 7.70711C14.9024 8.09763 14.9024 8.7308 15.2929 9.12132L30.1716 24L15.2929 38.8787C14.9024 39.2692 14.9024 39.9024 15.2929 40.2929L16.7071 41.7071C17.0976 42.0976 17.7308 42.0976 18.1213 41.7071L34.4142 25.4142C35.1953 24.6332 35.1953 23.3668 34.4142 22.5858Z">
@@ -555,120 +544,177 @@
     </div>
 </div>
                     `
-        const body = document.querySelector('body');
-        body.appendChild(newHTMLContainer);
-    }
-
-    const dateObject = new Date(video.createAt);
-    const today = new Date();
-    const timeDifference = today - dateObject;
-    let daysDifference;
-    if (timeDifference < 1000 * 60 * 60) { // Nếu thời gian chênh lệch dưới 1 giờ
-        const minutesDifference = Math.floor(timeDifference / (1000 * 60));
-        daysDifference = `${minutesDifference}m ago`;
-    } else if (timeDifference < 1000 * 60 * 60 * 24) { // Nếu thời gian chênh lệch dưới 1 ngày
-        const hoursDifference = Math.floor(timeDifference / (1000 * 60 * 60));
-        daysDifference = `${hoursDifference}h ago`;
-    } else if (timeDifference > 1000 * 60 * 60 * 24 * 7) { // Nếu thời gian chênh lệch trên 1 tuần
-        const day = dateObject.getDate();
-        const month = dateObject.getMonth() + 1;
-        daysDifference = `${month}-${day}`;
-    } else {
-        const difference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
-        daysDifference = `${difference}d ago`;
-    }
-
-    renderNewHTML()
-    function updateVolumeIcon(isMuted) {
-        const svg = volumeButton.querySelector('svg');
-        svg.innerHTML = '';
-        if (isMuted) {
-            const path1 = document.createElementNS("http://www.w3.org/2000/svg", "path");
-            path1.setAttribute('fill-rule', 'evenodd');
-            path1.setAttribute('clip-rule', 'evenodd');
-            path1.setAttribute('d', 'M21 16.9118C21 15.2513 20.8942 15.0909 20.709 15.0221C20.5238 14.9763 20.3122 14.9992 20.1799 15.1138L15.0741 19.5258H11.4762C11.2116 19.5258 11 19.7092 11 19.9384V28.084C11 28.3132 11.2116 28.4965 11.4762 28.4965H15.0741L20.1799 32.8862C20.3122 33.0008 20.5238 33.0237 20.709 32.9779C20.8942 32.9091 21 32.7487 21 32.5882V16.9118Z'); // Đường dẫn path cho trạng thái muted
-            path1.setAttribute('fill', 'white');
-            svg.appendChild(path1);
-            const path2 = document.createElementNS("http://www.w3.org/2000/svg", "path");
-            path2.setAttribute('fill-rule', 'evenodd');
-            path2.setAttribute('clip-rule', 'evenodd');
-            path2.setAttribute('d', 'M35.098 18.9489C34.5998 18.4508 33.7921 18.4508 33.2939 18.949L30.1368 22.1061L26.9797 18.949C26.4815 18.4508 25.6738 18.4508 25.1756 18.9489C24.6775 19.4471 24.6775 20.2548 25.1756 20.753L28.3327 23.9101L25.1757 27.0672C24.6775 27.5654 24.6775 28.3731 25.1757 28.8713C25.6738 29.3694 26.4815 29.3694 26.9797 28.8713L30.1368 25.7142L33.2939 28.8713C33.7921 29.3694 34.5998 29.3694 35.0979 28.8713C35.5961 28.3731 35.5961 27.5654 35.0979 27.0672L31.9409 23.9101L35.098 20.753C35.5962 20.2548 35.5962 19.4471 35.098 18.9489Z'); // Đường dẫn path cho trạng thái muted
-            path2.setAttribute('fill', 'white');
-            svg.appendChild(path2);
-        } else {
-            const path1 = document.createElementNS("http://www.w3.org/2000/svg", "path");
-            path1.setAttribute('fill-rule', 'evenodd');
-            path1.setAttribute('clip-rule', 'evenodd');
-            path1.setAttribute('d', 'M21 16.9118C21 15.2513 20.8942 15.0909 20.709 15.0221C20.5238 14.9763 20.3122 14.9992 20.1799 15.1138L15.0741 19.5258H11.4762C11.2116 19.5258 11 19.7092 11 19.9384V28.084C11 28.3132 11.2116 28.4965 11.4762 28.4965H15.0741L20.1799 32.8862C20.3122 33.0008 20.5238 33.0237 20.709 32.9779C20.8942 32.9091 21 32.7487 21 32.5882V16.9118Z'); // Đường dẫn path cho trạng thái unmuted
-            path1.setAttribute('fill', 'white');
-            svg.appendChild(path1);
-            const path2 = document.createElementNS("http://www.w3.org/2000/svg", "path");
-            path2.setAttribute('d', 'M30.6653 15C32.7348 17.2304 34.0001 20.2174 34.0001 23.5C34.0001 26.7826 32.7348 29.7696 30.6653 32');
-            path2.setAttribute('stroke', 'white');
-            path2.setAttribute('stroke-width', '2.5');
-            path2.setAttribute('stroke-linecap', 'round');
-            svg.appendChild(path2);
-            const path3 = document.createElementNS("http://www.w3.org/2000/svg", "path");
-            path3.setAttribute('d', 'M26.8799 17.8833C28.1994 19.381 28.9999 21.347 28.9999 23.5C28.9999 25.653 28.1994 27.6191 26.8799 29.1168');
-            path3.setAttribute('stroke', 'white');
-            path3.setAttribute('stroke-width', '2.5');
-            path3.setAttribute('stroke-linecap', 'round');
-            svg.appendChild(path3);
+            const body = document.querySelector('body');
+            body.appendChild(newHTMLContainer);
         }
-    }
-    const inputElement = document.querySelector('.public-DraftEditor-content');
-    const placeholderDiv = document.querySelector('.public-DraftEditorPlaceholder-root');
-    const updateVideo = document.querySelector('.updateVideo')
-    const xButton = document.querySelector('.tiktok-yg0pvs-ButtonBasicButtonContainer-StyledCloseIconContainer');
-    const volumeButton = document.querySelector('.tiktok-6mttet-ButtonVoiceControlNew');
-    const threeDot = document.querySelector(".tiktok-1dcgmzm-DivActionContainer");
-    const editVideo = document.querySelector(".tiktok-uoaz8g-DivContainer");
-    const popupButton = document.querySelector('.tiktok-u9i5ik-LiPopupItem .tiktok-1bsywin-ButtonAction');
-    const deleteVideoButton = document.getElementById('deleteVideo');
-    const deleteButton = document.querySelector('.tiktok-u9i5ik-LiPopupItem .tiktok-1bsywin-ButtonAction');
-    const modalContent = document.querySelector('.tiktok-17s26nl-ModalContentContainer');
-    const spanOtherInfos = document.querySelector('.tiktok-gg0x0w-SpanOtherInfos');
-    const videoPlay = document.getElementById('xgwrapper-2-7273303434869198082').querySelector('video');
-    const playIcon = document.getElementById('playIcon');
-    console.log("playIcon:", playIcon)
-    const xgwrapper = document.getElementById('xgwrapper-2-7273303434869198082')
-    console.log("xgwrapper:", xgwrapper)
-    let isMuted = false
 
-    volumeButton.addEventListener('click', () => {
-        isMuted = !isMuted;
-        if (isMuted) {
-            updateVolumeIcon(isMuted)
+        const dateObject = new Date(video.createAt);
+        const today = new Date();
+        const timeDifference = today - dateObject;
+        let daysDifference;
+        if (timeDifference < 1000 * 60 * 60) { // Nếu thời gian chênh lệch dưới 1 giờ
+            const minutesDifference = Math.floor(timeDifference / (1000 * 60));
+            daysDifference = `${minutesDifference}m ago`;
+        } else if (timeDifference < 1000 * 60 * 60 * 24) { // Nếu thời gian chênh lệch dưới 1 ngày
+            const hoursDifference = Math.floor(timeDifference / (1000 * 60 * 60));
+            daysDifference = `${hoursDifference}h ago`;
+        } else if (timeDifference > 1000 * 60 * 60 * 24 * 7) { // Nếu thời gian chênh lệch trên 1 tuần
+            const day = dateObject.getDate();
+            const month = dateObject.getMonth() + 1;
+            daysDifference = `${month}-${day}`;
         } else {
-            updateVolumeIcon(isMuted)
+            const difference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+            daysDifference = `${difference}d ago`;
         }
-        if (videoPlay) {
-            if (videoPlay.muted) {
-                videoPlay.muted = false;
+
+        renderNewHTML(video, video.user)
+        function updateVolumeIcon(isMuted) {
+            const svg = volumeButton.querySelector('svg');
+            svg.innerHTML = '';
+            if (isMuted) {
+                const path1 = document.createElementNS("http://www.w3.org/2000/svg", "path");
+                path1.setAttribute('fill-rule', 'evenodd');
+                path1.setAttribute('clip-rule', 'evenodd');
+                path1.setAttribute('d', 'M21 16.9118C21 15.2513 20.8942 15.0909 20.709 15.0221C20.5238 14.9763 20.3122 14.9992 20.1799 15.1138L15.0741 19.5258H11.4762C11.2116 19.5258 11 19.7092 11 19.9384V28.084C11 28.3132 11.2116 28.4965 11.4762 28.4965H15.0741L20.1799 32.8862C20.3122 33.0008 20.5238 33.0237 20.709 32.9779C20.8942 32.9091 21 32.7487 21 32.5882V16.9118Z'); // Đường dẫn path cho trạng thái muted
+                path1.setAttribute('fill', 'white');
+                svg.appendChild(path1);
+                const path2 = document.createElementNS("http://www.w3.org/2000/svg", "path");
+                path2.setAttribute('fill-rule', 'evenodd');
+                path2.setAttribute('clip-rule', 'evenodd');
+                path2.setAttribute('d', 'M35.098 18.9489C34.5998 18.4508 33.7921 18.4508 33.2939 18.949L30.1368 22.1061L26.9797 18.949C26.4815 18.4508 25.6738 18.4508 25.1756 18.9489C24.6775 19.4471 24.6775 20.2548 25.1756 20.753L28.3327 23.9101L25.1757 27.0672C24.6775 27.5654 24.6775 28.3731 25.1757 28.8713C25.6738 29.3694 26.4815 29.3694 26.9797 28.8713L30.1368 25.7142L33.2939 28.8713C33.7921 29.3694 34.5998 29.3694 35.0979 28.8713C35.5961 28.3731 35.5961 27.5654 35.0979 27.0672L31.9409 23.9101L35.098 20.753C35.5962 20.2548 35.5962 19.4471 35.098 18.9489Z'); // Đường dẫn path cho trạng thái muted
+                path2.setAttribute('fill', 'white');
+                svg.appendChild(path2);
             } else {
-                videoPlay.muted = true;
+                const path1 = document.createElementNS("http://www.w3.org/2000/svg", "path");
+                path1.setAttribute('fill-rule', 'evenodd');
+                path1.setAttribute('clip-rule', 'evenodd');
+                path1.setAttribute('d', 'M21 16.9118C21 15.2513 20.8942 15.0909 20.709 15.0221C20.5238 14.9763 20.3122 14.9992 20.1799 15.1138L15.0741 19.5258H11.4762C11.2116 19.5258 11 19.7092 11 19.9384V28.084C11 28.3132 11.2116 28.4965 11.4762 28.4965H15.0741L20.1799 32.8862C20.3122 33.0008 20.5238 33.0237 20.709 32.9779C20.8942 32.9091 21 32.7487 21 32.5882V16.9118Z'); // Đường dẫn path cho trạng thái unmuted
+                path1.setAttribute('fill', 'white');
+                svg.appendChild(path1);
+                const path2 = document.createElementNS("http://www.w3.org/2000/svg", "path");
+                path2.setAttribute('d', 'M30.6653 15C32.7348 17.2304 34.0001 20.2174 34.0001 23.5C34.0001 26.7826 32.7348 29.7696 30.6653 32');
+                path2.setAttribute('stroke', 'white');
+                path2.setAttribute('stroke-width', '2.5');
+                path2.setAttribute('stroke-linecap', 'round');
+                svg.appendChild(path2);
+                const path3 = document.createElementNS("http://www.w3.org/2000/svg", "path");
+                path3.setAttribute('d', 'M26.8799 17.8833C28.1994 19.381 28.9999 21.347 28.9999 23.5C28.9999 25.653 28.1994 27.6191 26.8799 29.1168');
+                path3.setAttribute('stroke', 'white');
+                path3.setAttribute('stroke-width', '2.5');
+                path3.setAttribute('stroke-linecap', 'round');
+                svg.appendChild(path3);
             }
         }
-    });
-    xgwrapper.addEventListener('click', function () {
-        if (videoPlay.paused) {
-            playIcon.style.display = 'none';
+        const inputElement = document.querySelector('.public-DraftEditor-content');
+        const placeholderDiv = document.querySelector('.public-DraftEditorPlaceholder-root');
+        const updateVideo = document.querySelector('.updateVideo')
+        const xButton = document.querySelector('.tiktok-yg0pvs-ButtonBasicButtonContainer-StyledCloseIconContainer');
+        const volumeButton = document.querySelector('.tiktok-6mttet-ButtonVoiceControlNew');
+        const threeDot = document.querySelector(".tiktok-1dcgmzm-DivActionContainer");
+        const editVideo = document.querySelector(".tiktok-uoaz8g-DivContainer");
+        const popupButton = document.querySelector('.tiktok-u9i5ik-LiPopupItem .tiktok-1bsywin-ButtonAction');
+        const deleteVideoButton = document.getElementById('deleteVideo');
+        const deleteButton = document.querySelector('.tiktok-u9i5ik-LiPopupItem .tiktok-1bsywin-ButtonAction');
+        const modalContent = document.querySelector('.tiktok-17s26nl-ModalContentContainer');
+        const spanOtherInfos = document.querySelector('.tiktok-gg0x0w-SpanOtherInfos');
+        const playIcon = document.getElementById('playIcon');
+        const xgwrapper = document.getElementById('xgwrapper-2-7273303434869198082')
+        const videoPlay = document.getElementById('xgwrapper-2-7273303434869198082').querySelector('video');
+        const mainContainer = document.querySelector('.tiktok-1qg2388-DivBrowserModeContainer')
+        let isMuted = false
+
+        window.addEventListener('load', function () {
+            videoPlay.muted = false;
             videoPlay.play();
-            videoPlay.removeAttribute('loop');
-        } else {
-            playIcon.style.display = 'block';
+        })
+        window.addEventListener('focus', function () {
+            if (videoPlay.paused && playIcon.style.display === 'block') {
+                videoPlay.pause();
+            } else {
+                videoPlay.play();
+            }
+        });
+
+        window.addEventListener('blur', function () {
             videoPlay.pause();
-            videoPlay.setAttribute('loop', '');
-        }
-    });
-    xButton.addEventListener('click', function () {
-        window.location.href = '/customer/profile'
-    })
-    inputElement.addEventListener('input', function () {
-        if (inputElement.textContent.trim() !== '') {
-            placeholderDiv.style.display = 'none';
-        } else {
-            placeholderDiv.style.display = 'block';
-        }
-    });
+        });
+
+
+        volumeButton.addEventListener('click', () => {
+            isMuted = !isMuted;
+            if (isMuted) {
+                updateVolumeIcon(isMuted)
+            } else {
+                updateVolumeIcon(isMuted)
+            }
+            if (videoPlay) {
+                if (videoPlay.muted) {
+                    videoPlay.play();
+                    videoPlay.muted = false;
+                } else {
+                    videoPlay.play();
+                    videoPlay.muted = true;
+                }
+            }
+        });
+        xgwrapper.addEventListener('click', function () {
+            if (videoPlay.paused) {
+                playIcon.style.display = 'none';
+                videoPlay.play();
+                videoPlay.removeAttribute('loop');
+            } else {
+                playIcon.style.display = 'block';
+                videoPlay.pause();
+                videoPlay.setAttribute('loop', '');
+            }
+        });
+        xButton.addEventListener('click', function () {
+            history.back();
+        })
+        inputElement.addEventListener('input', function () {
+            if (inputElement.textContent.trim() !== '') {
+                placeholderDiv.style.display = 'none';
+            } else {
+                placeholderDiv.style.display = 'block';
+            }
+        });
+
+        const scrollBottom = document.querySelector('.tiktok-1s9jpf8-ButtonBasicButtonContainer-StyledVideoSwitch');
+        scrollBottom.addEventListener('click', () => {
+            // Call api to get new video data
+            fetch('customer/video')
+                .then(response => response.json())
+                .then(data => {
+                    // Update the video element with the new video data
+                    videoElement.src = data.videos[currentVideoIndex].video;
+                    videoElement.muted = false;
+                    console.log("video.muted:", videoElement.muted);
+                    currentVideoIndex++;
+                });
+        });
+    }
+
+
+
+    const inputElement = document.querySelector('.public-DraftEditor-content');
+
+    // Lấy các thẻ hình ảnh và video
+    const imageElement = document.querySelector('.tiktok-xhj3u2-StyledVideoBlurBackground picture img');
+
+
+    // Chọn div chứa class "public-DraftEditorPlaceholder-root"
+    // const placeholderDiv = document.querySelector('.public-DraftEditorPlaceholder-root');
+    // Thêm sự kiện input để theo dõi việc nhập liệu
+    // inputElement.addEventListener('input', function () {
+    //     // Kiểm tra nếu nội dung không rỗng
+    //     if (inputElement.textContent.trim() !== '') {
+    //         // Ẩn div placeholder
+    //         placeholderDiv.style.display = 'none';
+    //     } else {
+    //         // Hiển thị div placeholder
+    //         placeholderDiv.style.display = 'block';
+    //     }
+    // });
+
+
 </script>
