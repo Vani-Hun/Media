@@ -25,10 +25,10 @@ export class CustomerController {
     return await this.customerService.get(user)
   }
 
-  @Get('video')
+  @Get('videos')
   @UseGuards(CusAuthGuard)
   @Render('video/index')
-  async getVideo() {
+  async getVideos() {
     return await this.customerService.getVideo()
   }
 
@@ -39,6 +39,12 @@ export class CustomerController {
     return await this.customerService.getVideoById(videoId)
   }
 
+
+  @Get('video')
+  @UseGuards(CusAuthGuard)
+  async getVideo() {
+    return await this.customerService.getVideo()
+  }
 
   @Get('profile')
   @UseGuards(CusAuthGuard)

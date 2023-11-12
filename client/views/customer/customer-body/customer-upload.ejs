@@ -387,8 +387,8 @@
     var selectFileButton = videoForm.querySelector('input[type="file"]');
     var videoFormaAfter = document.querySelector('.jsx-2977532431.preview');
     var changeButton = document.querySelector('.jsx-3536812553.btn')
-    var coverEmpty = document.querySelector('.candidate-v2');
-    var coverContainer = document.querySelector('.bg-container-v2');
+    var thumbnailEmpty = document.querySelector('.candidate-v2');
+    var thumbnailContainer = document.querySelector('.bg-container-v2');
     var selector = document.querySelector('.tiktok-select-selector');
     var dropdown = document.querySelector('.tiktok-select-dropdown');
     var checkboxes = document.querySelectorAll('.css-1pzrh5a');
@@ -439,7 +439,7 @@
     });
 
     function addFrameToCover(frameDataURL) {
-        coverEmpty.style.display = 'none';
+        thumbnailEmpty.style.display = 'none';
         var frameImage = document.createElement('img');
         frameImage.src = frameDataURL;
         frameImage.className = 'candidate-v2 bg';
@@ -453,7 +453,7 @@
             });
             frameImage.classList.add('selected-image');
         });
-        coverContainer.appendChild(frameImage);
+        thumbnailContainer.appendChild(frameImage);
     }
 
     var selectedFile;

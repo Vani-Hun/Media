@@ -27,7 +27,7 @@ export class Video extends BaseEntityUUID {
     who: string;
 
     @Column()
-    cover: string;
+    thumbnail: string;
 
     @Column()
     allowComment: boolean;

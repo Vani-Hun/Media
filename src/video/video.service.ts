@@ -23,7 +23,7 @@ export class VideoService extends BaseService<Video> {
         console.log("input:", input)
         const video = await this.repo.create({
             video: url['videoURL'],
-            cover: url['imageURL'],
+            thumbnail: url['imageURL'],
             name: input.video.filename,
             user: input.user.id,
             who: input.who,
@@ -95,8 +95,9 @@ export class VideoService extends BaseService<Video> {
     }
 
     async get() {
-        const video = await this.repo.find({ relations: ['user'] })
-        return video
+        return await this.repo.find({
+            where: { who: "Public" }, relations: ['user']
+        })
     }
     async getVideoById(id) {
         return await this.repo.findOne({
