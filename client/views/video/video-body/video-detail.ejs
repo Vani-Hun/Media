@@ -100,20 +100,8 @@
         </defs>
     </symbol>
 </svg>
-<div class="loader">
-    <li class="ball"></li>
-    <li class="ball"></li>
-    <li class="ball"></li>
-</div>
-
-<script>
-    const video = JSON.parse('<%- JSON.stringify(video) %>');
-    if (video) {
-        function renderNewHTML(video, customer) {
-            const newHTMLContainer = document.createElement('div');
-            newHTMLContainer.innerHTML = `
-                    <div tabindex="0" role="dialog" aria-modal="true"
-    class="tiktok-1qg2388-DivBrowserModeContainer e11s2kul0" style="z-index: 1000;">
+a <div tabindex="0" role="dialog" aria-modal="true" class="tiktok-1qg2388-DivBrowserModeContainer e11s2kul0"
+    style="z-index: 1000;">
     <div class="tiktok-1tunefa-DivVideoContainer e11s2kul23">
         <div class="tiktok-zqqb1u-DivSearchBarContainer e11s2kul27">
             <div class="tiktok-1vve6pb-DivSearchBarBackground e11s2kul28"></div>
@@ -137,14 +125,11 @@
                 </form>
             </div>
         </div>
-         <div class="e11s2kul3 tiktok-xhj3u2-StyledVideoBlurBackground"><span
+        <div class="e11s2kul3 tiktok-xhj3u2-StyledVideoBlurBackground"><span
                 style="box-sizing: border-box; display: block; overflow: hidden; width: initial; height: initial; background: none; opacity: 1; border: 0px; margin: 0px; padding: 0px; position: absolute; inset: 0px;">
                 <picture>
-                    <source type="image/avif"
-                        src=${video.thumbnail}>
-                    <img loading="lazy" decoding="async"      
-                        src=${video.thumbnail}
-                        imagex-type="react" imagex-version="0.3.7"
+                    <source type="image/avif">
+                    <img loading="lazy" decoding="async" imagex-type="react" imagex-version="0.3.7"
                         style="position: absolute; inset: 0px; box-sizing: border-box; padding: 0px; border: none; margin: auto; display: block; width: 0px; height: 0px; min-width: 100%; max-width: 100%; min-height: 100%; max-height: 100%;">
                 </picture>
             </span></div>
@@ -152,7 +137,7 @@
             <div mode="2" class="tiktok-1jxhpnd-DivContainer e1yey0rl0">
                 <div data-e2e="browse-video" class="tiktok-8lv75m-DivBasicPlayerWrapper e1yey0rl2">
                     <div id="xgwrapper-2-7273303434869198082" class="tiktok-web-player no-controls"
-                        style="width: 100%; height: 100%;"><video src="${video.video}" playsinline="" preload="auto" crossorigin="anonymous"
+                        style="width: 100%; height: 100%;"><video playsinline="" preload="auto" crossorigin="anonymous"
                             style="width: 100%; height: 100%;" muted autoplay loop></video>
                     </div>
                 </div>
@@ -169,8 +154,8 @@
             </div>
             <div class="tiktok-mzxtw3-DivVideoControlTop e1rpry1m7"></div>
             <div class="tiktok-1ap2cv9-DivVideoControlBottom e1rpry1m6"></div>
-        </div><svg id="playIcon" style="display:none" xmlns="http://www.w3.org/2000/svg" width="70" height="70" fill="#fff" data-e2e="browse-video-play"
-            class="tiktok-196swoi-StyledPlayIcon e11s2kul5">
+        </div><svg id="playIcon" style="display:none" xmlns="http://www.w3.org/2000/svg" width="70" height="70"
+            fill="#fff" data-e2e="browse-video-play" class="tiktok-196swoi-StyledPlayIcon e11s2kul5">
             <use xlink:href="#Play_Fill-6957a00f"></use>
         </svg><button role="button" aria-label="Close" data-e2e="browse-close"
             class="tiktok-yg0pvs-ButtonBasicButtonContainer-StyledCloseIconContainer e11s2kul7"><svg width="18"
@@ -181,20 +166,29 @@
             </svg></button>
         <div class="tiktok-oit0gv-DivVoiceControlContainer e11s2kul22"><button tabindex="0" role="button"
                 aria-label="Volume" data-e2e="browse-sound" class="tiktok-6mttet-ButtonVoiceControlNew e11s2kul21">
-                <svg width="40" data-e2e="" height="40" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <svg width="40" data-e2e="" height="40" viewBox="0 0 48 48" fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
                     <circle cx="24" cy="24" r="24"></circle>
-                    <path fill-rule="evenodd" clip-rule="evenodd" d="M21 16.9118C21 15.2513 20.8942 15.0909 20.709 15.0221C20.5238 14.9763 20.3122 14.9992 20.1799 15.1138L15.0741 19.5258H11.4762C11.2116 19.5258 11 19.7092 11 19.9384V28.084C11 28.3132 11.2116 28.4965 11.4762 28.4965H15.0741L20.1799 32.8862C20.3122 33.0008 20.5238 33.0237 20.709 32.9779C20.8942 32.9091 21 32.7487 21 32.5882V16.9118Z" fill="white"></path><path d="M30.6653 15C32.7348 17.2304 34.0001 20.2174 34.0001 23.5C34.0001 26.7826 32.7348 29.7696 30.6653 32" stroke="white" stroke-width="2.5" stroke-linecap="round"></path><path d="M26.8799 17.8833C28.1994 19.381 28.9999 21.347 28.9999 23.5C28.9999 25.653 28.1994 27.6191 26.8799 29.1168" stroke="white" stroke-width="2.5" stroke-linecap="round">
-                        </path></svg></button></div>
-                        <button disabled="" data-e2e="arrow-left" role="button"
-            aria-label="Go to previous video"
+                    <path fill-rule="evenodd" clip-rule="evenodd"
+                        d="M21 16.9118C21 15.2513 20.8942 15.0909 20.709 15.0221C20.5238 14.9763 20.3122 14.9992 20.1799 15.1138L15.0741 19.5258H11.4762C11.2116 19.5258 11 19.7092 11 19.9384V28.084C11 28.3132 11.2116 28.4965 11.4762 28.4965H15.0741L20.1799 32.8862C20.3122 33.0008 20.5238 33.0237 20.709 32.9779C20.8942 32.9091 21 32.7487 21 32.5882V16.9118Z"
+                        fill="white"></path>
+                    <path
+                        d="M30.6653 15C32.7348 17.2304 34.0001 20.2174 34.0001 23.5C34.0001 26.7826 32.7348 29.7696 30.6653 32"
+                        stroke="white" stroke-width="2.5" stroke-linecap="round"></path>
+                    <path
+                        d="M26.8799 17.8833C28.1994 19.381 28.9999 21.347 28.9999 23.5C28.9999 25.653 28.1994 27.6191 26.8799 29.1168"
+                        stroke="white" stroke-width="2.5" stroke-linecap="round">
+                    </path>
+                </svg></button></div>
+        <button disabled="" data-e2e="arrow-left" role="button" aria-label="Go to previous video"
             class="tiktok-1w6o9i7-ButtonBasicButtonContainer-StyledVideoSwitch e11s2kul11"><svg width="26" data-e2e=""
                 height="26" viewBox="0 0 48 48" fill="#fff" xmlns="http://www.w3.org/2000/svg">
                 <path fill-rule="evenodd" clip-rule="evenodd"
                     d="M34.4142 22.5858L18.1213 6.29289C17.7308 5.90237 17.0976 5.90237 16.7071 6.29289L15.2929 7.70711C14.9024 8.09763 14.9024 8.7308 15.2929 9.12132L30.1716 24L15.2929 38.8787C14.9024 39.2692 14.9024 39.9024 15.2929 40.2929L16.7071 41.7071C17.0976 42.0976 17.7308 42.0976 18.1213 41.7071L34.4142 25.4142C35.1953 24.6332 35.1953 23.3668 34.4142 22.5858Z">
                 </path>
             </svg></button><button data-e2e="arrow-right" role="button" aria-label="Go to next video"
-            class="tiktok-1s9jpf8-ButtonBasicButtonContainer-StyledVideoSwitch"><svg width="26" data-e2e=""
-                height="26" viewBox="0 0 48 48" fill="#fff" xmlns="http://www.w3.org/2000/svg">
+            class="tiktok-1s9jpf8-ButtonBasicButtonContainer-StyledVideoSwitch"><svg width="26" data-e2e="" height="26"
+                viewBox="0 0 48 48" fill="#fff" xmlns="http://www.w3.org/2000/svg">
                 <path fill-rule="evenodd" clip-rule="evenodd"
                     d="M34.4142 22.5858L18.1213 6.29289C17.7308 5.90237 17.0976 5.90237 16.7071 6.29289L15.2929 7.70711C14.9024 8.09763 14.9024 8.7308 15.2929 9.12132L30.1716 24L15.2929 38.8787C14.9024 39.2692 14.9024 39.9024 15.2929 40.2929L16.7071 41.7071C17.0976 42.0976 17.7308 42.0976 18.1213 41.7071L34.4142 25.4142C35.1953 24.6332 35.1953 23.3668 34.4142 22.5858Z">
                 </path>
@@ -215,16 +209,16 @@
                                 <div class="tiktok-uha12h-DivContainer e1vl87hj1" style="width: 40px; height: 40px;">
                                     <span shape="circle" data-e2e=""
                                         class="e1vl87hj2 tiktok-gcksof-SpanAvatarContainer-StyledAvatar e1e9er4e0"
-                                        style="width: 40px; height: 40px;"><img loading="lazy" alt="" src="${customer.logo}"
+                                        style="width: 40px; height: 40px;"><img loading="lazy" alt=""
                                             class="tiktok-1zpj2q-ImgAvatar e1e9er4e1"></span>
                                 </div>
                             </a><a target="_self" rel="opener"
                                 class="evv7pft6 tiktok-n2qh4e-StyledLink-StyledLink er1vbsz0" href="/@foxtamly"><span
                                     data-e2e="browse-username" class="tiktok-1c7urt-SpanUniqueId evv7pft1"><span
-                                        class="tiktok-pocgy1-SpanEllipsis evv7pft2">${customer.username}</span></span><br><span
+                                        class="tiktok-pocgy1-SpanEllipsis evv7pft2"></span></span><br><span
                                     data-e2e="browser-nickname" class="tiktok-gg0x0w-SpanOtherInfos evv7pft3"><span
-                                        class="tiktok-pocgy1-SpanEllipsis evv7pft2">${customer.name}</span><span
-                                        style="margin: 0px 4px;"> · </span><span>${daysDifference}</span></span></a>
+                                        class="tiktok-pocgy1-SpanEllipsis evv7pft2"></span><span
+                                        style="margin: 0px 4px;"> · </span><span></span></span></a>
                             <div data-e2e="browse-follow" class="tiktok-r4iroe-DivBtnWrapper evv7pft9"><button
                                     class="tiktok-1pcikqk-Button e1v8cfre0">
                                     <div class="tiktok-jp3752-ButtonContent e1v8cfre2">
@@ -239,9 +233,9 @@
                                             class="tiktok-1r94cis-ButtonExpand e1mzilcj2">more</button></div>
                                     <div class=" tiktok-1d7krfw-DivOverflowContainer e1mzilcj5">
                                         <div data-e2e="browse-video-desc" class="tiktok-1wdx3tj-DivContainer ejg0rhn0">
-                                            <span class="tiktok-j2a19r-SpanText efbd9f0">${video.caption}</span>
-                                          
-                                                <span class="tiktok-j2a19r-SpanText efbd9f0"> </span>
+                                            <span class="tiktok-j2a19r-SpanText efbd9f0"></span>
+
+                                            <span class="tiktok-j2a19r-SpanText efbd9f0"> </span>
                                         </div>
                                     </div>
                                 </div>
@@ -257,7 +251,7 @@
                                     </svg>
                                     <div class="tiktok-pvx3oa-DivMusicText epjbyn3">original sound - 🍪</div>
                                 </a></h4>
-                           
+
                         </div>
                     </div>
                     <div class="tiktok-hlg65e-DivMainContent e1mecfx01">
@@ -272,7 +266,7 @@
                                                 fill="rgba(22, 24, 35, 1)">
                                                 <use xlink:href="#heart-fill-03bd63df"></use>
                                             </svg></span><strong data-e2e="browse-like-count"
-                                            class="tiktok-w1dlre-StrongText e1hk3hf92">${video.likes}</strong></button><button
+                                            class="tiktok-w1dlre-StrongText e1hk3hf92"></strong></button><button
                                         type="button" disabled="" class="tiktok-xakz2y-ButtonActionItem e1hk3hf90"><span
                                             data-e2e="browse-comment-icon"
                                             class="tiktok-3ahw3w-SpanIconWrapper e1hk3hf91"><svg
@@ -280,7 +274,7 @@
                                                 fill="currentColor">
                                                 <use xlink:href="#Bubble_Ellipsis_Right_Fill-a497dc09"></use>
                                             </svg></span><strong data-e2e="browse-comment-count"
-                                            class="tiktok-w1dlre-StrongText e1hk3hf92">${video.commentsCount}</strong></button><button
+                                            class="tiktok-w1dlre-StrongText e1hk3hf92"></strong></button><button
                                         type="button" class="tiktok-xakz2y-ButtonActionItem e1hk3hf90"><span
                                             data-e2e="undefined-icon"
                                             class="tiktok-3ahw3w-SpanIconWrapper e1hk3hf91"><svg
@@ -368,7 +362,7 @@
                 <div class="tiktok-h5r7le-DivTabMenuWrapper e1aa9wve4">
                     <div class="tiktok-3yeu18-DivTabMenuContainer e1aa9wve0">
                         <div class="tiktok-97lq0-DivTabItemContainer e1aa9wve1">
-                            <div class="tiktok-15wq8g0-DivTabItem e1aa9wve2">Comments (${video.commentsCount})</div>
+                            <div class="tiktok-15wq8g0-DivTabItem e1aa9wve2"></div>
                         </div>
                         <div class="tiktok-1gy98k0-DivTabItemContainer e1aa9wve1">
                             <div class="tiktok-1iu17z5-DivTabItem e1aa9wve2">Creator videos</div>
@@ -407,7 +401,7 @@
                                     </svg></div>
                             </div>
                             <div aria-label="Like video
-{number} likes" aria-pressed="false" role="button" tabindex="0" class="tiktok-114tc9h-DivLikeWrapper ezxoskx0">
+    {number} likes" aria-pressed="false" role="button" tabindex="0" class="tiktok-114tc9h-DivLikeWrapper ezxoskx0">
                                 <div data-e2e="comment-like-icon" class="tiktok-1tvtgfz-DivLikeIcon ezxoskx2"><svg
                                         width="20" data-e2e="" height="20" viewBox="0 0 48 48" fill="currentColor"
                                         xmlns="http://www.w3.org/2000/svg">
@@ -465,7 +459,7 @@
                                     </svg></div>
                             </div>
                             <div aria-label="Like video
-{number} likes" aria-pressed="false" role="button" tabindex="0" class="tiktok-114tc9h-DivLikeWrapper ezxoskx0">
+    {number} likes" aria-pressed="false" role="button" tabindex="0" class="tiktok-114tc9h-DivLikeWrapper ezxoskx0">
                                 <div data-e2e="comment-like-icon" class="tiktok-1tvtgfz-DivLikeIcon ezxoskx2"><svg
                                         width="20" data-e2e="" height="20" viewBox="0 0 48 48" fill="currentColor"
                                         xmlns="http://www.w3.org/2000/svg">
@@ -543,10 +537,15 @@
         </div>
     </div>
 </div>
-                    `
-            const body = document.querySelector('body');
-            body.appendChild(newHTMLContainer);
-        }
+<div class="loader">
+    <li class="ball"></li>
+    <li class="ball"></li>
+    <li class="ball"></li>
+</div>
+
+<script>
+    let video = JSON.parse('<%- JSON.stringify(video) %>');
+    if (video) {
 
         const dateObject = new Date(video.createAt);
         const today = new Date();
@@ -567,7 +566,7 @@
             daysDifference = `${difference}d ago`;
         }
 
-        renderNewHTML(video, video.user)
+
         function updateVolumeIcon(isMuted) {
             const svg = volumeButton.querySelector('svg');
             svg.innerHTML = '';
@@ -607,34 +606,52 @@
         }
         const inputElement = document.querySelector('.public-DraftEditor-content');
         const placeholderDiv = document.querySelector('.public-DraftEditorPlaceholder-root');
-        const updateVideo = document.querySelector('.updateVideo')
         const xButton = document.querySelector('.tiktok-yg0pvs-ButtonBasicButtonContainer-StyledCloseIconContainer');
         const volumeButton = document.querySelector('.tiktok-6mttet-ButtonVoiceControlNew');
-        const threeDot = document.querySelector(".tiktok-1dcgmzm-DivActionContainer");
-        const editVideo = document.querySelector(".tiktok-uoaz8g-DivContainer");
-        const popupButton = document.querySelector('.tiktok-u9i5ik-LiPopupItem .tiktok-1bsywin-ButtonAction');
-        const deleteVideoButton = document.getElementById('deleteVideo');
-        const deleteButton = document.querySelector('.tiktok-u9i5ik-LiPopupItem .tiktok-1bsywin-ButtonAction');
-        const modalContent = document.querySelector('.tiktok-17s26nl-ModalContentContainer');
-        const spanOtherInfos = document.querySelector('.tiktok-gg0x0w-SpanOtherInfos');
         const playIcon = document.getElementById('playIcon');
         const xgwrapper = document.getElementById('xgwrapper-2-7273303434869198082')
         const videoPlay = document.getElementById('xgwrapper-2-7273303434869198082').querySelector('video');
         const mainContainer = document.querySelector('.tiktok-1qg2388-DivBrowserModeContainer')
+        const thumbnailDiv = document.querySelector('.tiktok-xhj3u2-StyledVideoBlurBackground');
+        const videoThumbnail = thumbnailDiv.querySelector('img');
+        const avatarImage = document.querySelector('.tiktok-uha12h-DivContainer').querySelector('img');
+        const usernameElement = document.querySelector('[data-e2e="browse-username"] .tiktok-pocgy1-SpanEllipsis');
+        const nameElement = document.querySelector('[data-e2e="browser-nickname"] .tiktok-pocgy1-SpanEllipsis');
+        const daysDifferenceElement = document.querySelector('[data-e2e="browser-nickname"] span:last-child');
+        const captionElement = document.querySelector('.tiktok-1wdx3tj-DivContainer').querySelector('.tiktok-j2a19r-SpanText:nth-child(1)');
+        const actionElements = document.querySelector('.tiktok-1d39a26-DivFlexCenterRow');
+        const likeCountElement = actionElements.querySelector('[data-e2e="browse-like-count"]');
+        const commentCountElement = actionElements.querySelector('[data-e2e="browse-comment-count"]');
+        const undefinedCountElement = actionElements.querySelector('[data-e2e="undefined-count"]');
+        const commentsCountElement = document.querySelector('.tiktok-15wq8g0-DivTabItem.e1aa9wve2');
+
+        commentsCountElement.textContent = `Comments (${video.commentsCount})`;
+        likeCountElement.textContent = video.likes;
+        commentCountElement.textContent = video.commentsCount;
+        undefinedCountElement.textContent = '0';
+        usernameElement.textContent = video.user.username;
+        nameElement.textContent = video.user.name;
+        daysDifferenceElement.textContent = daysDifference;
+        captionElement.textContent = video.caption;
+        avatarImage.src = `${video.user.logo}`;
+        videoThumbnail.src = `${video.thumbnail}`;
+        videoPlay.src = `${video.video}`
+
         let isMuted = false
 
         window.addEventListener('load', function () {
             videoPlay.muted = false;
             videoPlay.play();
         })
-        window.addEventListener('focus', function () {
+        function handleFocusEvent() {
             if (videoPlay.paused && playIcon.style.display === 'block') {
                 videoPlay.pause();
             } else {
                 videoPlay.play();
             }
-        });
+        }
 
+        window.addEventListener('focus', handleFocusEvent);
         window.addEventListener('blur', function () {
             videoPlay.pause();
         });
@@ -678,7 +695,7 @@
                 placeholderDiv.style.display = 'block';
             }
         });
-
+        let index = 0
         const scrollBottom = document.querySelector('.tiktok-1s9jpf8-ButtonBasicButtonContainer-StyledVideoSwitch');
         scrollBottom.addEventListener('click', () => {
             // Call api to get new video data
@@ -694,8 +711,25 @@
                     return response.json();
                 })
                 .then(data => {
-                    window.location.href = `/customer/video/${data.videos[0].id}`
-                    // Handle the retrieved data, update the UI, etc.
+                    console.log("data:", data.videos)
+                    index++;
+                    if (index >= data.videos.length) {
+                        index = 0;
+                    }
+                    const newUrl = `/customer/video/${video.id}`;
+                    history.pushState({ videoId: video.id }, '', newUrl);
+                    video = data.videos[index]
+                    commentsCountElement.textContent = `Comments (${video.commentsCount})`;
+                    likeCountElement.textContent = video.likes;
+                    commentCountElement.textContent = video.commentsCount;
+                    undefinedCountElement.textContent = '0';
+                    usernameElement.textContent = video.user.username;
+                    nameElement.textContent = video.user.name;
+                    daysDifferenceElement.textContent = daysDifference;
+                    captionElement.textContent = video.caption;
+                    avatarImage.src = `${video.user.logo}`;
+                    videoThumbnail.src = `${video.thumbnail}`;
+                    videoPlay.src = `${video.video}`
                 })
                 .catch(error => {
                     // This code will be executed if the promise is rejected
@@ -703,28 +737,4 @@
                 });
         });
     }
-
-
-
-    const inputElement = document.querySelector('.public-DraftEditor-content');
-
-    // Lấy các thẻ hình ảnh và video
-    const imageElement = document.querySelector('.tiktok-xhj3u2-StyledVideoBlurBackground picture img');
-
-
-    // Chọn div chứa class "public-DraftEditorPlaceholder-root"
-    // const placeholderDiv = document.querySelector('.public-DraftEditorPlaceholder-root');
-    // Thêm sự kiện input để theo dõi việc nhập liệu
-    // inputElement.addEventListener('input', function () {
-    //     // Kiểm tra nếu nội dung không rỗng
-    //     if (inputElement.textContent.trim() !== '') {
-    //         // Ẩn div placeholder
-    //         placeholderDiv.style.display = 'none';
-    //     } else {
-    //         // Hiển thị div placeholder
-    //         placeholderDiv.style.display = 'block';
-    //     }
-    // });
-
-
 </script>

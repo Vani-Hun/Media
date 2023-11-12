@@ -19,4 +19,4 @@ export const DatabaseModule = TypeOrmModule.forRootAsync({
     },
   }),
   inject: [ConfigService],
-});
+})
