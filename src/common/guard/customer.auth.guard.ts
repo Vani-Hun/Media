@@ -1,9 +1,4 @@
-import {
-    CanActivate,
-    ExecutionContext,
-    Injectable,
-    UnauthorizedException,
-} from '@nestjs/common';
+import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { Admin } from 'src/admin/admin.entity';
 import { CustomerService } from 'src/customer/customer.service';

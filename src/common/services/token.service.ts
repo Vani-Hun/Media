@@ -8,14 +8,11 @@ export class TokenService {
 
   sign(payload: string | object | Buffer) {
     console.log('payload:', payload)
-    let secret: string = "vani"
     let expiresIn: string = "2 days";
-    return this.jwtService.sign(payload, { secret, expiresIn });
+    return this.jwtService.sign(payload, { expiresIn });
   }
 
   verify(token: string) {
-    let secret: string = "vani"
-    return this.jwtService.verify(token, { secret });
-
+    return this.jwtService.verify(token);
   }
 }

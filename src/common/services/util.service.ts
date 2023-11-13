@@ -1,9 +1,9 @@
-import { BadRequestException } from '@nestjs/common';
+import { BadRequestException, Inject } from '@nestjs/common';
 import { createReadStream, createWriteStream, existsSync, mkdirSync, unlinkSync, readFileSync } from 'fs';
 import { join } from 'path';
 import { staticFolder } from '../utils/constant';
 import * as _ from 'lodash';
-import { bucket, videoFile } from '../utils/firebase.config';
+import { VideoService } from 'src/video/video.service';
 const { Storage } = require('@google-cloud/storage');
 const { getStorage, getDownloadURL } = require('firebase-admin/storage');
 
@@ -31,26 +31,6 @@ export class UtilService {
     return `/${oldFile}`
   }
 
-  async uploadFile(input) {
-    const data = readFileSync(input.avatar.path);
-    const fileBuffer = Buffer.from(data);
-    const filePath = `avatars/${input.user.id}`;
-    const file = bucket.file(filePath);
-    const [fileExists] = await file.exists();
-    if (fileExists) {
-      await file.delete();
-      console.log(`Đã xóa tệp tin tồn tại: ${filePath}`);
-    }
-    await file.save(fileBuffer, {
-      metadata: {
-        contentType: input.avatar.mimetype,
-      },
-    });
-    await this.clearTmp(input.avatar.path);
-    const fileRef = await getStorage().bucket(`${bucket.name}`).file(`${file.name}`);
-    const downloadURL = await getDownloadURL(fileRef);
-    return downloadURL;
-  }
 
 
   checkExist(path: string): boolean {

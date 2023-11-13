@@ -1,18 +1,10 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Post,
-  Render,
-  UploadedFile,
-  UseInterceptors, Query, Redirect, UseGuards, Res, Req, Param
-} from '@nestjs/common';
+import { Inject, Body, Controller, Delete, Get, Post, Render, UploadedFile, UseInterceptors, Query, Redirect, UseGuards, Res, Req, Param } from '@nestjs/common';
 import { CusAuthGuard } from 'src/common/guard/customer.auth.guard';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { InputSetAuth, InputSetCustomer, InputUpLoad, InputUpaDateVideo } from './customer.model';
 import { CustomerService } from './customer.service';
 import { Response } from 'express';
+
 @Controller('customer')
 export class CustomerController {
   constructor(private customerService: CustomerService) { }

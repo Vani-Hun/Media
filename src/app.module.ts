@@ -9,6 +9,7 @@ import { CustomerModule } from './customer/customer.module';
 import { HomeModule } from './home/home.module';
 import { MsgWebhookModule } from './msgWebhook/msgwebhook.module';
 import { MailboxModule } from './mailbox/mailbox.module';
+import { FirebaseConfigModule } from './common/utils/firebase.config';
 const EnvModule = ConfigModule.forRoot({
   envFilePath: ['.env'],
   isGlobal: true,
@@ -16,15 +17,17 @@ const EnvModule = ConfigModule.forRoot({
 
 @Module({
   imports: [
+
     HomeModule,
+    EnvModule,
     ContactModule,
     AboutUsModule,
     CustomerModule,
     AdminModule,
     MailboxModule,
     // MsgWebhookModule,
-    EnvModule,
     DatabaseModule,
+
   ],
 })
 export class AppModule { }

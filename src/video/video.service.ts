@@ -1,20 +1,16 @@
-import { HttpException, Injectable, UnauthorizedException } from '@nestjs/common';
+import { HttpException, Injectable, UnauthorizedException, Inject } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { BaseService } from 'src/common/services/base.service';
 import { Repository } from 'typeorm';
 import { Video } from './video.entity';
 import { AppGateway } from 'src/common/services/websocket.service';
-import { relative } from 'path';
 import { createReadStream } from 'fs';
-import { bucket, firebaseAdmin } from 'src/common/utils/firebase.config';
-import { Admin } from 'src/admin/admin.entity';
 const { getStorage, getDownloadURL } = require('firebase-admin/storage');
+
 @Injectable()
 export class VideoService extends BaseService<Video> {
-    constructor(
-        @InjectRepository(Video) repo: Repository<Video>,
-        private readonly gateway: AppGateway
-
+    constructor(@Inject('FIREBASE_CONFIG') protected readonly firebaseConfig,
+        @InjectRepository(Video) repo: Repository<Video>
     ) {
         super(repo);
     }
@@ -38,8 +34,8 @@ export class VideoService extends BaseService<Video> {
             const base64Data = input.image.replace(/^data:image\/jpeg;base64,/, '');
             const imageBuffer = Buffer.from(base64Data, 'base64');
             const videoStream = createReadStream(input.video.path);
-            const videoFile = bucket.file(`videos/${input.video.filename}`);
-            const imageFile = bucket.file(`covers/${input.video.filename}`);
+            const videoFile = this.firebaseConfig.bucket.file(`videos/${input.video.filename}`);
+            const imageFile = this.firebaseConfig.bucket.file(`covers/${input.video.filename}`);
             const uploadStream = await videoFile.createWriteStream({
                 metadata: {
                     contentType: 'video/mp4',
@@ -71,8 +67,8 @@ export class VideoService extends BaseService<Video> {
             await this.clearTmp(input.video.path);
 
             const [imgRef, fileRef] = await Promise.all([
-                getStorage().bucket(`${bucket.name}`).file(`${imageFile.name}`),
-                getStorage().bucket(`${bucket.name}`).file(`${videoFile.name}`),
+                getStorage().bucket(`${this.firebaseConfig.bucket.name}`).file(`${imageFile.name}`),
+                getStorage().bucket(`${this.firebaseConfig.bucket.name}`).file(`${videoFile.name}`),
             ]);
             const [imageURL, videoURL] = await Promise.all([
                 getDownloadURL(imgRef),
@@ -117,21 +113,13 @@ export class VideoService extends BaseService<Video> {
         if (video.user.id === user.id) {
             console.log("video:", video)
             await this.repo.delete(id);
-            return await firebaseAdmin.firestore().runTransaction(async () => {
+            return await this.firebaseConfig.firebaseAdmin.firestore().runTransaction(async () => {
                 await Promise.all([
-                    firebaseAdmin.storage().bucket().file(`covers/${video.name}`).delete(),
-                    firebaseAdmin.storage().bucket().file(`videos/${video.name}`).delete()
+                    this.firebaseConfig.firebaseAdmin.storage().bucket().file(`covers/${video.name}`).delete(),
+                    this.firebaseConfig.firebaseAdmin.storage().bucket().file(`videos/${video.name}`).delete()
                 ])
             })
         } else { throw new UnauthorizedException('Failed'); }
     }
 
-    async likeVideo(videoId: string, userId: string): Promise<void> {
-        // Xử lý logic khi có sự kiện thích video
-        // ...
-
-        // Sau khi xử lý, gửi thông báo đến tất cả các client WebSocket
-        const payload = { videoId, userId };
-        this.gateway.handleLikeEvent(null, payload);
-    }
 }

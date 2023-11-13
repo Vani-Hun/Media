@@ -315,6 +315,7 @@
         const errorElement = document.getElementById("usernameError");
         const saveButton = document.getElementById('saveButton');
         const usernameInput = document.getElementById("profileUsernameInput");
+        const nameInput = document.getElementById("profileNameInput")
         const profileBioInput = document.getElementById('profileBioInput');
         const charCountElement = document.getElementById('charCount');
         const editAvatarIcon = document.querySelector('[data-e2e="edit-profile-avatar-edit-icon"]');
@@ -368,8 +369,9 @@
 
         function hideEditProfileForm() {
             editProfileForm.style.display = 'none';
-            avatarPreview.src = customer.logo
+            avatarPreview.src = customer.logo;
             usernameInput.value = customer.username;
+            nameInput.value = customer.name;
             profileBioInput.value = customer.bio;
             navMenu.style.display = 'flex'
             document.body.classList.remove('modal-open');
@@ -377,21 +379,21 @@
         }
         const Form = document.getElementById('Form');
         Form.addEventListener('submit', function (event) {
-            event.preventDefault();
-            const avatar = document.querySelector('.tiktok-4jv9vo-InputUpload.e13yu7jj22').files[0];
-            const username = document.getElementById('profileUsernameInput').value;
-            const name = document.getElementById('profileNameInput').value;
-            const bio = document.getElementById('profileBioInput').value;
+            event.preventDefault()
+            const avatar = avatarInput.files[0];
+            const username = usernameInput.value;
+            const name = nameInput.value;
+            const bio = profileBioInput.value;
             const formData = new FormData();
             formData.append('avatar', avatar);
             formData.append('username', username);
             formData.append('name', name);
             formData.append('bio', bio);
-            ('/customer/profile/update', {
+            fetch('/customer/profile/update', {
                 method: 'POST',
                 body: formData
             })
-                .then((data) => {
+                .then(data => {
                     console.log("data:", data)
                     window.location.href = '/customer/profile'
                 })

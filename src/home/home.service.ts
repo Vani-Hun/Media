@@ -22,10 +22,12 @@ export class HomeService extends BaseService<Home> {
 
   async getHome(): Promise<HomeType> {
     const [home, contact] = await Promise.all([
+
       this.findById('1'),
       this.contactService.get(),
     ]);
-
+    console.log("home:", home)
+    console.log("contact:", contact)
     return { home, contact };
   }
 

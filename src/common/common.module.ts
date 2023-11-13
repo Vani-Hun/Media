@@ -19,7 +19,7 @@ const TokenModule = JwtModule.registerAsync({
 
 @Module({
   imports: [TokenModule, CacheModule.register(), forwardRef(() => AdminModule), forwardRef(() => CustomerModule)],
-  providers: [AuthGuard, CacheService, TokenService, AppGateway],
-  exports: [CacheService, TokenService, AuthGuard, AppGateway],
+  providers: [CacheService, TokenService, AppGateway],
+  exports: [CacheService, TokenService, AppGateway],
 })
 export class CommonModule { }

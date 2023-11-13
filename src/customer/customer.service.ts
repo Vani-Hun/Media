@@ -6,14 +6,15 @@ import { FindOneOptions, Repository } from 'typeorm';
 import { Customer } from './customer.entity';
 import { InputSetCustomer, InputSetAuth } from './customer.model';
 import * as _ from 'lodash';
-import { TokenService } from 'src/common/services/token.service';
 import { Response } from 'express';
 import { access } from 'fs';
 import { VideoService } from 'src/video/video.service';
-
+import { TokenService } from 'src/common/services/token.service';
+const { getStorage, getDownloadURL } = require('firebase-admin/storage');
+import { createReadStream, createWriteStream, existsSync, mkdirSync, unlinkSync, readFileSync } from 'fs';
 @Injectable()
 export class CustomerService extends BaseService<Customer> {
-  constructor(
+  constructor(@Inject('FIREBASE_CONFIG') protected readonly firebaseConfig,
     @InjectRepository(Customer) repo: Repository<Customer>,
     private contactService: ContactService,
     private tokenService: TokenService,
@@ -82,10 +83,31 @@ export class CustomerService extends BaseService<Customer> {
   }
 
   async postProfile(user) {
-    const url = await this.uploadFile(user)
+    // const url = await this.uploadFile(user)
+
+    const data = readFileSync(user.avatar.path);
+    const fileBuffer = Buffer.from(data);
+    const filePath = `avatars/${user.user.id}`;
+    const file = this.firebaseConfig.bucket.file(filePath);
+
+
+    const [fileExists] = await file.exists();
+    if (fileExists) {
+      await file.delete();
+      console.log(`Đã xóa tệp tin tồn tại: ${filePath}`);
+    }
+    await file.save(fileBuffer, {
+      metadata: {
+        contentType: user.avatar.mimetype,
+      },
+    });
+    await this.clearTmp(user.avatar.path);
+    const fileRef = await getStorage().bucket(`${this.firebaseConfig.bucket.name}`).file(`${file.name}`);
+    const downloadURL = await getDownloadURL(fileRef);
+
     const updateData = {
       /* Các trường dữ liệu bạn muốn cập nhật, ví dụ: */
-      logo: url,
+      logo: downloadURL,
       username: user.username,
       name: user.name,
       bio: user.bio

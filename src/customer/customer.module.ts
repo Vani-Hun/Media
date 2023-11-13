@@ -8,13 +8,14 @@ import { MulterModule } from '@nestjs/platform-express';
 import { storage } from 'src/common/utils/multer.config';
 import { CommonModule } from 'src/common/common.module';
 import { VideoModule } from 'src/video/video.module';
+import { FirebaseConfigModule } from 'src/common/utils/firebase.config';
 @Module({
   imports: [
     forwardRef(() => CommonModule),
     TypeOrmModule.forFeature([Customer]),
     ContactModule,
     VideoModule,
-    MulterModule.register({ storage }),
+    MulterModule.register({ storage }), FirebaseConfigModule
   ],
   providers: [CustomerService],
   controllers: [CustomerController],
