@@ -111,7 +111,6 @@ export class VideoService extends BaseService<Video> {
             .where('video.id = :id', { id: id })
             .getOne();
         if (video.user.id === user.id) {
-            console.log("video:", video)
             await this.repo.delete(id);
             return await this.firebaseConfig.firebaseAdmin.firestore().runTransaction(async () => {
                 await Promise.all([

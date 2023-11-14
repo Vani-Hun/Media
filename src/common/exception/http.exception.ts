@@ -16,14 +16,14 @@ export class HttpExceptionFilter implements ExceptionFilter {
 
     switch (status) {
       case 401:
-        response.redirect(`/home`);
+        response.redirect(`/customer/sign-up`);
         break;
-      default:
-        this.render(response, 'home/index', {
-          title: status,
-          description: 'Page not found',
-          message: error,
-        });
+      // default:
+      //   this.render(response, 'home/index', {
+      //     title: status,
+      //     description: 'Page not found',
+      //     message: error,
+      //   });
     }
   }
 
