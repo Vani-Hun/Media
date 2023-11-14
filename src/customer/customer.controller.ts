@@ -66,6 +66,7 @@ export class CustomerController {
   @Get('sign-in')
   @Render('customer/index')
   getSignin(@Query('error') error: string) {
+    console.log("error222:", error)
     if (error) {
       return { message: error };
     }

@@ -12,18 +12,19 @@ export class HttpExceptionFilter implements ExceptionFilter {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
     const status = exception.getStatus();
+    console.log("status:", status)
     const error = exception.message;
+    console.log("error:", error)
 
     switch (status) {
       case 401:
-        response.redirect(`/customer/sign-up`);
-        break;
-      // default:
-      //   this.render(response, 'home/index', {
-      //     title: status,
-      //     description: 'Page not found',
-      //     message: error,
-      //   });
+        return response.redirect(`/customer/sign-in?error=${encodeURIComponent(error)}`);
+      default:
+        this.render(response, 'home/index', {
+          title: status,
+          description: 'Page not found',
+          message: error,
+        });
     }
   }
 
