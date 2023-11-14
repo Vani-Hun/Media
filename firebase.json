@@ -6,7 +6,8 @@
       ".write": "auth != null",
       ".options": {
         "origin": [
-          "https://media-7wy0.onrender.com"
+          "https://media-7wy0.onrender.com",
+          "localhost:3000"
         ]
       }
     }

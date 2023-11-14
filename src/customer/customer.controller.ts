@@ -60,6 +60,7 @@ export class CustomerController {
   async updateProfile(@UploadedFile() avatar: Express.Multer.File, @Body() body: InputSetCustomer, @Req() request: Request) {
     body['user'] = request['user']
     body['avatar'] = avatar
+    console.log("body:", body)
     return await this.customerService.postProfile(body)
   }
 

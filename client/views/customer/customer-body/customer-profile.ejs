@@ -341,7 +341,9 @@
                 saveButton.disabled = false;
             }
         });
-
+        nameInput.addEventListener("input", function () {
+            saveButton.disabled = false;
+        })
         editAvatarIcon.addEventListener('click', function () {
             avatarInput.click();
         });

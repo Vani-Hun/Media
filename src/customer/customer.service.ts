@@ -83,35 +83,42 @@ export class CustomerService extends BaseService<Customer> {
   }
 
   async postProfile(user) {
+    let downloadURL;
+    let updateData;
     // const url = await this.uploadFile(user)
+    if (user.avatar) {
+      const data = readFileSync(user.avatar.path);
+      const fileBuffer = Buffer.from(data);
+      const filePath = `avatars/${user.user.id}`;
+      const file = this.firebaseConfig.bucket.file(filePath);
 
-    const data = readFileSync(user.avatar.path);
-    const fileBuffer = Buffer.from(data);
-    const filePath = `avatars/${user.user.id}`;
-    const file = this.firebaseConfig.bucket.file(filePath);
-
-
-    const [fileExists] = await file.exists();
-    if (fileExists) {
-      await file.delete();
-      console.log(`Đã xóa tệp tin tồn tại: ${filePath}`);
+      const [fileExists] = await file.exists();
+      if (fileExists) {
+        await file.delete();
+        console.log(`Đã xóa tệp tin tồn tại: ${filePath}`);
+      }
+      await file.save(fileBuffer, {
+        metadata: {
+          contentType: user.avatar.mimetype,
+        },
+      });
+      await this.clearTmp(user.avatar.path);
+      const fileRef = await getStorage().bucket(`${this.firebaseConfig.bucket.name}`).file(`${file.name}`);
+      downloadURL = await getDownloadURL(fileRef);
+      updateData = {
+        /* Các trường dữ liệu bạn muốn cập nhật, ví dụ: */
+        logo: downloadURL,
+        username: user.username,
+        name: user.name,
+        bio: user.bio
+      };
+    } else {
+      updateData = {
+        username: user.username,
+        name: user.name,
+        bio: user.bio
+      };
     }
-    await file.save(fileBuffer, {
-      metadata: {
-        contentType: user.avatar.mimetype,
-      },
-    });
-    await this.clearTmp(user.avatar.path);
-    const fileRef = await getStorage().bucket(`${this.firebaseConfig.bucket.name}`).file(`${file.name}`);
-    const downloadURL = await getDownloadURL(fileRef);
-
-    const updateData = {
-      /* Các trường dữ liệu bạn muốn cập nhật, ví dụ: */
-      logo: downloadURL,
-      username: user.username,
-      name: user.name,
-      bio: user.bio
-    };
     const customer = await this.repo.update({ id: user.user.id }, updateData)
     return { customer }
   }

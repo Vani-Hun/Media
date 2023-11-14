@@ -598,7 +598,8 @@
                                     <div class="css-41hm0z"><span style="box-sizing: border-box; display: block; overflow: hidden; width: initial; height: initial; background: none; opacity: 1; border: 0px; margin: 0px; padding: 0px; position: absolute; inset: 0px;">
                                     </span></div>
                                     <div class="css-1fofj7p-DivBasicPlayerWrapper e1yey0rl2">
-                                        <div id="xgwrapper-0-7272363336711392530" class="tiktok-web-player no-controls" style="width: 100%; height: 100%;"><video playsinline="" preload="auto" crossorigin="use-credentials" style="width: 100%; height: 100%;"></video>
+                                        <div id="xgwrapper-0-7272363336711392530" class="tiktok-web-player no-controls" style="width: 100%; height: 100%;">
+                                            <video playsinline="" preload="auto" crossorigin="use-credentials" style="width: 100%; height: 100%;"></video>
                                         </div>
                                     </div>
                                 </div>
@@ -621,9 +622,9 @@
                             </div>
                         </div>
                         <div class="css-1cifsuk-DivActionItemContainer e1whjx9o0"><button type="button" aria-label="Like video
-5.5M likes" aria-pressed="false" class="css-1ok4pbl-ButtonActionItem e1hk3hf90"><span data-e2e="like-icon" class="css-6jur1x-SpanIconWrapper e1hk3hf91" style="color: rgb(22, 24, 35);"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor">
+5.5M likes" aria-pressed="false" class="css-1ok4pbl-ButtonActionItem e1hk3hf90"><span data-e2e="like-icon" id="like-icon" class="css-6jur1x-SpanIconWrapper e1hk3hf91" style="color: rgb(22, 24, 35);"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor">
                                 <use xlink: href="#heart-fill-03bd63df"></use>
-                            </svg></span><strong data-e2e="like-count" class="css-w1dlre-StrongText e1hk3hf92">${video.likes}</strong></button><button type="button" aria-label="Read or add comments
+                            </svg></span><strong data-e2e="like-count" class="css-w1dlre-StrongText">${video.likes}</strong></button><button type="button" aria-label="Read or add comments
 43.7K comments" class="css-1ok4pbl-ButtonActionItem e1hk3hf90"><span data-e2e="comment-icon" class="css-6jur1x-SpanIconWrapper e1hk3hf91" style="color: rgb(22, 24, 35);"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor">
                                     <use xlink: href="#Bubble_Ellipsis_Right_Fill-a497dc09"></use>
                                 </svg></span><strong data-e2e="comment-count" class="css-w1dlre-StrongText e1hk3hf92">${video.commentsCount}</strong></button><button type="button" aria-label="Add to Favorites. 733.3K added to Favorites" class="css-1ok4pbl-ButtonActionItem e1hk3hf90"><span data-e2e="undefined-icon" class="css-6jur1x-SpanIconWrapper e1hk3hf91" style="color: rgb(22, 24, 35);"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor">
@@ -637,7 +638,42 @@
             </div>
             `
             videoContainer.appendChild(videoDiv);
-            videoDiv.addEventListener('click', function () {
+            const clickVideoDiv = document.querySelector('.css-rnjquf-DivVideoPlayerContainer')
+            const likeIcon = document.getElementById("like-icon");
+            const likesCount = document.querySelector(".css-w1dlre-StrongText[data-e2e='like-count']");
+            likeIcon.addEventListener("click", () => {
+                let likesCountNumber = parseInt(likesCount.innerText, 10);
+                if (likeIcon.style.color === "rgb(22, 24, 35)") {
+                    likesCountNumber += 1
+                    likeIcon.style.color = "rgb(243 68 68)";
+                    fetch(`/customer/video/like/${video.id}`, {
+                        method: 'POST',
+                    })
+                        .then(data => {
+                            console.log("data:", data)
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                        });
+                } else {
+                    likesCountNumber -= 1
+                    likeIcon.style.color = "rgb(22, 24, 35)"
+                    fetch(`/customer/video/dislike/${video.id}`, {
+                        method: 'POST',
+                    })
+                        .then(data => {
+                            console.log("data:", data)
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                        });
+                }
+                likesCount.innerText = `${likesCountNumber}`
+
+
+            });
+
+            clickVideoDiv.addEventListener('click', function () {
                 function updateVolumeIcon(isMuted) {
                     const svg = volumeButton.querySelector('svg');
                     svg.innerHTML = '';

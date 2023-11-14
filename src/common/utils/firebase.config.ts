@@ -30,7 +30,7 @@ import * as admin from 'firebase-admin';
                 const bucket = firebaseAdmin.storage().bucket();
                 bucket.setCorsConfiguration([
                     {
-                        origin: [configService.get<string>('ORIGIN')],
+                        origin: [configService.get<string>('ORIGIN'), 'http://localhost:3000'],
                         method: ["GET", "POST", "PUT", "DELETE"],
                         responseHeader: ["Content-Type"]
                     }
