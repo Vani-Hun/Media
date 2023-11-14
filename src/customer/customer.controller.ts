@@ -66,7 +66,6 @@ export class CustomerController {
   @Get('sign-in')
   @Render('customer/index')
   getSignin(@Query('error') error: string) {
-    console.log("error222:", error)
     if (error) {
       return { message: error };
     }
@@ -75,7 +74,6 @@ export class CustomerController {
   @Get('log-out')
   getLogout(@Res() res: Response) {
     res.cookie('accessToken', '', { expires: new Date(0), httpOnly: true });
-
     return res.redirect('/');
 
   }
