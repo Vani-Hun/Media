@@ -4,7 +4,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { InputSetAuth, InputSetCustomer, InputUpLoad, InputUpaDateVideo } from './customer.model';
 import { CustomerService } from './customer.service';
 import { Response } from 'express';
-
+import { Request } from 'express';
 @Controller('customer')
 export class CustomerController {
   constructor(private customerService: CustomerService) { }
