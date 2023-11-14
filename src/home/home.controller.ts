@@ -2,15 +2,15 @@ import { Body, Controller, Get, Post, Render } from '@nestjs/common';
 import { InputSetHome } from './home.model';
 import { HomeService } from './home.service';
 
-@Controller('home')
+@Controller(['/home', '/'])
 export class HomeController {
   constructor(private homeService: HomeService) { }
 
   @Get()
   @Render('home/index')
   async get() {
-    console.log("vodayroi")
-    return this.homeService.getHome();
+    // console.log("vodayroi")
+    // return this.homeService.getHome();
   }
 
   @Post()
