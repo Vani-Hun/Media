@@ -380,7 +380,16 @@
             editProfileButton.removeEventListener('click', this);
         }
         const Form = document.getElementById('Form');
+        function showLoader() {
+            var loader = document.querySelector('.loader');
+            loader.classList.add('visible');
+        }
+        function hideLoader() {
+            var loader = document.querySelector('.loader');
+            loader.classList.remove('visible');
+        }
         Form.addEventListener('submit', function (event) {
+            showLoader()
             event.preventDefault()
             const avatar = avatarInput.files[0];
             const username = usernameInput.value;
@@ -397,6 +406,7 @@
             })
                 .then(data => {
                     console.log("data:", data)
+                    hideLoader()
                     window.location.href = '/customer/profile'
                 })
                 .catch(error => {

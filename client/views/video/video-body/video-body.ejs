@@ -555,9 +555,14 @@
 
 <script>
     const videos = JSON.parse('<%- JSON.stringify(videos) %>');
+    const likedVideoIds = '<%= likedVideoIds %>'.split(",")
+    console.log("likedVideoIds:", likedVideoIds)
+
+
     if (videos) {
         const videoContainer = document.querySelector('.css-9fq6q2-DivOneColumnContainer');
         videos.forEach((video, index) => {
+
             const videoDiv = document.createElement('div');
             videoDiv.className = 'css-14bp9b0-DivItemContainer';
             videoDiv.innerHTML = `
@@ -622,15 +627,15 @@
                             </div>
                         </div>
                         <div class="css-1cifsuk-DivActionItemContainer e1whjx9o0"><button type="button" aria-label="Like video
-5.5M likes" aria-pressed="false" class="css-1ok4pbl-ButtonActionItem e1hk3hf90"><span data-e2e="like-icon" id="like-icon" class="css-6jur1x-SpanIconWrapper e1hk3hf91" style="color: rgb(22, 24, 35);"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor">
+5.5M likes" aria-pressed="false" class="css-1ok4pbl-ButtonActionItem e1hk3hf90"><span data-e2e="like-icon" id="like-icon" class="css-6jur1x-SpanIconWrapper" style="color: rgb(22, 24, 35);"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor">
                                 <use xlink: href="#heart-fill-03bd63df"></use>
                             </svg></span><strong data-e2e="like-count" class="css-w1dlre-StrongText">${video.likes}</strong></button><button type="button" aria-label="Read or add comments
-43.7K comments" class="css-1ok4pbl-ButtonActionItem e1hk3hf90"><span data-e2e="comment-icon" class="css-6jur1x-SpanIconWrapper e1hk3hf91" style="color: rgb(22, 24, 35);"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor">
+43.7K comments" class="css-1ok4pbl-ButtonActionItem e1hk3hf90"><span data-e2e="comment-icon" class="css-6jur1x-SpanIconWrapper" style="color: rgb(22, 24, 35);"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor">
                                     <use xlink: href="#Bubble_Ellipsis_Right_Fill-a497dc09"></use>
-                                </svg></span><strong data-e2e="comment-count" class="css-w1dlre-StrongText e1hk3hf92">${video.commentsCount}</strong></button><button type="button" aria-label="Add to Favorites. 733.3K added to Favorites" class="css-1ok4pbl-ButtonActionItem e1hk3hf90"><span data-e2e="undefined-icon" class="css-6jur1x-SpanIconWrapper e1hk3hf91" style="color: rgb(22, 24, 35);"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor">
+                                </svg></span><strong data-e2e="comment-count" class="css-w1dlre-StrongText e1hk3hf92">${video.commentsCount}</strong></button><button type="button" aria-label="Add to Favorites. 733.3K added to Favorites" class="css-1ok4pbl-ButtonActionItem e1hk3hf90"><span data-e2e="undefined-icon" class="css-6jur1x-SpanIconWrapper" style="color: rgb(22, 24, 35);"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor">
                                     <use xlink: href="#uncollect-8a52664d"></use>
                                 </svg></span><strong data-e2e="undefined-count" class="css-w1dlre-StrongText e1hk3hf92">0</strong></button><button type="button" aria-label="Share video
-180.6K shares" aria-expanded="false" class="css-1ok4pbl-ButtonActionItem e1hk3hf90"><span data-e2e="share-icon" class="css-6jur1x-SpanIconWrapper e1hk3hf91" style="color: rgb(22, 24, 35);"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor">
+180.6K shares" aria-expanded="false" class="css-1ok4pbl-ButtonActionItem e1hk3hf90"><span data-e2e="share-icon" class="css-6jur1x-SpanIconWrapper" style="color: rgb(22, 24, 35);"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor">
                                     <use xlink: href="#pc-share-44d9fe83"></use>
                                 </svg></span><strong data-e2e="share-count" class="css-w1dlre-StrongText e1hk3hf92">0</strong></button></div>
                     </div>
@@ -638,11 +643,21 @@
             </div>
             `
             videoContainer.appendChild(videoDiv);
-            const clickVideoDiv = document.querySelector('.css-rnjquf-DivVideoPlayerContainer')
-            const likeIcon = document.getElementById("like-icon");
-            const likesCount = document.querySelector(".css-w1dlre-StrongText[data-e2e='like-count']");
+            const clickVideoDiv = videoDiv.querySelector('.css-rnjquf-DivVideoPlayerContainer');
+            const likeIcon = videoDiv.querySelector("#like-icon");
+            const likesCount = videoDiv.querySelector(".css-w1dlre-StrongText[data-e2e='like-count']");
+
+            likedVideoIds.filter(likedVideoId => {
+                if (video.id === likedVideoId) {
+                    likeIcon.style.color = "rgb(243 68 68)";
+                }
+            })
+            if (video.id === likedVideoIds) {
+                likeIcon.style.color = "rgb(243 68 68)";
+            }
             likeIcon.addEventListener("click", () => {
                 let likesCountNumber = parseInt(likesCount.innerText, 10);
+
                 if (likeIcon.style.color === "rgb(22, 24, 35)") {
                     likesCountNumber += 1
                     likeIcon.style.color = "rgb(243 68 68)";
@@ -669,9 +684,8 @@
                         });
                 }
                 likesCount.innerText = `${likesCountNumber}`
-
-
             });
+
 
             clickVideoDiv.addEventListener('click', function () {
                 function updateVolumeIcon(isMuted) {
@@ -844,12 +858,11 @@
                         placeholderDiv.style.display = 'block';
                     }
                 });
-
                 const scrollBottom = document.querySelector('.tiktok-1s9jpf8-ButtonBasicButtonContainer-StyledVideoSwitch');
                 scrollBottom.addEventListener('click', () => {
-                    console.log("index:", index)
+                    console.log("indexBF:", index)
                     index++;
-                    console.log("index:", index)
+                    console.log("indexAT:", index)
                     console.log("videos.length:", videos.length)
                     if (index >= videos.length) {
                         index = 0;

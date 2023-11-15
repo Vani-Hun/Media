@@ -4,6 +4,7 @@ import { BaseService } from 'src/common/services/base.service';
 import { ContactService } from 'src/contact/contact.service';
 import { FindOneOptions, Repository } from 'typeorm';
 import { Customer } from './customer.entity';
+import { Video } from '../video/video.entity';
 import { InputSetCustomer, InputSetAuth } from './customer.model';
 import * as _ from 'lodash';
 import { Response } from 'express';
@@ -18,7 +19,7 @@ export class CustomerService extends BaseService<Customer> {
     @InjectRepository(Customer) repo: Repository<Customer>,
     private contactService: ContactService,
     private tokenService: TokenService,
-    private videoService: VideoService
+    private videoService: VideoService,
   ) {
     super(repo);
   }
@@ -66,9 +67,30 @@ export class CustomerService extends BaseService<Customer> {
     return { video }
   }
 
-  async getVideo() {
+  async getVideo(userId) {
     const videos = await this.videoService.get()
-    return { videos }
+    const likedVideoIds = videos
+      .filter(video => video.likers.some(liker => liker.id === userId))
+      .map(video => video.id);
+
+    console.log("Liked Video IDs:", likedVideoIds);
+    // videos.push(likedVideoIds)
+    // return false; // Khách hàng chưa thích video
+    return { videos, likedVideoIds }
+  }
+
+  async likeVideo(input) {
+    const customer = await this.repo.findOneOrFail(input.user.id, { relations: ['likedVideos'] });
+    console.log("customer:", customer)
+    const newVideo = new Video();
+    newVideo.id = input.videoId;
+    customer.likedVideos.push(newVideo);
+    await this.repo.save(customer);
+    return await this.videoService.updateLike(input)
+  }
+  async dislikeVideo(input) {
+    return await this.videoService.updateDisLike(input)
+
   }
 
   async getProfile(user) {

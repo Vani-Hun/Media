@@ -1,5 +1,5 @@
 import { BaseEntityUUID } from 'src/common/entities/base.entity';
-import { Column, Entity, OneToMany } from 'typeorm';
+import { JoinTable, Column, Entity, OneToMany, ManyToMany } from 'typeorm';
 import { Video } from 'src/video/video.entity';
 @Entity()
 export class Customer extends BaseEntityUUID {
@@ -32,4 +32,8 @@ export class Customer extends BaseEntityUUID {
 
   @OneToMany(() => Video, video => video.user)
   videos: Video[];
+
+  @ManyToMany(() => Video, video => video.likers)
+  @JoinTable({ name: 'likedVideos', })
+  likedVideos: Video[];
 }

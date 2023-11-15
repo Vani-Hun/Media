@@ -20,22 +20,36 @@ export class CustomerController {
   @Get('videos')
   @UseGuards(CusAuthGuard)
   @Render('video/index')
-  async getVideos() {
-    return await this.customerService.getVideo()
+  async getVideos(@Req() request: Request) {
+    return await this.customerService.getVideo(request['user'].id)
   }
 
   @Get('video/:videoId')
   @UseGuards(CusAuthGuard)
   @Render('video/detail')
-  async getVideoById(@Param('videoId') videoId: string) {
+  async getVideoById(@Param('videoId') videoId: string, @Req() request: Request) {
     return await this.customerService.getVideoById(videoId)
   }
 
 
-  @Get('video')
+  @Post('video/like/:videoId')
   @UseGuards(CusAuthGuard)
-  async getVideo() {
-    return await this.customerService.getVideo()
+  async likeVideo(@Param('videoId') videoId: string, @Req() request: Request) {
+    const input = {
+      user: request['user'],
+      videoId: videoId
+    }
+    return await this.customerService.likeVideo(input)
+  };
+
+  @Post('video/dislike/:videoId')
+  @UseGuards(CusAuthGuard)
+  async dislikeVideo(@Param('videoId') videoId: string, @Req() request: Request) {
+    const input = {
+      user: request['user'],
+      videoId: videoId
+    }
+    return await this.customerService.dislikeVideo(input)
   }
 
   @Get('profile')
