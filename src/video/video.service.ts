@@ -93,20 +93,15 @@ export class VideoService extends BaseService<Video> {
     async updateLike(input) {
         const video = await this.repo.findOneOrFail(input.videoId, { relations: ['likers'] });
         console.log("video:", video)
-        const newCustomer = new Customer();
-        newCustomer.id = input.user.id;
-        video.likers.push(newCustomer);
         video.likes++;
         return await this.repo.save(video);
     }
 
     async updateDisLike(input) {
-        //         console.log("input:", input)
-        //         return await this.repo.query(`
-        //         UPDATE video
-        //         SET who = ?, allowComment = ?
-        //         WHERE id = ?;
-        // `, [input.who, input.allowComment, input.video]);
+        const video = await this.repo.findOneOrFail(input.videoId, { relations: ['likers'] });
+        console.log("video:", video)
+        video.likes--;
+        return await this.repo.save(video);
     }
 
     async get() {

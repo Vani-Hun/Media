@@ -89,8 +89,12 @@ export class CustomerService extends BaseService<Customer> {
     return await this.videoService.updateLike(input)
   }
   async dislikeVideo(input) {
-    return await this.videoService.updateDisLike(input)
+    const customer = await this.repo.findOneOrFail(input.user.id, { relations: ['likedVideos'] });
 
+    customer.likedVideos = customer.likedVideos.filter(likedVideo => likedVideo.id !== input.videoId);
+
+    await this.repo.save(customer);
+    return await this.videoService.updateDisLike(input)
   }
 
   async getProfile(user) {
