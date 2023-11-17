@@ -72,16 +72,11 @@ export class CustomerService extends BaseService<Customer> {
     const likedVideoIds = videos
       .filter(video => video.likers.some(liker => liker.id === userId))
       .map(video => video.id);
-
-    console.log("Liked Video IDs:", likedVideoIds);
-    // videos.push(likedVideoIds)
-    // return false; // Khách hàng chưa thích video
     return { videos, likedVideoIds }
   }
 
   async likeVideo(input) {
     const customer = await this.repo.findOneOrFail(input.user.id, { relations: ['likedVideos'] });
-    console.log("customer:", customer)
     const newVideo = new Video();
     newVideo.id = input.videoId;
     customer.likedVideos.push(newVideo);
