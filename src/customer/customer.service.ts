@@ -69,9 +69,12 @@ export class CustomerService extends BaseService<Customer> {
 
   async getVideo(userId) {
     const videos = await this.videoService.get()
+
     const likedVideoIds = videos
       .filter(video => video.likers.some(liker => liker.id === userId))
       .map(video => video.id);
+    console.log("videos:", videos)
+    console.log("likedVideoIds:", likedVideoIds)
     return { videos, likedVideoIds }
   }
 
