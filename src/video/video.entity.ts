@@ -32,10 +32,10 @@ export class Video extends BaseEntityUUID {
     @Column()
     allowComment: boolean;
 
-    @OneToMany(() => Comment, comment => comment.video)
-    comments: Comment[];
-
     @ManyToMany(() => Customer, customer => customer.likedVideos)
     @JoinTable({ name: 'likers', })
     likers: Customer[];
+
+    @OneToMany(() => Comment, comment => comment.video)
+    comments: Comment[];
 }

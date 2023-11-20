@@ -1,21 +1,18 @@
 import { BaseEntityUUID } from 'src/common/entities/base.entity';
-import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
-import { Video } from '../video/video.entity'; // Import Video Entity
+import { Column, Entity, ManyToOne, JoinColumn } from 'typeorm';
+import { Video } from 'src/video/video.entity';
+import { Customer } from 'src/customer/customer.entity';
 
 @Entity()
 export class Comment extends BaseEntityUUID {
     @Column()
-    content: string;
+    text: string;
 
-    @Column({ default: 0 }) // Số lượt like của comment, mặc định là 0
-    likes: number;
-
-    @ManyToOne(() => Video, video => video.comments)
+    @ManyToOne(() => Video)
+    @JoinColumn({ name: 'video' })
     video: Video;
 
-    @ManyToOne(() => Comment, comment => comment.replies)
-    parent: Comment;
-
-    @OneToMany(() => Comment, comment => comment.parent)
-    replies: Comment[];
+    @ManyToOne(() => Customer)
+    @JoinColumn({ name: 'customer' })
+    customer: Customer;
 }

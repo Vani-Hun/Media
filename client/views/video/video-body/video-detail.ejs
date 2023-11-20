@@ -545,6 +545,7 @@
 
 <script>
     let video = JSON.parse('<%- JSON.stringify(video) %>');
+    console.log("video:", video)
     if (video) {
 
         const dateObject = new Date(video.createAt);
@@ -689,10 +690,13 @@
             window.location.href = '/customer/videos'
         })
         inputElement.addEventListener('input', function () {
+            const postComment = document.querySelector('.tiktok-n4wkvf-DivPostButton')
             if (inputElement.textContent.trim() !== '') {
                 placeholderDiv.style.display = 'none';
+                postComment.style.color = 'rgba(234, 40, 78, 1)'
             } else {
                 placeholderDiv.style.display = 'block';
+                postComment.style.color = 'rgba(22, 24, 35, 0.34)'
             }
         });
         let index = 0

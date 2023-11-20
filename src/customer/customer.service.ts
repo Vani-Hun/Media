@@ -5,21 +5,23 @@ import { ContactService } from 'src/contact/contact.service';
 import { FindOneOptions, Repository } from 'typeorm';
 import { Customer } from './customer.entity';
 import { Video } from '../video/video.entity';
+import { Comment } from '../comment/comment.entity';
 import { InputSetCustomer, InputSetAuth } from './customer.model';
 import * as _ from 'lodash';
-import { Response } from 'express';
-import { access } from 'fs';
 import { VideoService } from 'src/video/video.service';
 import { TokenService } from 'src/common/services/token.service';
 const { getStorage, getDownloadURL } = require('firebase-admin/storage');
-import { createReadStream, createWriteStream, existsSync, mkdirSync, unlinkSync, readFileSync } from 'fs';
+import { readFileSync } from 'fs';
+import { CommentService } from 'src/comment/comment.service';
+
 @Injectable()
 export class CustomerService extends BaseService<Customer> {
-  constructor(@Inject('FIREBASE_CONFIG') protected readonly firebaseConfig,
+  constructor(
+    @Inject('FIREBASE_CONFIG') protected readonly firebaseConfig,
     @InjectRepository(Customer) repo: Repository<Customer>,
-    private contactService: ContactService,
     private tokenService: TokenService,
     private videoService: VideoService,
+    private commentService: CommentService
   ) {
     super(repo);
   }
@@ -73,8 +75,6 @@ export class CustomerService extends BaseService<Customer> {
     const likedVideoIds = videos
       .filter(video => video.likers.some(liker => liker.id === userId))
       .map(video => video.id);
-    console.log("videos:", videos)
-    console.log("likedVideoIds:", likedVideoIds)
     return { videos, likedVideoIds }
   }
 
@@ -93,6 +93,10 @@ export class CustomerService extends BaseService<Customer> {
 
     await this.repo.save(customer);
     return await this.videoService.updateDisLike(input)
+  }
+
+  async commentVideo(input) {
+    return await this.commentService.create(input)
   }
 
   async getProfile(user) {

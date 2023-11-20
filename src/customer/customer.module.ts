@@ -9,12 +9,14 @@ import { storage } from 'src/common/utils/multer.config';
 import { CommonModule } from 'src/common/common.module';
 import { VideoModule } from 'src/video/video.module';
 import { FirebaseConfigModule } from 'src/common/utils/firebase.config';
+import { CommentModule } from 'src/comment/comment.module';
 @Module({
   imports: [
     forwardRef(() => CommonModule),
     TypeOrmModule.forFeature([Customer]),
     ContactModule,
     VideoModule,
+    CommentModule,
     MulterModule.register({ storage }), FirebaseConfigModule
   ],
   providers: [CustomerService],

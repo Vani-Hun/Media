@@ -52,6 +52,17 @@ export class CustomerController {
     return await this.customerService.dislikeVideo(input)
   }
 
+  @Post('video/comment/:videoId')
+  @UseGuards(CusAuthGuard)
+  async commentVideo(@Body() body, @Param('videoId') videoId: string, @Req() request: Request) {
+    const input = {
+      user: request['user'],
+      videoId: videoId,
+      mess: body.mess
+    }
+    return await this.customerService.commentVideo(input)
+  }
+
   @Get('profile')
   @UseGuards(CusAuthGuard)
   @Render('customer/profile')

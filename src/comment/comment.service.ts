@@ -2,36 +2,13 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Comment } from './comment.entity';
+import { BaseService } from 'src/common/services/base.service';
 
 @Injectable()
 export class CommentService {
-    constructor(
-        @InjectRepository(Comment)
-        private readonly commentRepository: Repository<Comment>,
-    ) { }
-
-    async likeComment(commentId: string): Promise<Comment> {
-        const comment = await this.commentRepository.findOne(commentId);
-        if (!comment) {
-            throw new NotFoundException('Comment not found');
-        }
-
-        comment.likes += 1;
-        return this.commentRepository.save(comment);
-    }
-
-    async addReplyToComment(commentId: string, content: string): Promise<Comment> {
-        const parentComment = await this.commentRepository.findOne(commentId, { relations: ['replies'] });
-        if (!parentComment) {
-            throw new NotFoundException('Parent comment not found');
-        }
-
-        const reply = new Comment();
-        reply.content = content;
-        reply.parent = parentComment;
-
-        parentComment.replies.push(reply);
-        await this.commentRepository.save(parentComment);
-        return reply;
+    constructor(@InjectRepository(Comment) private readonly repo: Repository<Comment>) { }
+    async create(input) {
+        const createData = await this.repo.create({ text: input.mess, customer: input.user.id, video: input.videoId })
+        return await this.repo.save(createData)
     }
 }
