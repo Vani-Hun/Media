@@ -71,11 +71,11 @@ export class CustomerService extends BaseService<Customer> {
 
   async getVideo(userId) {
     const videos = await this.videoService.get()
-
+    const customer = await this.repo.findOneOrFail(userId);
     const likedVideoIds = videos
       .filter(video => video.likers.some(liker => liker.id === userId))
       .map(video => video.id);
-    return { videos, likedVideoIds }
+    return { videos, likedVideoIds, customer }
   }
 
   async likeVideo(input) {

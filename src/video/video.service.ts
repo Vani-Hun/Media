@@ -100,14 +100,14 @@ export class VideoService extends BaseService<Video> {
 
     async get() {
         return await this.repo.find({
-            where: { who: "Public" }, relations: ['user', 'likers', 'comments']
+            where: { who: "Public" }, relations: ['user', 'likers', 'comments', 'comments.video', 'comments.customer']
         })
     }
     async getVideoById(id) {
         return await this.repo.findOne({
             where: {
                 id: id
-            }, relations: ['user', 'comments']
+            }, relations: ['user', 'comments', 'likers']
         });
     }
 
