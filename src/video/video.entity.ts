@@ -4,7 +4,7 @@ import { Comment } from 'src/comment/comment.entity';
 import { Customer } from 'src/customer/customer.entity';
 @Entity()
 export class Video extends BaseEntityUUID {
-    @ManyToOne(() => Customer)
+    @ManyToOne(() => Customer, { cascade: true })
     @JoinColumn({ name: 'user' })
     user: Customer;
 
@@ -32,10 +32,10 @@ export class Video extends BaseEntityUUID {
     @Column()
     allowComment: boolean;
 
-    @ManyToMany(() => Customer, customer => customer.likedVideos)
-    @JoinTable({ name: 'likers', })
+    @ManyToMany(() => Customer, customer => customer.likedVideos, { cascade: true, })
+    @JoinTable()
     likers: Customer[];
 
-    @OneToMany(() => Comment, comment => comment.video)
+    @OneToMany(() => Comment, comment => comment.video, { cascade: true })
     comments: Comment[];
 }

@@ -24,6 +24,12 @@ export class CustomerController {
     return await this.customerService.getVideo(request['user'].id)
   }
 
+  @Get('videos/list')
+  @UseGuards(CusAuthGuard)
+  async getVideosList(@Req() request: Request) {
+    return await this.customerService.getVideo(request['user'].id)
+  }
+
   @Get('video/:videoId')
   @UseGuards(CusAuthGuard)
   @Render('video/detail')

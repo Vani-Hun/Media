@@ -12,4 +12,8 @@ export class CommentService {
         const createData = await this.repo.create({ text: input.mess, customer: input.user.id, video: input.videoId })
         return await this.repo.save(createData)
     }
+    async delete(video, user) {
+        return await this.repo.delete({ video: video });
+    }
+
 }

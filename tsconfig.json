@@ -10,11 +10,11 @@
     "sourceMap": true,
     "outDir": "./dist",
     "baseUrl": "./",
-    "paths": {
-      "babel__core": [
-        "path/to/your/babel__core.d.ts"
-      ]
-    },
+    // "paths": {
+    //   "babel__core": [
+    //     "path/to/your/babel__core.d.ts"
+    //   ]
+    // },
     "incremental": true,
     "skipLibCheck": true,
     "strictNullChecks": false,

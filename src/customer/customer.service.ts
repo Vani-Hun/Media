@@ -167,6 +167,7 @@ export class CustomerService extends BaseService<Customer> {
   }
 
   async deleteVideo(video, user) {
+    await this.commentService.delete(video, user)
     return await this.videoService.delete(video, user)
 
   }

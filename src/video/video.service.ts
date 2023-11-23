@@ -1,11 +1,11 @@
 import { HttpException, Injectable, UnauthorizedException, Inject } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { BaseService } from 'src/common/services/base.service';
-import { Repository } from 'typeorm';
+import { Repository, getConnection, getManager, getRepository } from 'typeorm';
 import { Video } from './video.entity';
 import { AppGateway } from 'src/common/services/websocket.service';
 import { createReadStream } from 'fs';
-import { Customer } from 'src/customer/customer.entity';
+import { Comment } from 'src/comment/comment.entity';
 import { error } from 'console';
 const { getStorage, getDownloadURL } = require('firebase-admin/storage');
 
@@ -114,11 +114,14 @@ export class VideoService extends BaseService<Video> {
     async delete(id, user) {
         const video = await this.repo
             .createQueryBuilder('video')
-            .leftJoinAndSelect('video.user', 'user') // Join bảng video với bảng user và select thông tin user
+            .leftJoinAndSelect('video.user', 'user')
+            .leftJoinAndSelect('video.likers', 'likers')
+            .leftJoinAndSelect('video.comments', 'comments')
             .where('video.id = :id', { id: id })
             .getOne();
+
         if (video.user.id === user.id) {
-            await this.repo.delete(id);
+            await this.repo.remove(video)
             return await this.firebaseConfig.firebaseAdmin.firestore().runTransaction(async () => {
                 await Promise.all([
                     this.firebaseConfig.firebaseAdmin.storage().bucket().file(`covers/${video.name}`).delete(),
