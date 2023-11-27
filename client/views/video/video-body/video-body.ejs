@@ -363,10 +363,9 @@
                                             </path>
                                         </svg></button></div>
                             </div>
-                            <div class="tiktok-1x3bx1n-DivCopyLinkContainer ehlq8k33">
-                                <p data-e2e="browse-video-link" class="tiktok-1v8b11s-PCopyLinkText ehlq8k34">
-                                    https://www.tiktok.com/@foxtamly/video/7273303434869198082?is_from_webapp=1&amp;sender_device=pc&amp;web_id=7187579998407149058
-                                </p><button data-e2e="browse-copy" class="tiktok-7e23lp-ButtonCopyLink ehlq8k36">Copy
+                            <div class="tiktok-1x3bx1n-DivCopyLinkContainer">
+                                <p data-e2e="browse-video-link" class="tiktok-1v8b11s-PCopyLinkText">
+                                </p><button data-e2e="browse-copy" class="tiktok-7e23lp-ButtonCopyLink">Copy
                                     link </button>
                             </div>
                         </div>
@@ -446,6 +445,9 @@
             </div>
         </div>
     </div>
+</div>
+<div id="customAlert" class="custom-alert">
+    <span id="alertMessage"></span>
 </div>
 
 <script>
@@ -572,7 +574,6 @@
                                     .then(data => {
                                         videos = data.videos
                                         likedVideoIds = data.likedVideoIds
-                                        customer = data.likedVideoIds
                                         displayVideo()
                                     })
                                     .catch(error => { console.error("Error:", error) })
@@ -596,10 +597,8 @@
                                         return response.json();
                                     })
                                     .then(data => {
-                                        console.log("data:", data)
                                         videos = data.videos
                                         likedVideoIds = data.likedVideoIds
-                                        customer = data.likedVideoIds
                                         displayVideo()
                                     })
                                     .catch(error => { console.error("Error:", error) })
@@ -617,22 +616,6 @@
                 });
 
                 clickVideoDiv.addEventListener('click', function () {
-                    // const data = sessionStorage.getItem('mainContainer');
-                    // if (data) {
-                    //     const mainContainer = document.querySelector('.tiktok-1qg2388-DivBrowserModeContainer')
-                    //     mainContainer.remove()
-                    //     const tempDiv = document.createElement('div');
-                    //     tempDiv.innerHTML = data;
-                    //     const firstChild = tempDiv.firstChild;
-                    //     const body = document.querySelector('body');
-                    //     body.appendChild(firstChild);
-                    // }
-                    // const listComments = document.querySelectorAll(".listComments")
-                    // listComments.forEach(element => {
-                    //     if (element.parentNode) {
-                    //         element.parentNode.removeChild(element);
-                    //     }
-                    // });
 
                     function updateVolumeIcon(isMuted) {
                         const svg = volumeButton.querySelector('svg');
@@ -725,7 +708,9 @@
                     const postComment = document.querySelector('.tiktok-n4wkvf-DivPostButton')
                     const divCommentList = document.querySelector('.tiktok-1qp5gj2-DivCommentListContainer')
                     const svgIcon = likeElement.querySelector('svg');
-
+                    const copyLinkText = document.querySelector('.tiktok-1v8b11s-PCopyLinkText')
+                    const host = window.location.host;
+                    const buttonCopyLink = document.querySelector('.tiktok-7e23lp-ButtonCopyLink')
                     fetch(`/customer/videoInf/${video.id}`, {
                         method: 'GET',
                     })
@@ -739,7 +724,6 @@
                         })
                         .then(data => {
                             const video = data.video
-                            console.log("video:", video)
                             commentsCountElement.textContent = `Comments (${video.comments.length})`;
                             likeCountElement.textContent = video.likes;
                             commentCountElement.textContent = video.comments.length;
@@ -752,8 +736,8 @@
                             videoThumbnail.src = `${video.thumbnail}`;
                             videoPlay.src = `${video.video}`
                             if (video.likers.length > 0) {
-                                video.likers.filter(liker => {
-                                    if (video.user.id === liker.id) {
+                                video.likers.forEach(liker => {
+                                    if (customer.id === liker.id) {
                                         svgIcon.setAttribute('fill', 'rgba(254, 44, 85)');
                                     }
                                 })
@@ -779,7 +763,6 @@
                             })
                             .then(data => {
                                 const video = data.video;
-                                console.log("video:", video);
                                 commentsCountElement.textContent = `Comments (${video.comments.length})`;
                                 likeCountElement.textContent = video.likes;
                                 commentCountElement.textContent = video.comments.length;
@@ -787,9 +770,10 @@
                                 usernameElement.textContent = video.user.username;
                                 nameElement.textContent = video.user.name;
                                 daysDifferenceElement.textContent = daysDifference;
+
                                 if (video.likers.length > 0) {
-                                    video.likers.filter(liker => {
-                                        if (video.user.id === liker.id) {
+                                    video.likers.forEach(liker => {
+                                        if (customer.id === liker.id) {
                                             svgIcon.setAttribute('fill', 'rgba(254, 44, 85)');
                                         }
                                     });
@@ -826,8 +810,8 @@
                                         commentDiv.classList = "listComments"
                                         commentDiv.innerHTML = `
                 <div class="tiktok-1i7ohvi-DivCommentItemContainer">
-                    <div id="7293732457551086344" class="tiktok-ulyotp-DivCommentContentContainer e1g2efjf0"><a data-e2e="comment-avatar-1" class="e1g2efjf5 tiktok-1jatens-StyledLink-StyledUserLinkAvatar er1vbsz0" href="/@dng.l.b4" style="flex: 0 0 40px;"><span shape="circle" data-e2e="" class="tiktok-tuohvl-SpanAvatarContainer e1e9er4e0" style="width: 40px; height: 40px;"><img loading="lazy" alt="" src="${video.user.logo}" class="tiktok-1zpj2q-ImgAvatar"></span></a>
-                        <div class="tiktok-1mf23fd-DivContentContainer e1g2efjf1"><a class="e1g2efjf4 tiktok-fx1avz-StyledLink-StyledUserLinkName er1vbsz0" href="/@dng.l.b4"><span data-e2e="comment-username-1" class="tiktok-1665s4c-SpanUserNameText e1g2efjf3">${video.user.name}</span></a>
+                    <div id="7293732457551086344" class="tiktok-ulyotp-DivCommentContentContainer e1g2efjf0"><a data-e2e="comment-avatar-1" class="e1g2efjf5 tiktok-1jatens-StyledLink-StyledUserLinkAvatar er1vbsz0" href="/@dng.l.b4" style="flex: 0 0 40px;"><span shape="circle" data-e2e="" class="tiktok-tuohvl-SpanAvatarContainer e1e9er4e0" style="width: 40px; height: 40px;"><img loading="lazy" alt="" src="${comment.customer.logo}" class="tiktok-1zpj2q-ImgAvatar"></span></a>
+                        <div class="tiktok-1mf23fd-DivContentContainer e1g2efjf1"><a class="e1g2efjf4 tiktok-fx1avz-StyledLink-StyledUserLinkName er1vbsz0" href="/@dng.l.b4"><span data-e2e="comment-username-1" class="tiktok-1665s4c-SpanUserNameText e1g2efjf3">${comment.customer.name}</span></a>
                             <p data-e2e="comment-level-1" class="tiktok-xm2h10-PCommentText e1g2efjf6"><span dir="">${comment.text}</span></p>
                             <p class="tiktok-1sun2p5-PCommentSubContent e1g2efjf9"><span data-e2e="comment-time-1" class="tiktok-4tru0g-SpanCreatedTime e1g2efjf8">${daysDifference}</span><span aria-label="Reply" role="button" data-e2e="comment-reply-1" tabindex="0" class="tiktok-ro5z69-SpanReplyButton e1g2efjf10">Reply</span></p>
                         </div>
@@ -866,7 +850,7 @@
                             });
                     }
 
-                    const intervalId = setInterval(fetchVideoInfo, 2000);
+                    const intervalId = setInterval(fetchVideoInfo, 10000);
 
                     likeElement.addEventListener("click", () => {
                         let likesCountNumber = parseInt(likeCountElement.innerText, 10);
@@ -879,7 +863,6 @@
                                 method: 'POST',
                             })
                                 .then(data => {
-                                    console.log("data:", data)
                                 })
                                 .catch(error => {
                                     console.error('Error:', error);
@@ -957,6 +940,39 @@
                     mainContainer.style.display = 'flex'
                     let isMuted = false
                     videoPlay.muted = false;
+
+                    copyLinkText.innerHTML = `${host}/customer/video/${video.id}`
+
+                    function showCustomAlert(message) {
+                        const customAlert = document.getElementById('customAlert');
+                        const alertMessage = document.getElementById('alertMessage');
+
+                        // Hiển thị thông báo
+                        alertMessage.textContent = message;
+                        customAlert.style.display = 'block';
+
+                        // Đóng thông báo sau khoảng 2 giây (2000 milliseconds)
+                        setTimeout(() => {
+                            // Ẩn thông báo
+                            customAlert.style.display = 'none';
+                        }, 1500);
+                    }
+                    buttonCopyLink.addEventListener('click', () => {
+                        let textToCopy = copyLinkText.innerHTML
+                        let textArea = document.createElement("textarea");
+                        textArea.value = textToCopy;
+                        document.body.appendChild(textArea);
+                        textArea.select();
+                        try {
+                            var successful = document.execCommand('copy');
+                            var msg = successful ? 'successful' : 'unsuccessful';
+                            showCustomAlert("Link copied successfully");
+                        } catch (err) {
+                            console.error('Unable to copy text');
+                        }
+                        document.body.removeChild(textArea);
+                    })
+
                     window.addEventListener('load', function () {
                         videoPlay.muted = false;
                         videoPlay.play();
@@ -1038,7 +1054,6 @@
                                 body: JSON.stringify(data)
                             })
                                 .then(data => {
-                                    console.log("data:", data)
                                     placeholderDiv.style.display = 'block';
                                     postComment.style.color = 'rgba(22, 24, 35, 0.34)'
                                     const commentDiv = document.createElement('div');
@@ -1085,17 +1100,13 @@
                         postComment.style.color = 'rgba(22, 24, 35, 0.34)'
                         placeholderDiv.style.display = 'block';
                         playIcon.style.display = 'none';
-                        console.log("indexBF:", index)
                         index++;
-                        console.log("indexAT:", index)
-                        console.log("videos.length:", videos.length)
                         if (index >= videos.length) {
                             index = 0;
                         }
                         const newUrl = `/customer/video/${video.id}`;
                         history.pushState({ videoId: video.id }, '', newUrl);
                         video = videos[index]
-                        console.log("video2222:", video)
                         fetch(`/customer/videoInf/${video.id}`, {
                             method: 'GET',
                         })
@@ -1107,6 +1118,9 @@
                             })
                             .then(data => {
                                 const video = data.video
+                                const newUrl = `/customer/video/${video.id}`;
+                                history.pushState({ videoId: video.id }, '', newUrl);
+                                copyLinkText.innerHTML = `${host}/customer/video/${video.id}`
                                 commentsCountElement.textContent = `Comments (${video.comments.length})`;
                                 likeCountElement.textContent = video.likes;
                                 commentCountElement.textContent = video.comments.length;
@@ -1118,7 +1132,6 @@
                                 avatarImage.src = `${video.user.logo}`;
                                 videoThumbnail.src = `${video.thumbnail}`;
                                 videoPlay.src = `${video.video}`
-                                console.log("video.comments.length:", video.comments.length)
                                 if (video.comments.length > 0) {
                                     const listComments = document.querySelectorAll(".listComments")
                                     listComments.forEach(element => {
@@ -1149,8 +1162,8 @@
                                         commentDiv.classList = "listComments"
                                         commentDiv.innerHTML = `
                 <div class="tiktok-1i7ohvi-DivCommentItemContainer">
-                    <div id="7293732457551086344" class="tiktok-ulyotp-DivCommentContentContainer e1g2efjf0"><a data-e2e="comment-avatar-1" class="e1g2efjf5 tiktok-1jatens-StyledLink-StyledUserLinkAvatar er1vbsz0" href="/@dng.l.b4" style="flex: 0 0 40px;"><span shape="circle" data-e2e="" class="tiktok-tuohvl-SpanAvatarContainer e1e9er4e0" style="width: 40px; height: 40px;"><img loading="lazy" alt="" src="${video.user.logo}" class="tiktok-1zpj2q-ImgAvatar"></span></a>
-                        <div class="tiktok-1mf23fd-DivContentContainer e1g2efjf1"><a class="e1g2efjf4 tiktok-fx1avz-StyledLink-StyledUserLinkName er1vbsz0" href="/@dng.l.b4"><span data-e2e="comment-username-1" class="tiktok-1665s4c-SpanUserNameText e1g2efjf3">${video.user.name}</span></a>
+                    <div id="7293732457551086344" class="tiktok-ulyotp-DivCommentContentContainer e1g2efjf0"><a data-e2e="comment-avatar-1" class="e1g2efjf5 tiktok-1jatens-StyledLink-StyledUserLinkAvatar er1vbsz0" href="/@dng.l.b4" style="flex: 0 0 40px;"><span shape="circle" data-e2e="" class="tiktok-tuohvl-SpanAvatarContainer e1e9er4e0" style="width: 40px; height: 40px;"><img loading="lazy" alt="" src="${comment.customer.logo}" class="tiktok-1zpj2q-ImgAvatar"></span></a>
+                        <div class="tiktok-1mf23fd-DivContentContainer e1g2efjf1"><a class="e1g2efjf4 tiktok-fx1avz-StyledLink-StyledUserLinkName er1vbsz0" href="/@dng.l.b4"><span data-e2e="comment-username-1" class="tiktok-1665s4c-SpanUserNameText e1g2efjf3">${comment.customer.name}</span></a>
                             <p data-e2e="comment-level-1" class="tiktok-xm2h10-PCommentText e1g2efjf6"><span dir="">${comment.text}</span></p>
                             <p class="tiktok-1sun2p5-PCommentSubContent e1g2efjf9"><span data-e2e="comment-time-1" class="tiktok-4tru0g-SpanCreatedTime e1g2efjf8">${daysDifference}</span><span aria-label="Reply" role="button" data-e2e="comment-reply-1" tabindex="0" class="tiktok-ro5z69-SpanReplyButton e1g2efjf10">Reply</span></p>
                         </div>
@@ -1184,8 +1197,8 @@
 
                                 }
                                 if (video.likers.length > 0) {
-                                    video.likers.filter(liker => {
-                                        if (video.user.id === liker.id) {
+                                    video.likers.forEach(liker => {
+                                        if (customer.id === liker.id) {
                                             svgIcon.setAttribute('fill', 'rgba(254, 44, 85)');
                                         }
                                     })

@@ -34,13 +34,13 @@ export class CustomerController {
   @UseGuards(CusAuthGuard)
   @Render('video/detail')
   async getVideoById(@Param('videoId') videoId: string, @Req() request: Request) {
-    return await this.customerService.getVideoById(videoId)
+    return await this.customerService.getVideoById(videoId, request['user'].id)
   }
 
   @Get('videoInf/:id')
   @UseGuards(CusAuthGuard)
   async getVideo(@Param('id') videoId: string, @Req() request: Request) {
-    return await this.customerService.getVideoById(videoId)
+    return await this.customerService.getVideoById(videoId, request['user'].id)
   }
 
 

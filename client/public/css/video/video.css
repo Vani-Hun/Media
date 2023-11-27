@@ -909,6 +909,7 @@
       flex-direction: row;
       -webkit-box-align: center;
       align-items: center;
+      background-color: white;
   }
 
   .tiktok-97lq0-DivTabItemContainer {
@@ -1683,4 +1684,32 @@
       height: 1px;
       transform: scaleY(0.5);
       background: rgba(22, 24, 35, 0.2);
+  }
+
+  .tiktok-7e23lp-ButtonCopyLink {
+      transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  .tiktok-7e23lp-ButtonCopyLink:hover {
+      /* Stylings khi hover */
+      background-color: #898c91;
+  }
+
+  .tiktok-7e23lp-ButtonCopyLink:active {
+      /* Stylings khi click */
+      background-color: #898c91;
+  }
+
+  .custom-alert {
+      display: none;
+      position: fixed;
+      top: 3%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      padding: 10px;
+      background-color: #c2c4c7;
+      border-radius: 10px;
+      border: 1px solid #ddd;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      z-index: 9999;
   }

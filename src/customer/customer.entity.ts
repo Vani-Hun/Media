@@ -38,7 +38,6 @@ export class Customer extends BaseEntityUUID {
   comments: Comment[];
 
   @ManyToMany(() => Video, video => video.likers)
-  // @JoinTable({ name: 'likedVideos' })
   likedVideos: Video[];
 
 }

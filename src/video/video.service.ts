@@ -107,7 +107,7 @@ export class VideoService extends BaseService<Video> {
         return await this.repo.findOne({
             where: {
                 id: id
-            }, relations: ['user', 'comments', 'likers']
+            }, relations: ['user', 'comments', 'comments.video', 'comments.customer', 'likers']
         });
     }
 

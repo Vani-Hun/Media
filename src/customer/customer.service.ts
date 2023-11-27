@@ -64,9 +64,10 @@ export class CustomerService extends BaseService<Customer> {
     const customer = await this.findById(input.id)
     return { customer }
   }
-  async getVideoById(videoId) {
+  async getVideoById(videoId, userId) {
+    const customer = await this.repo.findOneOrFail(userId)
     const video = await this.videoService.getVideoById(videoId)
-    return { video }
+    return { video, customer }
   }
 
   async getVideo(userId) {
@@ -100,7 +101,7 @@ export class CustomerService extends BaseService<Customer> {
   }
 
   async getProfile(user) {
-    const customer = await this.repo.findOneOrFail(user.id, { relations: ['videos'] });
+    const customer = await this.repo.findOneOrFail(user.id, { relations: ['videos', 'videos.comments', 'videos.likers'] });
     // Sắp xếp các video trong mảng videos của customer
     customer.videos = customer.videos.sort((a, b) => {
       if (a.updateAt > b.updateAt) return -1;
