@@ -309,8 +309,42 @@
         displayVideos(customer.videos)
     }
 
+    const listLike = document.querySelector('.tiktok-r7ao4-PLike')
+    const listPost = document.querySelector('.tiktok-8i8qcr-PPost')
+    let bottomLine = document.querySelector(".tiktok-1f8gh88-DivBottomLine");
+    let divVideoFeed = document.querySelector('.tiktok-yvmafn-DivVideoFeedV2')
+    listLike.addEventListener('click', () => {
+        bottomLine.style.transform = "translateX(122px)";
+        bottomLine.style.width = "165px";
+        let parentElement = document.querySelector('.tiktok-yvmafn-DivVideoFeedV2');
+        while (parentElement.firstChild) {
+            parentElement.removeChild(parentElement.firstChild);
+        }
+        fetch(`/customer/videos/like`, {
+            method: 'GET',
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`Network response was not ok (${response.status})`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                displayVideos(data.customer.likedVideos)
+            })
+            .catch(error => { console.error("Error:", error) })
 
 
+    })
+    listPost.addEventListener('click', () => {
+        bottomLine.style.transform = "translateX(0px)";
+        bottomLine.style.width = "122px";
+        let parentElement = document.querySelector('.tiktok-yvmafn-DivVideoFeedV2');
+        while (parentElement.firstChild) {
+            parentElement.removeChild(parentElement.firstChild);
+        }
+        displayVideos(customer.videos)
+    })
     const editProfileButton = document.querySelector('.tiktok-16gecda-Button-StyledEditButton');
     editProfileButton.addEventListener('click', function () {
         const closeButton = document.querySelector('[data-e2e="edit-profile-close"]');
@@ -915,11 +949,9 @@
                     method: 'GET',
                 })
                     .then(response => {
-                        // Check if the response is successful (status code 2xx)
                         if (!response.ok) {
                             throw new Error(`Network response was not ok (${response.status})`);
                         }
-                        // Parse the JSON data from the response
                         return response.json();
                     })
                     .then(data => {
@@ -933,29 +965,32 @@
                                     svgIcon.setAttribute('fill', 'rgba(254, 44, 85)');
                                 }
                             })
-
-                            video.comments.forEach(comment => {
-                                const dateObject = new Date(comment.updateAt);
-                                const today = new Date();
-                                const timeDifference = today - dateObject;
-                                let daysDifference;
-                                if (timeDifference < 1000 * 60 * 60) { // Nếu thời gian chênh lệch dưới 1 giờ
-                                    const minutesDifference = Math.floor(timeDifference / (1000 * 60));
-                                    daysDifference = `${minutesDifference}m ago`;
-                                } else if (timeDifference < 1000 * 60 * 60 * 24) { // Nếu thời gian chênh lệch dưới 1 ngày
-                                    const hoursDifference = Math.floor(timeDifference / (1000 * 60 * 60));
-                                    daysDifference = `${hoursDifference}h ago`;
-                                } else if (timeDifference > 1000 * 60 * 60 * 24 * 7) { // Nếu thời gian chênh lệch trên 1 tuần
-                                    const day = dateObject.getDate();
-                                    const month = dateObject.getMonth() + 1;
-                                    daysDifference = `${month}-${day}`;
-                                } else {
-                                    const difference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
-                                    daysDifference = `${difference}d ago`;
-                                }
-                                const commentDiv = document.createElement('div');
-                                commentDiv.classList = "listComments"
-                                commentDiv.innerHTML = `
+                        }
+                        else {
+                            svgIcon.setAttribute('fill', 'rgba(22, 24, 35)');
+                        }
+                        video.comments.forEach(comment => {
+                            const dateObject = new Date(comment.updateAt);
+                            const today = new Date();
+                            const timeDifference = today - dateObject;
+                            let daysDifference;
+                            if (timeDifference < 1000 * 60 * 60) { // Nếu thời gian chênh lệch dưới 1 giờ
+                                const minutesDifference = Math.floor(timeDifference / (1000 * 60));
+                                daysDifference = `${minutesDifference}m ago`;
+                            } else if (timeDifference < 1000 * 60 * 60 * 24) { // Nếu thời gian chênh lệch dưới 1 ngày
+                                const hoursDifference = Math.floor(timeDifference / (1000 * 60 * 60));
+                                daysDifference = `${hoursDifference}h ago`;
+                            } else if (timeDifference > 1000 * 60 * 60 * 24 * 7) { // Nếu thời gian chênh lệch trên 1 tuần
+                                const day = dateObject.getDate();
+                                const month = dateObject.getMonth() + 1;
+                                daysDifference = `${month}-${day}`;
+                            } else {
+                                const difference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+                                daysDifference = `${difference}d ago`;
+                            }
+                            const commentDiv = document.createElement('div');
+                            commentDiv.classList = "listComments"
+                            commentDiv.innerHTML = `
                 <div class="tiktok-1i7ohvi-DivCommentItemContainer">
                     <div id="7293732457551086344" class="tiktok-ulyotp-DivCommentContentContainer e1g2efjf0"><a data-e2e="comment-avatar-1" class="e1g2efjf5 tiktok-1jatens-StyledLink-StyledUserLinkAvatar er1vbsz0" href="/@dng.l.b4" style="flex: 0 0 40px;"><span shape="circle" data-e2e="" class="tiktok-tuohvl-SpanAvatarContainer e1e9er4e0" style="width: 40px; height: 40px;"><img loading="lazy" alt="" src="${comment.customer.logo}" class="tiktok-1zpj2q-ImgAvatar"></span></a>
                         <div class="tiktok-1mf23fd-DivContentContainer e1g2efjf1"><a class="e1g2efjf4 tiktok-fx1avz-StyledLink-StyledUserLinkName er1vbsz0" href="/@dng.l.b4"><span data-e2e="comment-username-1" class="tiktok-1665s4c-SpanUserNameText e1g2efjf3">${comment.customer.name}</span></a>
@@ -980,13 +1015,8 @@
                     </div>
                 </div>
                 `
-                                divCommentList.appendChild(commentDiv)
-                            })
-                        }
-
-                        else {
-                            svgIcon.setAttribute('fill', 'rgba(22, 24, 35)');
-                        }
+                            divCommentList.appendChild(commentDiv)
+                        })
                     })
                     .catch(error => {
                         console.error('Error:', error);
@@ -1004,7 +1034,6 @@
                         })
                         .then(data => {
                             const video = data.video;
-                            console.log("video12:", video)
                             commentsCountElement.textContent = `Comments (${video.comments.length})`;
                             likeCountElement.textContent = video.likes;
                             commentCountElement.textContent = video.comments.length;

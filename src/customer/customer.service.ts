@@ -79,6 +79,10 @@ export class CustomerService extends BaseService<Customer> {
     return { videos, likedVideoIds, customer }
   }
 
+  async getVideoLiked(userId) {
+    const customer = await this.repo.findOneOrFail(userId, { relations: ['likedVideos', 'likedVideos.comments', 'likedVideos.likers', 'likedVideos.comments.customer'] });
+    return { customer }
+  }
   async likeVideo(input) {
     const customer = await this.repo.findOneOrFail(input.user.id, { relations: ['likedVideos'] });
     const newVideo = new Video();

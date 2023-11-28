@@ -43,6 +43,11 @@ export class CustomerController {
     return await this.customerService.getVideoById(videoId, request['user'].id)
   }
 
+  @Get('videos/like')
+  @UseGuards(CusAuthGuard)
+  async getVideoLiked(@Req() request: Request) {
+    return await this.customerService.getVideoLiked(request['user'].id)
+  }
 
   @Post('video/like/:videoId')
   @UseGuards(CusAuthGuard)
