@@ -74,6 +74,7 @@ export class VideoService extends BaseService<Video> {
                 return uploadFirebase
             }
         } catch (error) {
+            await this.clearTmp(input.video.path);
             console.error(error);
         }
     }

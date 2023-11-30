@@ -8,6 +8,142 @@
     box-sizing: content-box;
 }
 
+.css-1xo9k5n-H1ShareTitle {
+    font-family: TikTokDisplayFont, Arial, Tahoma, PingFangSC, sans-serif;
+    font-weight: 700;
+    font-size: 32px;
+    line-height: 38px;
+    margin-bottom: 4px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: left;
+    word-break: break-word;
+}
+
+.css-10pb43i-H2ShareSubTitle {
+    font-family: TikTokFont, Arial, Tahoma, PingFangSC, sans-serif;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 24px;
+    text-overflow: ellipsis;
+    height: 25px;
+    overflow: hidden;
+    max-width: 450px;
+    white-space: nowrap;
+    display: flex;
+    align-items: flex-end;
+}
+
+.css-1nbnul7-DivShareTitleContainer {
+    flex: 1 1 0%;
+    cursor: pointer;
+    overflow: visible;
+    display: flex;
+    flex-direction: column;
+    -webkit-box-pack: justify;
+    justify-content: space-between;
+    margin-left: 20px;
+}
+
+.css-1xwagd1-DivShareFollowContainer {
+    font-family: TikTokFont, Arial, Tahoma, PingFangSC, sans-serif;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 24px;
+    position: relative;
+    width: 208px;
+    height: 36px;
+    padding: 0px;
+    margin: 16px 0px 0px;
+}
+
+.css-1h3j14u-DivFollowButtonWrapper {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    min-width: 208px;
+    height: 36px;
+    line-height: 22px;
+    z-index: unset;
+    opacity: 1;
+}
+
+.css-1tfhw3c-Button-StyledFollowButton {
+    border-radius: 4px;
+    border: none;
+    color: rgb(255, 255, 255);
+    background-color: rgb(254, 44, 85);
+    min-height: 36px;
+    font-size: 18px;
+    font-weight: 600;
+    font-family: TikTokDisplayFont, PingFangSC, sans-serif;
+    display: flex;
+    position: relative;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    justify-content: center;
+    padding: 6px 8px;
+    user-select: none;
+    cursor: pointer;
+    box-sizing: border-box;
+    min-width: 208px;
+    line-height: 22px;
+}
+
+.css-b8igea-DivMessageContainer {
+    display: flex;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    opacity: 0;
+    z-index: -1;
+}
+
+.css-1btqthh-Button-StyledMessageButton {
+    border-width: 1px;
+    border-style: solid;
+    border-radius: 4px;
+    color: rgb(254, 44, 85);
+    border-color: rgb(254, 44, 85);
+    background-color: rgb(255, 255, 255);
+    min-width: 164px;
+    min-height: 36px;
+    font-size: 18px;
+    font-weight: 600;
+    font-family: TikTokDisplayFont, PingFangSC, sans-serif;
+    display: flex;
+    position: relative;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    justify-content: center;
+    padding: 6px 8px;
+    user-select: none;
+    cursor: pointer;
+    box-sizing: border-box;
+    height: 36px;
+    line-height: 22px;
+    margin-right: 8px;
+}
+
+.css-1us3psh-DivFollowIconContainer {
+    display: flex;
+    -webkit-box-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    align-items: center;
+    box-sizing: border-box;
+    width: 36px;
+    height: 36px;
+    border: 1px solid rgba(22, 24, 35, 0.12);
+    border-radius: 4px;
+    cursor: pointer;
+    position: relative;
+    background-color: rgb(255, 255, 255);
+    float: right;
+}
+
 .tiktok-1g04lal-DivShareLayoutHeader-StyledDivShareLayoutHeaderV2 {
     position: relative;
     flex: 0 0 auto;

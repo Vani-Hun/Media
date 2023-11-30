@@ -1,4 +1,4 @@
-import { forwardRef, Inject, Injectable, UnauthorizedException, Res } from '@nestjs/common';
+import { forwardRef, Inject, Injectable, UnauthorizedException, Res, Render } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { BaseService } from 'src/common/services/base.service';
 import { ContactService } from 'src/contact/contact.service';
@@ -61,7 +61,7 @@ export class CustomerService extends BaseService<Customer> {
   }
 
   async get(input: InputSetCustomer) {
-    const customer = await this.findById(input.id)
+    const customer = await this.repo.findOneOrFail(input.id)
     return { customer }
   }
   async getVideoById(videoId, userId) {
@@ -113,6 +113,19 @@ export class CustomerService extends BaseService<Customer> {
       return 0;
     });
     return { customer }
+  }
+
+  async getViewProfile(user, customerId, res) {
+    const customer = await this.repo.findOneOrFail(customerId, { relations: ['videos', 'videos.comments', 'videos.likers'] });
+    // Sắp xếp các video trong mảng videos của customer
+    customer.videos = customer.videos.sort((a, b) => {
+      if (a.updateAt > b.updateAt) return -1;
+      if (a.updateAt < b.updateAt) return 1;
+      return 0;
+    });
+    if (user.id === customer.id) {
+      return res.render('customer/profile', { customer })
+    } else { return res.render('customer/viewProfile', { customer }) }
   }
 
   async postProfile(user) {

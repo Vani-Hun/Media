@@ -88,6 +88,13 @@ export class CustomerController {
     return await this.customerService.getProfile(user)
   }
 
+  @Get('profile/:customerId')
+  @UseGuards(CusAuthGuard)
+  async getViewProfile(@Param('customerId') customerId: string, @Res() res: Response, @Req() request: Request) {
+    console.log("customerId:", customerId)
+    const user = await request['user']
+    return await this.customerService.getViewProfile(user, customerId, res)
+  }
 
   @Get('header')
   @UseGuards(CusAuthGuard)

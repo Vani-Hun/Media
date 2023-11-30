@@ -13,7 +13,7 @@
         aria-expanded="false" aria-haspopup="true" aria-controls="" class="DivProfileContainer"></div>
     <div class="dropdown-menu" id="dropdown-menu">
         <!-- Các mục trong dropdown menu -->
-        <a href="/customer/profile">View profile</a>
+        <a>View profile</a>
         <a href="/customer/log-out">Log Out</a>
         <!-- ...Thêm các mục khác nếu cần... -->
     </div>
@@ -45,15 +45,15 @@
 
 
     document.addEventListener("DOMContentLoaded", function () {
-        var body = document.body;
+        let body = document.body;
 
         function showLoader() {
-            var loader = document.querySelector('.loader');
+            let loader = document.querySelector('.loader');
             loader.classList.add('visible');
         }
 
         function hideLoader() {
-            var loader = document.querySelector('.loader');
+            let loader = document.querySelector('.loader');
             loader.classList.remove('visible');
         }
 
@@ -67,7 +67,7 @@
             }, 2000);
         }
 
-        var homeLink = document.getElementById('home-link');
+        let homeLink = document.getElementById('home-link');
         if (homeLink) {
             homeLink.addEventListener('click', function (event) {
                 event.preventDefault();
@@ -77,16 +77,23 @@
 
     });
     // Lấy tham chiếu đến dropdown menu và phần tử kích hoạt dropdown
-    var dropdownMenu = document.getElementById("dropdown-menu");
-    var profileIcon = document.getElementById("header-more-menu-icon");
+    let dropdownMenu = document.getElementById("dropdown-menu");
+    let profileIcon = document.getElementById("header-more-menu-icon");
+
+
     document.addEventListener("DOMContentLoaded", function () {
-        var customer;
+        let customer;
         // Gọi API để lấy dữ liệu của khách hàng
         fetch('/customer/header') // Thay thế '/api/customer' bằng endpoint của API của bạn
             .then(response => response.json())
             .then(data => {
-                // Xử lý dữ liệu nhận được từ API
-                var customerLogo = data.customer.logo;
+                let links = document.querySelectorAll('#dropdown-menu a');
+                links.forEach(function (link) {
+                    if (link.innerText === 'View profile') {
+                        link.href = `/customer/profile/${data.customer.id}`;
+                    }
+                });
+                let customerLogo = data.customer.logo;
                 if (customerLogo) {
                     customer = customerLogo
                     profileIcon.style = `background-image:url( ${customerLogo} )`
