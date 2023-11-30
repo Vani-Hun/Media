@@ -18,7 +18,7 @@ export class Video extends BaseEntityUUID {
     likes: number;
 
     @Column({ default: 0 }) // Số lượt comment, mặc định là 0
-    commentsCount: number;
+    shareCount: number;
 
     @Column()
     caption: string;

@@ -99,6 +99,11 @@ export class VideoService extends BaseService<Video> {
         return await this.repo.save(video);
     }
 
+    async updateShare(input) {
+        const video = await this.repo.findOneOrFail(input.videoId);
+        video.shareCount++;
+        return await this.repo.save(video);
+    }
     async get() {
         return await this.repo.find({
             where: { who: "Public" }, relations: ['user', 'likers', 'comments', 'comments.video', 'comments.customer']

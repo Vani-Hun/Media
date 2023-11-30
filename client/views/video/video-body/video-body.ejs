@@ -456,6 +456,20 @@
     let customer = JSON.parse('<%- JSON.stringify(customer) %>')
     if (videos) {
         const videoContainer = document.querySelector('.css-9fq6q2-DivOneColumnContainer');
+        function showCustomAlert(message) {
+            const customAlert = document.getElementById('customAlert');
+            const alertMessage = document.getElementById('alertMessage');
+
+            // Hiển thị thông báo
+            alertMessage.textContent = message;
+            customAlert.style.display = 'block';
+
+            // Đóng thông báo sau khoảng 2 giây (2000 milliseconds)
+            setTimeout(() => {
+                // Ẩn thông báo
+                customAlert.style.display = 'none';
+            }, 1500);
+        }
         function displayVideo() {
             videos.forEach((video, index) => {
                 const videoDiv = document.createElement('div');
@@ -527,12 +541,12 @@
                             </svg></span><strong data-e2e="like-count" class="css-w1dlre-StrongText">${video.likes}</strong></button><button type="button" aria-label="Read or add comments
 43.7K comments" class="css-1ok4pbl-ButtonActionItem e1hk3hf90"><span data-e2e="comment-icon" id="comment-icon" class="css-6jur1x-SpanIconWrapper" style="color: rgb(22, 24, 35);"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor">
                                     <use xlink: href="#Bubble_Ellipsis_Right_Fill-a497dc09"></use>
-                                </svg></span><strong data-e2e="comment-count" class="css-w1dlre-StrongText e1hk3hf92">${video.comments.length}</strong></button><button type="button" aria-label="Add to Favorites. 733.3K added to Favorites" class="css-1ok4pbl-ButtonActionItem e1hk3hf90"><span data-e2e="undefined-icon" class="css-6jur1x-SpanIconWrapper" style="color: rgb(22, 24, 35);"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor">
+                                </svg></span><strong data-e2e="comment-count" class="css-w1dlre-StrongText">${video.comments.length}</strong></button><button type="button" aria-label="Add to Favorites. 733.3K added to Favorites" class="css-1ok4pbl-ButtonActionItem e1hk3hf90"><span data-e2e="undefined-icon" class="css-6jur1x-SpanIconWrapper" style="color: rgb(22, 24, 35);"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor">
                                     <use xlink: href="#uncollect-8a52664d"></use>
-                                </svg></span><strong data-e2e="undefined-count" class="css-w1dlre-StrongText e1hk3hf92">0</strong></button><button type="button" aria-label="Share video
-180.6K shares" aria-expanded="false" class="css-1ok4pbl-ButtonActionItem e1hk3hf90"><span data-e2e="share-icon" class="css-6jur1x-SpanIconWrapper" style="color: rgb(22, 24, 35);"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor">
+                                </svg></span><strong data-e2e="undefined-count" class="css-w1dlre-StrongText">${video.shareCount}</strong></button><button type="button" aria-label="Share video
+180.6K shares" aria-expanded="false" class="css-1ok4pbl-ButtonActionItem e1hk3hf90"><span data-e2e="share-icon" id="share-icon" class="css-6jur1x-SpanIconWrapper" style="color: rgb(22, 24, 35);"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor">
                                     <use xlink: href="#pc-share-44d9fe83"></use>
-                                </svg></span><strong data-e2e="share-count" class="css-w1dlre-StrongText e1hk3hf92">0</strong></button></div>
+                                </svg></span><strong data-e2e="share-count" class="css-w1dlre-StrongText">${video.shareCount}</strong></button></div>
                     </div>
                 </div>
             </div>
@@ -542,6 +556,8 @@
                 const likeIcon = videoDiv.querySelector("#like-icon");
                 const likesCount = videoDiv.querySelector(".css-w1dlre-StrongText[data-e2e='like-count']");
                 const commentIcon = videoDiv.querySelector("#comment-icon");
+                const shareIcon = videoDiv.querySelector('#share-icon');
+                const host = window.location.host;
                 likedVideoIds.filter(likedVideoId => {
                     if (video.id === likedVideoId) {
                         likeIcon.style.color = "rgba(254, 44, 85)";
@@ -614,6 +630,31 @@
                     // Gọi hàm xử lý sự kiện của clickVideoDiv
                     clickVideoDiv.click();
                 });
+
+
+
+                shareIcon.addEventListener('click', function () {
+                    const textToCopy = `${host}/customer/video/${video.id}`;
+                    const textArea = document.createElement("textarea");
+                    textArea.value = textToCopy;
+                    document.body.appendChild(textArea);
+                    textArea.select();
+                    try {
+                        showCustomAlert("Link copied successfully");
+                        fetch(`/customer/video/share/${video.id}`, {
+                            method: 'POST',
+                        })
+                            .then(data => {
+                            })
+                            .catch(error => {
+                                console.error('Error:', error);
+                            });
+
+                    } catch (err) {
+                        showCustomAlert("Unable to copy text");
+                    }
+                    document.body.removeChild(textArea);
+                })
 
                 clickVideoDiv.addEventListener('click', function () {
 
@@ -709,7 +750,7 @@
                     const divCommentList = document.querySelector('.tiktok-1qp5gj2-DivCommentListContainer')
                     const svgIcon = likeElement.querySelector('svg');
                     const copyLinkText = document.querySelector('.tiktok-1v8b11s-PCopyLinkText')
-                    const host = window.location.host;
+
                     const buttonCopyLink = document.querySelector('.tiktok-7e23lp-ButtonCopyLink')
                     fetch(`/customer/videoInf/${video.id}`, {
                         method: 'GET',
@@ -943,20 +984,7 @@
 
                     copyLinkText.innerHTML = `${host}/customer/video/${video.id}`
 
-                    function showCustomAlert(message) {
-                        const customAlert = document.getElementById('customAlert');
-                        const alertMessage = document.getElementById('alertMessage');
 
-                        // Hiển thị thông báo
-                        alertMessage.textContent = message;
-                        customAlert.style.display = 'block';
-
-                        // Đóng thông báo sau khoảng 2 giây (2000 milliseconds)
-                        setTimeout(() => {
-                            // Ẩn thông báo
-                            customAlert.style.display = 'none';
-                        }, 1500);
-                    }
                     buttonCopyLink.addEventListener('click', () => {
                         let textToCopy = copyLinkText.innerHTML
                         let textArea = document.createElement("textarea");
@@ -964,11 +992,17 @@
                         document.body.appendChild(textArea);
                         textArea.select();
                         try {
-                            var successful = document.execCommand('copy');
-                            var msg = successful ? 'successful' : 'unsuccessful';
                             showCustomAlert("Link copied successfully");
+                            fetch(`/customer/video/share/${video.id}`, {
+                                method: 'POST',
+                            })
+                                .then(data => {
+                                })
+                                .catch(error => {
+                                    console.error('Error:', error);
+                                });
                         } catch (err) {
-                            console.error('Unable to copy text');
+                            showCustomAlert("Unable to copy text");
                         }
                         document.body.removeChild(textArea);
                     })

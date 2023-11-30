@@ -91,6 +91,10 @@ export class CustomerService extends BaseService<Customer> {
     await this.repo.save(customer);
     return await this.videoService.updateLike(input)
   }
+
+  async shareVideo(input) {
+    return await this.videoService.updateShare(input)
+  }
   async dislikeVideo(input) {
     const customer = await this.repo.findOneOrFail(input.user.id, { relations: ['likedVideos'] });
 
@@ -116,7 +120,7 @@ export class CustomerService extends BaseService<Customer> {
   }
 
   async getViewProfile(user, customerId, res) {
-    const customer = await this.repo.findOneOrFail(customerId, { relations: ['videos', 'videos.comments', 'videos.likers'] });
+    const customer = await this.repo.findOneOrFail(customerId, { relations: ['videos', 'videos.user', 'videos.comments', 'videos.likers'] });
     // Sắp xếp các video trong mảng videos của customer
     customer.videos = customer.videos.sort((a, b) => {
       if (a.updateAt > b.updateAt) return -1;

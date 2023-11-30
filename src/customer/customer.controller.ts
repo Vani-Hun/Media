@@ -59,6 +59,17 @@ export class CustomerController {
     return await this.customerService.likeVideo(input)
   };
 
+  @Post('video/share/:videoId')
+  @UseGuards(CusAuthGuard)
+  async shareVideo(@Param('videoId') videoId: string, @Req() request: Request) {
+    const input = {
+      user: request['user'],
+      videoId: videoId
+    }
+    return await this.customerService.shareVideo(input)
+  };
+
+
   @Post('video/dislike/:videoId')
   @UseGuards(CusAuthGuard)
   async dislikeVideo(@Param('videoId') videoId: string, @Req() request: Request) {
@@ -78,14 +89,6 @@ export class CustomerController {
       mess: body.mess
     }
     return await this.customerService.commentVideo(input)
-  }
-
-  @Get('profile')
-  @UseGuards(CusAuthGuard)
-  @Render('customer/profile')
-  async getProfile(@Req() request: Request) {
-    const user = await request['user']
-    return await this.customerService.getProfile(user)
   }
 
   @Get('profile/:customerId')

@@ -1178,6 +1178,14 @@
                         var successful = document.execCommand('copy');
                         var msg = successful ? 'successful' : 'unsuccessful';
                         showCustomAlert("Link copied successfully");
+                        fetch(`/customer/video/share/${video.id}`, {
+                            method: 'POST',
+                        })
+                            .then(data => {
+                            })
+                            .catch(error => {
+                                console.error('Error:', error);
+                            });
                     } catch (err) {
                         console.error('Unable to copy text');
                     }
@@ -1226,7 +1234,7 @@
                     }
                 });
                 xButton.addEventListener('click', function () {
-                    window.location.href = '/customer/profile'
+                    window.location.href = `/customer/profile/${customer.id}`
                 })
                 inputElement.addEventListener('input', function () {
                     const postComment = document.querySelector('.tiktok-n4wkvf-DivPostButton')
