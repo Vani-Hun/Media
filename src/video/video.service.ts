@@ -3,7 +3,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { BaseService } from 'src/common/services/base.service';
 import { Repository, getConnection, getManager, getRepository } from 'typeorm';
 import { Video } from './video.entity';
-import { AppGateway } from 'src/common/services/websocket.service';
 import { createReadStream } from 'fs';
 import { Comment } from 'src/comment/comment.entity';
 import { error } from 'console';

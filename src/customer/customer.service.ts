@@ -47,13 +47,45 @@ export class CustomerService extends BaseService<Customer> {
       }
     }
   }
+
+  async googleLogin(input, res) {
+    const data = await this.repo.findOne({
+      where: { email: input.emails[0].value }
+    })
+    if (!data) {
+      const userCreate = {
+        logo: input.photos[0].value,
+        email: input.emails[0].value,
+        name: input.name.givenName + " " + input.name.familyName,
+        username: "user" + input.name.givenName,
+        password: null
+      }
+      const user = await this.signUp(userCreate)
+      const payload = {
+        id: user.id,
+        username: user.username,
+        name: user.name
+      };
+      const sign = this.tokenService.sign(payload)
+      return res.cookie('accessToken', sign, { httpOnly: true, maxAge: 2 * 24 * 60 * 60 * 1000 });
+    } else {
+      const payload = {
+        id: data.id,
+        username: data.username,
+        name: data.name
+      };
+      const sign = this.tokenService.sign(payload)
+      return res.cookie('accessToken', sign, { httpOnly: true, maxAge: 2 * 24 * 60 * 60 * 1000 });
+    }
+  }
+
   async signUp(input: InputSetAuth) {
     const data = await this.repo.findOne({
-      where: { username: input.username }
+      where: [{ username: input.username }, { email: input.username }]
     })
     if (!data) {
       const createUser = this.repo.save(this.repo.create({ ...input }))
-      return !!createUser
+      return createUser
     }
     console.log(new UnauthorizedException('Your username is exist!!'))
     throw new UnauthorizedException('Your username is exist!!');

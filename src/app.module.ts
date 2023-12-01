@@ -16,7 +16,6 @@ const EnvModule = ConfigModule.forRoot({
 
 @Module({
   imports: [
-
     HomeModule,
     EnvModule,
     ContactModule,
@@ -26,7 +25,6 @@ const EnvModule = ConfigModule.forRoot({
     MailboxModule,
     // MsgWebhookModule,
     DatabaseModule,
-
   ],
 })
 export class AppModule { }

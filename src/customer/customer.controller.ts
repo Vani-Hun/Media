@@ -5,9 +5,27 @@ import { InputSetAuth, InputSetCustomer, InputUpLoad, InputUpaDateVideo } from '
 import { CustomerService } from './customer.service';
 import { Response } from 'express';
 import { Request } from 'express';
+import { AuthGuard } from '@nestjs/passport';
 @Controller('customer')
 export class CustomerController {
   constructor(private customerService: CustomerService) { }
+
+  // Endpoint để bắt đầu quy trình đăng nhập bằng Google
+  @Get('google/login')
+  @UseGuards(AuthGuard('google'))
+  async googleLogin() {
+  }
+
+  // Endpoint để xử lý sau khi người dùng đăng nhập thành công bằng Google
+  @Get('google/callback')
+  @UseGuards(AuthGuard('google'))
+  async googleLoginCallback(@Req() req, @Res() res) {
+    console.log("req.user:", req.user)
+    const token = await this.customerService.googleLogin(req.user, res);
+    if (token) {
+      return res.redirect('/')
+    }
+  }
 
   @Get('upload')
   @UseGuards(CusAuthGuard)

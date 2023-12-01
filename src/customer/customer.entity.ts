@@ -23,9 +23,12 @@ export class Customer extends BaseEntityUUID {
   username: string;
 
   @Column({ nullable: true })
+  email: string;
+
+  @Column({ nullable: true })
   bio: string;
 
-  @Column()
+  @Column({ nullable: true })
   password: string;
 
   @Column({ nullable: true })
@@ -40,4 +43,4 @@ export class Customer extends BaseEntityUUID {
   @ManyToMany(() => Video, video => video.likers)
   likedVideos: Video[];
 
-}
+};
