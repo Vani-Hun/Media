@@ -8,6 +8,7 @@ import { TokenService } from './services/token.service';
 import { CustomerModule } from 'src/customer/customer.module';
 import { GoogleStrategy } from './services/passport.service';
 import { PassportModule } from '@nestjs/passport';
+import { FacebookStrategy } from './services/facebook.service';
 // import { AppGateway } from './services/websocket.service';
 const TokenModule = JwtModule.registerAsync({
   useFactory: async (configService: ConfigService) => ({
@@ -21,7 +22,7 @@ const TokenModule = JwtModule.registerAsync({
 
 const PportModule = PassportModule.registerAsync({
   useFactory: async (configService: ConfigService) => ({
-    defaultStrategy: 'google',
+    strategies: ['google', 'facebook'],
     session: true,
   }),
   inject: [ConfigService],
@@ -29,7 +30,7 @@ const PportModule = PassportModule.registerAsync({
 
 @Module({
   imports: [PportModule, TokenModule, CacheModule.register(), forwardRef(() => AdminModule), forwardRef(() => CustomerModule)],
-  providers: [CacheService, TokenService, GoogleStrategy],
+  providers: [CacheService, TokenService, GoogleStrategy, FacebookStrategy],
   exports: [CacheService, TokenService],
 })
 export class CommonModule { }

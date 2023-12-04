@@ -79,6 +79,37 @@ export class CustomerService extends BaseService<Customer> {
     }
   }
 
+  async facebookLogin(input, res) {
+    const data = await this.repo.findOne({
+      where: { email: input.id }
+    })
+    if (!data) {
+      const userCreate = {
+        logo: input.photos[0].value,
+        email: input.id,
+        name: input.displayName,
+        username: "user" + input.displayName,
+        password: null
+      }
+      const user = await this.signUp(userCreate)
+      const payload = {
+        id: user.id,
+        username: user.username,
+        name: user.name
+      };
+      const sign = this.tokenService.sign(payload)
+      return res.cookie('accessToken', sign, { httpOnly: true, maxAge: 2 * 24 * 60 * 60 * 1000 });
+    } else {
+      const payload = {
+        id: data.id,
+        username: data.username,
+        name: data.name
+      };
+      const sign = this.tokenService.sign(payload)
+      return res.cookie('accessToken', sign, { httpOnly: true, maxAge: 2 * 24 * 60 * 60 * 1000 });
+    }
+  }
+
   async signUp(input: InputSetAuth) {
     const data = await this.repo.findOne({
       where: [{ username: input.username }, { email: input.username }]

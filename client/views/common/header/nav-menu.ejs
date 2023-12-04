@@ -82,6 +82,17 @@
 
 
     document.addEventListener("DOMContentLoaded", function () {
+        let avatarUrl;
+        fetch(`https://graph.facebook.com/v14.0/2061205280902736?fields=picture&access_token=EAASLbC2vZBQ4BO4G6sXi6KKe1Rlm1yI9bl8atMZCQsUPAVE71CwrpCPvRqCUT9ms5eZBJHZADMpMRkZAnzGEDk0diSalKTKIWR7roV48Qbat94zLxqv1knZBZA5CBQbcRlaKW7W8P6Rzew74VSEkQqM4Dn6DhfMRxfEiFZAPBHcFJmLYpAeJNK3JUbv7VZBEZAVj6WLmxhL4n3JrqV1fkUdvKptBzCddRxaWUwIexd4O1NrFTp7ydOsm9t8zqmOZA5dFWH7SQZDZD`)
+            .then(response => response.json())
+            .then(data => {
+                console.log("data:", data)
+                avatarUrl = data.picture?.data?.url || null;
+                console.log("avatarUrl:", avatarUrl)
+            })
+
+
+
         let customer;
         // Gọi API để lấy dữ liệu của khách hàng
         fetch('/customer/header') // Thay thế '/api/customer' bằng endpoint của API của bạn
@@ -96,7 +107,7 @@
                 let customerLogo = data.customer.logo;
                 if (customerLogo) {
                     customer = customerLogo
-                    profileIcon.style = `background-image:url( ${customerLogo} )`
+                    profileIcon.style = `background-image:url( ${avatarUrl} )`
                 } else {
                     profileIcon.style = "background-image:url(/img/logo/logo.png)";
                     dropdownMenu.style.display = "none";
