@@ -15,9 +15,7 @@ import {
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { Response } from 'express';
-import { InputSetAboutUs } from 'src/aboutUs/aboutUs.model';
 import { AuthGuard } from 'src/common/guard/auth.guard';
-import { InputSetContact } from 'src/contact/contact.model';
 import { InputSetCustomer } from 'src/customer/customer.model';
 import { InputSetHome } from 'src/home/home.model';
 import { InputSetLogin, InputSetRegister } from './admin.model';
@@ -53,37 +51,6 @@ export class AdminController {
     if (admin) {
       console.log('done')
     }
-  }
-  // Home
-
-  @Get('home')
-  @UseGuards(AuthGuard)
-  @Render('admin/home/index')
-  getHome() {
-    return this.adminService.getAdminHome();
-  }
-
-  @Post('home')
-  @UseGuards(AuthGuard)
-  @Redirect('/admin/home')
-  postHome(@Body() body: InputSetHome) {
-    return this.adminService.setHome(body);
-  }
-
-  // About Us
-
-  @Get('aboutus')
-  @UseGuards(AuthGuard)
-  @Render('admin/aboutUs/index')
-  getAboutUs() {
-    return this.adminService.getAdminAboutUs();
-  }
-
-  @Post('aboutus')
-  @UseGuards(AuthGuard)
-  @Redirect('/admin/aboutus')
-  postAboutUs(@Body() body: InputSetAboutUs) {
-    return this.adminService.setAboutUs(body);
   }
 
   @Get('customer')
@@ -170,22 +137,6 @@ export class AdminController {
     }
 
     return {}
-  }
-
-  // Contact
-
-  @Get('contact')
-  @Render('admin/contact/index')
-  @UseGuards(AuthGuard)
-  getContact() {
-    return this.adminService.getContact()
-  }
-
-  @Post('contact')
-  @Redirect('/admin/contact')
-  @UseGuards(AuthGuard)
-  postContact(@Body() body: InputSetContact) {
-    return this.adminService.setContact(body)
   }
 
   // Login

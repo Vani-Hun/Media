@@ -1,7 +1,6 @@
 import { forwardRef, Inject, Injectable, UnauthorizedException, Res, Render } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { BaseService } from 'src/common/services/base.service';
-import { ContactService } from 'src/contact/contact.service';
 import { FindOneOptions, Repository } from 'typeorm';
 import { Customer } from './customer.entity';
 import { Video } from '../video/video.entity';

@@ -1,13 +1,9 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
-import { InputSetAboutUs } from 'src/aboutUs/aboutUs.model';
-import { AboutUsService } from 'src/aboutUs/aboutUs.service';
 import { BaseService } from 'src/common/services/base.service';
 import { CacheService } from 'src/common/services/cache.service';
 import { TokenService } from 'src/common/services/token.service';
-import { InputSetContact } from 'src/contact/contact.model';
-import { ContactService } from 'src/contact/contact.service';
 import { InputSetCustomer } from 'src/customer/customer.model';
 import { CustomerService } from 'src/customer/customer.service';
 import { InputSetHome } from 'src/home/home.model';
@@ -24,9 +20,7 @@ export class AdminService extends BaseService<Admin> {
     private tokenService: TokenService,
     private cacheService: CacheService,
     private homeService: HomeService,
-    private aboutUsService: AboutUsService,
     private customerService: CustomerService,
-    private contactService: ContactService
   ) {
     super(repo);
     this.bcrypt = bcrypt;
@@ -34,18 +28,6 @@ export class AdminService extends BaseService<Admin> {
 
   getAdminHome() {
     return this.homeService.get();
-  }
-
-  setHome(input: InputSetHome) {
-    return this.homeService.update(input);
-  }
-
-  getAdminAboutUs() {
-    return this.aboutUsService.get();
-  }
-
-  setAboutUs(input: InputSetAboutUs) {
-    return this.aboutUsService.update(input);
   }
 
   async getCustomer(page?: string) {
@@ -86,16 +68,6 @@ export class AdminService extends BaseService<Admin> {
 
   updateBannerPage(file: Express.Multer.File) {
     return this.updateFile(file, "img/banner/bannerPage.jpg")
-  }
-
-  // Contact
-
-  getContact() {
-    return this.contactService.get();
-  }
-
-  setContact(input: InputSetContact) {
-    return this.contactService.update(input)
   }
 
   // login

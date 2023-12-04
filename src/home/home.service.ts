@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { BaseService } from 'src/common/services/base.service';
-import { ContactService } from 'src/contact/contact.service';
 import { Repository } from 'typeorm';
 import { Home } from './home.entity';
 import { HomeType, InputSetHome } from './home.model';
@@ -11,7 +10,6 @@ import * as _ from 'lodash';
 export class HomeService extends BaseService<Home> {
   constructor(
     @InjectRepository(Home) repo: Repository<Home>,
-    private contactService: ContactService,
   ) {
     super(repo);
   }
@@ -20,16 +18,12 @@ export class HomeService extends BaseService<Home> {
     return this.repo.findOne();
   }
 
-  async getHome(): Promise<HomeType> {
-    const [home, contact] = await Promise.all([
-
-      this.findById('1'),
-      this.contactService.get(),
-    ]);
-    console.log("home:", home)
-    console.log("contact:", contact)
-    return { home, contact };
-  }
+  // async getHome(): Promise<HomeType> {
+  //   const home = await Promise.all([
+  //     this.findById('1')
+  //   ]);
+  //   return { home };
+  // }
 
   async update(input: InputSetHome): Promise<Home> {
     const homeData = await this.findById('1');
