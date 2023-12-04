@@ -27,7 +27,7 @@
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    background-image: url('/img/banner/bannerPage.jpg');
+    background-image: url('https://64.media.tumblr.com/e647f3bb9de3d00c241ad7082145fa0f/tumblr_o2w5nbKv1T1v514p4o1_1280.jpg');
     /* Đường dẫn đến hình ảnh nền */
     background-size: cover;
     background-position: center;

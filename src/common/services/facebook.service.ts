@@ -14,6 +14,7 @@ export class FacebookStrategy extends PassportStrategy(Strategy, 'facebook') {
     }
 
     async validate(accessToken: string, refreshToken: string, profile: Profile, done: VerifyCallback,): Promise<any> {
+        console.log("VODAYROI")
         const user = { ...profile, accessToken };
         return done(null, user);
     }

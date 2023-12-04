@@ -1,4 +1,4 @@
-import { Inject, Body, Controller, Delete, Get, Post, Render, UploadedFile, UseInterceptors, Query, Redirect, UseGuards, Res, Req, Param } from '@nestjs/common';
+import { Inject, Body, Controller, Delete, Get, Post, Render, UploadedFile, UseInterceptors, Query, Redirect, UseGuards, Res, Req, Param, HttpStatus } from '@nestjs/common';
 import { CusAuthGuard } from 'src/common/guard/customer.auth.guard';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { InputSetAuth, InputSetCustomer, InputUpLoad, InputUpaDateVideo } from './customer.model';
@@ -16,26 +16,33 @@ export class CustomerController {
   }
 
   @Get('google/callback')
+  @UseGuards(AuthGuard('google'))
   async googleLoginCallback(@Req() req, @Res() res) {
     console.log("req.user:", req.user)
     const token = await this.customerService.googleLogin(req.user, res);
     if (token) {
       return res.redirect('/')
     }
-  }
+  };
 
   @Get('facebook/login')
-  @UseGuards(AuthGuard('facebook'))
-  async facebookLogin() {
+  @UseGuards(AuthGuard("facebook"))
+  async facebookLogin(): Promise<any> {
+    return HttpStatus.OK;
   }
 
   @Get('facebook/callback')
+  @UseGuards(AuthGuard('facebook'))
   async facebookLoginCallback(@Req() req, @Res() res) {
     console.log("req.user:", req.user)
-    const token = await this.customerService.facebookLogin(req.user, res);
-    if (token) {
-      return res.redirect('/')
+    return {
+      statusCode: HttpStatus.OK,
+      data: req.user,
     }
+    // const token = await this.customerService.facebookLogin(req.user, res);
+    // if (token) {
+    //   return res.redirect('/')
+    // }
   }
 
   @Get('upload')

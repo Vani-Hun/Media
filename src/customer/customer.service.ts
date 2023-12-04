@@ -76,9 +76,10 @@ export class CustomerService extends BaseService<Customer> {
       const sign = this.tokenService.sign(payload)
       return res.cookie('accessToken', sign, { httpOnly: true, maxAge: 2 * 24 * 60 * 60 * 1000 });
     }
-  }
+  };
 
   async facebookLogin(input, res) {
+    console.log("input:", input)
     const data = await this.repo.findOne({
       where: { email: input.id }
     })
