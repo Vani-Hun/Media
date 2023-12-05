@@ -22,11 +22,8 @@ export class CusAuthGuard implements CanActivate {
             status = await this.customerService.isExist(customer);
             request['user'] = await customer;
             return status;
-            // if (!(await this.cacheService.getValue(admin.username))) {
-            //     throw new UnauthorizedException('Let login!!!');
-            // }
         } catch {
-            console.log("catch")
+            console.log("catchcanActivate")
             throw new UnauthorizedException('Let login!!!');
         }
     }

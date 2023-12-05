@@ -1,4 +1,4 @@
-import { forwardRef, Inject, Injectable, UnauthorizedException, Res, Render } from '@nestjs/common';
+import { forwardRef, Inject, Injectable, UnauthorizedException, Res, Render, Redirect } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { BaseService } from 'src/common/services/base.service';
 import { FindOneOptions, Repository } from 'typeorm';
@@ -12,6 +12,7 @@ import { TokenService } from 'src/common/services/token.service';
 const { getStorage, getDownloadURL } = require('firebase-admin/storage');
 import { readFileSync } from 'fs';
 import { CommentService } from 'src/comment/comment.service';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class CustomerService extends BaseService<Customer> {
@@ -26,40 +27,41 @@ export class CustomerService extends BaseService<Customer> {
   }
 
   async signIn(input: InputSetAuth, res) {
-    const data = await this.repo.findOne({
-      where: { username: input.username }
-    })
-    if (!data) {
+    const existingUser = await this.repo.findOne({
+      where: { username: input.username },
+    });
+    if (!existingUser) {
       throw new UnauthorizedException('Your username is not exist!!');
-    } else {
-      if (data.password !== input.password) {
-        throw new UnauthorizedException('Your password is wrong!!');
-      } else {
-        const payload = {
-          id: data.id,
-          username: data.username,
-          name: data.name
-          // Thêm các thuộc tính khác nếu cần
-        };
-        const sign = this.tokenService.sign(payload)
-        return res.cookie('accessToken', sign, { httpOnly: true, maxAge: 2 * 24 * 60 * 60 * 1000 });
-      }
     }
+    const isPasswordValid = await bcrypt.compare(input.password, existingUser.password);
+
+    if (!isPasswordValid) {
+      throw new UnauthorizedException('Your password is wrong!!');
+    }
+    const payload = {
+      id: existingUser.id,
+      username: existingUser.username,
+      name: existingUser.name,
+    };
+
+    const sign = this.tokenService.sign(payload);
+    return res.cookie('accessToken', sign, { httpOnly: true, maxAge: 2 * 24 * 60 * 60 * 1000 });
   }
 
   async googleLogin(input, res) {
-    const data = await this.repo.findOne({
+    const existingUser = await this.repo.findOne({
       where: { email: input.emails[0].value }
     })
-    if (!data) {
+    if (!existingUser) {
       const userCreate = {
         logo: input.photos[0].value,
         email: input.emails[0].value,
         name: input.name.givenName + " " + input.name.familyName,
         username: "user" + input.name.givenName,
-        password: null
+        password: null,
+        phone: null
       }
-      const user = await this.signUp(userCreate)
+      const user = await this.signUpOAuth2(userCreate)
       const payload = {
         id: user.id,
         username: user.username,
@@ -69,9 +71,9 @@ export class CustomerService extends BaseService<Customer> {
       return res.cookie('accessToken', sign, { httpOnly: true, maxAge: 2 * 24 * 60 * 60 * 1000 });
     } else {
       const payload = {
-        id: data.id,
-        username: data.username,
-        name: data.name
+        id: existingUser.id,
+        username: existingUser.username,
+        name: existingUser.name
       };
       const sign = this.tokenService.sign(payload)
       return res.cookie('accessToken', sign, { httpOnly: true, maxAge: 2 * 24 * 60 * 60 * 1000 });
@@ -89,9 +91,10 @@ export class CustomerService extends BaseService<Customer> {
         email: input.id,
         name: input.displayName,
         username: "user" + input.displayName,
-        password: null
+        password: null,
+        phone: null
       }
-      const user = await this.signUp(userCreate)
+      const user = await this.signUpOAuth2(userCreate)
       const payload = {
         id: user.id,
         username: user.username,
@@ -110,17 +113,51 @@ export class CustomerService extends BaseService<Customer> {
     }
   }
 
-  async signUp(input: InputSetAuth) {
-    const data = await this.repo.findOne({
-      where: [{ username: input.username }, { email: input.username }]
-    })
-    if (!data) {
-      const createUser = this.repo.save(this.repo.create({ ...input }))
-      return createUser
-    }
-    console.log(new UnauthorizedException('Your username is exist!!'))
-    throw new UnauthorizedException('Your username is exist!!');
+  async signUp(input: InputSetAuth, res) {
+    console.log("input:", input)
+    const existingUser = await this.repo.findOne({
+      where: [{ username: input.username }, { email: input.username }],
+    });
 
+    if (!existingUser) {
+      const otp = Math.floor(Math.random() * 1000000).toString()
+      console.log("otp:", otp)
+      const hashedOTP = await bcrypt.hash(otp, 10);
+      const hashedPassword = await bcrypt.hash(input.password, 10);
+      res.cookie('username', input.username, { httpOnly: true, maxAge: 60 * 1000 })
+      res.cookie('phone', input.phone, { httpOnly: true, maxAge: 60 * 1000 })
+      res.cookie('hashedPassword', hashedPassword, { httpOnly: true, maxAge: 60 * 1000 })
+      res.cookie('hashedOTP', hashedOTP, { httpOnly: true, maxAge: 60 * 1000 });
+      return res.redirect('/customer/verify-otp');
+    }
+    throw new UnauthorizedException('Your username or email is already registered.');
+  }
+
+  async signUpOAuth2(input: InputSetAuth) {
+    const existingUser = await this.repo.findOne({
+      where: [{ username: input.username }, { email: input.username }],
+    });
+
+    if (!existingUser) {
+      const createUser = this.repo.save(this.repo.create({ ...input }));
+      return createUser;
+    }
+    throw new UnauthorizedException('Your username or email is already registered.');
+  }
+
+  async signUpVerify(input) {
+    console.log("input:", input)
+    if (input.otp && input.hashedOTP) {
+      const compare = await bcrypt.compare(input.otp, input.hashedOTP);
+      if (compare) {
+        const createUser = this.repo.save(this.repo.create({ ...input }));
+        return createUser;
+      } else {
+        throw new UnauthorizedException('OTP not correct');
+      }
+    } else {
+      throw new UnauthorizedException('OTP is expired');
+    }
   }
 
   async get(input: InputSetCustomer) {

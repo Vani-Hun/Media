@@ -1,5 +1,6 @@
+import { Delete } from '@nestjs/common';
 import { BaseEntityUUID } from 'src/common/entities/base.entity';
-import { JoinTable, Column, Entity, OneToMany, ManyToMany } from 'typeorm';
+import { JoinTable, Column, Entity, OneToMany, ManyToMany, AfterInsert } from 'typeorm';
 import { Video } from 'src/video/video.entity';
 import { Comment } from 'src/comment/comment.entity';
 @Entity()
@@ -24,6 +25,9 @@ export class Customer extends BaseEntityUUID {
 
   @Column({ nullable: true })
   email: string;
+
+  @Column({ nullable: true })
+  phone: string;
 
   @Column({ nullable: true })
   bio: string;

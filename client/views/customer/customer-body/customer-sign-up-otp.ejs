@@ -1,0 +1,120 @@
+<div class="container2">
+    <form id="otpForm" class="form-otp" onsubmit="event.preventDefault(); verifyOtp();">
+        <div class="otp-title">OTP</div>
+        <div class="otp-title">Verification Code</div>
+        <p class="otp-message">We have sent a verification code to your mobile number</p>
+        <p class="otp-message" id="otp-error"></p>
+        <div class="otp-inputs">
+            <input id="input1" type="text" maxlength="1" oninput="moveToNextInput(this, 'input2', 'input1')">
+            <input id="input2" type="text" maxlength="1" oninput="moveToNextInput(this, 'input3', 'input1')">
+            <input id="input3" type="text" maxlength="1" oninput="moveToNextInput(this, 'input4', 'input2')">
+            <input id="input4" type="text" maxlength="1" oninput="moveToNextInput(this, 'input5', 'input3')">
+            <input id="input5" type="text" maxlength="1" oninput="moveToNextInput(this, 'input6', 'input4')">
+            <input id="input6" type="text" maxlength="1" oninput="moveToNextInput(this, null, 'input5')">
+        </div>
+        <div class="button-otp">
+            <button id="cancelButton" class="otp-action" type="button"
+                onclick="window.location.href='/customer/sign-in'">Cancel</button>
+            <button id="verifyButton" class="otp-action" type="submit" disabled>Verify me</button>
+        </div>
+    </form>
+</div>
+<div class="loader">
+    <li class="ball"></li>
+    <li class="ball"></li>
+    <li class="ball"></li>
+</div>
+<div id="customAlert" class="custom-alert">
+    <span id="alertMessage"></span>
+</div>
+<script>
+    let message = JSON.parse('<%- JSON.stringify(message) %>');
+    const otpErrorElement = document.getElementById('otp-error');
+    function setOtpErrorText(text) {
+        otpErrorElement.textContent = text;
+    }
+    setOtpErrorText(message);
+
+    function showLoader() {
+        var loader = document.querySelector('.loader');
+        loader.classList.add('visible');
+    }
+    function hideLoader() {
+        var loader = document.querySelector('.loader');
+        loader.classList.remove('visible');
+    }
+    function showCustomAlert(message) {
+        const customAlert = document.getElementById('customAlert');
+        const alertMessage = document.getElementById('alertMessage');
+
+        // Hiển thị thông báo
+        alertMessage.textContent = message;
+        customAlert.style.display = 'block';
+
+        // Đóng thông báo sau khoảng 2 giây (2000 milliseconds)
+        setTimeout(() => {
+            // Ẩn thông báo
+            customAlert.style.display = 'none';
+        }, 1500);
+    }
+    function moveToNextInput(currentInput, nextInputId, prevInputId) {
+        const maxLength = parseInt(currentInput.getAttribute('maxlength'));
+        const currentLength = currentInput.value.length;
+
+        if (currentLength === maxLength) {
+            if (nextInputId) {
+                const nextInput = document.getElementById(nextInputId);
+                if (nextInput) {
+                    nextInput.focus();
+                }
+            }
+        } else if (currentLength === 0 && prevInputId && currentInput.selectionStart === 0) {
+            const prevInput = document.getElementById(prevInputId);
+            if (prevInput) {
+                prevInput.focus();
+            }
+        }
+
+        checkInputsFilled();
+    }
+    function checkInputsFilled() {
+        const inputs = Array.from({ length: 6 }, (_, index) => document.getElementById(`input${index + 1}`).value);
+        const isAllFilled = inputs.every(value => value !== '' && !isNaN(value));
+        const verifyButton = document.getElementById('verifyButton');
+
+        if (isAllFilled) {
+            verifyButton.removeAttribute('disabled');
+        } else {
+            verifyButton.setAttribute('disabled', 'disabled');
+        }
+    }
+
+    function verifyOtp() {
+        const otpValue = document.getElementById('input1').value +
+            document.getElementById('input2').value +
+            document.getElementById('input3').value +
+            document.getElementById('input4').value +
+            document.getElementById('input5').value +
+            document.getElementById('input6').value;
+        const data = { otp: otpValue };
+        showLoader()
+        fetch('/customer/verify-otp', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+
+        })
+            .then(response => {
+                if (response.ok) {
+                    if (response.redirected) { window.location.href = response.url; }
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        console.log('OTP Sent!');
+    }
+
+</script>

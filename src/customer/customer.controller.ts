@@ -6,6 +6,7 @@ import { CustomerService } from './customer.service';
 import { Response } from 'express';
 import { Request } from 'express';
 import { AuthGuard } from '@nestjs/passport';
+
 @Controller('customer')
 export class CustomerController {
   constructor(private customerService: CustomerService) { }
@@ -136,10 +137,12 @@ export class CustomerController {
   }
 
   @Get('header')
-  @UseGuards(CusAuthGuard)
   async getHeader(@Req() request: Request) {
-    const user = await request['user']
-    return await this.customerService.get(user)
+    const cookie = request.cookies['accessToken'];
+    if (cookie) {
+      const user = await request['user']
+      return await this.customerService.get(user)
+    }
   }
 
   @Post('profile/update')
@@ -159,15 +162,17 @@ export class CustomerController {
     }
     return { message: null };
   }
+
   @Get('log-out')
-  getLogout(@Res() res: Response) {
+  async getLogout(@Res() res: Response) {
     res.cookie('accessToken', '', { expires: new Date(0), httpOnly: true });
-    return res.redirect('/');
+    return res.redirect('/customer/sign-in');
 
   }
+
   @Get('sign-up')
   @Render('customer/sign-up')
-  getSignup(@Query('error') error: string) {
+  async getSignup(@Query('error') error: string) {
     if (error) {
       return { message: error };
     }
@@ -181,10 +186,32 @@ export class CustomerController {
   }
 
   @Post('sign-up')
-  @Redirect('/customer/upload')
-  async signUp(@Body() body: InputSetAuth) {
-    return await this.customerService.signUp(body)
+  async signUp(@Body() body: InputSetAuth, @Res() res: Response) {
+    return await this.customerService.signUp(body, res)
   }
+
+  @Get('verify-otp')
+  @Render('customer/sign-up-otp')
+  async getVerifyOtp(@Query('error') error: string) {
+    console.log("errorgetVerifyOtp:", typeof error)
+    if (error) {
+      return { message: error };
+    }
+    return { message: null };
+  }
+
+  @Post('verify-otp')
+  async verifyOtp(@Body() body, @Res() res: Response, @Req() request: Request) {
+    const hashedOTP = request.cookies['hashedOTP']
+    const username = request.cookies['username']
+    const phone = request.cookies['phone']
+    const hashedPassword = request.cookies['hashedPassword']
+    body.hashedOTP = hashedOTP
+    body.username = username
+    body.phone = phone
+    body.hashedPassword = hashedPassword
+    return await this.customerService.signUpVerify(body)
+  };
 
   @Post('upload')
   @UseGuards(CusAuthGuard)
@@ -195,7 +222,7 @@ export class CustomerController {
       body.video = video
       return await this.customerService.upVideo(body)
     }
-  }
+  };
 
   @Post('video/update')
   @UseGuards(CusAuthGuard)

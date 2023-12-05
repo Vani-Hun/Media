@@ -7,6 +7,7 @@ export type InputSetCustomer = {
 };
 
 export type InputSetAuth = {
+  phone: string;
   username: string;
   password: string;
 };

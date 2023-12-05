@@ -9,21 +9,31 @@
                 <form class="form" id="registration-form" method="POST" action="/customer/sign-up">
                     <div class="input-group">
                         <label for="username">Username</label>
-                        <input type="text" name="username" id="username" placeholder="" required>
+                        <input type="text" name="username" id="username" placeholder="Your username" required>
                         <div class="error-message" id="username-error"></div>
+                    </div>
+                    <div class="input-group">
+                        <label for="phone">Phone</label>
+                        <div class="phone-input-container">
+                            <div class="country-code">+84</div>
+                            <input type="phone" name="phone" id="phone" placeholder="Your phone number" required>
+                        </div>
+                        <div class="error-message" id="phone-error"></div>
                     </div>
 
                     <div class="input-group">
                         <label for="password">Password</label>
-                        <input type="password" name="password" id="password" placeholder="" required>
+                        <input type="password" name="password" id="password" placeholder="Your password" required>
                         <div class="error-message" id="password-error"></div>
                     </div>
                     <div class="input-group">
                         <label for="confirm-password">Confirm Password</label>
-                        <input type="password" name="confirm_password" id="confirm-password" placeholder="" required>
+                        <input type="password" name="confirm_password" id="confirm-password"
+                            placeholder="Your confirm password" required>
                         <div class="error-message" id="confirm-password-error"></div>
                     </div>
-                    <button class="sign" type="submit">Sign up</button>
+                    <button class="sign" type="submit" id="signupButton">Sign up</button>
+
                 </form>
                 <!-- Các nút đăng nhập bằng tài khoản mạng xã hội -->
                 <div class="social-message">
@@ -34,16 +44,40 @@
                 </div>
     </div>
 </div>
-
-
+<div class="loader">
+    <li class="ball"></li>
+    <li class="ball"></li>
+    <li class="ball"></li>
+</div>
+<div id="customAlert" class="custom-alert">
+    <span id="alertMessage"></span>
+</div>
 <script>
-    // Đoạn mã JavaScript để xử lý phản hồi từ máy chủ và hiển thị thông báo lỗi
+    function showLoader() {
+        var loader = document.querySelector('.loader');
+        loader.classList.add('visible');
+    }
+    function hideLoader() {
+        var loader = document.querySelector('.loader');
+        loader.classList.remove('visible');
+    }
+    function showCustomAlert(message) {
+        const customAlert = document.getElementById('customAlert');
+        const alertMessage = document.getElementById('alertMessage');
+
+        // Hiển thị thông báo
+        alertMessage.textContent = message;
+        customAlert.style.display = 'block';
+
+        // Đóng thông báo sau khoảng 2 giây (2000 milliseconds)
+        setTimeout(() => {
+            // Ẩn thông báo
+            customAlert.style.display = 'none';
+        }, 1500);
+    }
     document.addEventListener('DOMContentLoaded', function () {
         const messageElement = document.querySelector('.alert-primary');
-        console.log("messageElement:", messageElement)
-        // Kiểm tra xem có thông báo lỗi hay không
         if (messageElement.textContent.trim() !== '') {
-            // Nếu có thông báo lỗi, hiển thị div chứa thông báo
             messageElement.style.display = 'block';
             messageElement.style.color = 'red';
         }
@@ -51,21 +85,27 @@
     });
 
     document.addEventListener("DOMContentLoaded", function () {
-        var registrationForm = document.getElementById('registration-form');
-        var usernameInput = document.getElementById('username');
-        var passwordInput = document.getElementById('password');
-        var confirmPasswordInput = document.getElementById('confirm-password');
-        var usernameError = document.getElementById('username-error');
-        var passwordError = document.getElementById('password-error');
-        var confirmPasswordError = document.getElementById('confirm-password-error');
+        let registrationForm = document.getElementById('registration-form');
+        let phoneInput = document.getElementById('phone');
+        let usernameInput = document.getElementById('username');
+        let passwordInput = document.getElementById('password');
+        let confirmPasswordInput = document.getElementById('confirm-password');
+        let usernameError = document.getElementById('username-error');
+        let phoneError = document.getElementById('phone-error');
+        let passwordError = document.getElementById('password-error');
+        let confirmPasswordError = document.getElementById('confirm-password-error');
+        let otpForm = document.querySelector('.form-otp');
+        let formContainer = document.querySelector('.form-container');
 
         registrationForm.addEventListener('submit', function (event) {
-            var isValid = true;
+            let isValid = true;
 
             if (!validateUsername()) {
                 isValid = false;
             }
-
+            if (!validatePhone()) {
+                isValid = false;
+            }
             if (!validatePassword()) {
                 isValid = false;
             }
@@ -77,16 +117,30 @@
             if (!isValid) {
                 event.preventDefault();
             }
+
         });
 
         usernameInput.addEventListener('input', validateUsername);
+        phoneInput.addEventListener('input', validatePhone);
         passwordInput.addEventListener('input', validatePassword);
         confirmPasswordInput.addEventListener('input', validateConfirmPassword);
 
+        function validatePhone() {
+            let phoneValue = phoneInput.value.trim();
+            const phoneRegex = /^(0\d{9})$/;
+            if (!phoneRegex.test(phoneValue)) {
+                phoneError.textContent = 'Please enter a valid phone number starting with 0 and containing 10 or 11 digits.';
+                return false;
+            } else {
+                phoneError.textContent = '';
+                return true;
+            }
+        }
+
         function validateUsername() {
-            var usernameValue = usernameInput.value.trim();
-            if (usernameValue.length === 0) {
-                usernameError.textContent = 'Username is required.';
+            let usernameValue = usernameInput.value.trim();
+            if (usernameValue.length < 6) {
+                usernameError.textContent = 'Username must be at least 6 characters.';
                 return false;
             } else {
                 usernameError.textContent = '';
@@ -95,7 +149,7 @@
         }
 
         function validatePassword() {
-            var passwordValue = passwordInput.value.trim();
+            let passwordValue = passwordInput.value.trim();
             if (passwordValue.length < 6) {
                 passwordError.textContent = 'Password must be at least 6 characters.';
                 return false;
@@ -106,8 +160,8 @@
         }
 
         function validateConfirmPassword() {
-            var confirmPasswordValue = confirmPasswordInput.value.trim();
-            var passwordValue = passwordInput.value.trim();
+            let confirmPasswordValue = confirmPasswordInput.value.trim();
+            let passwordValue = passwordInput.value.trim();
             if (confirmPasswordValue !== passwordValue) {
                 confirmPasswordError.textContent = 'Passwords do not match.';
                 return false;
@@ -117,4 +171,5 @@
             }
         }
     });
+
 </script>
