@@ -645,7 +645,7 @@
                                     aria-label="Watch more videos with music nhạc nền  - Hùng Nguyễn23652"
                                     href="/music/nhạc-nền-${customer.name}"><svg
                                         xmlns="http://www.w3.org/2000/svg" width="1em" height="1em"
-                                        fill="rgba(22, 24, 35, 1)" styleType="1"
+                                        fill="rgba(22, 24, 35)" styleType="1"
                                         class="tiktok-ftrwfo-MusicNoteIcon epjbyn4">
                                         <use xlink:href="#Music_Note-8c658968"></use>
                                     </svg>
@@ -663,7 +663,7 @@
                                             data-e2e="browse-like-icon"
                                             class="tiktok-3ahw3w-SpanIconWrapper e1hk3hf91"><svg
                                                 xmlns="http://www.w3.org/2000/svg" width="20" height="20"
-                                                fill="rgba(22, 24, 35, 1)">
+                                                fill="rgba(22, 24, 35)">
                                                 <use xlink:href="#heart-fill-03bd63df"></use>
                                             </svg></span><strong data-e2e="browse-like-count"
                                             class="tiktok-w1dlre-StrongText e1hk3hf92">${video.likes}</strong></button><button
@@ -1123,6 +1123,7 @@
                 likeElement.addEventListener("click", () => {
                     let likesCountNumber = parseInt(likeCountElement.innerText, 10);
                     const fillValue = svgIcon.getAttribute('fill');
+                    console.log("fillValue:", fillValue)
                     if (fillValue === "rgba(22, 24, 35)") {
                         likesCountNumber += 1
                         svgIcon.setAttribute('fill', 'rgba(254, 44, 85)');

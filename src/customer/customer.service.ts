@@ -222,8 +222,8 @@ export class CustomerService extends BaseService<Customer> {
     const customer = await this.repo.findOneOrFail(user.id, { relations: ['videos', 'videos.comments', 'videos.likers'] });
     // Sắp xếp các video trong mảng videos của customer
     customer.videos = customer.videos.sort((a, b) => {
-      if (a.updateAt > b.updateAt) return -1;
-      if (a.updateAt < b.updateAt) return 1;
+      if (a.createAt > b.createAt) return -1;
+      if (a.createAt < b.createAt) return 1;
       return 0;
     });
     return { customer }
@@ -233,8 +233,8 @@ export class CustomerService extends BaseService<Customer> {
     const customer = await this.repo.findOneOrFail(customerId, { relations: ['videos', 'videos.user', 'videos.comments', 'videos.likers'] });
     // Sắp xếp các video trong mảng videos của customer
     customer.videos = customer.videos.sort((a, b) => {
-      if (a.updateAt > b.updateAt) return -1;
-      if (a.updateAt < b.updateAt) return 1;
+      if (a.createAt > b.createAt) return -1;
+      if (a.createAt < b.createAt) return 1;
       return 0;
     });
     if (user.id === customer.id) {
