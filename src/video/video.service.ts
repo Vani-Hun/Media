@@ -1,4 +1,4 @@
-import { HttpException, Injectable, UnauthorizedException, Inject } from '@nestjs/common';
+import { HttpException, Injectable, UnauthorizedException, Inject, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { BaseService } from 'src/common/services/base.service';
 import { Repository, getConnection, getManager, getRepository } from 'typeorm';
@@ -17,16 +17,20 @@ export class VideoService extends BaseService<Video> {
     }
 
     async create(url: object, input) {
-        const video = await this.repo.create({
-            video: url['videoURL'],
-            thumbnail: url['imageURL'],
-            name: input.video.filename,
-            user: input.user.id,
-            who: input.who,
-            allowComment: Boolean(input.allowComment),
-            caption: input.caption,
-        });
-        return await this.repo.save(video)
+        try {
+            const video = await this.repo.create({
+                video: url['videoURL'],
+                thumbnail: url['imageURL'],
+                name: input.video.filename,
+                user: input.user.id,
+                who: input.who,
+                allowComment: Boolean(input.allowComment),
+                caption: input.caption,
+            });
+            return await this.repo.save(video);
+        } catch (error) {
+            throw new HttpException(`Failed to create video: ${error.message}`, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     async uploadVideo(input) {
@@ -74,34 +78,50 @@ export class VideoService extends BaseService<Video> {
             }
         } catch (error) {
             await this.clearTmp(input.video.path);
-            console.error(error);
+            throw new HttpException(`Failed to upload video: ${error.message}`, HttpStatus.INTERNAL_SERVER_ERROR)
         }
     }
 
     async update(input) {
-        return await this.repo.query(`
-        UPDATE video
-        SET who = ?, allowComment = ?
-        WHERE id = ?;
-`, [input.who, input.allowComment, input.video]);
+        try {
+            return await this.repo.query(`
+      UPDATE video
+      SET who = ?, allowComment = ?
+      WHERE id = ?;
+    `, [input.who, input.allowComment, input.video]);
+        } catch (error) {
+            throw new HttpException(`Failed to update video: ${error.message}`, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     async updateLike(input) {
-        const video = await this.repo.findOneOrFail(input.videoId);
-        video.likes++;
-        return await this.repo.save(video);
+        try {
+            const video = await this.repo.findOneOrFail(input.videoId);
+            video.likes++;
+            return await this.repo.save(video);
+        } catch (error) {
+            throw new HttpException(`Failed to update like: ${error.message}`, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     async updateDisLike(input) {
-        const video = await this.repo.findOneOrFail(input.videoId);
-        video.likes--;
-        return await this.repo.save(video);
+        try {
+            const video = await this.repo.findOneOrFail(input.videoId);
+            video.likes--;
+            return await this.repo.save(video);
+        } catch (error) {
+            throw new HttpException(`Failed to update dislike: ${error.message}`, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     async updateShare(input) {
-        const video = await this.repo.findOneOrFail(input.videoId);
-        video.shareCount++;
-        return await this.repo.save(video);
+        try {
+            const video = await this.repo.findOneOrFail(input.videoId);
+            video.shareCount++;
+            return await this.repo.save(video);
+        } catch (error) {
+            throw new HttpException(`Failed to update share: ${error.message}`, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
     async get() {
         return await this.repo.find({
@@ -133,7 +153,9 @@ export class VideoService extends BaseService<Video> {
                     this.firebaseConfig.firebaseAdmin.storage().bucket().file(`videos/${video.name}`).delete()
                 ])
             })
-        } else { throw new UnauthorizedException('Failed'); }
+        } else {
+            throw new HttpException('Failed delete', HttpStatus.INTERNAL_SERVER_ERROR)
+        }
     }
 
 }

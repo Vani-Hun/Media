@@ -7,15 +7,25 @@ export class HttpExceptionFilter implements ExceptionFilter {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
     const status = exception.getStatus();
+    console.log("status:", status)
     const error = exception.message;
 
     switch (status) {
-      case 401:
-        const customStatusCode = this.getCustomStatusCode(exception);
+      case 422:
         console.log("errorHttpException:", error)
-        if (customStatusCode === 4011) {
-          return response.redirect(`/customer/verify-otp?error=${encodeURIComponent(error)}`);
-        } else { return response.redirect(`/customer/sign-in?error=${encodeURIComponent(error)}`); }
+        return response.redirect(`/customer/verify-otp?error=${encodeURIComponent(error)}`);
+      case 403:
+        console.log("errorHttpException:", error)
+        return response.redirect(`/customer/verify-otp?error=${encodeURIComponent(error)}`);
+      case 401:
+        console.log("errorHttpException:", error)
+        return response.redirect(`/customer/sign-in?error=${encodeURIComponent(error)}`);
+      case 409:
+        console.log("errorHttpException:", error)
+        return response.redirect(`/customer/sign-up?error=${encodeURIComponent(error)}`);
+      case 500:
+        console.log("errorHttpException:", error)
+        return response.redirect(`/customer/profile`);
       default:
         this.render(response, 'home/index', {
           title: status,
@@ -24,16 +34,6 @@ export class HttpExceptionFilter implements ExceptionFilter {
         });
     }
   };
-
-  private getCustomStatusCode(exception: HttpException): number {
-    // Custom logic to determine the status code based on the exception type
-    if (exception.message === 'OTP not correct') {
-      return 4011; // Custom code for OTP not correct
-    } else if (exception.message === 'OTP is expired') {
-      return 4012; // Custom code for OTP is expired
-    }
-    return 401; // Default code for other 401 errors
-  }
 
   private render(res: Response, path: string, data?: object) {
     return res.render(path, data);

@@ -134,15 +134,13 @@ export class CustomerController {
     console.log("customerId:", customerId)
     const user = await request['user']
     return await this.customerService.getViewProfile(user, customerId, res)
-  }
+  };
 
   @Get('header')
+  @UseGuards(CusAuthGuard)
   async getHeader(@Req() request: Request) {
-    const cookie = request.cookies['accessToken'];
-    if (cookie) {
-      const user = await request['user']
-      return await this.customerService.get(user)
-    }
+    const user = await request['user']
+    return await this.customerService.get(user)
   }
 
   @Post('profile/update')
@@ -201,6 +199,7 @@ export class CustomerController {
   }
 
   @Post('verify-otp')
+  @Render('video/index')
   async verifyOtp(@Body() body, @Res() res: Response, @Req() request: Request) {
     const hashedOTP = request.cookies['hashedOTP']
     const username = request.cookies['username']

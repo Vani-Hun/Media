@@ -1,4 +1,4 @@
-import { forwardRef, Inject, Injectable, UnauthorizedException, Res, Render, Redirect } from '@nestjs/common';
+import { forwardRef, Inject, Injectable, HttpException, UnauthorizedException, Res, Render, Redirect, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { BaseService } from 'src/common/services/base.service';
 import { FindOneOptions, Repository } from 'typeorm';
@@ -13,6 +13,7 @@ const { getStorage, getDownloadURL } = require('firebase-admin/storage');
 import { readFileSync } from 'fs';
 import { CommentService } from 'src/comment/comment.service';
 import * as bcrypt from 'bcrypt';
+import { SmsService } from 'src/common/services/twilio.service';
 
 @Injectable()
 export class CustomerService extends BaseService<Customer> {
@@ -21,7 +22,8 @@ export class CustomerService extends BaseService<Customer> {
     @InjectRepository(Customer) repo: Repository<Customer>,
     private tokenService: TokenService,
     private videoService: VideoService,
-    private commentService: CommentService
+    private commentService: CommentService,
+    private smsService: SmsService
   ) {
     super(repo);
   }
@@ -31,12 +33,12 @@ export class CustomerService extends BaseService<Customer> {
       where: { username: input.username },
     });
     if (!existingUser) {
-      throw new UnauthorizedException('Your username is not exist!!');
+      throw new HttpException('Your username is not exist!!', HttpStatus.UNAUTHORIZED);
     }
     const isPasswordValid = await bcrypt.compare(input.password, existingUser.password);
 
     if (!isPasswordValid) {
-      throw new UnauthorizedException('Your password is wrong!!');
+      throw new HttpException('Your password is wrong!!', HttpStatus.UNAUTHORIZED);
     }
     const payload = {
       id: existingUser.id,
@@ -122,6 +124,9 @@ export class CustomerService extends BaseService<Customer> {
     if (!existingUser) {
       const otp = Math.floor(Math.random() * 1000000).toString()
       console.log("otp:", otp)
+      const formattedPhoneNumber = `+84${input.phone.slice(1)}`;
+      console.log("formattedPhoneNumber:", formattedPhoneNumber)
+      await this.smsService.sendOtpViaSms(formattedPhoneNumber, otp);
       const hashedOTP = await bcrypt.hash(otp, 10);
       const hashedPassword = await bcrypt.hash(input.password, 10);
       res.cookie('username', input.username, { httpOnly: true, maxAge: 60 * 1000 })
@@ -130,7 +135,7 @@ export class CustomerService extends BaseService<Customer> {
       res.cookie('hashedOTP', hashedOTP, { httpOnly: true, maxAge: 60 * 1000 });
       return res.redirect('/customer/verify-otp');
     }
-    throw new UnauthorizedException('Your username or email is already registered.');
+    throw new HttpException('Your username or email is already registered.', HttpStatus.CONFLICT);
   }
 
   async signUpOAuth2(input: InputSetAuth) {
@@ -142,7 +147,7 @@ export class CustomerService extends BaseService<Customer> {
       const createUser = this.repo.save(this.repo.create({ ...input }));
       return createUser;
     }
-    throw new UnauthorizedException('Your username or email is already registered.');
+    throw new HttpException('Your username or email is already registered.', HttpStatus.CONFLICT);
   }
 
   async signUpVerify(input) {
@@ -150,17 +155,17 @@ export class CustomerService extends BaseService<Customer> {
     if (input.otp && input.hashedOTP) {
       const compare = await bcrypt.compare(input.otp, input.hashedOTP);
       if (compare) {
-        const createUser = this.repo.save(this.repo.create({ ...input }));
-        return createUser;
+        return this.repo.save(this.repo.create({ username: input.username, name: `user${input.username}`, password: input.hashedPassword, phone: input.phone }));
       } else {
-        throw new UnauthorizedException('OTP not correct');
+        throw new HttpException('OTP not correct', HttpStatus.UNPROCESSABLE_ENTITY);
       }
     } else {
-      throw new UnauthorizedException('OTP is expired');
+      throw new HttpException('OTP is expired, please click cancel', HttpStatus.FORBIDDEN);
     }
   }
 
   async get(input: InputSetCustomer) {
+    console.log("input:", input)
     const customer = await this.repo.findOneOrFail(input.id)
     return { customer }
   }
