@@ -7,25 +7,19 @@ export class HttpExceptionFilter implements ExceptionFilter {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
     const status = exception.getStatus();
-    console.log("status:", status)
     const error = exception.message;
-
+    console.log("status:", status, ", errorHttpException:", error)
     switch (status) {
-      case 422:
-        console.log("errorHttpException:", error)
-        return response.redirect(`/customer/verify-otp?error=${encodeURIComponent(error)}`);
-      case 403:
-        console.log("errorHttpException:", error)
-        return response.redirect(`/customer/verify-otp?error=${encodeURIComponent(error)}`);
       case 401:
-        console.log("errorHttpException:", error)
         return response.redirect(`/customer/sign-in?error=${encodeURIComponent(error)}`);
+      case 403:
+        return response.redirect(`/customer/verify-otp?error=${encodeURIComponent(error)}`);
       case 409:
-        console.log("errorHttpException:", error)
         return response.redirect(`/customer/sign-up?error=${encodeURIComponent(error)}`);
+      case 422:
+        return response.redirect(`/customer/verify-otp?error=${encodeURIComponent(error)}`);
       case 500:
-        console.log("errorHttpException:", error)
-        return response.redirect(`/customer/profile`);
+        return response.redirect(`/`);
       default:
         this.render(response, 'home/index', {
           title: status,

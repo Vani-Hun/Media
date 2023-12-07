@@ -452,6 +452,7 @@
 
 <script>
     let videos = JSON.parse('<%- JSON.stringify(videos) %>');
+    console.log("videos:", videos)
     let likedVideoIds = '<%= likedVideoIds %>'.split(",")
     let customer = JSON.parse('<%- JSON.stringify(customer) %>')
     if (videos) {
@@ -750,8 +751,9 @@
                     const divCommentList = document.querySelector('.tiktok-1qp5gj2-DivCommentListContainer')
                     const svgIcon = likeElement.querySelector('svg');
                     const copyLinkText = document.querySelector('.tiktok-1v8b11s-PCopyLinkText')
-
                     const buttonCopyLink = document.querySelector('.tiktok-7e23lp-ButtonCopyLink')
+
+
                     fetch(`/customer/videoInf/${video.id}`, {
                         method: 'GET',
                     })
@@ -973,6 +975,7 @@
                         divCommentList.appendChild(commentDiv)
                     })
 
+
                     const newUrl = `/customer/video/${video.id}`;
                     history.pushState({ videoId: video.id }, '', newUrl);
                     // sessionStorage.setItem('mainContainer', mainContainer.outerHTML);
@@ -982,6 +985,26 @@
                     let isMuted = false
                     videoPlay.muted = false;
 
+                    let viewCount = 0;
+
+                    videoPlay.addEventListener('timeupdate', function () {
+                        if (videoPlay.currentTime >= 3 && !videoPlay.hasAttribute('data-viewed')) {
+                            fetch(`/customer/video/view/${video.id}`, {
+                                method: 'POST',
+                            })
+                                .then(data => {
+                                })
+                                .catch(error => {
+                                    console.error('Error:', error);
+                                });
+                            videoPlay.setAttribute('data-viewed', 'true');
+                        }
+                        if (videoPlay.currentTime === 0 && videoPlay.hasAttribute('data-viewed')) {
+                            videoPlay.removeAttribute('data-viewed');
+                        }
+                    });
+
+                    console.log("viewCount:", viewCount)
                     copyLinkText.innerHTML = `${host}/customer/video/${video.id}`
 
 

@@ -165,7 +165,6 @@ export class CustomerService extends BaseService<Customer> {
   }
 
   async get(input: InputSetCustomer) {
-    console.log("input:", input)
     const customer = await this.repo.findOneOrFail(input.id)
     return { customer }
   }
@@ -188,6 +187,11 @@ export class CustomerService extends BaseService<Customer> {
     const customer = await this.repo.findOneOrFail(userId, { relations: ['likedVideos', 'likedVideos.comments', 'likedVideos.likers', 'likedVideos.comments.customer'] });
     return { customer }
   }
+
+  async viewVideo(input) {
+    return await this.videoService.updateView(input)
+  }
+
   async likeVideo(input) {
     const customer = await this.repo.findOneOrFail(input.user.id, { relations: ['likedVideos'] });
     const newVideo = new Video();

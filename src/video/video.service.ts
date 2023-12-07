@@ -94,6 +94,16 @@ export class VideoService extends BaseService<Video> {
         }
     }
 
+    async updateView(input) {
+        try {
+            const video = await this.repo.findOneOrFail(input.videoId);
+            video.views++;
+            return await this.repo.save(video);
+        } catch (error) {
+            throw new HttpException(`Failed to update view: ${error.message}`, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     async updateLike(input) {
         try {
             const video = await this.repo.findOneOrFail(input.videoId);
@@ -123,11 +133,47 @@ export class VideoService extends BaseService<Video> {
             throw new HttpException(`Failed to update share: ${error.message}`, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    async get() {
-        return await this.repo.find({
-            where: { who: "Public" }, relations: ['user', 'likers', 'comments', 'comments.video', 'comments.customer']
-        })
+
+    async get(): Promise<Video[]> {
+        const qb = this.repo.createQueryBuilder('video');
+        qb.where('video.who = :who', { who: 'Public' });
+        qb.orderBy('video.createAt', 'DESC');
+        qb.leftJoinAndSelect('video.user', 'user');
+        qb.leftJoinAndSelect('video.likers', 'likers');
+        qb.leftJoinAndSelect('video.comments', 'comments');
+        // Sử dụng alias 'video2' để phân biệt với bảng video chính
+        qb.leftJoinAndSelect('comments.video', 'video2');
+        qb.leftJoinAndSelect('comments.customer', 'customer');
+
+        const videos = await qb.getMany();
+        return videos;
     }
+
+    async searchVideos(query: string): Promise<Video[]> {
+        const results = await this.repo.find({
+            where: {
+                OR: [
+                    {
+                        title: {
+                            contains: query,
+                        },
+                    },
+                    {
+                        description: {
+                            contains: query,
+                        },
+                    },
+                    {
+                        hashtag: {
+                            contains: query,
+                        },
+                    },
+                ],
+            },
+        });
+        return results;
+    }
+
     async getVideoById(id) {
         return await this.repo.findOne({
             where: {

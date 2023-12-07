@@ -15,7 +15,7 @@
                                 <div class="jsx-2834184006 upload-card before-upload-stage upload-card-narrow"><svg
                                         fill="currentColor" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg"
                                         width="1em" height="1em"
-                                        style="color: var(--tux-colorTextQuaternary); width: 48px; height: 48px;">
+                                        style="color: let(--tux-colorTextQuaternary); width: 48px; height: 48px;">
                                         <path
                                             d="M25.84 37h8.66a9.5 9.5 0 0 0 1.35-18.9A12 12 0 0 0 12 20v.01A8.5 8.5 0 0 0 12.5 37h10.34V25.6l-1.72 1.74a1 1 0 0 1-1.42 0l-.7-.7a1 1 0 0 1 0-1.41l4.4-4.4c.68-.76 1.22-.77 2 .08l4.28 4.32a1 1 0 0 1 0 1.4l-.7.72a1 1 0 0 1-1.42 0l-1.72-1.75V37Z">
                                         </path>
@@ -239,7 +239,7 @@
                                     video</span></div>
                             <div class="tiktok-select" style="width: 300px; height: 36px;">
                                 <div class="tiktok-select-selector"
-                                    style="width: 300px; height: 36px; border: 1px solid rgba(22, 24, 35, 0.12); background: rgb(255, 255, 255); font-family: var(--tux-fontFamilyParagraph);">
+                                    style="width: 300px; height: 36px; border: 1px solid rgba(22, 24, 35, 0.12); background: rgb(255, 255, 255); font-family: let(--tux-fontFamilyParagraph);">
                                     <div class="tiktok-select-selector-left" style="max-width: 90%;">
                                         <div class="tiktok-select-selector-prefix-icon" style="flex-shrink: 0;"></div>
                                         <span class="tiktok-select-selector-text tiktok-select-selector-text-checked"
@@ -381,21 +381,23 @@
 </div>
 
 <script>
-    var videoForm = document.querySelector('.jsx-2834184006');
-    var videoFormBefore = document.querySelector('.jsx-2977532431.uploader');
-    var selectFileButton = videoForm.querySelector('input[type="file"]');
-    var videoFormaAfter = document.querySelector('.jsx-2977532431.preview');
-    var changeButton = document.querySelector('.jsx-3536812553.btn')
-    var thumbnailEmpty = document.querySelector('.candidate-v2');
-    var thumbnailContainer = document.querySelector('.bg-container-v2');
-    var selector = document.querySelector('.tiktok-select-selector');
-    var dropdown = document.querySelector('.tiktok-select-dropdown');
-    var checkboxes = document.querySelectorAll('.css-1pzrh5a');
+    const customer = JSON.parse('<%- JSON.stringify(customer) %>');
+
+    let videoForm = document.querySelector('.jsx-2834184006');
+    let videoFormBefore = document.querySelector('.jsx-2977532431.uploader');
+    let selectFileButton = videoForm.querySelector('input[type="file"]');
+    let videoFormaAfter = document.querySelector('.jsx-2977532431.preview');
+    let changeButton = document.querySelector('.jsx-3536812553.btn')
+    let thumbnailEmpty = document.querySelector('.candidate-v2');
+    let thumbnailContainer = document.querySelector('.bg-container-v2');
+    let selector = document.querySelector('.tiktok-select-selector');
+    let dropdown = document.querySelector('.tiktok-select-dropdown');
+    let checkboxes = document.querySelectorAll('.css-1pzrh5a');
     // Duyệt qua từng checkbox và thêm sự kiện "change"
     checkboxes.forEach(function (checkbox) {
         checkbox.addEventListener('change', function (event) {
-            var icon = document.querySelector('.css-mbgljv');
-            var icon2 = document.querySelector('.css-3wpmrz');
+            let icon = document.querySelector('.css-mbgljv');
+            let icon2 = document.querySelector('.css-3wpmrz');
 
 
             // Kiểm tra xem checkbox đã được chọn hay không
@@ -410,7 +412,7 @@
             }
         });
     });
-    var isDropdownVisible = false;
+    let isDropdownVisible = false;
     selector.addEventListener('click', function () {
         if (isDropdownVisible) {
             dropdown.style.display = 'none';
@@ -420,7 +422,7 @@
 
         isDropdownVisible = !isDropdownVisible;
     });
-    var dropdownItems = document.querySelectorAll('.tiktok-select-dropdown-item');
+    let dropdownItems = document.querySelectorAll('.tiktok-select-dropdown-item');
     dropdownItems.forEach(function (item) {
         item.addEventListener('click', function () {
             selector.textContent = item.textContent;
@@ -439,14 +441,14 @@
 
     function addFrameToCover(frameDataURL) {
         thumbnailEmpty.style.display = 'none';
-        var frameImage = document.createElement('img');
+        let frameImage = document.createElement('img');
         frameImage.src = frameDataURL;
         frameImage.className = 'candidate-v2 bg';
         frameImage.draggable = false;
         frameImage.addEventListener('click', function () {
-            var postButton = document.querySelector('.jsx-3366794632.btn-post button');
+            let postButton = document.querySelector('.jsx-3366794632.btn-post button');
             postButton.removeAttribute('disabled');
-            var images = document.querySelectorAll('.candidate-v2.bg');
+            let images = document.querySelectorAll('.candidate-v2.bg');
             images.forEach(function (image) {
                 image.classList.remove('selected-image');
             });
@@ -455,7 +457,7 @@
         thumbnailContainer.appendChild(frameImage);
     }
 
-    var selectedFile;
+    let selectedFile;
     selectFileButton.addEventListener('change', function (event) {
         selectedFile = event.target.files[0];
 
@@ -464,18 +466,18 @@
             videoFormBefore.style.display = 'none';
             videoFormaAfter.style.display = 'block';
 
-            var video = document.createElement('video');
-            var canvasCapture = document.createElement('canvas');
-            var ctxCapture = canvasCapture.getContext('2d');
+            let video = document.createElement('video');
+            let canvasCapture = document.createElement('canvas');
+            let ctxCapture = canvasCapture.getContext('2d');
 
-            var canvas = document.getElementById("mobile-preview-canvas");
-            var video2 = document.createElement('video');
+            let canvas = document.getElementById("mobile-preview-canvas");
+            let video2 = document.createElement('video');
             video2.src = URL.createObjectURL(selectedFile);
             video2.onloadedmetadata = function () {
                 // Khi video2 đã tải xong, thiết lập kích thước cho canvas
                 canvas.width = video2.videoWidth;
                 canvas.height = video2.videoHeight;
-                var ctx = canvas.getContext("2d");
+                let ctx = canvas.getContext("2d");
 
                 // Hàm vẽ video lên canvas
                 function drawVideoFrame() {
@@ -495,21 +497,21 @@
             video2.play();
 
 
-            var reader = new FileReader();
+            let reader = new FileReader();
 
             reader.onload = function (event) {
                 video.src = event.target.result;
                 video.onloadedmetadata = function () {
                     canvasCapture.width = video.videoWidth;
                     canvasCapture.height = video.videoHeight;
-                    var videoDuration = video.duration;
-                    var numFrames = 6;
-                    var interval = parseFloat((videoDuration / numFrames).toFixed(2));
-                    var captureFrames = function (currentTime) {
+                    let videoDuration = video.duration;
+                    let numFrames = 6;
+                    let interval = parseFloat((videoDuration / numFrames).toFixed(2));
+                    let captureFrames = function (currentTime) {
                         video.currentTime = currentTime;
                         video.onseeked = function () {
                             ctxCapture.drawImage(video, 0, 0, canvasCapture.width, canvasCapture.height);
-                            var frameDataURL = canvasCapture.toDataURL('image/jpeg', 0.5);
+                            let frameDataURL = canvasCapture.toDataURL('image/jpeg', 0.5);
                             addFrameToCover(frameDataURL);
                             if (currentTime + interval <= videoDuration) {
                                 captureFrames(currentTime + interval);
@@ -540,13 +542,13 @@
     });
 
     // Lấy tham chiếu đến nút "Post"
-    var postButton = document.querySelector('.jsx-3366794632.btn-post button');
+    let postButton = document.querySelector('.jsx-3366794632.btn-post button');
     function showLoader() {
-        var loader = document.querySelector('.loader');
+        let loader = document.querySelector('.loader');
         loader.classList.add('visible');
     }
     function hideLoader() {
-        var loader = document.querySelector('.loader');
+        let loader = document.querySelector('.loader');
         loader.classList.remove('visible');
     }
     // Lắng nghe sự kiện click trên nút "Post"
@@ -559,15 +561,15 @@
     // Hàm gửi API
     function sendApiRequest() {
 
-        var checkbox = document.querySelector('.css-mbgljv')
-        var allowUsers;
-        var selectedImageSrc = document.querySelector('.selected-image').src;
+        let checkbox = document.querySelector('.css-mbgljv')
+        let allowUsers;
+        let selectedImageSrc = document.querySelector('.selected-image').src;
 
         if (checkbox) {
             allowUsers = true;
         } else { allowUsers = false; }
 
-        var formData = new FormData();
+        let formData = new FormData();
         formData.append('video', selectedFile);
         formData.append('caption', textBox.textContent.trim());
         formData.append('image', selectedImageSrc);
@@ -581,7 +583,7 @@
         })
             .then((data) => {
                 hideLoader()
-                window.location.href = '/customer/profile'
+                window.location.href = `/customer/profile/${customer.id}`
             })
             .catch(error => {
                 // Xử lý lỗi nếu có
