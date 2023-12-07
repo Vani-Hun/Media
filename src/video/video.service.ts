@@ -94,10 +94,12 @@ export class VideoService extends BaseService<Video> {
         }
     }
 
-    async updateView(input) {
+    async updateView(input, customer) {
         try {
-            const video = await this.repo.findOneOrFail(input.videoId);
-            video.views++;
+            const video = await this.repo.findOneOrFail(input.videoId, { relations: ['user'] });
+            if (video.user.id !== customer.id) {
+                video.views++;
+            }
             return await this.repo.save(video);
         } catch (error) {
             throw new HttpException(`Failed to update view: ${error.message}`, HttpStatus.INTERNAL_SERVER_ERROR);

@@ -189,7 +189,8 @@ export class CustomerService extends BaseService<Customer> {
   }
 
   async viewVideo(input) {
-    return await this.videoService.updateView(input)
+    const customer = await this.repo.findOneOrFail(input.user.id);
+    return await this.videoService.updateView(input, customer)
   }
 
   async likeVideo(input) {
