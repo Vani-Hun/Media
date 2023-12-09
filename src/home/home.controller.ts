@@ -15,6 +15,6 @@ export class HomeController {
 
   @Post()
   post(@Body() body: InputSetHome) {
-    return this.homeService.update(body);
+    // return this.homeService.update(body);
   }
 }

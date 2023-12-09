@@ -90,27 +90,27 @@ export class AdminService extends BaseService<Admin> {
     });
     return jwt;
   }
-  async register(input: InputSetRegister) {
-    const admin = await this.repo.findOne({ username: input.username });
-    if (!admin) {
-      const saltRounds = 10;
-      // const someOtherPlaintextPassword = 'not_bacon';
-      bcrypt
-        .hash(input.password, saltRounds)
-        .then(hash => {
-          console.log('Hash ', hash)
-          const admin = this.repo.create({
-            username: input.username,
-            password: hash,
-            permission: input.permission
-          })
-          return this.repo.save(admin)
-        }
-        )
-        .catch(err => console.error(err.message))
-      return true
-    }
-  }
+  // async register(input: InputSetRegister) {
+  //   const admin = await this.repo.findOne({ username: input.username });
+  //   if (!admin) {
+  //     const saltRounds = 10;
+  //     // const someOtherPlaintextPassword = 'not_bacon';
+  //     bcrypt
+  //       .hash(input.password, saltRounds)
+  //       .then(hash => {
+  //         console.log('Hash ', hash)
+  //         const admin = this.repo.create({
+  //           username: input.username,
+  //           password: hash,
+  //           permission: input.permission
+  //         })
+  //         return this.repo.save(admin)
+  //       }
+  //       )
+  //       .catch(err => console.error(err.message))
+  //     return true
+  //   }
+  // }
 
   async isExist(input: Admin) {
     return !!(await this.findById(input.id));

@@ -96,7 +96,10 @@ export class VideoService extends BaseService<Video> {
 
     async updateView(input, customer) {
         try {
-            const video = await this.repo.findOneOrFail(input.videoId, { relations: ['user'] });
+            const video = await this.repo.createQueryBuilder('video')
+                .leftJoinAndSelect('video.user', 'user')
+                .where('customer.id = :id', { id: input.videoId })
+                .getOneOrFail();
             if (video.user.id !== customer.id) {
                 video.views++;
             }
@@ -108,7 +111,7 @@ export class VideoService extends BaseService<Video> {
 
     async updateLike(input) {
         try {
-            const video = await this.repo.findOneOrFail(input.videoId);
+            const video = await this.repo.findOneOrFail({ where: { id: input.videoId } });
             video.likes++;
             return await this.repo.save(video);
         } catch (error) {
@@ -118,7 +121,7 @@ export class VideoService extends BaseService<Video> {
 
     async updateDisLike(input) {
         try {
-            const video = await this.repo.findOneOrFail(input.videoId);
+            const video = await this.repo.findOneOrFail({ where: { id: input.videoId } });
             video.likes--;
             return await this.repo.save(video);
         } catch (error) {
@@ -128,7 +131,7 @@ export class VideoService extends BaseService<Video> {
 
     async updateShare(input) {
         try {
-            const video = await this.repo.findOneOrFail(input.videoId);
+            const video = await this.repo.findOneOrFail({ where: { id: input.videoId } });
             video.shareCount++;
             return await this.repo.save(video);
         } catch (error) {
@@ -146,35 +149,34 @@ export class VideoService extends BaseService<Video> {
         // Sử dụng alias 'video2' để phân biệt với bảng video chính
         qb.leftJoinAndSelect('comments.video', 'video2');
         qb.leftJoinAndSelect('comments.customer', 'customer');
-
         const videos = await qb.getMany();
         return videos;
     }
 
-    async searchVideos(query: string): Promise<Video[]> {
-        const results = await this.repo.find({
-            where: {
-                OR: [
-                    {
-                        title: {
-                            contains: query,
-                        },
-                    },
-                    {
-                        description: {
-                            contains: query,
-                        },
-                    },
-                    {
-                        hashtag: {
-                            contains: query,
-                        },
-                    },
-                ],
-            },
-        });
-        return results;
-    }
+    // async searchVideos(query: string): Promise<Video[]> {
+    //     const results = await this.repo.find({
+    //         where: {
+    //             OR: [
+    //                 {
+    //                     title: {
+    //                         contains: query,
+    //                     },
+    //                 },
+    //                 {
+    //                     description: {
+    //                         contains: query,
+    //                     },
+    //                 },
+    //                 {
+    //                     hashtag: {
+    //                         contains: query,
+    //                     },
+    //                 },
+    //             ],
+    //         },
+    //     });
+    //     return results;
+    // }
 
     async getVideoById(id) {
         return await this.repo.findOne({

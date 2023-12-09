@@ -10,12 +10,12 @@ export class BaseService<T> extends UtilService {
   protected async findById(id?: string, options?: FindOneOptions<T>,): Promise<T> {
     let result: T;
 
-    if (options) {
-      result = await this.repo.findOne(id, options);
-      console.log("result:", result)
-    } else {
-      result = await this.repo.findOne(id);
-    }
+    // if (options) {
+    //   result = await this.repo.findOne(id, options);
+    //   console.log("result:", result)
+    // } else {
+    //   result = await this.repo.findOne(id);
+    // }
 
     if (!result) {
       throw new NotFoundException(`Data with id = ${id} does not exist`);

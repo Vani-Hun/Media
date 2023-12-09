@@ -1,9 +1,16 @@
+import { Customer } from "./customer.entity";
+
 export type InputSetCustomer = {
   id?: string;
   logo?: Express.Multer.File;
-  name: string;
-  username: string;
-  bio: string;
+  name?: string;
+  username?: string;
+  bio?: string;
+};
+
+export type InputSetCustomerActionVideo = {
+  user?: Customer;
+  videoId?: string;
 };
 
 export type InputSetAuth = {

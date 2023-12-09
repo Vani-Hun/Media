@@ -5,6 +5,7 @@ import { Video } from 'src/video/video.entity';
 import { Comment } from 'src/comment/comment.entity';
 @Entity()
 export class Customer extends BaseEntityUUID {
+
   @Column({ nullable: true })
   logo?: string;
 

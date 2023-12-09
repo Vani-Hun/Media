@@ -5,8 +5,7 @@ import { FindOneOptions, Repository } from 'typeorm';
 import { Customer } from './customer.entity';
 import { Video } from '../video/video.entity';
 import { Comment } from '../comment/comment.entity';
-import { InputSetCustomer, InputSetAuth } from './customer.model';
-import * as _ from 'lodash';
+import { InputSetCustomer, InputSetAuth, InputSetCustomerActionVideo } from './customer.model';
 import { VideoService } from 'src/video/video.service';
 import { TokenService } from 'src/common/services/token.service';
 const { getStorage, getDownloadURL } = require('firebase-admin/storage');
@@ -164,19 +163,19 @@ export class CustomerService extends BaseService<Customer> {
     }
   }
 
-  async get(input: InputSetCustomer) {
-    const customer = await this.repo.findOneOrFail(input.id)
+  async get(input) {
+    const customer = await this.repo.findOneOrFail({ where: { id: input.id } });
     return { customer }
   }
   async getVideoById(videoId, userId) {
-    const customer = await this.repo.findOneOrFail(userId)
+    const customer = await this.repo.findOneOrFail({ where: { id: userId } })
     const video = await this.videoService.getVideoById(videoId)
     return { video, customer }
   }
 
   async getVideo(userId) {
     const videos = await this.videoService.get()
-    const customer = await this.repo.findOneOrFail(userId);
+    const customer = await this.repo.findOneOrFail({ where: { id: userId } });
     const likedVideoIds = videos
       .filter(video => video.likers.some(liker => liker.id === userId))
       .map(video => video.id);
@@ -184,17 +183,28 @@ export class CustomerService extends BaseService<Customer> {
   }
 
   async getVideoLiked(userId) {
-    const customer = await this.repo.findOneOrFail(userId, { relations: ['likedVideos', 'likedVideos.comments', 'likedVideos.likers', 'likedVideos.comments.customer'] });
+    const customer = await this.repo.createQueryBuilder('customer')
+      .leftJoinAndSelect('customer.likedVideos', 'likedVideos')
+      .leftJoinAndSelect('likedVideos.comments', 'comments')
+      .leftJoinAndSelect('comments.customer', 'commentCustomer')
+      .leftJoinAndSelect('likedVideos.likers', 'likers')
+      .where('customer.id = :id', { id: userId })
+      .getOneOrFail();
+
     return { customer }
   }
 
   async viewVideo(input) {
-    const customer = await this.repo.findOneOrFail(input.user.id);
+    const customer = await this.repo.findOneOrFail({ where: { id: input.user.id } });
     return await this.videoService.updateView(input, customer)
   }
 
   async likeVideo(input) {
-    const customer = await this.repo.findOneOrFail(input.user.id, { relations: ['likedVideos'] });
+    const customer = await this.repo.createQueryBuilder('customer')
+      .leftJoinAndSelect('customer.likedVideos', 'likedVideos')
+      .leftJoinAndSelect('likedVideos.comments', 'comments')
+      .where('customer.id = :id', { id: input.user.id })
+      .getOneOrFail();
     const newVideo = new Video();
     newVideo.id = input.videoId;
     customer.likedVideos.push(newVideo);
@@ -205,8 +215,11 @@ export class CustomerService extends BaseService<Customer> {
   async shareVideo(input) {
     return await this.videoService.updateShare(input)
   }
-  async dislikeVideo(input) {
-    const customer = await this.repo.findOneOrFail(input.user.id, { relations: ['likedVideos'] });
+  async dislikeVideo(input: InputSetCustomerActionVideo) {
+    const customer = await this.repo.createQueryBuilder('customer')
+      .leftJoinAndSelect('customer.likedVideos', 'likedVideos')
+      .where('customer.id = :id', { id: input.user.id })
+      .getOneOrFail();
 
     customer.likedVideos = customer.likedVideos.filter(likedVideo => likedVideo.id !== input.videoId);
 
@@ -219,8 +232,13 @@ export class CustomerService extends BaseService<Customer> {
   }
 
   async getProfile(user) {
-    const customer = await this.repo.findOneOrFail(user.id, { relations: ['videos', 'videos.comments', 'videos.likers'] });
-    // Sắp xếp các video trong mảng videos của customer
+    const customer = await this.repo.createQueryBuilder('customer')
+      .leftJoinAndSelect('customer.videos', 'videos')
+      .leftJoinAndSelect('videos.comments', 'comments')
+      .leftJoinAndSelect('videos.likers', 'likers')
+      .where('customer.id = :id', { id: user.id })
+      .getOneOrFail();
+
     customer.videos = customer.videos.sort((a, b) => {
       if (a.createAt > b.createAt) return -1;
       if (a.createAt < b.createAt) return 1;
@@ -230,8 +248,13 @@ export class CustomerService extends BaseService<Customer> {
   }
 
   async getViewProfile(user, customerId, res) {
-    const customer = await this.repo.findOneOrFail(customerId, { relations: ['videos', 'videos.user', 'videos.comments', 'videos.likers'] });
-    // Sắp xếp các video trong mảng videos của customer
+    const customer = await this.repo.createQueryBuilder('customer')
+      .leftJoinAndSelect('customer.videos', 'videos')
+      .leftJoinAndSelect('videos.user', 'user')
+      .leftJoinAndSelect('videos.comments', 'comments')
+      .leftJoinAndSelect('videos.likers', 'likers')
+      .where('customer.id = :id', { id: user.id })
+      .getOneOrFail();
     customer.videos = customer.videos.sort((a, b) => {
       if (a.createAt > b.createAt) return -1;
       if (a.createAt < b.createAt) return 1;
@@ -308,7 +331,8 @@ export class CustomerService extends BaseService<Customer> {
     customer.logo && this.clearFile(customer.logo);
     return !!(await this.repo.delete(id));
   }
-  async isExist(input: Customer) {
-    return !!(await this.findById(input.id));
+  async isExist(input): Promise<boolean> {
+    const customer = await this.repo.findOne({ where: { id: input.id } });
+    return !!customer;
   }
 }

@@ -8,11 +8,11 @@ import { Mailbox } from './mailbox.entity';
 export class MailboxService extends BaseService<Mailbox> {
     constructor(
         @InjectRepository(Mailbox) repo: Repository<Mailbox>
-        ) {
+    ) {
         super(repo);
     }
 
-    async get(){
-        return await this.repo.findOne()
-    }
+    // async get(){
+    //     return await this.repo.findOne()
+    // }
 }

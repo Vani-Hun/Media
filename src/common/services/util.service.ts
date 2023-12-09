@@ -2,21 +2,20 @@ import { BadRequestException, Inject } from '@nestjs/common';
 import { createReadStream, createWriteStream, existsSync, mkdirSync, unlinkSync, readFileSync } from 'fs';
 import { join } from 'path';
 import { staticFolder } from '../utils/constant';
-import * as _ from 'lodash';
 import { VideoService } from 'src/video/video.service';
 const { Storage } = require('@google-cloud/storage');
 const { getStorage, getDownloadURL } = require('firebase-admin/storage');
 
 export class UtilService {
 
-  checkFormat(file: Express.Multer.File, format: string[]) {
-    if (!format.includes(_.last(file.originalname.split('.')))) {
-      this.clearTmp(file.path);
-      throw new BadRequestException(
-        `You can only upload file with format: ${format}`,
-      );
-    }
-  }
+  // checkFormat(file: Express.Multer.File, format: string[]) {
+  //   if (!format.includes(_.last(file.originalname.split('.')))) {
+  //     this.clearTmp(file.path);
+  //     throw new BadRequestException(
+  //       `You can only upload file with format: ${format}`,
+  //     );
+  //   }
+  // }
 
   updateFile(file: Express.Multer.File, oldFile: string) {
     const readStream = createReadStream(file.path)

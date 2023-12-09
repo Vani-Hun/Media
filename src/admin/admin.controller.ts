@@ -43,15 +43,15 @@ export class AdminController {
     return { message: null };
   }
 
-  @Post('register')
-  @Redirect('/admin')
-  // @Redirect('/admin/register')
-  async postRegister(@Res() res: Response, @Body() body: InputSetRegister) {
-    const admin = await this.adminService.register(body);
-    if (admin) {
-      console.log('done')
-    }
-  }
+  // @Post('register')
+  // @Redirect('/admin')
+  // // @Redirect('/admin/register')
+  // async postRegister(@Res() res: Response, @Body() body: InputSetRegister) {
+  //   const admin = await this.adminService.register(body);
+  //   if (admin) {
+  //     console.log('done')
+  //   }
+  // }
 
   @Get('customer')
   @UseGuards(AuthGuard)

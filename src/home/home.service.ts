@@ -4,7 +4,6 @@ import { BaseService } from 'src/common/services/base.service';
 import { Repository } from 'typeorm';
 import { Home } from './home.entity';
 import { HomeType, InputSetHome } from './home.model';
-import * as _ from 'lodash';
 
 @Injectable()
 export class HomeService extends BaseService<Home> {
@@ -15,7 +14,7 @@ export class HomeService extends BaseService<Home> {
   }
 
   get() {
-    return this.repo.findOne();
+    // return this.repo.findOne();
   }
 
   // async getHome(): Promise<HomeType> {
@@ -25,13 +24,13 @@ export class HomeService extends BaseService<Home> {
   //   return { home };
   // }
 
-  async update(input: InputSetHome): Promise<Home> {
-    const homeData = await this.findById('1');
+  // async update(input: InputSetHome): Promise<Home> {
+  //   const homeData = await this.findById('1');
 
-    _.forEach(input, (value, key) => {
-      if (key !== 'id') value && (homeData[key] = value);
-    });
+  //   _.forEach(input, (value, key) => {
+  //     if (key !== 'id') value && (homeData[key] = value);
+  //   });
 
-    return this.repo.save(homeData);
-  }
+  //   return this.repo.save(homeData);
+  // }
 }

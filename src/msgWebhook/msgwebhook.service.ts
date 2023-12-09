@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { HttpService } from '@nestjs/axios'
+// import { HttpService } from '@nestjs/axios'
 
 @Injectable({})
 export class MsgWebhookService {
@@ -148,11 +148,11 @@ export class MsgWebhookService {
         //     method: "POST",
         //     data: request_body
         // });
-        new HttpService().post(
-            "https://graph.facebook.com/v7.0/me/messages",
-            request_body,
-            {headers: { "access_token": process.env.FB_PAGE_TOKEN }}
-        )
+        // new HttpService().post(
+        //     "https://graph.facebook.com/v7.0/me/messages",
+        //     request_body,
+        //     { headers: { "access_token": process.env.FB_PAGE_TOKEN } }
+        // )
     }
 
     // function firstTrait(nlp, name) {
@@ -232,12 +232,12 @@ export class MsgWebhookService {
             }
         };
 
-        
-        new HttpService().post(
-            "https://graph.facebook.com/v7.0/me/messages",
-            body,
-            {headers: { "access_token": process.env.FB_PAGE_TOKEN }}
-        )
+
+        // new HttpService().post(
+        //     "https://graph.facebook.com/v7.0/me/messages",
+        //     body,
+        //     { headers: { "access_token": process.env.FB_PAGE_TOKEN } }
+        // )
         // new HttpService().post({
         //     "uri": "https://graph.facebook.com/v6.0/me/messages",
         //     "qs": { "access_token": process.env.FB_PAGE_TOKEN },
