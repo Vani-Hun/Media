@@ -449,10 +449,11 @@
 <div id="customAlert" class="custom-alert">
     <span id="alertMessage"></span>
 </div>
-
+<script src="/socket.io/socket.io.js"></script>
 <script>
     let videos = JSON.parse('<%- JSON.stringify(videos) %>');
-    console.log("videos:", videos)
+    const host = "<%= process.env.ORIGIN %>"
+    const socket = io(host);
     let likedVideoIds = '<%= likedVideoIds %>'.split(",")
     let customer = JSON.parse('<%- JSON.stringify(customer) %>')
     if (videos) {
@@ -558,7 +559,8 @@
                 const likesCount = videoDiv.querySelector(".css-w1dlre-StrongText[data-e2e='like-count']");
                 const commentIcon = videoDiv.querySelector("#comment-icon");
                 const shareIcon = videoDiv.querySelector('#share-icon');
-                const host = window.location.host;
+
+
                 likedVideoIds.filter(likedVideoId => {
                     if (video.id === likedVideoId) {
                         likeIcon.style.color = "rgba(254, 44, 85)";
@@ -566,6 +568,8 @@
                 })
 
                 likeIcon.addEventListener("click", () => {
+                    socket.emit('like', { videoId: video.id });
+
                     const videoDivList = document.querySelectorAll('.videoDiv')
                     videoDivList.forEach(videoDiv => {
                         if (videoDiv.parentNode) {

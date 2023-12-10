@@ -171,11 +171,16 @@ export class CustomerController {
     return { message: null };
   }
 
+  @Get('setting/:customerId')
+  @Render('customer/setting')
+  getSetting() {
+  }
+
   @Get('log-out')
   async getLogout(@Res() res: Response) {
+    console.log("VODYAAAAAAAA")
     res.cookie('accessToken', '', { expires: new Date(0), httpOnly: true });
     return res.redirect('/customer/sign-in');
-
   }
 
   @Get('sign-up')

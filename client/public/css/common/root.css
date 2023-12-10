@@ -7,6 +7,10 @@ body a {
     cursor: pointer;
 }
 
+body a:visited {
+    color: rgba(1, 1, 1, 0.9);
+}
+
 body {
     font-family: TikTokFont, Arial, Tahoma, PingFangSC, sans-serif;
     font-size: 14px;

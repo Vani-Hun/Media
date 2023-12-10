@@ -10,7 +10,7 @@ import { GoogleStrategy } from './services/passport.service';
 import { PassportModule } from '@nestjs/passport';
 import { FacebookStrategy } from './services/facebook.service';
 import { SmsService } from './services/twilio.service';
-// import { AppGateway } from './services/websocket.service';
+import { NotificationGateway } from './services/websocket.service';
 const TokenModule = JwtModule.registerAsync({
   useFactory: async (configService: ConfigService) => ({
     secret: configService.get<string>('JWT_SECRET'),
@@ -31,7 +31,7 @@ const PportModule = PassportModule.registerAsync({
 
 @Module({
   imports: [PportModule, TokenModule, CacheModule.register(), forwardRef(() => AdminModule), forwardRef(() => CustomerModule)],
-  providers: [CacheService, TokenService, GoogleStrategy, FacebookStrategy, SmsService],
-  exports: [CacheService, TokenService, SmsService],
+  providers: [CacheService, TokenService, GoogleStrategy, FacebookStrategy, SmsService, NotificationGateway],
+  exports: [CacheService, TokenService, FacebookStrategy, SmsService, NotificationGateway],
 })
 export class CommonModule { }

@@ -71,7 +71,7 @@
     display: flex;
     justify-content: space-around;
     flex-flow: wrap;
-    color: rgba(32, 185, 114, 0);
+    /* color: rgba(32, 185, 114, 0); */
     align-items: center;
     transition: 0.2s ease-in-out;
     position: relative;
@@ -264,4 +264,421 @@
 .dropdown-container:hover .dropdown-menu,
 .dropdown-container:focus-within .dropdown-menu {
     display: block;
+}
+
+.css-q8q040-DivHeaderRightContainer {
+    display: flex;
+    flex-direction: row;
+    -webkit-box-align: center;
+    align-items: center;
+    position: relative;
+    margin-inline-end: unset;
+}
+
+.css-9j9jz0-DivMessageIconContainer {
+    margin-left: 16px;
+    cursor: pointer;
+    height: 32px;
+    padding: 3px 3px 0px;
+    position: relative;
+}
+
+.css-y48l9g-StyledIcon {
+    width: 26px;
+    height: 26px;
+    transform: none;
+}
+
+.css-1deszxq-DivHeaderInboxContainer {
+    margin-left: 16px;
+    position: relative;
+}
+
+.css-1g0p6jv-StyledInboxIcon {
+    cursor: pointer;
+    display: block;
+}
+
+.css-cxva5b-DivHeaderInboxWrapper {
+    display: block;
+    position: absolute;
+    width: 376px;
+    height: 640px;
+    top: 45px;
+    background: rgb(37, 37, 37);
+    border-radius: 8px;
+    box-shadow: rgba(0, 0, 0, 0.12) 0px -4px 32px;
+    transition: all 200ms linear 0s;
+    z-index: 1000;
+    opacity: 1;
+    right: -66px;
+}
+
+.css-e0rxz1-StyledArrow {
+    position: absolute;
+    top: -8px;
+    right: 70px;
+}
+
+.css-vubwh3-DivInboxContainer {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.css-19hvf92-DivInboxHeaderContainer {
+    padding-top: 24px;
+    flex: 0 0 auto;
+    padding-left: 16px;
+}
+
+.css-1bup70j-H2InboxTitle {
+    color: rgba(255, 255, 255, 0.9);
+    font-family: TikTokDisplayFont, Arial, Tahoma, PingFangSC, sans-serif;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 30px;
+    display: flex;
+}
+
+.css-5uc042-DivGroupContainer {
+    color: rgba(255, 255, 255, 0.9);
+    font-family: TikTokFont, Arial, Tahoma, PingFangSC, sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 18px;
+    margin-top: 16px;
+    display: flex;
+    flex-flow: wrap;
+}
+
+.css-4p4iga-ButtonGroupItem:not(:last-child) {
+    margin-right: 8px;
+}
+
+.css-4p4iga-ButtonGroupItem {
+    color: rgb(18, 18, 18);
+    background: rgba(255, 255, 255, 0.9);
+    border: none;
+    padding: 2px 8px;
+    margin-bottom: 12px;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 12px;
+    transition: all 300ms ease 0s;
+}
+
+.css-7p3g5e-ButtonGroupItem:not(:last-child) {
+    margin-right: 8px;
+}
+
+.css-7p3g5e-ButtonGroupItem {
+    color: rgba(255, 255, 255, 0.9);
+    background: rgba(255, 255, 255, 0.08);
+    border: none;
+    padding: 2px 8px;
+    margin-bottom: 12px;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 12px;
+    transition: all 300ms ease 0s;
+}
+
+.css-o6y5r-DivInboxContentContainer {
+    flex: 1 1 auto;
+    overflow: auto;
+}
+
+.css-1nipj7h-PTimeGroupTitle {
+    color: rgb(255, 255, 255);
+    font-family: TikTokFont, Arial, Tahoma, PingFangSC, sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 18px;
+    padding: 0px 16px;
+    margin-top: 8px;
+}
+
+.css-1cz26jb-UlInboxItemListContainer {
+    padding: 0px;
+    margin: 0px;
+    list-style-type: none;
+}
+
+.css-1lqaxb-LiInboxItemWrapper {
+    padding: 0px;
+    margin: 0px;
+    list-style-type: none;
+}
+
+.css-1xueeet-DivSystemNotifItemContainer {
+    font-family: TikTokFont, Arial, Tahoma, PingFangSC, sans-serif;
+    font-size: 14px;
+    line-height: 18px;
+    display: flex;
+    flex-direction: row;
+    padding: 10px 16px;
+    cursor: pointer;
+    -webkit-box-align: center;
+    align-items: center;
+}
+
+.css-rlx2vl-DivSystemNotifIconContainer {
+    min-width: 48px;
+    width: 48px;
+    height: 48px;
+    border-radius: 24px;
+    border: 1px solid rgb(22, 24, 35);
+    background-color: rgb(22, 24, 35);
+    display: flex;
+    -webkit-box-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    align-items: center;
+}
+
+.css-14aeum4-DivContentContainer {
+    padding: 0px 12px;
+    flex: 1 1 auto;
+}
+
+.css-x6e8xi-PTitleText {
+    display: -webkit-box;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    font-weight: 600;
+    word-break: break-all;
+    color: white;
+}
+
+.css-1mxvqe8-PSystemNotifDescText {
+    display: -webkit-box;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    color: rgba(255, 255, 255, 0.5);
+    max-height: 130px;
+    word-break: break-word;
+}
+
+.css-lm7s7f-DivArrowContainer {
+    min-width: 16px;
+    width: 16px;
+    height: 16px;
+}
+
+.css-7hu7c-DivItemContainer {
+    font-family: TikTokFont, Arial, Tahoma, PingFangSC, sans-serif;
+    font-size: 14px;
+    line-height: 18px;
+    display: flex;
+    flex-direction: row;
+    padding: 10px 16px;
+    align-items: flex-start;
+    cursor: pointer;
+}
+
+.css-9zoew1-SpanAvatarContainer-StyledAvatar {
+    display: inline-block;
+    box-sizing: border-box;
+    margin: 0px;
+    padding: 0px;
+    font-feature-settings: "tnum";
+    position: relative;
+    overflow: hidden;
+    color: rgb(255, 255, 255);
+    white-space: nowrap;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 32px;
+    border-radius: 50%;
+    background-color: rgba(136, 136, 136, 0.5);
+    flex: 0 0 48px;
+}
+
+.css-1zpj2q-ImgAvatar {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.css-1186a7g-StyledLink-StyledTitleTextLink {
+    display: -webkit-box;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    font-weight: 600;
+    word-break: break-all;
+    color: white;
+}
+
+.css-1e1fu7b-PDescText {
+    display: -webkit-box;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 7;
+    -webkit-box-orient: vertical;
+    color: rgba(255, 255, 255, 0.5);
+    max-height: 130px;
+    word-break: break-word;
+}
+
+.css-15yz56w-SpanPrimary {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.css-xqit6-PDescText-StyledExtraText {
+    display: -webkit-box;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-box-orient: vertical;
+    color: rgba(255, 255, 255, 0.5);
+    max-height: 130px;
+    word-break: break-word;
+    position: relative;
+    padding-left: 8px;
+    margin-top: 4px;
+    -webkit-line-clamp: 1;
+}
+
+.css-x0r98q-DivVideoCover {
+    flex: 0 0 42px;
+    width: 42px;
+    height: 56px;
+    background: center center / cover no-repeat;
+    border-radius: 2px;
+}
+
+.css-15iwytd-DivProfileContainer {
+    margin-left: 24px;
+    position: relative;
+    width: 32px;
+    height: 32px;
+    background: center center / cover no-repeat;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.css-ejp1tv-DivContainer {
+    position: absolute;
+    z-index: 2;
+    background: rgb(250, 248, 248);
+    border-radius: 8px;
+    top: calc(100% + 12px);
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 4px 16px;
+    transition: opacity 300ms ease 0s;
+    opacity: 1;
+}
+
+.css-1ny6agx-StyledTopArrow {
+    display: block;
+    width: 24px;
+    height: 8px;
+    position: absolute;
+    top: -8px;
+}
+
+.css-e30u3h-UlPopupContainer {
+    font-family: TikTokFont, Arial, Tahoma, PingFangSC, sans-serif;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 21px;
+    padding: 8px 0px;
+    margin: 0px;
+    min-width: 223px;
+    list-style: none;
+}
+
+.css-iqu7v6-LiItemWrapper {
+    color: rgba(255, 255, 255, 0.9);
+    padding: 0px;
+    display: flex;
+    -webkit-box-pack: justify;
+    justify-content: space-between;
+}
+
+.css-1gdfwpc-StyledLink-StyledUserLink {
+    display: flex;
+    white-space: nowrap;
+    flex-direction: row;
+    width: 100%;
+    -webkit-box-align: center;
+    align-items: center;
+    /* color: rgba(255, 255, 255, 0.9); */
+}
+
+.css-g0144v {
+    margin-right: 8px;
+    width: 20px;
+    height: 20px;
+    flex: 0 0 20px;
+}
+
+.css-1gdfwpc-StyledLink-StyledUserLink:hover,
+.css-1gdfwpc-StyledLink-StyledUserLink:active {
+    text-decoration: none;
+    background-color: rgba(154, 151, 151, 0.9);
+}
+
+.css-1hji1mo-LiItemWrapper {
+    /* color: rgba(255, 255, 255, 0.9); */
+    padding: 10px 8px 10px 16px;
+    display: flex;
+    -webkit-box-pack: justify;
+    justify-content: space-between;
+    border-top: 1px solid rgba(239, 8, 8, 0.12);
+}
+
+.css-1r76y3-DivSettingItem {
+    display: flex;
+    white-space: nowrap;
+    flex-direction: row;
+    width: 100%;
+    -webkit-box-align: center;
+    align-items: center;
+    /* color: rgba(255, 255, 255, 0.9); */
+}
+
+.css-1hhy3ou-ALink-StyledLinkItem:hover,
+.css-1hhy3ou-ALink-StyledLinkItem:active {
+    text-decoration: none;
+    background-color: rgba(154, 151, 151, 0.9);
+}
+
+.css-1hji1mo-LiItemWrapper:hover,
+.css-1hji1mo-LiItemWrapper:active {
+    text-decoration: none;
+    background-color: rgba(154, 151, 151, 0.9);
+}
+
+.css-1hhy3ou-ALink-StyledLinkItem {
+    display: flex;
+    white-space: nowrap;
+    flex-direction: row;
+    width: 100%;
+    -webkit-box-align: center;
+    align-items: center;
+    /* color: rgba(255, 255, 255, 0.9); */
+}
+
+.css-1g1i6o0-SupBadge {
+    color: rgb(255, 255, 255);
+    font-family: TikTokFont, Arial, Tahoma, PingFangSC, sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 18px;
+    left: 16px;
+    background: rgb(255, 59, 92);
+    min-width: 20px;
+    height: 20px;
+    display: flex;
+    -webkit-box-pack: center;
+    justify-content: center;
+    border-radius: 10px;
+    position: absolute;
+    top: -20%;
 }

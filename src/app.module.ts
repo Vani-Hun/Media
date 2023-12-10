@@ -6,6 +6,7 @@ import { DatabaseModule } from './common/utils/typeorm.config';
 import { CustomerModule } from './customer/customer.module';
 import { HomeModule } from './home/home.module';
 import { MailboxModule } from './mailbox/mailbox.module';
+import { NotificationGateway } from './common/services/websocket.service';
 
 const EnvModule = ConfigModule.forRoot({
   envFilePath: ['.env'],
@@ -21,6 +22,6 @@ const EnvModule = ConfigModule.forRoot({
     MailboxModule,
     // MsgWebhookModule,
     DatabaseModule,
-  ],
+  ]
 })
 export class AppModule { }
