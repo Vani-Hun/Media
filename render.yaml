@@ -1,4 +1,0 @@
-# Ví dụ file render.yaml
-buildCommand: npm install
-startCommand: npm run start
-useNodeVersion: 16.14
