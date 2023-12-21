@@ -6,7 +6,7 @@ import { AuthGuard } from './guard/auth.guard';
 import { CacheService } from './services/cache.service';
 import { TokenService } from './services/token.service';
 import { CustomerModule } from 'src/customer/customer.module';
-import { GoogleStrategy } from './services/passport.service';
+import { GoogleStrategy } from './services/google.service';
 import { PassportModule } from '@nestjs/passport';
 import { FacebookStrategy } from './services/facebook.service';
 import { SmsService } from './services/twilio.service';
