@@ -1246,17 +1246,14 @@
   }
 
   .css-1t4vwes-DivMainContainer {
-      position: relative;
-      margin: 0px auto;
-      width: 100%;
-      min-width: 420px;
-      flex-shrink: 1;
+      margin-top: 60px;
       display: flex;
-      -webkit-box-pack: start;
-      justify-content: flex-start;
-      flex-direction: column;
-      -webkit-box-align: center;
-      align-items: center;
+      width: 100vw;
+      max-width: 100%;
+      -webkit-box-pack: justify;
+      justify-content: space-between;
+      align-self: center;
+      flex: 1 1 auto;
   }
 
   @media screen and (max-width: 1071px) {

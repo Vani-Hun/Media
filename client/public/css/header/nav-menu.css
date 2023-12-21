@@ -70,14 +70,15 @@
 .nav-menu {
     display: flex;
     justify-content: space-around;
-    flex-flow: wrap;
-    /* color: rgba(32, 185, 114, 0); */
+    box-shadow: rgba(221, 221, 221, 0.12) 0px 1px 1px;
+    height: 60px;
+    width: 100%;
+    top: 0px;
+    position: fixed;
+    -webkit-box-align: center;
     align-items: center;
-    transition: 0.2s ease-in-out;
-    position: relative;
-    opacity: 1;
-    z-index: 10;
-    /* Đặt mặc định là không mờ */
+    background: #eeeeef;
+    z-index: 1000;
 }
 
 .nav-menu.scrolled {
