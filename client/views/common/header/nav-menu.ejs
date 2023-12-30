@@ -8,9 +8,9 @@
             src="https://w0.peakpx.com/wallpaper/331/769/HD-wallpaper-lazy-egg5-egg-gudetama-kawaii-lazy-egg.jpg">
     </div>
     <div class="menu-list">
-        <span class="menu-item"><a href="/customer/videos">VIDEO</a></span>
-        <span class="menu-item"><a href="/product">MUSIC</a></span>
-        <span class="menu-item"><a href="/customer/upload">+ UPLOAD</a></span>
+        <span class="menu-item"><a href="/video/videos">VIDEO</a></span>
+        <!-- <span class="menu-item"><a href="/product">MUSIC</a></span> -->
+        <span class="menu-item"><a href="/video/upload">+ UPLOAD</a></span>
     </div>
 
     <div class="css-q8q040-DivHeaderRightContainer e13wiwn60">
@@ -30,7 +30,7 @@
                         d="M24.0362 21.3333H18.5243L15.9983 24.4208L13.4721 21.3333H7.96047L7.99557 8H24.0009L24.0362 21.3333ZM24.3705 23.3333H19.4721L17.2883 26.0026C16.6215 26.8176 15.3753 26.8176 14.7084 26.0026L12.5243 23.3333H7.62626C6.70407 23.3333 5.95717 22.5845 5.9596 21.6623L5.99646 7.66228C5.99887 6.74352 6.74435 6 7.66312 6H24.3333C25.2521 6 25.9975 6.7435 26 7.66224L26.0371 21.6622C26.0396 22.5844 25.2927 23.3333 24.3705 23.3333ZM12.6647 14C12.2965 14 11.998 14.2985 11.998 14.6667V15.3333C11.998 15.7015 12.2965 16 12.6647 16H19.3313C19.6995 16 19.998 15.7015 19.998 15.3333V14.6667C19.998 14.2985 19.6995 14 19.3313 14H12.6647Z">
                     </path>
                 </svg></span>
-            <sup class="css-1g1i6o0-SupBadge e18kkhh43">0</sup>
+            <sup style="display: none;" class="css-1g1i6o0-SupBadge">0</sup>
             <div data-focus-guard="true" tabindex="-1"
                 style="width: 1px; height: 0px; padding: 0px; overflow: hidden; position: fixed; top: 1px; left: 1px;">
             </div>
@@ -233,14 +233,25 @@
     <li class="ball"></li>
     <li class="ball"></li>
 </div>
-<script>
+
+<script src="/socket.io/socket.io.js"></script>
+<script type="text/javascript">
+    let customer = JSON.parse('<%- JSON.stringify(customer) %>');
+    const host = "<%= process.env.ORIGIN %>"
+    const socket = io(host);
     const navMenu = document.querySelector('.nav-menu');
     let dropdownMenu = document.getElementById("header-setting-popup-list");
     let profileIcon = document.getElementById("header-more-menu-icon");
     let inboxIcon = document.querySelector('.css-1g0p6jv-StyledInboxIcon')
     const menuButton = document.getElementById('menu-responsive-btn');
     const menuList = document.querySelector('.menu-list');
+    const iconNotifications = document.querySelector('.css-1deszxq-DivHeaderInboxContainer')
+    const iconMess = document.querySelector('.css-9j9jz0-DivMessageIconContainer')
     const notifications = document.querySelector('.notifications')
+    const numberNotification = document.querySelector('.css-1g1i6o0-SupBadge')
+    let listItems = document.querySelectorAll('#header-setting-popup-list li');
+    let listItem = document.querySelector('[data-e2e="logout-entrance"]');
+
     function showLoader() {
         let loader = document.querySelector('.loader');
         loader.classList.add('visible');
@@ -272,52 +283,43 @@
         }
     });
 
-    document.addEventListener("DOMContentLoaded", function () {
-        fetch('/customer/header')
-            .then(response => response.json())
-            .then(data => {
-                let listItems = document.querySelectorAll('#header-setting-popup-list li');
-                let listItem = document.querySelector('[data-e2e="logout-entrance"]');
-                if (listItem) {
-                    listItem.onclick = function () {
-                        window.location.href = "customer/log-out";
-                    };
-                }
-                listItems.forEach(function (listItem, index) {
-                    let link = listItem.querySelector('a');
-                    if (link) {
-                        const hrefPaths = ['/customer/profile', '/customer/setting', '/customer/feedback'];
-                        if (index < hrefPaths.length) {
-                            listItem.onclick = function () {
-                                // Thiết lập đường dẫn bằng cách sử dụng template literals và data từ server
-                                window.location.href = `${hrefPaths[index]}/${data.customer.id}`;
-                            };
-                        }
-                    }
-                })
+    if (listItem) {
+        listItem.onclick = function () {
+            window.location.href = "/customer/log-out";
+        };
+    }
+    listItems.forEach(function (listItem, index) {
+        let link = listItem.querySelector('a');
+        if (link) {
+            const hrefPaths = ['/customer/profile', '/customer/setting', '/customer/feedback'];
+            if (index < hrefPaths.length) {
+                listItem.onclick = function () {
+                    window.location.href = `${hrefPaths[index]}/${data.customer.id}`;
+                };
+            }
+        }
+    })
 
-                let customerLogo = data.customer.logo;
-                if (customerLogo) {
-                    profileIcon.style = `background-image:url( ${customerLogo} )`
-                } else {
-                    profileIcon.style = "background-image:url(https://w0.peakpx.com/wallpaper/331/769/HD-wallpaper-lazy-egg5-egg-gudetama-kawaii-lazy-egg.jpg)";
-                    dropdownMenu.style.display = "none";
-                }
-            })
-            .catch(error => {
-                profileIcon.style = "background-image:url(https://w0.peakpx.com/wallpaper/331/769/HD-wallpaper-lazy-egg5-egg-gudetama-kawaii-lazy-egg.jpg)";
-                console.error('Error:', error);
-            });
+    if (customer.logo) {
+        profileIcon.style = `background-image:url( ${customer.logo} )`
+    } else {
+        profileIcon.style = "background-image:url(https://w0.peakpx.com/wallpaper/331/769/HD-wallpaper-lazy-egg5-egg-gudetama-kawaii-lazy-egg.jpg)";
+        iconNotifications.style.display = 'none'
+        iconMess.style.display = 'none'
+        profileIcon.style.display = 'none'
+    }
+    // const eventSource = new EventSource('/customer/sse');
+    // eventSource.onmessage = ({ data }) => {
+    //     console.log("data:", data)
 
-    });
+    //     if (data > 0) {
+    //         numberNotification.style.display = 'flex'
+    //     } else { numberNotification.style.display = 'none' }
+    //     const message = document.createElement('li');
+    //     message.innerText = 'New message: ' + data;
 
+    // }
 
-    // window.addEventListener('scroll', () => {
-    //     if (window.scrollY > 0) {
-    //         navMenu.classList.add('scrolled');
-    //     } else {
-    //         navMenu.classList.remove('scrolled');
-    //     }
-    // });
+    // socket.emit('like', { videoId: video.id });
 
 </script>

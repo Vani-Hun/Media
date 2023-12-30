@@ -946,7 +946,7 @@
                     daysDifference = `${difference}d ago`;
                 }
 
-                fetch(`/customer/videoInf/${video.id}`, {
+                fetch(`/video/videoInf/${video.id}`, {
                     method: 'GET',
                 })
                     .then(response => {
@@ -1024,7 +1024,7 @@
                     });
 
                 function fetchVideoInfo() {
-                    fetch(`/customer/videoInf/${video.id}`, {
+                    fetch(`/video/videoInf/${video.id}`, {
                         method: 'GET',
                     })
                         .then(response => {
@@ -1127,7 +1127,7 @@
                     if (fillValue === "rgba(22, 24, 35)") {
                         likesCountNumber += 1
                         svgIcon.setAttribute('fill', 'rgba(254, 44, 85)');
-                        fetch(`/customer/video/like/${video.id}`, {
+                        fetch(`/video/like/${video.id}`, {
                             method: 'POST',
                         })
                             .then(data => {
@@ -1138,7 +1138,7 @@
                     } else {
                         likesCountNumber -= 1
                         svgIcon.setAttribute('fill', 'rgba(22, 24, 35)');
-                        fetch(`/customer/video/dislike/${video.id}`, {
+                        fetch(`/video/dislike/${video.id}`, {
                             method: 'POST',
                         })
                             .then(data => {
@@ -1179,7 +1179,7 @@
                         var successful = document.execCommand('copy');
                         var msg = successful ? 'successful' : 'unsuccessful';
                         showCustomAlert("Link copied successfully");
-                        fetch(`/customer/video/share/${video.id}`, {
+                        fetch(`/video/share/${video.id}`, {
                             method: 'POST',
                         })
                             .then(data => {
@@ -1252,7 +1252,7 @@
                         const data = {
                             mess: inputElement.textContent.trim()
                         }
-                        fetch(`/customer/video/comment/${video.id}`, {
+                        fetch(`/video/comment/${video.id}`, {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json' // Định dạng dữ liệu gửi đi là JSON
@@ -1425,7 +1425,7 @@
                             who: selectedElement.textContent
                         };
 
-                        fetch('/customer/video/update', {
+                        fetch('/video/update', {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json' // Định dạng dữ liệu gửi đi là JSON
@@ -1452,7 +1452,7 @@
                         loader.classList.remove('visible');
                     }
                     showLoader()
-                    fetch(`/customer/video/delete/${video.id}`, {
+                    fetch(`/video/delete/${video.id}`, {
                         method: 'DELETE',
                     }).then((data) => {
                         hideLoader()

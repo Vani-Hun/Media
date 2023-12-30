@@ -1,17 +1,22 @@
-import { HttpException, Injectable, UnauthorizedException, Inject, HttpStatus } from '@nestjs/common';
+import { HttpException, Injectable, UnauthorizedException, Inject, HttpStatus, forwardRef } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { BaseService } from 'src/common/services/base.service';
 import { Repository, getConnection, getManager, getRepository } from 'typeorm';
 import { Video } from './video.entity';
+import { Customer } from 'src/customer/customer.entity';
 import { createReadStream } from 'fs';
 import { Comment } from 'src/comment/comment.entity';
 import { error } from 'console';
+import { CustomerService } from 'src/customer/customer.service';
+import { CommentService } from 'src/comment/comment.service';
 const { getStorage, getDownloadURL } = require('firebase-admin/storage');
 
 @Injectable()
 export class VideoService extends BaseService<Video> {
     constructor(@Inject('FIREBASE_CONFIG') protected readonly firebaseConfig,
-        @InjectRepository(Video) repo: Repository<Video>
+        @InjectRepository(Video) repo: Repository<Video>,
+        @Inject(forwardRef(() => CustomerService)) private customerService: CustomerService,
+        private commentService: CommentService,
     ) {
         super(repo);
     }
@@ -94,13 +99,13 @@ export class VideoService extends BaseService<Video> {
         }
     }
 
-    async updateView(input, customer) {
+    async updateView(videoId, userId) {
         try {
             const video = await this.repo.createQueryBuilder('video')
                 .leftJoinAndSelect('video.user', 'user')
-                .where('customer.id = :id', { id: input.videoId })
+                .where('customer.id = :id', { id: videoId })
                 .getOneOrFail();
-            if (video.user.id !== customer.id) {
+            if (video.user.id !== userId) {
                 video.views++;
             }
             return await this.repo.save(video);
@@ -109,9 +114,15 @@ export class VideoService extends BaseService<Video> {
         }
     }
 
-    async updateLike(input) {
+    async updateLike(videoId, userId) {
         try {
-            const video = await this.repo.findOneOrFail({ where: { id: input.videoId } });
+            const video = await this.repo.createQueryBuilder('video')
+                .leftJoinAndSelect('video.likers', 'likers')
+                .where('video.id = :id', { id: videoId })
+                .getOneOrFail();
+            const newUser = new Customer();
+            newUser.id = userId;
+            video.likers.push(newUser);
             video.likes++;
             return await this.repo.save(video);
         } catch (error) {
@@ -119,9 +130,14 @@ export class VideoService extends BaseService<Video> {
         }
     }
 
-    async updateDisLike(input) {
+    async updateDisLike(videoId, userId) {
         try {
-            const video = await this.repo.findOneOrFail({ where: { id: input.videoId } });
+            const video = await this.repo.createQueryBuilder('video')
+                .leftJoinAndSelect('video.likers', 'likers')
+                .where('video.id = :id', { id: videoId })
+                .getOneOrFail();
+
+            video.likers = video.likers.filter(liker => liker.id !== userId);
             video.likes--;
             return await this.repo.save(video);
         } catch (error) {
@@ -129,73 +145,72 @@ export class VideoService extends BaseService<Video> {
         }
     }
 
-    async updateShare(input) {
+    async updateShare(videoId) {
         try {
-            const video = await this.repo.findOneOrFail({ where: { id: input.videoId } });
+            const video = await this.repo.findOneOrFail({ where: { id: videoId } });
             video.shareCount++;
             return await this.repo.save(video);
         } catch (error) {
             throw new HttpException(`Failed to update share: ${error.message}`, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
-    async get(): Promise<Video[]> {
+    async createComment(input) {
+        try {
+            return await this.commentService.create(input)
+        } catch (error) {
+            throw new HttpException(`Failed: ${error.message}`, HttpStatus.NOT_IMPLEMENTED);
+        }
+    }
+    async get(userId) {
         const qb = this.repo.createQueryBuilder('video');
         qb.where('video.who = :who', { who: 'Public' });
         qb.orderBy('video.createAt', 'DESC');
         qb.leftJoinAndSelect('video.user', 'user');
         qb.leftJoinAndSelect('video.likers', 'likers');
         qb.leftJoinAndSelect('video.comments', 'comments');
-        // Sử dụng alias 'video2' để phân biệt với bảng video chính
         qb.leftJoinAndSelect('comments.video', 'video2');
         qb.leftJoinAndSelect('comments.customer', 'customer');
         const videos = await qb.getMany();
-        return videos;
+        const customer = await this.customerService.get(userId)
+        const likedVideoIds = videos
+            .filter(video => video.likers.some(liker => liker.id === userId))
+            .map(video => video.id);
+        return { videos, likedVideoIds, customer };
     }
 
-    // async searchVideos(query: string): Promise<Video[]> {
-    //     const results = await this.repo.find({
-    //         where: {
-    //             OR: [
-    //                 {
-    //                     title: {
-    //                         contains: query,
-    //                     },
-    //                 },
-    //                 {
-    //                     description: {
-    //                         contains: query,
-    //                     },
-    //                 },
-    //                 {
-    //                     hashtag: {
-    //                         contains: query,
-    //                     },
-    //                 },
-    //             ],
-    //         },
-    //     });
-    //     return results;
-    // }
-
-    async getVideoById(id) {
-        return await this.repo.findOne({
+    async getVideoById(videoId, userId) {
+        const customer = await this.customerService.get(userId)
+        const video = await this.repo.findOne({
             where: {
-                id: id
+                id: videoId
             }, relations: ['user', 'comments', 'comments.video', 'comments.customer', 'likers']
         });
-    }
+        console.log("customer:", customer)
+        console.log("video:", video)
+        return { video, customer }
 
-    async delete(id, user) {
+    }
+    async viewVideo(videoId, userId) {
+        const customer = await this.customerService.get(userId)
+        const video = await this.repo.findOne({
+            where: {
+                id: videoId
+            }, relations: ['user', 'comments', 'comments.video', 'comments.customer', 'likers']
+        });
+        return { video, customer }
+    }
+    async delete(videoId, userId) {
+
         const video = await this.repo
             .createQueryBuilder('video')
             .leftJoinAndSelect('video.user', 'user')
             .leftJoinAndSelect('video.likers', 'likers')
             .leftJoinAndSelect('video.comments', 'comments')
-            .where('video.id = :id', { id: id })
+            .where('video.id = :id', { id: videoId })
             .getOne();
 
-        if (video.user.id === user.id) {
+        if (video.user.id === userId) {
+            await this.commentService.delete(videoId)
             await this.repo.remove(video)
             return await this.firebaseConfig.firebaseAdmin.firestore().runTransaction(async () => {
                 await Promise.all([
@@ -204,7 +219,7 @@ export class VideoService extends BaseService<Video> {
                 ])
             })
         } else {
-            throw new HttpException('Failed delete', HttpStatus.INTERNAL_SERVER_ERROR)
+            throw new HttpException('Failed delete', HttpStatus.NOT_IMPLEMENTED)
         }
     }
 

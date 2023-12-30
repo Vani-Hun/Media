@@ -352,7 +352,6 @@
                             </div>
                             <div class="tiktok-1x3bx1n-DivCopyLinkContainer ehlq8k33">
                                 <p data-e2e="browse-video-link" class="tiktok-1v8b11s-PCopyLinkText ehlq8k34">
-                                    https://www.tiktok.com/@foxtamly/video/7273303434869198082?is_from_webapp=1&amp;sender_device=pc&amp;web_id=7187579998407149058
                                 </p><button data-e2e="browse-copy" class="tiktok-7e23lp-ButtonCopyLink ehlq8k36">Copy
                                     link </button>
                             </div>
@@ -447,7 +446,7 @@
     let video = JSON.parse('<%- JSON.stringify(video) %>');
     let customer = JSON.parse('<%- JSON.stringify(customer) %>');
     let listVideo = []
-    fetch(`/customer/videos/list`, {
+    fetch(`/video/videos`, {
         method: 'GET',
     })
         .then(response => {
@@ -566,7 +565,7 @@
         const host = window.location.host;
         const buttonCopyLink = document.querySelector('.tiktok-7e23lp-ButtonCopyLink')
 
-        fetch(`/customer/videoInf/${video.id}`, {
+        fetch(`/video/videoInf/${video.id}`, {
             method: 'GET',
         })
             .then(response => {
@@ -608,7 +607,7 @@
 
 
         function fetchVideoInfo() {
-            fetch(`/customer/videoInf/${video.id}`, {
+            fetch(`/video/videoInf/${video.id}`, {
                 method: 'GET',
             })
                 .then(response => {
@@ -714,7 +713,7 @@
             if (fillValue === "rgba(22, 24, 35)") {
                 likesCountNumber += 1
                 svgIcon.setAttribute('fill', 'rgba(254, 44, 85)');
-                fetch(`/customer/video/like/${video.id}`, {
+                fetch(`/video/like/${video.id}`, {
                     method: 'POST',
                 })
                     .then(data => {
@@ -725,7 +724,7 @@
             } else {
                 likesCountNumber -= 1
                 svgIcon.setAttribute('fill', 'rgba(22, 24, 35)');
-                fetch(`/customer/video/dislike/${video.id}`, {
+                fetch(`/video/dislike/${video.id}`, {
                     method: 'POST',
                 })
                     .then(data => {
@@ -785,7 +784,7 @@
             divCommentList.appendChild(commentDiv)
         })
         let isMuted = false
-        copyLinkText.innerHTML = `${host}/customer/video/${video.id}`
+        copyLinkText.innerHTML = `${host}/video/${video.id}`
 
         function showCustomAlert(message) {
             const customAlert = document.getElementById('customAlert');
@@ -811,7 +810,7 @@
                 var successful = document.execCommand('copy');
                 var msg = successful ? 'successful' : 'unsuccessful';
                 showCustomAlert("Link copied successfully");
-                fetch(`/customer/video/share/${video.id}`, {
+                fetch(`/video/share/${video.id}`, {
                     method: 'POST',
                 })
                     .then(data => {
@@ -871,7 +870,7 @@
             }
         });
         xButton.addEventListener('click', function () {
-            window.location.href = '/customer/videos'
+            window.location.href = '/video/videos'
         })
         inputElement.addEventListener('input', function () {
             const postComment = document.querySelector('.tiktok-n4wkvf-DivPostButton')
@@ -888,7 +887,7 @@
                 const data = {
                     mess: inputElement.textContent.trim()
                 }
-                fetch(`/customer/video/comment/${video.id}`, {
+                fetch(`video/comment/${video.id}`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json' // Định dạng dữ liệu gửi đi là JSON
@@ -952,7 +951,7 @@
             const newUrl = `/customer/video/${video.id}`;
             history.pushState({ videoId: video.id }, '', newUrl);
             video = listVideo[index]
-            fetch(`/customer/videoInf/${video.id}`, {
+            fetch(`/video/videoInf/${video.id}`, {
                 method: 'GET',
             })
                 .then(response => {
@@ -965,7 +964,7 @@
                     const video = data.video
                     const newUrl = `/customer/video/${video.id}`;
                     history.pushState({ videoId: video.id }, '', newUrl);
-                    copyLinkText.innerHTML = `${host}/customer/video/${video.id}`
+                    copyLinkText.innerHTML = `${host}/video/${video.id}`
                     commentsCountElement.textContent = `Comments (${video.comments.length})`;
                     likeCountElement.textContent = video.likes;
                     commentCountElement.textContent = video.comments.length;

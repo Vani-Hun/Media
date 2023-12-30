@@ -1,16 +1,13 @@
-import { forwardRef, Inject, Injectable, HttpException, UnauthorizedException, Res, Render, Redirect, HttpStatus } from '@nestjs/common';
+import { Inject, Injectable, HttpException, HttpStatus, forwardRef } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { BaseService } from 'src/common/services/base.service';
 import { FindOneOptions, Repository } from 'typeorm';
 import { Customer } from './customer.entity';
-import { Video } from '../video/video.entity';
-import { Comment } from '../comment/comment.entity';
 import { InputSetCustomer, InputSetAuth, InputSetCustomerActionVideo } from './customer.model';
 import { VideoService } from 'src/video/video.service';
 import { TokenService } from 'src/common/services/token.service';
 const { getStorage, getDownloadURL } = require('firebase-admin/storage');
 import { readFileSync } from 'fs';
-import { CommentService } from 'src/comment/comment.service';
 import * as bcrypt from 'bcrypt';
 import { SmsService } from 'src/common/services/twilio.service';
 
@@ -20,8 +17,7 @@ export class CustomerService extends BaseService<Customer> {
     @Inject('FIREBASE_CONFIG') protected readonly firebaseConfig,
     @InjectRepository(Customer) repo: Repository<Customer>,
     private tokenService: TokenService,
-    private videoService: VideoService,
-    private commentService: CommentService,
+    @Inject(forwardRef(() => VideoService)) private videoService: VideoService,
     private smsService: SmsService
   ) {
     super(repo);
@@ -31,13 +27,9 @@ export class CustomerService extends BaseService<Customer> {
     const existingUser = await this.repo.findOne({
       where: { username: input.username },
     });
-    if (!existingUser) {
-      throw new HttpException('Your username is not exist!!', HttpStatus.UNAUTHORIZED);
-    }
     const isPasswordValid = await bcrypt.compare(input.password, existingUser.password);
-
-    if (!isPasswordValid) {
-      throw new HttpException('Your password is wrong!!', HttpStatus.UNAUTHORIZED);
+    if (!existingUser || !isPasswordValid) {
+      throw new HttpException('Your username is not exist or password is wrong!!', HttpStatus.UNAUTHORIZED);
     }
     const payload = {
       id: existingUser.id,
@@ -163,24 +155,23 @@ export class CustomerService extends BaseService<Customer> {
     }
   }
 
-  async get(input) {
-    const customer = await this.repo.findOneOrFail({ where: { id: input.id } });
+  async get(userId) {
+    const customer = await this.repo.findOneOrFail({ where: { id: userId } });
     return { customer }
   }
-  async getVideoById(videoId, userId) {
-    const customer = await this.repo.findOneOrFail({ where: { id: userId } })
-    const video = await this.videoService.getVideoById(videoId)
-    return { video, customer }
-  }
+  // async getVideoById(videoId, userId) {
+  //   const customer = await this.repo.findOneOrFail({ where: { id: userId } })
+  //   const video = await this.videoService.getVideoById(videoId)
+  //   return { video, customer }
+  // }
 
-  async getVideo(userId) {
-    const videos = await this.videoService.get()
-    const customer = await this.repo.findOneOrFail({ where: { id: userId } });
-    const likedVideoIds = videos
-      .filter(video => video.likers.some(liker => liker.id === userId))
-      .map(video => video.id);
-    return { videos, likedVideoIds, customer }
-  }
+  // async getVideo(userId) {
+  //   const customer = await this.repo.findOneOrFail({ where: { id: userId } });
+  //   const likedVideoIds = videos
+  //     .filter(video => video.likers.some(liker => liker.id === userId))
+  //     .map(video => video.id);
+  //   return { videos, likedVideoIds, customer }
+  // }
 
   async getVideoLiked(userId) {
     const customer = await this.repo.createQueryBuilder('customer')
@@ -199,37 +190,37 @@ export class CustomerService extends BaseService<Customer> {
     return await this.videoService.updateView(input, customer)
   }
 
-  async likeVideo(input) {
-    const customer = await this.repo.createQueryBuilder('customer')
-      .leftJoinAndSelect('customer.likedVideos', 'likedVideos')
-      .leftJoinAndSelect('likedVideos.comments', 'comments')
-      .where('customer.id = :id', { id: input.user.id })
-      .getOneOrFail();
-    const newVideo = new Video();
-    newVideo.id = input.videoId;
-    customer.likedVideos.push(newVideo);
-    await this.repo.save(customer);
-    return await this.videoService.updateLike(input)
-  }
+  // async likeVideo(input) {
+  //   const customer = await this.repo.createQueryBuilder('customer')
+  //     .leftJoinAndSelect('customer.likedVideos', 'likedVideos')
+  //     .leftJoinAndSelect('likedVideos.comments', 'comments')
+  //     .where('customer.id = :id', { id: input.user.id })
+  //     .getOneOrFail();
+  //   const newVideo = new Video();
+  //   newVideo.id = input.videoId;
+  //   customer.likedVideos.push(newVideo);
+  //   await this.repo.save(customer);
+  //   return await this.videoService.updateLike(input)
+  // }
 
-  async shareVideo(input) {
-    return await this.videoService.updateShare(input)
-  }
-  async dislikeVideo(input: InputSetCustomerActionVideo) {
-    const customer = await this.repo.createQueryBuilder('customer')
-      .leftJoinAndSelect('customer.likedVideos', 'likedVideos')
-      .where('customer.id = :id', { id: input.user.id })
-      .getOneOrFail();
+  // async shareVideo(input) {
+  //   return await this.videoService.updateShare(input)
+  // }
+  // async dislikeVideo(input: InputSetCustomerActionVideo) {
+  //   const customer = await this.repo.createQueryBuilder('customer')
+  //     .leftJoinAndSelect('customer.likedVideos', 'likedVideos')
+  //     .where('customer.id = :id', { id: input.user.id })
+  //     .getOneOrFail();
 
-    customer.likedVideos = customer.likedVideos.filter(likedVideo => likedVideo.id !== input.videoId);
+  //   customer.likedVideos = customer.likedVideos.filter(likedVideo => likedVideo.id !== input.videoId);
 
-    await this.repo.save(customer);
-    return await this.videoService.updateDisLike(input)
-  }
+  //   await this.repo.save(customer);
+  //   return await this.videoService.updateDisLike(input)
+  // }
 
-  async commentVideo(input) {
-    return await this.commentService.create(input)
-  }
+  // async commentVideo(input) {
+  //   return await this.commentService.create(input)
+  // }
 
   async getProfile(user) {
     const customer = await this.repo.createQueryBuilder('customer')
@@ -309,23 +300,23 @@ export class CustomerService extends BaseService<Customer> {
     return this.repo.find();
   }
 
-  async upVideo(input) {
-    const url = await this.videoService.uploadVideo(input)
-    if (url) {
-      return await this.videoService.create(url, input)
-    }
-  }
+  // async upVideo(input) {
+  //   const url = await this.videoService.uploadVideo(input)
+  //   if (url) {
+  //     return await this.videoService.create(url, input)
+  //   }
+  // }
 
-  async upDateVideo(input) {
-    const saveVideo = await this.videoService.update(input)
-    return true
-  }
+  // async upDateVideo(input) {
+  //   const saveVideo = await this.videoService.update(input)
+  //   return true
+  // }
 
-  async deleteVideo(video, user) {
-    await this.commentService.delete(video, user)
-    return await this.videoService.delete(video, user)
+  // async deleteVideo(video, user) {
+  //   await this.commentService.delete(video, user)
+  //   return await this.videoService.delete(video, user)
 
-  }
+  // }
   async delete(id: string) {
     const customer = await this.findById(id);
     customer.logo && this.clearFile(customer.logo);

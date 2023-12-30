@@ -3,7 +3,7 @@ import { Column, Entity, OneToMany, ManyToOne, JoinColumn, ManyToMany, JoinTable
 import { Comment } from 'src/comment/comment.entity';
 import { Customer } from 'src/customer/customer.entity';
 @Entity()
-export class Video extends BaseEntityUUID {
+export class Notification extends BaseEntityUUID {
     @ManyToOne(() => Customer, { cascade: true })
     @JoinColumn({ name: 'user' })
     user: Customer;

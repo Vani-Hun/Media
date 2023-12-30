@@ -8,11 +8,10 @@ import { BaseService } from 'src/common/services/base.service';
 export class CommentService {
     constructor(@InjectRepository(Comment) private readonly repo: Repository<Comment>) { }
     async create(input) {
-        console.log("input:", input)
         const createData = await this.repo.create({ text: input.mess, customer: input.user.id, video: input.videoId })
         return await this.repo.save(createData)
     }
-    async delete(video, user) {
+    async delete(video) {
         return await this.repo.delete({ video: video });
     }
 

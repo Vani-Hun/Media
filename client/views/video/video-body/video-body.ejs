@@ -449,13 +449,10 @@
 <div id="customAlert" class="custom-alert">
     <span id="alertMessage"></span>
 </div>
-<script src="/socket.io/socket.io.js"></script>
+
 <script>
     let videos = JSON.parse('<%- JSON.stringify(videos) %>');
-    const host = "<%= process.env.ORIGIN %>"
-    const socket = io(host);
     let likedVideoIds = '<%= likedVideoIds %>'.split(",")
-    let customer = JSON.parse('<%- JSON.stringify(customer) %>')
     if (videos) {
         const videoContainer = document.querySelector('.css-9fq6q2-DivOneColumnContainer');
         function showCustomAlert(message) {
@@ -567,63 +564,25 @@
                     }
                 })
 
-                likeIcon.addEventListener("click", () => {
-                    socket.emit('like', { videoId: video.id });
 
-                    const videoDivList = document.querySelectorAll('.videoDiv')
-                    videoDivList.forEach(videoDiv => {
-                        if (videoDiv.parentNode) {
-                            videoDiv.parentNode.removeChild(videoDiv);
-                        }
-                    });
+                likeIcon.addEventListener("click", () => {
+                    let likeCountElement = videoDiv.querySelector('[data-e2e="like-count"]');
 
                     if (likeIcon.style.color === "rgb(22, 24, 35)") {
-                        fetch(`/customer/video/like/${video.id}`, {
+                        likeIcon.style.color = "rgb(254, 44, 85)"
+                        likeCountElement.innerHTML = +likeCountElement.innerHTML + 1
+                        fetch(`/video/like/${video.id}`, {
                             method: 'POST',
                         })
-                            .then(data => {
-
-                                fetch(`/customer/videos/list`, {
-                                    method: 'GET',
-                                })
-                                    .then(response => {
-                                        if (!response.ok) {
-                                            throw new Error(`Network response was not ok (${response.status})`);
-                                        }
-                                        return response.json();
-                                    })
-                                    .then(data => {
-                                        videos = data.videos
-                                        likedVideoIds = data.likedVideoIds
-                                        displayVideo()
-                                    })
-                                    .catch(error => { console.error("Error:", error) })
-                            })
                             .catch(error => {
                                 console.error('Error:', error);
                             });
                     } else {
-                        fetch(`/customer/video/dislike/${video.id}`, {
+                        likeIcon.style.color = "rgb(22, 24, 35)"
+                        likeCountElement.innerHTML = +likeCountElement.innerHTML - 1
+                        fetch(`/video/dislike/${video.id}`, {
                             method: 'POST',
                         })
-                            .then(data => {
-
-                                fetch(`/customer/videos/list`, {
-                                    method: 'GET',
-                                })
-                                    .then(response => {
-                                        if (!response.ok) {
-                                            throw new Error(`Network response was not ok (${response.status})`);
-                                        }
-                                        return response.json();
-                                    })
-                                    .then(data => {
-                                        videos = data.videos
-                                        likedVideoIds = data.likedVideoIds
-                                        displayVideo()
-                                    })
-                                    .catch(error => { console.error("Error:", error) })
-                            })
                             .catch(error => {
                                 console.error('Error:', error);
                             });
@@ -646,7 +605,7 @@
                     textArea.select();
                     try {
                         showCustomAlert("Link copied successfully");
-                        fetch(`/customer/video/share/${video.id}`, {
+                        fetch(`video/share/${video.id}`, {
                             method: 'POST',
                         })
                             .then(data => {
@@ -758,7 +717,7 @@
                     const buttonCopyLink = document.querySelector('.tiktok-7e23lp-ButtonCopyLink')
 
 
-                    fetch(`/customer/videoInf/${video.id}`, {
+                    fetch(`/video/videoInf/${video.id}`, {
                         method: 'GET',
                     })
                         .then(response => {
@@ -799,7 +758,7 @@
 
 
                     function fetchVideoInfo() {
-                        fetch(`/customer/videoInf/${video.id}`, {
+                        fetch(`/video/videoInf/${video.id}`, {
                             method: 'GET',
                         })
                             .then(response => {
@@ -897,7 +856,7 @@
                             });
                     }
 
-                    const intervalId = setInterval(fetchVideoInfo, 10000);
+                    const intervalId = setInterval(fetchVideoInfo, 50000);
 
                     likeElement.addEventListener("click", () => {
                         let likesCountNumber = parseInt(likeCountElement.innerText, 10);
@@ -906,7 +865,7 @@
                             likesCountNumber += 1
                             svgIcon.setAttribute('fill', 'rgba(254, 44, 85)');
                             likeIcon.style.color = "rgba(254, 44, 85)";
-                            fetch(`/customer/video/like/${video.id}`, {
+                            fetch(`/video/like/${video.id}`, {
                                 method: 'POST',
                             })
                                 .then(data => {
@@ -918,7 +877,7 @@
                             likesCountNumber -= 1
                             svgIcon.setAttribute('fill', 'rgba(22, 24, 35)');
                             likeIcon.style.color = "rgba(22, 24, 35)";
-                            fetch(`/customer/video/dislike/${video.id}`, {
+                            fetch(`/video/dislike/${video.id}`, {
                                 method: 'POST',
                             })
                                 .then(data => {
@@ -980,7 +939,7 @@
                     })
 
 
-                    const newUrl = `/customer/video/${video.id}`;
+                    const newUrl = `/video/${video.id}`;
                     history.pushState({ videoId: video.id }, '', newUrl);
                     // sessionStorage.setItem('mainContainer', mainContainer.outerHTML);
                     divMainContainer.style.display = 'none'
@@ -993,7 +952,7 @@
 
                     videoPlay.addEventListener('timeupdate', function () {
                         if (videoPlay.currentTime >= 3 && !videoPlay.hasAttribute('data-viewed')) {
-                            fetch(`/customer/video/view/${video.id}`, {
+                            fetch(`/video/view/${video.id}`, {
                                 method: 'POST',
                             })
                                 .then(data => {
@@ -1008,7 +967,7 @@
                         }
                     });
 
-                    copyLinkText.innerHTML = `${host}/customer/video/${video.id}`
+                    copyLinkText.innerHTML = `${host}/video/${video.id}`
 
                     buttonCopyLink.addEventListener('click', () => {
                         let textToCopy = copyLinkText.innerHTML
@@ -1018,7 +977,7 @@
                         textArea.select();
                         try {
                             showCustomAlert("Link copied successfully");
-                            fetch(`/customer/video/share/${video.id}`, {
+                            fetch(`/video/share/${video.id}`, {
                                 method: 'POST',
                             })
                                 .then(data => {
@@ -1082,7 +1041,7 @@
                         }
                     });
                     xButton.addEventListener('click', function () {
-                        window.location.href = '/customer/videos'
+                        window.location.href = '/video/videos'
                         // mainContainer.style.display = 'none'
                         // divMainContainer.style.display = 'flex';
                         // videoPlay.pause();
@@ -1105,7 +1064,7 @@
                             const data = {
                                 mess: inputElement.textContent.trim()
                             }
-                            fetch(`/customer/video/comment/${video.id}`, {
+                            fetch(`/video/comment/${video.id}`, {
                                 method: 'POST',
                                 headers: {
                                     'Content-Type': 'application/json' // Định dạng dữ liệu gửi đi là JSON
@@ -1163,10 +1122,10 @@
                         if (index >= videos.length) {
                             index = 0;
                         }
-                        const newUrl = `/customer/video/${video.id}`;
+                        const newUrl = `/video/${video.id}`;
                         history.pushState({ videoId: video.id }, '', newUrl);
                         video = videos[index]
-                        fetch(`/customer/videoInf/${video.id}`, {
+                        fetch(`/video/videoInf/${video.id}`, {
                             method: 'GET',
                         })
                             .then(response => {
@@ -1179,7 +1138,7 @@
                                 const video = data.video
                                 const newUrl = `/customer/video/${video.id}`;
                                 history.pushState({ videoId: video.id }, '', newUrl);
-                                copyLinkText.innerHTML = `${host}/customer/video/${video.id}`
+                                copyLinkText.innerHTML = `${host}/video/${video.id}`
                                 commentsCountElement.textContent = `Comments (${video.comments.length})`;
                                 likeCountElement.textContent = video.likes;
                                 commentCountElement.textContent = video.comments.length;

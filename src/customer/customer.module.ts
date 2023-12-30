@@ -12,10 +12,10 @@ import { CommentModule } from 'src/comment/comment.module';
 @Module({
   imports: [
     forwardRef(() => CommonModule),
+    forwardRef(() => VideoModule),
     TypeOrmModule.forFeature([Customer]),
-    VideoModule,
-    CommentModule,
-    MulterModule.register({ storage }), FirebaseConfigModule
+    MulterModule.register({ storage }),
+    FirebaseConfigModule
   ],
   providers: [CustomerService],
   controllers: [CustomerController],

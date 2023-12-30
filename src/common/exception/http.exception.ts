@@ -20,6 +20,8 @@ export class HttpExceptionFilter implements ExceptionFilter {
         return response.redirect(`/customer/verify-otp?error=${encodeURIComponent(error)}`);
       case 500:
         return response.redirect(`/`);
+      case 501:
+        return { mess: 'error' }
       default:
         this.render(response, 'home/index', {
           title: status,
