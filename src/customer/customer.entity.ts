@@ -40,16 +40,16 @@ export class Customer extends BaseEntityUUID {
   @Column({ nullable: true })
   permission: string;
 
-  @OneToMany(() => Video, video => video.user)
+  @OneToMany(() => Video, video => video.user, { cascade: true })
   videos: Video[];
 
-  @OneToMany(() => Notification, notification => notification.user)
+  @OneToMany(() => Notification, notification => notification.user, { cascade: true })
   notifications: Notification[];
 
-  @OneToMany(() => Comment, comment => comment.customer)
+  @OneToMany(() => Comment, comment => comment.customer, { cascade: true })
   comments: Comment[];
 
-  @ManyToMany(() => Video, video => video.likers)
+  @ManyToMany(() => Video, video => video.likers, { cascade: true })
   likedVideos: Video[];
 
 };

@@ -687,3 +687,11 @@
     position: absolute;
     top: -20%;
 }
+
+.css-2yolk3-StyledLink-StyledLinkVideoCover {
+    flex: 0 0 42px;
+    width: 42px;
+    height: 56px;
+    background: center center / cover no-repeat;
+    border-radius: 2px;
+}

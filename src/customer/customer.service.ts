@@ -155,7 +155,13 @@ export class CustomerService extends BaseService<Customer> {
   }
 
   async get(userId) {
-    const customer = await this.repo.findOneOrFail({ where: { id: userId } });
+    const customer = await this.repo
+      .createQueryBuilder('customer')
+      .where('customer.id = :id', { id: userId })
+      .leftJoinAndSelect('customer.notifications', 'notifications')
+      .leftJoinAndSelect('notifications.interactingUser', 'interactingUser')
+      .leftJoinAndSelect('notifications.video', 'video')
+      .getOne();
     return { customer }
   }
   // async getVideoById(videoId, userId) {

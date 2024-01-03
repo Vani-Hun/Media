@@ -2,6 +2,7 @@ import { BaseEntityUUID } from 'src/common/entities/base.entity';
 import { Column, Entity, OneToMany, ManyToOne, JoinColumn, ManyToMany, JoinTable } from 'typeorm';
 import { Comment } from 'src/comment/comment.entity';
 import { Customer } from 'src/customer/customer.entity';
+import { Video } from 'src/video/video.entity';
 
 export enum NotificationType {
     LIKE = 'Like',
@@ -12,13 +13,17 @@ export enum NotificationType {
 
 @Entity()
 export class Notification extends BaseEntityUUID {
-    @ManyToOne(() => Customer, { cascade: true })
+    @ManyToOne(() => Customer)
     @JoinColumn({ name: 'user' })
     user: Customer;
 
-    @ManyToOne(() => Customer, { cascade: true })
-    @JoinColumn({ name: 'interacting_user' })  // Đặt tên cho cột người tương tác, ví dụ 'interacting_user_id'
+    @ManyToOne(() => Customer,)
+    @JoinColumn({ name: 'interacting_user' })
     interactingUser: Customer;
+
+    @ManyToOne(() => Video)
+    @JoinColumn({ name: 'video' })
+    video: Video;
 
     @Column({ type: 'text' })
     message: string;

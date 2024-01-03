@@ -123,14 +123,16 @@ export class VideoService extends BaseService<Video> {
         try {
             const video = await this.repo.createQueryBuilder('video')
                 .leftJoinAndSelect('video.likers', 'likers')
+                .leftJoinAndSelect('video.user', 'user')
                 .where('video.id = :id', { id: videoId })
                 .getOneOrFail();
             const newUser = new Customer();
             newUser.id = userId;
             video.likers.push(newUser);
             video.likes++;
-            await this.notificationService.post(video, userId, NotificationType.LIKE)
-            return await this.repo.save(video);
+            await this.repo.save(video);
+            return await this.notificationService.post(video, userId, NotificationType.LIKE)
+
         } catch (error) {
             throw new HttpException(`Failed to update like: ${error.message}`, HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -204,8 +206,6 @@ export class VideoService extends BaseService<Video> {
         return { video, customer }
     }
     async delete(videoId, userId) {
-        console.log("userId:", userId)
-        console.log("VODAYROIIII")
         const video = await this.repo
             .createQueryBuilder('video')
             .leftJoinAndSelect('video.user', 'user')
@@ -213,7 +213,6 @@ export class VideoService extends BaseService<Video> {
             .leftJoinAndSelect('video.comments', 'comments')
             .where('video.id = :id', { id: videoId })
             .getOne();
-        console.log("video:", video)
 
         if (video.user.id === userId) {
             await this.commentService.delete(videoId)

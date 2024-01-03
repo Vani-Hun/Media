@@ -1,10 +1,12 @@
+import { Notification } from './../notification/notitfication.entity';
 import { BaseEntityUUID } from 'src/common/entities/base.entity';
 import { Column, Entity, OneToMany, ManyToOne, JoinColumn, ManyToMany, JoinTable } from 'typeorm';
 import { Comment } from 'src/comment/comment.entity';
 import { Customer } from 'src/customer/customer.entity';
+
 @Entity()
 export class Video extends BaseEntityUUID {
-    @ManyToOne(() => Customer, { cascade: true })
+    @ManyToOne(() => Customer)
     @JoinColumn({ name: 'user' })
     user: Customer;
 
@@ -35,10 +37,13 @@ export class Video extends BaseEntityUUID {
     @Column()
     allowComment: boolean;
 
-    @ManyToMany(() => Customer, customer => customer.likedVideos, { cascade: true, })
+    @ManyToMany(() => Customer, customer => customer.likedVideos)
     @JoinTable()
     likers: Customer[];
 
     @OneToMany(() => Comment, comment => comment.video, { cascade: true })
     comments: Comment[];
+
+    @OneToMany(() => Notification, notification => notification.video, { cascade: true })
+    notification: Notification[];
 }
