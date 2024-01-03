@@ -9,14 +9,16 @@ import { Comment } from 'src/comment/comment.entity';
 import { error } from 'console';
 import { CustomerService } from 'src/customer/customer.service';
 import { CommentService } from 'src/comment/comment.service';
+import { NotificationService } from 'src/notification/notification.service';
 const { getStorage, getDownloadURL } = require('firebase-admin/storage');
-
+import { NotificationType } from 'src/notification/notitfication.entity';
 @Injectable()
 export class VideoService extends BaseService<Video> {
     constructor(@Inject('FIREBASE_CONFIG') protected readonly firebaseConfig,
         @InjectRepository(Video) repo: Repository<Video>,
         @Inject(forwardRef(() => CustomerService)) private customerService: CustomerService,
         private commentService: CommentService,
+        private notificationService: NotificationService
     ) {
         super(repo);
     }
@@ -38,6 +40,9 @@ export class VideoService extends BaseService<Video> {
         }
     }
 
+    async getUploadVideo(userId) {
+        return await this.customerService.get(userId)
+    }
     async uploadVideo(input) {
         try {
             const uploadFirebase = await this.firebaseConfig.firebaseAdmin.firestore().runTransaction(async (transaction) => {
@@ -124,6 +129,7 @@ export class VideoService extends BaseService<Video> {
             newUser.id = userId;
             video.likers.push(newUser);
             video.likes++;
+            await this.notificationService.post(video, userId, NotificationType.LIKE)
             return await this.repo.save(video);
         } catch (error) {
             throw new HttpException(`Failed to update like: ${error.message}`, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -185,8 +191,6 @@ export class VideoService extends BaseService<Video> {
                 id: videoId
             }, relations: ['user', 'comments', 'comments.video', 'comments.customer', 'likers']
         });
-        console.log("customer:", customer)
-        console.log("video:", video)
         return { video, customer }
 
     }
@@ -200,7 +204,8 @@ export class VideoService extends BaseService<Video> {
         return { video, customer }
     }
     async delete(videoId, userId) {
-
+        console.log("userId:", userId)
+        console.log("VODAYROIIII")
         const video = await this.repo
             .createQueryBuilder('video')
             .leftJoinAndSelect('video.user', 'user')
@@ -208,6 +213,7 @@ export class VideoService extends BaseService<Video> {
             .leftJoinAndSelect('video.comments', 'comments')
             .where('video.id = :id', { id: videoId })
             .getOne();
+        console.log("video:", video)
 
         if (video.user.id === userId) {
             await this.commentService.delete(videoId)

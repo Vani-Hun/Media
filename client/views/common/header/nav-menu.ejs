@@ -1,6 +1,6 @@
 <div class="nav-menu">
     <div class="nav-menu-brand">
-        <div class="logo-brand"><a id="home-link" href="/home"><img
+        <div class="logo-brand"><a id="home-link" href="/video/videos"><img
                     src="https://www.clipartmax.com/png/middle/101-1016995_gudetama-3-stickers-by-crazycitrus1-gudetama-lazy-egg.png"
                     alt="logo vani"></a></div>
     </div>
@@ -237,6 +237,7 @@
 <script src="/socket.io/socket.io.js"></script>
 <script type="text/javascript">
     let customer = JSON.parse('<%- JSON.stringify(customer) %>');
+    console.log("customer:", customer)
     const host = "<%= process.env.ORIGIN %>"
     const socket = io(host);
     const navMenu = document.querySelector('.nav-menu');
@@ -294,13 +295,13 @@
             const hrefPaths = ['/customer/profile', '/customer/setting', '/customer/feedback'];
             if (index < hrefPaths.length) {
                 listItem.onclick = function () {
-                    window.location.href = `${hrefPaths[index]}/${data.customer.id}`;
+                    window.location.href = `${hrefPaths[index]}/${customer.id}`;
                 };
             }
         }
     })
 
-    if (customer.logo) {
+    if (customer !== null && customer.logo) {
         profileIcon.style = `background-image:url( ${customer.logo} )`
     } else {
         profileIcon.style = "background-image:url(https://w0.peakpx.com/wallpaper/331/769/HD-wallpaper-lazy-egg5-egg-gudetama-kawaii-lazy-egg.jpg)";

@@ -3,6 +3,7 @@ import { BaseEntityUUID } from 'src/common/entities/base.entity';
 import { JoinTable, Column, Entity, OneToMany, ManyToMany, AfterInsert } from 'typeorm';
 import { Video } from 'src/video/video.entity';
 import { Comment } from 'src/comment/comment.entity';
+import { Notification } from 'src/notification/notitfication.entity';
 @Entity()
 export class Customer extends BaseEntityUUID {
 
@@ -41,6 +42,9 @@ export class Customer extends BaseEntityUUID {
 
   @OneToMany(() => Video, video => video.user)
   videos: Video[];
+
+  @OneToMany(() => Notification, notification => notification.user)
+  notifications: Notification[];
 
   @OneToMany(() => Comment, comment => comment.customer)
   comments: Comment[];

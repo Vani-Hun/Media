@@ -9,12 +9,14 @@ import { FirebaseConfigModule } from 'src/common/utils/firebase.config';
 import { CustomerModule } from 'src/customer/customer.module';
 import { MulterModule } from '@nestjs/platform-express';
 import { VideoController } from './video.controller';
+import { NotificationModule } from 'src/notification/notification.module';
 @Module({
     imports: [
         forwardRef(() => CommonModule),
         forwardRef(() => CustomerModule),
         TypeOrmModule.forFeature([Video]),
         CommentModule,
+        NotificationModule,
         FirebaseConfigModule,
         MulterModule.register({ storage })
     ],

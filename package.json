@@ -19,9 +19,14 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "typeorm:cli": "ts-node ./node_modules/typeorm/cli -f ./ormconfig.js",
-    "migration:generate": "typeorm migration:create -n",
+    "typeorm": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js -d ./ormconfig.js",
+    "migration:create": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli migration:create ./src/migrations/",
+    "migration:generate": "npm run typeorm -- migration:generate ./src/migrations",
+    "migration:run": "npm run typeorm -- migration:run",
+    "migration:revert": "npm run typeorm -- migration:revert",
+    "schema:sync": "npm run typeorm -- schema:sync",
     "db:migrate": "npm run typeorm:cli migration:run",
+    "typeorm:cli": "ts-node ./node_modules/typeorm/cli -d ./ormconfig.js",
     "db:sync": "npm run typeorm:cli schema:sync && npm run db:migrate"
   },
   "dependencies": {
@@ -48,8 +53,7 @@
     "passport-facebook": "^3.0.0",
     "passport-google-oauth20": "^2.0.0",
     "socket.io": "^4.7.2",
-    "twilio": "^4.19.3",
-    "typeorm": "^0.3.17"
+    "twilio": "^4.19.3"
   },
   "devDependencies": {
     "@babel/core": "^7.23.5",
@@ -57,8 +61,9 @@
     "@types/cache-manager": "^3.4.3",
     "@types/node": "^16.0.0",
     "ts-loader": "^9.2.3",
-    "ts-node": "^10.0.0",
-    "tsconfig-paths": "^3.10.1",
+    "ts-node": "^10.9.2",
+    "tsconfig-paths": "^3.15.0",
+    "typeorm": "^0.3.17",
     "typescript": "^4.9.5"
   },
   "main": "",

@@ -297,7 +297,6 @@
     const likesCount = document.querySelector('[data-e2e="likes-count"]');
     const userBio = document.querySelector('.tiktok-4ac4gk-H2ShareDesc');
     const editProfileForm = document.getElementById('editProfileForm');
-    const customer = JSON.parse('<%- JSON.stringify(customer) %>');
 
     if (customer) {
         logo.src = customer.logo;
@@ -1153,7 +1152,7 @@
 
                 let isMuted = false
 
-                copyLinkText.innerHTML = `${host}/customer/video/${video.id}`
+                copyLinkText.innerHTML = `${host}/video/${video.id}`
 
                 function showCustomAlert(message) {
                     const customAlert = document.getElementById('customAlert');
@@ -1194,7 +1193,7 @@
                 })
                 profile.style.display = 'none'
                 navMenu.style.display = 'none'
-                const newUrl = `/customer/video/${video.id}`;
+                const newUrl = `/video/${video.id}`;
                 history.pushState({ videoId: video.id }, '', newUrl);
                 function handleFocusEvent() {
                     if (videoPlay.paused && playIcon.style.display === 'block') {
@@ -1434,7 +1433,7 @@
                         })
                             .then((data) => {
                                 console.log("data:", data)
-                                window.location.href = '/customer/profile'
+                                window.location.href = `/customer/profile/${customer.id}`
                             })
                             .catch(error => {
                                 console.error('Error:', error);
@@ -1456,7 +1455,7 @@
                         method: 'DELETE',
                     }).then((data) => {
                         hideLoader()
-                        window.location.href = '/customer/profile'
+                        window.location.href = `/customer/profile/${customer.id}`
                     })
                         .catch(error => {
                             console.error('Error:', error);

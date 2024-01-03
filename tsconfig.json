@@ -1,35 +1,30 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
-    "declaration": true,
-    "removeComments": true,
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "allowSyntheticDefaultImports": true,
-    "target": "es2017",
-    "sourceMap": true,
-    "outDir": "./dist",
-    "baseUrl": "./",
-    "paths": {
-      "babel__core": [
-        "path/to/your/babel__core.d.ts"
-      ]
-    },
-    "incremental": true,
-    "skipLibCheck": false,
-    "strictNullChecks": false,
-    "noImplicitAny": false,
-    "strictBindCallApply": false,
-    "forceConsistentCasingInFileNames": false,
-    "noFallthroughCasesInSwitch": false,
+    "module": "commonjs", // Chỉ định hệ thống module (trong trường hợp này là CommonJS)
+    "declaration": true, // Tạo các tệp .d.ts tương ứng cho mã TypeScript
+    "removeComments": true, // Loại bỏ bình luận từ các tệp JavaScript được tạo ra
+    "emitDecoratorMetadata": true, // Bật tạo metadata cho các decorators
+    "experimentalDecorators": true, // Bật hỗ trợ thử nghiệm cho các decorators của ES
+    "allowSyntheticDefaultImports": true, // Cho phép nhập mặc định từ các module không có export mặc định
+    "target": "es2017", // Chỉ định phiên bản ECMAScript mục tiêu (trong trường hợp này là ES2017)
+    "sourceMap": true, // Tạo bản đồ nguồn để dễ dàng debug
+    "outDir": "./dist", // Chỉ định thư mục đầu ra cho các tệp đã biên dịch
+    "baseUrl": "./", // Thư mục cơ sở để giải quyết tên module không phải là tương đối
+    "incremental": true, // Bật biên dịch tăng cường để tăng tốc quá trình biên dịch lại
+    "skipLibCheck": false, // Tắt kiểm tra kiểu cho các tệp khai báo
+    "strictNullChecks": false, // Tắt kiểm tra nghiêm ngặt về giá trị null
+    "noImplicitAny": false, // Tắt kiểu 'any' ngầm định
+    "strictBindCallApply": false, // Tắt kiểm tra nghiêm ngặt cho bind, call và apply
+    "forceConsistentCasingInFileNames": false, // Tắt bắt buộc việc duy nhất kiểu chữ trong tên tệp
+    "noFallthroughCasesInSwitch": false, // Tắt kiểm tra cho trường hợp rơi vào trong câu lệnh switch
     "typeRoots": [
-      "./node_modules/@types"
+      "./node_modules/@types" // Chỉ định vị trí của các tệp định nghĩa kiểu
     ],
     "types": [
-      "@babel/core"
+      "node" // Chỉ định các loại cần bao gồm từ gói @types
     ]
   },
   "include": [
-    "src/**/*.ts"
+    "src/**/*.ts" // Chỉ định các tệp để bao gồm trong quá trình biên dịch (tất cả các tệp TypeScript trong thư mục src)
   ]
 }

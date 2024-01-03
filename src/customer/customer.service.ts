@@ -107,7 +107,6 @@ export class CustomerService extends BaseService<Customer> {
   }
 
   async signUp(input: InputSetAuth, res) {
-    console.log("input:", input)
     const existingUser = await this.repo.findOne({
       where: [{ username: input.username }, { email: input.username }],
     });
@@ -181,7 +180,6 @@ export class CustomerService extends BaseService<Customer> {
       .leftJoinAndSelect('likedVideos.likers', 'likers')
       .where('customer.id = :id', { id: userId })
       .getOneOrFail();
-
     return { customer }
   }
 
@@ -244,7 +242,7 @@ export class CustomerService extends BaseService<Customer> {
       .leftJoinAndSelect('videos.user', 'user')
       .leftJoinAndSelect('videos.comments', 'comments')
       .leftJoinAndSelect('videos.likers', 'likers')
-      .where('customer.id = :id', { id: user.id })
+      .where('customer.id = :id', { id: customerId })
       .getOneOrFail();
     customer.videos = customer.videos.sort((a, b) => {
       if (a.createAt > b.createAt) return -1;

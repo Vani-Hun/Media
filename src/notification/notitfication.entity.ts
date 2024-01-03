@@ -2,43 +2,30 @@ import { BaseEntityUUID } from 'src/common/entities/base.entity';
 import { Column, Entity, OneToMany, ManyToOne, JoinColumn, ManyToMany, JoinTable } from 'typeorm';
 import { Comment } from 'src/comment/comment.entity';
 import { Customer } from 'src/customer/customer.entity';
+
+export enum NotificationType {
+    LIKE = 'Like',
+    COMMENT = 'Comment',
+    MENTIONS_AND_TAGS = 'Mention and tags',
+    FOLLOWER = 'Follower'
+}
+
 @Entity()
 export class Notification extends BaseEntityUUID {
     @ManyToOne(() => Customer, { cascade: true })
     @JoinColumn({ name: 'user' })
     user: Customer;
 
-    @Column()
-    name: string;
+    @ManyToOne(() => Customer, { cascade: true })
+    @JoinColumn({ name: 'interacting_user' })  // Đặt tên cho cột người tương tác, ví dụ 'interacting_user_id'
+    interactingUser: Customer;
+
+    @Column({ type: 'text' })
+    message: string;
 
     @Column()
-    video: string;
+    status: boolean;
 
-    @Column({ default: 0 }) // Số lượt like, mặc định là 0
-    views: number;
-
-    @Column({ default: 0 }) // Số lượt like, mặc định là 0
-    likes: number;
-
-    @Column({ default: 0 }) // Số lượt comment, mặc định là 0
-    shareCount: number;
-
-    @Column()
-    caption: string;
-
-    @Column()
-    who: string;
-
-    @Column()
-    thumbnail: string;
-
-    @Column()
-    allowComment: boolean;
-
-    @ManyToMany(() => Customer, customer => customer.likedVideos, { cascade: true, })
-    @JoinTable()
-    likers: Customer[];
-
-    @OneToMany(() => Comment, comment => comment.video, { cascade: true })
-    comments: Comment[];
+    @Column({ type: 'enum', enum: NotificationType })
+    type: NotificationType;
 }

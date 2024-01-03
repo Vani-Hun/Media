@@ -5,14 +5,32 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { Response } from 'express';
 import { Request } from 'express';
 import { AuthGuard } from '@nestjs/passport';
-import { interval, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 import { VideoService } from './video.service';
 
 @Controller('video')
 export class VideoController {
     constructor(private videoService: VideoService) { }
 
+    @Get('upload')
+    @UseGuards(CusAuthGuard)
+    @Render('video/upload')
+    async getUpload(@Req() request: Request) {
+        return await this.videoService.getUploadVideo(request['user'].id)
+    }
+
+    @Post('upload')
+    @UseGuards(CusAuthGuard)
+    @UseInterceptors(FileInterceptor('video'))
+    async upLoad(@Body() body, @UploadedFile() video: Express.Multer.File, @Req() request: Request) {
+        if (video) {
+            body.user = request['user']
+            body.video = video
+            const url = await this.videoService.uploadVideo(body)
+            if (url) {
+                return await this.videoService.create(url, body)
+            }
+        }
+    };
     @Get('videos')
     @UseGuards(CusAuthGuard)
     @Render('video/index')
@@ -79,19 +97,7 @@ export class VideoController {
         return await this.videoService.createComment(input)
     }
 
-    @Post('upload')
-    @UseGuards(CusAuthGuard)
-    @UseInterceptors(FileInterceptor('video'))
-    async upLoad(@Body() body, @UploadedFile() video: Express.Multer.File, @Req() request: Request) {
-        if (video) {
-            body.user = request['user']
-            body.video = video
-            const url = await this.videoService.uploadVideo(body)
-            if (url) {
-                return await this.videoService.create(url, body)
-            }
-        }
-    };
+
     @Post('update')
     @UseGuards(CusAuthGuard)
     async updateVideo(@Body() body, @Req() request: Request) {
@@ -103,6 +109,6 @@ export class VideoController {
     @Delete('delete/:videoId')
     @UseGuards(CusAuthGuard)
     async deleteVideo(@Param('videoId') videoId: string, @Req() request: Request) {
-        return await this.videoService.delete(videoId, request['user'])
+        return await this.videoService.delete(videoId, request['user'].id)
     }
 }

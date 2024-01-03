@@ -6,8 +6,8 @@ import { CustomerService } from './customer.service';
 import { Response } from 'express';
 import { Request } from 'express';
 import { AuthGuard } from '@nestjs/passport';
-import { interval, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+// import { interval, Observable } from 'rxjs';
+// import { map } from 'rxjs/operators';
 
 @Controller('customer')
 export class CustomerController {
@@ -54,7 +54,7 @@ export class CustomerController {
     console.log("req.user:", req.user)
     const token = await this.customerService.googleLogin(req.user, res);
     if (token) {
-      return res.redirect('/')
+      return res.redirect('/video/videos')
     }
   };
 
@@ -78,99 +78,16 @@ export class CustomerController {
     // }
   }
 
-  @Get('upload')
-  @UseGuards(CusAuthGuard)
-  @Render('customer/upload')
-  async getUpload(@Req() request: Request) {
-    const user = await request['user']
-    return await this.customerService.get(user)
-  }
-
-  // @Get('videos')
-  // @UseGuards(CusAuthGuard)
-  // @Render('video/index')
-  // async getVideos(@Req() request: Request) {
-  //   return await this.customerService.getVideo(request['user'].id)
-  // }
-
-
-  // @Get('video/:videoId')
-  // @UseGuards(CusAuthGuard)
-  // @Render('video/detail')
-  // async getVideoById(@Param('videoId') videoId: string, @Req() request: Request) {
-  //   return await this.customerService.getVideoById(videoId, request['user'].id)
-  // }
-
-  // @Get('videoInf/:id')
-  // @UseGuards(CusAuthGuard)
-  // async getVideo(@Param('id') videoId: string, @Req() request: Request) {
-  //   return await this.customerService.getVideoById(videoId, request['user'].id)
-  // }
-
   @Get('videos/like')
   @UseGuards(CusAuthGuard)
   async getVideoLiked(@Req() request: Request) {
     return await this.customerService.getVideoLiked(request['user'].id)
   }
 
-  // @Post('video/view/:videoId')
-  // @UseGuards(CusAuthGuard)
-  // async viewVideo(@Param('videoId') videoId: string, @Req() request: Request) {
-  //   const input = {
-  //     user: request['user'],
-  //     videoId: videoId
-  //   }
-  //   return await this.customerService.viewVideo(input)
-  // }
-
-  // @Post('video/like/:videoId')
-  // @UseGuards(CusAuthGuard)
-  // async likeVideo(@Param('videoId') videoId: string, @Req() request: Request) {
-  //   const input = {
-  //     user: request['user'],
-  //     videoId: videoId
-  //   }
-  //   return await this.customerService.likeVideo(input)
-  // };
-
-  // @Post('video/share/:videoId')
-  // @UseGuards(CusAuthGuard)
-  // async shareVideo(@Param('videoId') videoId: string, @Req() request: Request) {
-  //   const input = {
-  //     user: request['user'],
-  //     videoId: videoId
-  //   }
-  //   return await this.customerService.shareVideo(input)
-  // };
-
-
-  // @Post('video/dislike/:videoId')
-  // @UseGuards(CusAuthGuard)
-  // async dislikeVideo(@Param('videoId') videoId: string, @Req() request: Request) {
-  //   const input = {
-  //     user: request['user'],
-  //     videoId: videoId
-  //   }
-  //   return await this.customerService.dislikeVideo(input)
-  // }
-
-  // @Post('video/comment/:videoId')
-  // @UseGuards(CusAuthGuard)
-  // async commentVideo(@Body() body, @Param('videoId') videoId: string, @Req() request: Request) {
-  //   const input = {
-  //     user: request['user'],
-  //     videoId: videoId,
-  //     mess: body.mess
-  //   }
-  //   return await this.customerService.commentVideo(input)
-  // }
-
   @Get('profile/:customerId')
   @UseGuards(CusAuthGuard)
   async getViewProfile(@Param('customerId') customerId: string, @Res() res: Response, @Req() request: Request) {
-    console.log("customerId:", customerId)
-    const user = await request['user']
-    return await this.customerService.getViewProfile(user, customerId, res)
+    return await this.customerService.getViewProfile(request['user'], customerId, res)
   };
 
   @Post('profile/update')
@@ -214,7 +131,7 @@ export class CustomerController {
   @Post('sign-in')
   async signIn(@Body() body: InputSetAuth, @Res() res: Response) {
     await this.customerService.signIn(body, res)
-    return res.redirect('/');
+    return res.redirect('/video/videos');
   }
 
   @Post('sign-up')
@@ -245,32 +162,6 @@ export class CustomerController {
     body.hashedPassword = hashedPassword
     return await this.customerService.signUpVerify(body)
   };
-
-  // @Post('upload')
-  // @UseGuards(CusAuthGuard)
-  // @UseInterceptors(FileInterceptor('video'))
-  // async upLoad(@Body() body: InputUpLoad, @UploadedFile() video: Express.Multer.File, @Req() request: Request) {
-  //   if (video) {
-  //     body.user = request['user']
-  //     body.video = video
-  //     return await this.customerService.upVideo(body)
-  //   }
-  // };
-
-  // @Post('video/update')
-  // @UseGuards(CusAuthGuard)
-  // async updateVideo(@Body() body: InputUpaDateVideo, @Req() request: Request) {
-  //   if (body) {
-  //     body.user = request['user']
-  //     return await this.customerService.upDateVideo(body)
-  //   }
-  // }
-
-  // @Delete('video/delete/:videoId')
-  // @UseGuards(CusAuthGuard)
-  // async deleteVideo(@Param('videoId') videoId: string, @Req() request: Request) {
-  //   return await this.customerService.deleteVideo(videoId, request['user'])
-  // }
 
   @Delete()
   async delete(@Body('id') id: string) {

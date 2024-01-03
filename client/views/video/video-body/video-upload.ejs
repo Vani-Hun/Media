@@ -381,8 +381,6 @@
 </div>
 
 <script>
-    const customer = JSON.parse('<%- JSON.stringify(customer) %>');
-
     let videoForm = document.querySelector('.jsx-2834184006');
     let videoFormBefore = document.querySelector('.jsx-2977532431.uploader');
     let selectFileButton = videoForm.querySelector('input[type="file"]');
@@ -436,7 +434,7 @@
         }
     });
     changeButton.addEventListener('click', function (event) {
-        window.location.href = '/customer/upload'
+        window.location.href = '/video/upload'
     });
 
     function addFrameToCover(frameDataURL) {
