@@ -212,6 +212,15 @@
     inboxIcon.addEventListener('click', () => {
         if (notifications.style.display === "none") {
             notifications.style.display = "block";
+            numberNotification.style.display = 'none'
+            fetch(`/notification/check`, {
+                method: 'POST',
+            })
+                .then(data => {
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
         } else {
             notifications.style.display = "none";
         }

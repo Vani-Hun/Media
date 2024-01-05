@@ -11,7 +11,7 @@ import { CustomerService } from 'src/customer/customer.service';
 import { CommentService } from 'src/comment/comment.service';
 import { NotificationService } from 'src/notification/notification.service';
 const { getStorage, getDownloadURL } = require('firebase-admin/storage');
-import { NotificationType } from 'src/notification/notitfication.entity';
+import { NotificationMess, NotificationType } from 'src/notification/notitfication.entity';
 @Injectable()
 export class VideoService extends BaseService<Video> {
     constructor(@Inject('FIREBASE_CONFIG') protected readonly firebaseConfig,
@@ -108,8 +108,9 @@ export class VideoService extends BaseService<Video> {
         try {
             const video = await this.repo.createQueryBuilder('video')
                 .leftJoinAndSelect('video.user', 'user')
-                .where('customer.id = :id', { id: videoId })
+                .where('video.id = :id', { id: videoId })
                 .getOneOrFail();
+
             if (video.user.id !== userId) {
                 video.views++;
             }
@@ -119,19 +120,22 @@ export class VideoService extends BaseService<Video> {
         }
     }
 
-    async updateLike(videoId, userId) {
+    async updateLike(input) {
         try {
             const video = await this.repo.createQueryBuilder('video')
                 .leftJoinAndSelect('video.likers', 'likers')
                 .leftJoinAndSelect('video.user', 'user')
-                .where('video.id = :id', { id: videoId })
+                .where('video.id = :id', { id: input.videoId })
                 .getOneOrFail();
             const newUser = new Customer();
-            newUser.id = userId;
+            newUser.id = input.user.id;
             video.likers.push(newUser);
             video.likes++;
             await this.repo.save(video);
-            return await this.notificationService.post(video, userId, NotificationType.LIKE)
+            input.video = video
+            input.type = NotificationType.LIKE
+            input.mess = NotificationMess.LIKE
+            return await this.notificationService.createNotification(input)
 
         } catch (error) {
             throw new HttpException(`Failed to update like: ${error.message}`, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -164,7 +168,15 @@ export class VideoService extends BaseService<Video> {
     }
     async createComment(input) {
         try {
-            return await this.commentService.create(input)
+            const video = await this.repo.createQueryBuilder('video')
+                .leftJoinAndSelect('video.user', 'user')
+                .where('video.id = :id', { id: input.videoId })
+                .getOneOrFail();
+            await this.commentService.create(input)
+            input.video = video
+            input.type = NotificationType.COMMENT
+            input.mess = `${NotificationMess.COMMENT} ${input.mess}.`
+            return await this.notificationService.createNotification(input)
         } catch (error) {
             throw new HttpException(`Failed: ${error.message}`, HttpStatus.NOT_IMPLEMENTED);
         }

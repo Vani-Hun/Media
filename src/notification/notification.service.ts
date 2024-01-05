@@ -13,35 +13,59 @@ export class NotificationService extends BaseService<Notification> {
         super(repo);
     }
 
-    async post(video, userId, type: NotificationType): Promise<Notification | {}> {
+    async createNotification(input): Promise<Notification | {}> {
         try {
-            const existingNotification = await this.repo
-                .createQueryBuilder('notification')
-                .where('notification.video = :id', { id: video.id })
-                .andWhere('notification.type = :type', { type: type })
-                .andWhere('notification.interactingUser = :interactingUser', { interactingUser: userId })
-                .getOne();
+            if (input.type === 'Like') {
+                const existingNotification = await this.repo
+                    .createQueryBuilder('notification')
+                    .where('notification.video = :id', { id: input.video.id })
+                    .andWhere('notification.type = :type', { type: 'Like' })
+                    .andWhere('notification.interactingUser = :interactingUser', { interactingUser: input.user.id })
+                    .getOne();
+                if (!existingNotification) {
+                    const newNotification = this.repo.create({
+                        user: input.video.user.id,
+                        interactingUser: input.user.id,
+                        video: input.video.id,
+                        message: input.mess,
+                        status: false,
+                        type: input.type,
+                    });
 
-            if (!existingNotification) {
+                    const savedNotification = await this.repo.save(newNotification);
+                    return savedNotification
+                } else {
+                    return {};
+                }
+            } else {
                 const newNotification = this.repo.create({
-                    user: video.user.id,
-                    interactingUser: userId,
-                    video: video.id,
-                    message: 'liked your video.',
+                    user: input.video.user.id,
+                    interactingUser: input.user.id,
+                    video: input.video.id,
+                    message: input.mess,
                     status: false,
-                    type: type,
+                    type: input.type,
                 });
 
                 const savedNotification = await this.repo.save(newNotification);
-                return savedNotification;
-            } else {
-                return {};
+                return savedNotification
             }
         } catch (error) {
             throw new HttpException(`Failed to create notification: ${error.message}`, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
+    async checkNotification(userId: string) {
+        const returnTrue = await this.repo
+            .createQueryBuilder('notification')
+            .update()
+            .set({ status: true })
+            .where('notification.user = :user', { user: userId })
+            .andWhere('notification.status = :status', { status: false })
+            .execute();
+
+        console.log("returnTrue:", returnTrue)
+    }
     get() {
         // return this.repo.findOne();
     }

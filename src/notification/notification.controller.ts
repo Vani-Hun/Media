@@ -13,10 +13,11 @@ import { AuthGuard } from '@nestjs/passport';
 export class NotificationController {
     constructor(private notificationService: NotificationService) { }
 
-    // @Post()
-    // async post() {
-    //     return this.notificationService.post();
-    // }
+    @UseGuards(CusAuthGuard)
+    @Post('check')
+    async checkNotification(@Req() request: Request) {
+        return this.notificationService.checkNotification(request['user'].id);
+    }
 
     // @Get()
     // async get() {

@@ -11,6 +11,12 @@ export enum NotificationType {
     FOLLOWER = 'Follower'
 }
 
+export enum NotificationMess {
+    LIKE = 'liked your video.',
+    COMMENT = 'comment your video:',
+    MENTIONS_AND_TAGS = 'Mention and tags',
+    FOLLOWER = 'Follower'
+}
 @Entity()
 export class Notification extends BaseEntityUUID {
     @ManyToOne(() => Customer)

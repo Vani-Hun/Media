@@ -63,7 +63,7 @@ export class VideoController {
             user: request['user'],
             videoId: videoId
         }
-        return await this.videoService.updateLike(videoId, request['user'].id)
+        return await this.videoService.updateLike(input)
     };
 
     @Post('dislike/:videoId')

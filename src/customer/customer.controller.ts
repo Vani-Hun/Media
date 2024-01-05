@@ -51,7 +51,6 @@ export class CustomerController {
   @Get('google/callback')
   @UseGuards(AuthGuard('google'))
   async googleLoginCallback(@Req() req, @Res() res) {
-    console.log("req.user:", req.user)
     const token = await this.customerService.googleLogin(req.user, res);
     if (token) {
       return res.redirect('/video/videos')

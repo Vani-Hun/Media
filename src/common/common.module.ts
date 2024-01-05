@@ -12,6 +12,7 @@ import { FacebookStrategy } from './services/facebook.service';
 import { SmsService } from './services/twilio.service';
 import { NotificationGateway } from './services/websocket.service';
 import { VideoModule } from 'src/video/video.module';
+import { NotificationModule } from 'src/notification/notification.module';
 const TokenModule = JwtModule.registerAsync({
   useFactory: async (configService: ConfigService) => ({
     secret: configService.get<string>('JWT_SECRET'),
@@ -31,7 +32,7 @@ const PportModule = PassportModule.registerAsync({
 })
 
 @Module({
-  imports: [PportModule, TokenModule, CacheModule.register(), forwardRef(() => AdminModule), forwardRef(() => CustomerModule), forwardRef(() => VideoModule)],
+  imports: [PportModule, TokenModule, CacheModule.register(), forwardRef(() => AdminModule), forwardRef(() => CustomerModule), forwardRef(() => NotificationModule), forwardRef(() => VideoModule)],
   providers: [CacheService, TokenService, GoogleStrategy, FacebookStrategy, SmsService, NotificationGateway],
   exports: [CacheService, TokenService, FacebookStrategy, SmsService, NotificationGateway],
 })
