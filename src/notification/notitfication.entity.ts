@@ -5,17 +5,17 @@ import { Customer } from 'src/customer/customer.entity';
 import { Video } from 'src/video/video.entity';
 
 export enum NotificationType {
-    LIKE = 'Like',
-    COMMENT = 'Comment',
+    LIKE = 'Likes',
+    COMMENT = 'Comments',
     MENTIONS_AND_TAGS = 'Mention and tags',
-    FOLLOWER = 'Follower'
+    FOLLOWER = 'Followers'
 }
 
 export enum NotificationMess {
     LIKE = 'liked your video.',
     COMMENT = 'comment your video:',
     MENTIONS_AND_TAGS = 'Mention and tags',
-    FOLLOWER = 'Follower'
+    FOLLOWER = 'Followes you'
 }
 @Entity()
 export class Notification extends BaseEntityUUID {

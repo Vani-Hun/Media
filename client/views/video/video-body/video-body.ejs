@@ -832,7 +832,7 @@
                                 video.likers.forEach(liker => {
                                     if (customer.id === liker.id) {
                                         svgIcon.setAttribute('fill', 'rgba(254, 44, 85)');
-                                    }
+                                    } else { svgIcon.setAttribute('fill', 'rgba(22, 24, 35)'); }
                                 })
                             }
                             else {

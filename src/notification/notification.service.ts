@@ -15,11 +15,11 @@ export class NotificationService extends BaseService<Notification> {
 
     async createNotification(input): Promise<Notification | {}> {
         try {
-            if (input.type === 'Like') {
+            if (input.type === 'Likes') {
                 const existingNotification = await this.repo
                     .createQueryBuilder('notification')
                     .where('notification.video = :id', { id: input.video.id })
-                    .andWhere('notification.type = :type', { type: 'Like' })
+                    .andWhere('notification.type = :type', { type: 'Likes' })
                     .andWhere('notification.interactingUser = :interactingUser', { interactingUser: input.user.id })
                     .getOne();
                 if (!existingNotification) {
@@ -56,15 +56,13 @@ export class NotificationService extends BaseService<Notification> {
     }
 
     async checkNotification(userId: string) {
-        const returnTrue = await this.repo
+        return await this.repo
             .createQueryBuilder('notification')
             .update()
             .set({ status: true })
             .where('notification.user = :user', { user: userId })
             .andWhere('notification.status = :status', { status: false })
             .execute();
-
-        console.log("returnTrue:", returnTrue)
     }
     get() {
         // return this.repo.findOne();

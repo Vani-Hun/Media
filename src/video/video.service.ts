@@ -132,11 +132,14 @@ export class VideoService extends BaseService<Video> {
             video.likers.push(newUser);
             video.likes++;
             await this.repo.save(video);
-            input.video = video
-            input.type = NotificationType.LIKE
-            input.mess = NotificationMess.LIKE
-            return await this.notificationService.createNotification(input)
-
+            if (input.user.id !== video.user.id) {
+                input.video = video
+                input.type = NotificationType.LIKE
+                input.mess = NotificationMess.LIKE
+                return await this.notificationService.createNotification(input)
+            } else {
+                return { video }
+            }
         } catch (error) {
             throw new HttpException(`Failed to update like: ${error.message}`, HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -173,10 +176,13 @@ export class VideoService extends BaseService<Video> {
                 .where('video.id = :id', { id: input.videoId })
                 .getOneOrFail();
             await this.commentService.create(input)
-            input.video = video
-            input.type = NotificationType.COMMENT
-            input.mess = `${NotificationMess.COMMENT} ${input.mess}.`
-            return await this.notificationService.createNotification(input)
+            if (input.user.id !== video.user.id) {
+                input.video = video
+                input.type = NotificationType.COMMENT
+                input.mess = `${NotificationMess.COMMENT} ${input.mess}`
+                return await this.notificationService.createNotification(input)
+            } else { return video }
+
         } catch (error) {
             throw new HttpException(`Failed: ${error.message}`, HttpStatus.NOT_IMPLEMENTED);
         }

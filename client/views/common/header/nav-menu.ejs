@@ -46,18 +46,18 @@
                             <div data-e2e="inbox-bar" id="header-inbox-bar" role="tablist"
                                 aria-labelledby="header-inbox-title" class="css-5uc042-DivGroupContainer e1bp8k4k3">
                                 <button data-e2e="all" id="inbox-tab-0" tabindex="0" role="tab" aria-selected="true"
-                                    aria-controls="header-inbox-list" class="css-4p4iga-ButtonGroupItem e1bp8k4k4">All
-                                    activity</button><button data-e2e="likes" id="inbox-tab-1" tabindex="-1" role="tab"
-                                    aria-selected="false" aria-controls="header-inbox-list"
+                                    aria-controls="header-inbox-list" class="css-4p4iga-ButtonGroupItem e1bp8k4k4">
+                                    All activity</button><button data-e2e="likes" id="inbox-tab-1" tabindex="-1"
+                                    role="tab" aria-selected="false" aria-controls="header-inbox-list"
                                     class="css-7p3g5e-ButtonGroupItem e1bp8k4k4">Likes</button><button
                                     data-e2e="comments" id="inbox-tab-2" tabindex="-1" role="tab" aria-selected="false"
                                     aria-controls="header-inbox-list"
                                     class="css-7p3g5e-ButtonGroupItem e1bp8k4k4">Comments</button><button
                                     data-e2e="mentions" id="inbox-tab-3" tabindex="-1" role="tab" aria-selected="false"
                                     aria-controls="header-inbox-list"
-                                    class="css-7p3g5e-ButtonGroupItem e1bp8k4k4">Mentions
-                                    and tags</button><button data-e2e="followers" id="inbox-tab-4" tabindex="-1"
-                                    role="tab" aria-selected="false" aria-controls="header-inbox-list"
+                                    class="css-7p3g5e-ButtonGroupItem e1bp8k4k4">Mentions and tags</button><button
+                                    data-e2e="followers" id="inbox-tab-4" tabindex="-1" role="tab" aria-selected="false"
+                                    aria-controls="header-inbox-list"
                                     class="css-7p3g5e-ButtonGroupItem e1bp8k4k4">Followers</button>
                             </div>
                         </div>
@@ -149,6 +149,17 @@
     let listItems = document.querySelectorAll('#header-setting-popup-list li');
     let listItem = document.querySelector('[data-e2e="logout-entrance"]');
     const listNotifications = document.querySelector('.css-1cz26jb-UlInboxItemListContainer')
+    const buttons = document.querySelectorAll('#header-inbox-bar button');
+
+
+    buttons.forEach(button => {
+        button.addEventListener('click', function () {
+            handleTabClick(this);
+        });
+    });
+
+
+
     function showLoader() {
         let loader = document.querySelector('.loader');
         loader.classList.add('visible');
@@ -188,8 +199,8 @@
 
         const notificationDiv = document.createElement('li');
         notificationDiv.classList.add("css-1lqaxb-LiInboxItemWrapper");
-
-        notificationDiv.innerHTML = `
+        if (notification.type === "Likes" || notification.type === "Followers") {
+            notificationDiv.innerHTML = `
         <div data-e2e="inbox-list-item" class="css-7hu7c-DivItemContainer exfus50">
     <div class="css-1g5c96b-DivAvatarContainer exfus51"><a aria-label="vanihun1’s profile"
             class="css-22xkqc-StyledLink exfus515" href="/customer/profile/${notification.interactingUser.id}"><span shape="circle" data-e2e=""
@@ -200,14 +211,62 @@
     <div class="css-14aeum4-DivContentContainer exfus56">
         <p data-e2e="inbox-title" class="css-x6e8xi-PTitleText exfus57"><a aria-label="vanihun1’s profile"
                 class="css-22xkqc-StyledLink exfus515" href="/customer/profile/${notification.interactingUser.id}">${notification.interactingUser.name}</a></p>
-        <p data-e2e="inbox-content" class="css-1e1fu7b-PDescText exfus510"> ${notification.message} ${updateTimeDifference}</p>
+        <p data-e2e="inbox-content" class="css-1e1fu7b-PDescText exfus510"> ${notification.message}
+             ${updateTimeDifference}</p>
     </div><a class="exfus55 css-2yolk3-StyledLink-StyledLinkVideoCover er1vbsz0"
         href="/video/${notification.video.id}"
         style="background-image: url(&quot;${notification.video.thumbnail};);"></a>
 </div>
     `;
+        }
+        if (notification.type === "Comments") {
+            notificationDiv.innerHTML = `
+        <div data-e2e="inbox-list-item" class="css-7hu7c-DivItemContainer exfus50">
+    <div class="css-1g5c96b-DivAvatarContainer exfus51"><a aria-label="vanihun1’s profile"
+            class="css-22xkqc-StyledLink exfus515" href="/customer/profile/${notification.interactingUser.id}"><span shape="circle" data-e2e=""
+                class="exfus52 css-9zoew1-SpanAvatarContainer-StyledAvatar e1e9er4e0"
+                style="width: 48px; height: 48px;"><img loading="lazy" alt=""
+                    src="${notification.interactingUser.logo}"
+                    class="css-1zpj2q-ImgAvatar e1e9er4e1"></span></a></div>
+    <div class="css-14aeum4-DivContentContainer exfus56">
+        <p data-e2e="inbox-title" class="css-x6e8xi-PTitleText exfus57"><a aria-label="vanihun1’s profile"
+                class="css-22xkqc-StyledLink exfus515" href="/customer/profile/${notification.interactingUser.id}">${notification.interactingUser.name}</a></p>
+       <p data-e2e="inbox-content" class="css-1e1fu7b-PDescText exfus510">
+        <span class="css-15yz56w-SpanPrimary exfus511">
+        ${notification.message}</span>
+        &nbsp;${updateTimeDifference}
+        </p>
+    </div><a class="exfus55 css-2yolk3-StyledLink-StyledLinkVideoCover er1vbsz0"
+        href="/video/${notification.video.id}"
+        style="background-image: url(&quot;${notification.video.thumbnail};);"></a>
+</div>
+    `;
+        }
+
 
         return notificationDiv;
+    }
+    function handleTabClick(clickedButton) {
+        buttons.forEach(button => {
+            if (button !== clickedButton) {
+                button.classList = 'css-7p3g5e-ButtonGroupItem'
+            }
+        });
+
+        clickedButton.classList = 'css-4p4iga-ButtonGroupItem'
+        listNotifications.innerHTML = ''
+
+        customer.notifications.forEach(notification => {
+            if (notification.type === clickedButton.innerHTML) {
+                const notificationElement = createNotificationElement(notification);
+                listNotifications.appendChild(notificationElement);
+            }
+            if (clickedButton.innerHTML.trim() === "All activity") {
+                const notificationElement = createNotificationElement(notification);
+                listNotifications.appendChild(notificationElement);
+            }
+        })
+
     }
     inboxIcon.addEventListener('click', () => {
         if (notifications.style.display === "none") {
@@ -276,18 +335,5 @@
         iconMess.style.display = 'none'
         profileIcon.style.display = 'none'
     }
-    // const eventSource = new EventSource('/customer/sse');
-    // eventSource.onmessage = ({ data }) => {
-    //     console.log("data:", data)
-
-    //     if (data > 0) {
-    //         numberNotification.style.display = 'flex'
-    //     } else { numberNotification.style.display = 'none' }
-    //     const message = document.createElement('li');
-    //     message.innerText = 'New message: ' + data;
-
-    // }
-
-    // socket.emit('like', { videoId: video.id });
 
 </script>
