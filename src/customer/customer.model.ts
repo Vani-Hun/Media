@@ -16,7 +16,10 @@ export type InputSetCustomerActionVideo = {
 export type InputSetAuth = {
   phone: string;
   username: string;
+  name: string;
   password: string;
+  email: string;
+  logo: string;
 };
 
 export type InputUpLoad = {

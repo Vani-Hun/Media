@@ -1,6 +1,6 @@
 import { Delete } from '@nestjs/common';
 import { BaseEntityUUID } from 'src/common/entities/base.entity';
-import { JoinTable, Column, Entity, OneToMany, ManyToMany, AfterInsert } from 'typeorm';
+import { JoinTable, Column, Entity, OneToMany, ManyToMany, AfterInsert, PrimaryColumn, PrimaryGeneratedColumn, CreateDateColumn } from 'typeorm';
 import { Video } from 'src/video/video.entity';
 import { Comment } from 'src/comment/comment.entity';
 import { Notification } from 'src/notification/notitfication.entity';
@@ -12,15 +12,6 @@ export class Customer extends BaseEntityUUID {
 
   @Column({ nullable: true })
   name: string;
-
-  @Column({ default: 0 })
-  following: number;
-
-  @Column({ default: 0 })
-  followers: number;
-
-  @Column({ default: 0 })
-  likes: number;
 
   @Column()
   username: string;
@@ -39,6 +30,37 @@ export class Customer extends BaseEntityUUID {
 
   @Column({ nullable: true })
   permission: string;
+
+  @ManyToMany(() => Customer, { cascade: true })
+  @JoinTable({
+    name: 'follower_following',
+    joinColumn: {
+      name: 'follower_id',
+      referencedColumnName: 'id',
+    },
+    inverseJoinColumn: {
+      name: 'following_id',
+      referencedColumnName: 'id',
+    },
+  })
+  followers: Customer[];
+
+  @ManyToMany(() => Customer, { cascade: true })
+  @JoinTable({
+    name: 'follower_following',
+    joinColumn: {
+      name: 'following_id',
+      referencedColumnName: 'id',
+    },
+    inverseJoinColumn: {
+      name: 'follower_id',
+      referencedColumnName: 'id',
+    },
+  })
+  following: Customer[];
+
+  @Column({ default: 0 })
+  likes: number;
 
   @OneToMany(() => Video, video => video.user, { cascade: true })
   videos: Video[];

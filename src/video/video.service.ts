@@ -50,7 +50,7 @@ export class VideoService extends BaseService<Video> {
                 const imageBuffer = Buffer.from(base64Data, 'base64');
                 const videoStream = createReadStream(input.video.path);
                 const videoFile = this.firebaseConfig.bucket.file(`videos/${input.video.filename}`);
-                const imageFile = this.firebaseConfig.bucket.file(`covers/${input.video.filename}`);
+                const imageFile = this.firebaseConfig.bucket.file(`thumbnail/${input.video.filename}`);
 
                 const uploadStream = await videoFile.createWriteStream({
                     metadata: {
@@ -188,19 +188,22 @@ export class VideoService extends BaseService<Video> {
         }
     }
     async get(userId) {
-        const qb = this.repo.createQueryBuilder('video');
-        qb.where('video.who = :who', { who: 'Public' });
-        qb.orderBy('video.createAt', 'DESC');
-        qb.leftJoinAndSelect('video.user', 'user');
-        qb.leftJoinAndSelect('video.likers', 'likers');
-        qb.leftJoinAndSelect('video.comments', 'comments');
-        qb.leftJoinAndSelect('comments.video', 'video2');
-        qb.leftJoinAndSelect('comments.customer', 'customer');
-        const videos = await qb.getMany();
+        const videos = await this.repo.createQueryBuilder('video')
+            .where('video.who = :who', { who: 'Public' })
+            .andWhere('user.id  <> :userId', { userId: userId })
+            .orderBy('video.createAt', 'DESC')
+            .leftJoinAndSelect('video.user', 'user')
+            .leftJoinAndSelect('video.likers', 'likers')
+            .leftJoinAndSelect('video.comments', 'comments')
+            .leftJoinAndSelect('comments.video', 'video2')
+            .leftJoinAndSelect('comments.customer', 'customer')
+            .getMany();
+
         const customer = await this.customerService.get(userId)
         const likedVideoIds = videos
             .filter(video => video.likers.some(liker => liker.id === userId))
             .map(video => video.id);
+
         return { videos, likedVideoIds, customer };
     }
 

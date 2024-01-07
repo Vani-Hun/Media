@@ -6,6 +6,7 @@ import { Customer } from 'src/customer/customer.entity';
 
 @Entity()
 export class Video extends BaseEntityUUID {
+
     @ManyToOne(() => Customer)
     @JoinColumn({ name: 'user' })
     user: Customer;
@@ -38,7 +39,11 @@ export class Video extends BaseEntityUUID {
     allowComment: boolean;
 
     @ManyToMany(() => Customer, customer => customer.likedVideos)
-    @JoinTable()
+    @JoinTable({
+        name: 'video_like',
+        joinColumn: { name: 'video_id', referencedColumnName: 'id' },
+        inverseJoinColumn: { name: 'customer_id', referencedColumnName: 'id' },
+    })
     likers: Customer[];
 
     @OneToMany(() => Comment, comment => comment.video, { cascade: true })

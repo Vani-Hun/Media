@@ -1,4 +1,4 @@
-import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common';
+import { CanActivate, ExecutionContext, HttpException, HttpStatus, Injectable, UnauthorizedException } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { Admin } from 'src/admin/admin.entity';
 import { CustomerService } from 'src/customer/customer.service';
@@ -15,12 +15,16 @@ export class CusAuthGuard implements CanActivate {
 
     async canActivate(context: ExecutionContext): Promise<boolean> {
         const request = await context.switchToHttp().getRequest<Request>();
-        const cookie = request.cookies['accessToken'];
+        const accessToken = request.cookies['accessToken'];
         let status: boolean;
         try {
-            const customer: Customer = await this.tokenService.verify(cookie);
+            const customer: Customer = await this.tokenService.verify(accessToken)
             status = await this.customerService.isExist(customer);
-            request['user'] = await customer;
+            if (status) {
+                request['user'] = await customer;
+            } else {
+                throw new HttpException('Let login!!!', HttpStatus.UNAUTHORIZED);
+            }
             return status;
         } catch {
             console.log("catchcanActivate")

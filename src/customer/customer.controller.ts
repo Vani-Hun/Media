@@ -13,36 +13,6 @@ import { AuthGuard } from '@nestjs/passport';
 export class CustomerController {
   constructor(private customerService: CustomerService) { }
 
-  // @Sse('sse')
-  // @UseGuards(CusAuthGuard)
-
-  // sse(@Req() req): Observable<MessageEvent> {
-  //   return new Observable(observer => {
-  //     const fetchData = async () => {
-  //       try {
-  //         const data = await this.customerService.get(req['user']) // Hàm lấy dữ liệu
-  //         console.log("data:", data)
-  //         // observer.next({ data });
-  //       } catch (error) {
-  //         observer.error(error);
-  //       }
-  //     };
-
-  //     const intervalId = setInterval(fetchData, 50000);
-  //     console.log("intervalId:", intervalId)
-
-  //     // Clean up interval when the connection is closed
-  //     return () => clearInterval(intervalId);
-  //   });
-  // }
-
-  // @Sse('sse')
-  // sse(): Observable<MessageEvent> {
-  //   return interval(1000).pipe(
-  //     map((_) => ({ data: { hello: 'world' } }) as MessageEvent),
-  //   );
-  // }
-
   @Get('google/login')
   @UseGuards(AuthGuard('google'))
   async googleLogin() {
@@ -98,6 +68,20 @@ export class CustomerController {
     return await this.customerService.postProfile(body)
   }
 
+  @Post('follow/:customerId')
+  @UseGuards(CusAuthGuard)
+  async followUser(@Req() request: Request, @Param('customerId') customerId: string) {
+    request['user'].customerId = customerId
+    return await this.customerService.followUser(request['user'])
+  }
+
+  @Post('unfollow/:customerId')
+  @UseGuards(CusAuthGuard)
+  async unfollowUser(@Req() request: Request, @Param('customerId') customerId: string) {
+    request['user'].customerId = customerId
+    return await this.customerService.unfollowUser(request['user'])
+  }
+
   @Get('sign-in')
   @Render('customer/index')
   getSignin(@Query('error') error: string) {
@@ -149,7 +133,7 @@ export class CustomerController {
   }
 
   @Post('verify-otp')
-  @Render('video/index')
+  @Render('home/index')
   async verifyOtp(@Body() body, @Res() res: Response, @Req() request: Request) {
     const hashedOTP = request.cookies['hashedOTP']
     const username = request.cookies['username']

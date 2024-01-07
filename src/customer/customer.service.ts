@@ -113,9 +113,7 @@ export class CustomerService extends BaseService<Customer> {
 
     if (!existingUser) {
       const otp = Math.floor(Math.random() * 1000000).toString()
-      console.log("otp:", otp)
       const formattedPhoneNumber = `+84${input.phone.slice(1)}`;
-      console.log("formattedPhoneNumber:", formattedPhoneNumber)
       await this.smsService.sendOtpViaSms(formattedPhoneNumber, otp);
       const hashedOTP = await bcrypt.hash(otp, 10);
       const hashedPassword = await bcrypt.hash(input.password, 10);
@@ -129,19 +127,24 @@ export class CustomerService extends BaseService<Customer> {
   }
 
   async signUpOAuth2(input: InputSetAuth) {
-    const existingUser = await this.repo.findOne({
-      where: [{ username: input.username }, { email: input.username }],
-    });
-
+    const existingUser = await this.repo
+      .createQueryBuilder('user')
+      .where('user.username = :username OR user.email = :email', {
+        username: input.username,
+        email: input.username,
+      })
+      .getOne();
     if (!existingUser) {
-      const createUser = this.repo.save(this.repo.create({ ...input }));
+      const newUser = this.repo.create({ ...input });
+      const createUser = await this.repo.save(newUser);
       return createUser;
     }
+
     throw new HttpException('Your username or email is already registered.', HttpStatus.CONFLICT);
   }
 
+
   async signUpVerify(input) {
-    console.log("input:", input)
     if (input.otp && input.hashedOTP) {
       const compare = await bcrypt.compare(input.otp, input.hashedOTP);
       if (compare) {
@@ -164,19 +167,6 @@ export class CustomerService extends BaseService<Customer> {
       .getOne();
     return { customer }
   }
-  // async getVideoById(videoId, userId) {
-  //   const customer = await this.repo.findOneOrFail({ where: { id: userId } })
-  //   const video = await this.videoService.getVideoById(videoId)
-  //   return { video, customer }
-  // }
-
-  // async getVideo(userId) {
-  //   const customer = await this.repo.findOneOrFail({ where: { id: userId } });
-  //   const likedVideoIds = videos
-  //     .filter(video => video.likers.some(liker => liker.id === userId))
-  //     .map(video => video.id);
-  //   return { videos, likedVideoIds, customer }
-  // }
 
   async getVideoLiked(userId) {
     const customer = await this.repo.createQueryBuilder('customer')
@@ -193,38 +183,6 @@ export class CustomerService extends BaseService<Customer> {
     const customer = await this.repo.findOneOrFail({ where: { id: input.user.id } });
     return await this.videoService.updateView(input, customer)
   }
-
-  // async likeVideo(input) {
-  //   const customer = await this.repo.createQueryBuilder('customer')
-  //     .leftJoinAndSelect('customer.likedVideos', 'likedVideos')
-  //     .leftJoinAndSelect('likedVideos.comments', 'comments')
-  //     .where('customer.id = :id', { id: input.user.id })
-  //     .getOneOrFail();
-  //   const newVideo = new Video();
-  //   newVideo.id = input.videoId;
-  //   customer.likedVideos.push(newVideo);
-  //   await this.repo.save(customer);
-  //   return await this.videoService.updateLike(input)
-  // }
-
-  // async shareVideo(input) {
-  //   return await this.videoService.updateShare(input)
-  // }
-  // async dislikeVideo(input: InputSetCustomerActionVideo) {
-  //   const customer = await this.repo.createQueryBuilder('customer')
-  //     .leftJoinAndSelect('customer.likedVideos', 'likedVideos')
-  //     .where('customer.id = :id', { id: input.user.id })
-  //     .getOneOrFail();
-
-  //   customer.likedVideos = customer.likedVideos.filter(likedVideo => likedVideo.id !== input.videoId);
-
-  //   await this.repo.save(customer);
-  //   return await this.videoService.updateDisLike(input)
-  // }
-
-  // async commentVideo(input) {
-  //   return await this.commentService.create(input)
-  // }
 
   async getProfile(user) {
     const customer = await this.repo.createQueryBuilder('customer')
@@ -243,18 +201,19 @@ export class CustomerService extends BaseService<Customer> {
   }
 
   async getViewProfile(user, customerId, res) {
+
     const customer = await this.repo.createQueryBuilder('customer')
       .leftJoinAndSelect('customer.videos', 'videos')
+      .leftJoinAndSelect('customer.notifications', 'notifications')
+      .leftJoinAndSelect('notifications.interactingUser', 'interactingUser')
+      .leftJoinAndSelect('notifications.video', 'video')
       .leftJoinAndSelect('videos.user', 'user')
       .leftJoinAndSelect('videos.comments', 'comments')
       .leftJoinAndSelect('videos.likers', 'likers')
+      .orderBy('videos.createAt', 'DESC')
       .where('customer.id = :id', { id: customerId })
       .getOneOrFail();
-    customer.videos = customer.videos.sort((a, b) => {
-      if (a.createAt > b.createAt) return -1;
-      if (a.createAt < b.createAt) return 1;
-      return 0;
-    });
+
     if (user.id === customer.id) {
       return res.render('customer/profile', { customer })
     } else { return res.render('customer/viewProfile', { customer }) }
@@ -304,23 +263,15 @@ export class CustomerService extends BaseService<Customer> {
     return this.repo.find();
   }
 
-  // async upVideo(input) {
-  //   const url = await this.videoService.uploadVideo(input)
-  //   if (url) {
-  //     return await this.videoService.create(url, input)
-  //   }
-  // }
+  async followUser(input) {
+    console.log("input:", input)
+    return {}
+  }
+  async unfollowUser(input) {
+    console.log("input:", input)
+    return {}
+  }
 
-  // async upDateVideo(input) {
-  //   const saveVideo = await this.videoService.update(input)
-  //   return true
-  // }
-
-  // async deleteVideo(video, user) {
-  //   await this.commentService.delete(video, user)
-  //   return await this.videoService.delete(video, user)
-
-  // }
   async delete(id: string) {
     const customer = await this.findById(id);
     customer.logo && this.clearFile(customer.logo);

@@ -315,7 +315,7 @@
         }
     })
 
-    if (customer !== null && customer.logo) {
+    if (customer !== null && customer.logo !== null) {
         profileIcon.style = `background-image:url( ${customer.logo} )`
         let countNoti = 0
         customer.notifications.forEach(notification => {
@@ -329,11 +329,13 @@
             numberNotification.innerHTML = countNoti
             numberNotification.style.display = 'flex'
         }
-    } else {
-        profileIcon.style = "background-image:url(https://w0.peakpx.com/wallpaper/331/769/HD-wallpaper-lazy-egg5-egg-gudetama-kawaii-lazy-egg.jpg)";
+    } else if (customer === null) {
         iconNotifications.style.display = 'none'
         iconMess.style.display = 'none'
         profileIcon.style.display = 'none'
+    }
+    else {
+        profileIcon.style = "background-image:url(https://w0.peakpx.com/wallpaper/331/769/HD-wallpaper-lazy-egg5-egg-gudetama-kawaii-lazy-egg.jpg)";
     }
 
 </script>

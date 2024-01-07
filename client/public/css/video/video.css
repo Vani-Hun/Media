@@ -11,6 +11,63 @@
       padding: 0px 80px;
   }
 
+  .css-1847gtm-Button-StyledFollowButtonTux:hover:not(:disabled):not([aria-disabled="true"]) {
+      background-color: var(--tux-colorPrimary-opacity-8);
+  }
+
+  .css-zmqo9-Button-StyledFollowButtonTux:hover:not(:disabled):not([aria-disabled="true"]) {
+      background-color: var(--tux-colorBGSecondary-tint-4);
+      border-color: var(--tux-colorLinePrimary);
+  }
+
+  .css-zmqo9-Button-StyledFollowButtonTux {
+      box-sizing: border-box;
+      appearance: none;
+      min-width: 96px;
+      display: inline-flex;
+      -webkit-box-pack: center;
+      justify-content: center;
+      -webkit-box-align: center;
+      align-items: center;
+      border-style: solid;
+      border-width: 1px;
+      border-radius: 2px;
+      font-family: var(--tux-fontFamilyParagraph);
+      font-weight: var(--tux-fontWeightSemibold);
+      text-decoration: none;
+      cursor: pointer;
+      background-clip: padding-box;
+      font-size: var(--tux-fontSizeP3);
+      height: 36px;
+      padding-inline: 15px;
+      color: var(--tux-colorTextPrimary);
+      background-color: var(--tux-colorBGSecondary);
+      border-color: var(--tux-colorLineSecondary);
+      right: 0px;
+      position: absolute;
+      top: 28px;
+  }
+
+  .css-1bzan2v-SpanAvatarContainer-StyledAvatar {
+      display: inline-block;
+      box-sizing: border-box;
+      margin: 0px;
+      padding: 0px;
+      font-feature-settings: "tnum";
+      position: relative;
+      overflow: hidden;
+      color: rgb(255, 255, 255);
+      white-space: nowrap;
+      text-align: center;
+      vertical-align: middle;
+      line-height: 32px;
+      border-radius: 50%;
+      border-color: rgba(255, 255, 255, 0.12);
+      border-width: 0.5px;
+      cursor: pointer;
+      background-color: rgba(136, 136, 136, 0.5);
+  }
+
   @media (max-width: 1600px) {
       .tiktok-zqqb1u-DivSearchBarContainer {
           width: 100%;
@@ -1373,7 +1430,7 @@
       border-color: var(--tux-colorPrimary);
       right: 0px;
       position: absolute;
-      top: 28px px;
+      top: 28px;
   }
 
   .css-jp3752-ButtonContent {

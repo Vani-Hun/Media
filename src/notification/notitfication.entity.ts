@@ -19,6 +19,7 @@ export enum NotificationMess {
 }
 @Entity()
 export class Notification extends BaseEntityUUID {
+
     @ManyToOne(() => Customer)
     @JoinColumn({ name: 'user' })
     user: Customer;
