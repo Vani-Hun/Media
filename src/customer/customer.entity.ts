@@ -31,29 +31,18 @@ export class Customer extends BaseEntityUUID {
   @Column({ nullable: true })
   permission: string;
 
-  @ManyToMany(() => Customer, { cascade: true })
-  @JoinTable({
-    name: 'follower_following',
-    joinColumn: {
-      name: 'follower_id',
-      referencedColumnName: 'id',
-    },
-    inverseJoinColumn: {
-      name: 'following_id',
-      referencedColumnName: 'id',
-    },
-  })
+  @ManyToMany(() => Customer, customer => customer.following)
   followers: Customer[];
 
-  @ManyToMany(() => Customer, { cascade: true })
+  @ManyToMany(() => Customer, customer => customer.followers, { cascade: true })
   @JoinTable({
-    name: 'follower_following',
+    name: 'following',
     joinColumn: {
-      name: 'following_id',
+      name: 'customer_id',
       referencedColumnName: 'id',
     },
     inverseJoinColumn: {
-      name: 'follower_id',
+      name: 'following_id',
       referencedColumnName: 'id',
     },
   })

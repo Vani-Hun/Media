@@ -41,7 +41,7 @@ export class VideoService extends BaseService<Video> {
     }
 
     async getUploadVideo(userId) {
-        return await this.customerService.get(userId)
+        return await this.customerService.getUser(userId)
     }
     async uploadVideo(input) {
         try {
@@ -155,6 +155,7 @@ export class VideoService extends BaseService<Video> {
             video.likers = video.likers.filter(liker => liker.id !== userId);
             video.likes--;
             return await this.repo.save(video);
+
         } catch (error) {
             throw new HttpException(`Failed to update dislike: ${error.message}`, HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -187,7 +188,7 @@ export class VideoService extends BaseService<Video> {
             throw new HttpException(`Failed: ${error.message}`, HttpStatus.NOT_IMPLEMENTED);
         }
     }
-    async get(userId) {
+    async getVideos(userId) {
         const videos = await this.repo.createQueryBuilder('video')
             .where('video.who = :who', { who: 'Public' })
             .andWhere('user.id  <> :userId', { userId: userId })
@@ -199,7 +200,8 @@ export class VideoService extends BaseService<Video> {
             .leftJoinAndSelect('comments.customer', 'customer')
             .getMany();
 
-        const customer = await this.customerService.get(userId)
+        const customer = await this.customerService.getUser(userId)
+
         const likedVideoIds = videos
             .filter(video => video.likers.some(liker => liker.id === userId))
             .map(video => video.id);
@@ -208,7 +210,7 @@ export class VideoService extends BaseService<Video> {
     }
 
     async getVideoById(videoId, userId) {
-        const customer = await this.customerService.get(userId)
+        const customer = await this.customerService.getUser(userId)
         const video = await this.repo.findOne({
             where: {
                 id: videoId
@@ -217,15 +219,7 @@ export class VideoService extends BaseService<Video> {
         return { video, customer }
 
     }
-    async viewVideo(videoId, userId) {
-        const customer = await this.customerService.get(userId)
-        const video = await this.repo.findOne({
-            where: {
-                id: videoId
-            }, relations: ['user', 'comments', 'comments.video', 'comments.customer', 'likers']
-        });
-        return { video, customer }
-    }
+
     async delete(videoId, userId) {
         const video = await this.repo
             .createQueryBuilder('video')

@@ -50,7 +50,7 @@ export class CustomerController {
   @Get('videos/like')
   @UseGuards(CusAuthGuard)
   async getVideoLiked(@Req() request: Request) {
-    return await this.customerService.getVideoLiked(request['user'].id)
+    return await this.customerService.getUser(request['user'].id)
   }
 
   @Get('profile/:customerId')

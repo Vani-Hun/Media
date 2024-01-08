@@ -53,12 +53,12 @@ export class AdminController {
   //   }
   // }
 
-  @Get('customer')
-  @UseGuards(AuthGuard)
-  @Render('admin/customer/index')
-  getCustomer(@Query('page') page: string) {
-    return this.adminService.getCustomer(page);
-  }
+  // @Get('customer')
+  // @UseGuards(AuthGuard)
+  // @Render('admin/customer/index')
+  // getCustomer(@Query('page') page: string) {
+  //   return this.adminService.getCustomer(page);
+  // }
 
   @Get('customer/edit')
   @UseGuards(AuthGuard)
@@ -79,12 +79,12 @@ export class AdminController {
     return this.adminService.deleteCustomer(id);
   }
 
-  @Get('partner/add')
-  @UseGuards(AuthGuard)
-  @Render('admin/partner/add/index')
-  async getAddPartner() {
-    return { customers: await this.adminService.getAddPartner() };
-  }
+  // @Get('partner/add')
+  // @UseGuards(AuthGuard)
+  // @Render('admin/partner/add/index')
+  // async getAddPartner() {
+  //   return { customers: await this.adminService.getAddPartner() };
+  // }
 
   @Get('personnel/add')
   @UseGuards(AuthGuard)

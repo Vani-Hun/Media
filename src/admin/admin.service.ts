@@ -30,14 +30,14 @@ export class AdminService extends BaseService<Admin> {
     return this.homeService.get();
   }
 
-  async getCustomer(page?: string) {
-    const customers = await this.customerService.getAll();
-    if (page) {
-      return { customers, start: parseInt(page) * 4 };
-    }
+  // async getCustomer(page?: string) {
+  //   const customers = await this.customerService.getAll();
+  //   if (page) {
+  //     return { customers, start: parseInt(page) * 4 };
+  //   }
 
-    return { customers, start: 0 };
-  }
+  //   return { customers, start: 0 };
+  // }
 
   getDetailCustomer(id: string) {
     return
@@ -50,9 +50,9 @@ export class AdminService extends BaseService<Admin> {
   }
 
 
-  getAddPartner() {
-    return this.customerService.getAll();
-  }
+  // getAddPartner() {
+  //   return this.customerService.getAll();
+  // }
 
   // logo
 

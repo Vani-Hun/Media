@@ -302,8 +302,8 @@
         logo.src = customer.logo;
         userName.textContent = customer.username;
         userSubtitle.textContent = customer.name;
-        followersCount.textContent = customer.followers;
-        followingCount.textContent = customer.following;
+        followersCount.textContent = customer.followers.length;
+        followingCount.textContent = customer.following.length;
         likesCount.textContent = customer.likes;
         userBio.textContent = customer.bio;
         displayVideos(customer.videos)

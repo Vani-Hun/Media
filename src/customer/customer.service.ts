@@ -157,14 +157,27 @@ export class CustomerService extends BaseService<Customer> {
     }
   }
 
-  async get(userId) {
+  async getUser(userId) {
     const customer = await this.repo
       .createQueryBuilder('customer')
       .where('customer.id = :id', { id: userId })
       .leftJoinAndSelect('customer.notifications', 'notifications')
+      .leftJoinAndSelect('customer.videos', 'videos')
+      .leftJoinAndSelect('customer.likedVideos', 'likedVideos')
+      .leftJoinAndSelect('customer.following', 'following')
+      .leftJoinAndSelect('customer.followers', 'followers')
+      .leftJoinAndSelect('videos.user', 'user')
+      .leftJoinAndSelect('videos.comments', 'commentsVideo')
+      .leftJoinAndSelect('videos.likers', 'likers')
       .leftJoinAndSelect('notifications.interactingUser', 'interactingUser')
       .leftJoinAndSelect('notifications.video', 'video')
-      .getOne();
+      .leftJoinAndSelect('likedVideos.comments', 'commentslikedVideo')
+      .leftJoinAndSelect('likedVideos.likers', 'likerslikedVideo')
+      .leftJoinAndSelect('commentslikedVideo.customer', 'commentCustomer')
+      .orderBy('videos.createAt', 'DESC')
+      .addOrderBy('notifications.createAt', 'DESC')
+      .getOneOrFail();
+
     return { customer }
   }
 
@@ -179,42 +192,9 @@ export class CustomerService extends BaseService<Customer> {
     return { customer }
   }
 
-  async viewVideo(input) {
-    const customer = await this.repo.findOneOrFail({ where: { id: input.user.id } });
-    return await this.videoService.updateView(input, customer)
-  }
-
-  async getProfile(user) {
-    const customer = await this.repo.createQueryBuilder('customer')
-      .leftJoinAndSelect('customer.videos', 'videos')
-      .leftJoinAndSelect('videos.comments', 'comments')
-      .leftJoinAndSelect('videos.likers', 'likers')
-      .where('customer.id = :id', { id: user.id })
-      .getOneOrFail();
-
-    customer.videos = customer.videos.sort((a, b) => {
-      if (a.createAt > b.createAt) return -1;
-      if (a.createAt < b.createAt) return 1;
-      return 0;
-    });
-    return { customer }
-  }
-
   async getViewProfile(user, customerId, res) {
-
-    const customer = await this.repo.createQueryBuilder('customer')
-      .leftJoinAndSelect('customer.videos', 'videos')
-      .leftJoinAndSelect('customer.notifications', 'notifications')
-      .leftJoinAndSelect('notifications.interactingUser', 'interactingUser')
-      .leftJoinAndSelect('notifications.video', 'video')
-      .leftJoinAndSelect('videos.user', 'user')
-      .leftJoinAndSelect('videos.comments', 'comments')
-      .leftJoinAndSelect('videos.likers', 'likers')
-      .orderBy('videos.createAt', 'DESC')
-      .where('customer.id = :id', { id: customerId })
-      .getOneOrFail();
-
-    if (user.id === customer.id) {
+    const customer = await this.getUser(customerId)
+    if (user.id === customerId) {
       return res.render('customer/profile', { customer })
     } else { return res.render('customer/viewProfile', { customer }) }
   }
@@ -259,17 +239,28 @@ export class CustomerService extends BaseService<Customer> {
     const customer = await this.repo.update({ id: user.user.id }, updateData)
     return { customer }
   }
-  getAll() {
-    return this.repo.find();
-  }
 
   async followUser(input) {
     console.log("input:", input)
-    return {}
+    const userRequest = await this.repo.createQueryBuilder('customer')
+      .leftJoinAndSelect('customer.following', 'following')
+      .leftJoinAndSelect('customer.followers', 'followers')
+      .where('customer.id = :id', { id: input.id })
+      .getOneOrFail()
+
+    const userRequested = await this.repo.createQueryBuilder('customer')
+      .where('customer.id = :id', { id: input.customerId })
+      .getOneOrFail()
+
+    await userRequest.following.push(userRequested)
+    return await this.repo.save(userRequest);
   }
   async unfollowUser(input) {
-    console.log("input:", input)
-    return {}
+    return await this.repo
+      .createQueryBuilder()
+      .relation(Customer, 'following')
+      .of(input.id)
+      .remove(input.customerId);
   }
 
   async delete(id: string) {
