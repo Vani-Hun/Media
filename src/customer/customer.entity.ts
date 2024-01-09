@@ -8,7 +8,7 @@ import { Notification } from 'src/notification/notitfication.entity';
 export class Customer extends BaseEntityUUID {
 
   @Column({ nullable: true })
-  logo?: string;
+  logo: string;
 
   @Column({ nullable: true })
   name: string;

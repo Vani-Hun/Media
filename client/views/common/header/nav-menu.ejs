@@ -4,9 +4,6 @@
                     src="https://www.clipartmax.com/png/middle/101-1016995_gudetama-3-stickers-by-crazycitrus1-gudetama-lazy-egg.png"
                     alt="logo vani"></a></div>
     </div>
-    <div id="menu-responsive-btn"><img
-            src="https://w0.peakpx.com/wallpaper/331/769/HD-wallpaper-lazy-egg5-egg-gudetama-kawaii-lazy-egg.jpg">
-    </div>
     <div class="menu-list">
         <span class="menu-item"><a href="/video/videos">VIDEO</a></span>
         <!-- <span class="menu-item"><a href="/product">MUSIC</a></span> -->
@@ -140,7 +137,6 @@
     let dropdownMenu = document.getElementById("header-setting-popup-list");
     let profileIcon = document.getElementById("header-more-menu-icon");
     let inboxIcon = document.querySelector('.css-1g0p6jv-StyledInboxIcon')
-    const menuButton = document.getElementById('menu-responsive-btn');
     const menuList = document.querySelector('.menu-list');
     const iconNotifications = document.querySelector('.css-1deszxq-DivHeaderInboxContainer')
     const iconMess = document.querySelector('.css-9j9jz0-DivMessageIconContainer')
@@ -268,8 +264,10 @@
         })
 
     }
+
     inboxIcon.addEventListener('click', () => {
         if (notifications.style.display === "none") {
+            dropdownMenu.style.display = "none";
             notifications.style.display = "block";
             numberNotification.style.display = 'none'
             fetch(`/notification/check`, {
@@ -285,13 +283,9 @@
         }
     })
 
-    menuButton.addEventListener('click', function () {
-        console.log('Click event triggered!'); // Kiểm tra xem sự kiện click có được gọi không
-        menuList.classList.toggle('active');
-    });
-
     profileIcon.addEventListener("click", function () {
         if (dropdownMenu.style.display === "none") {
+            notifications.style.display = "none";
             dropdownMenu.style.display = "block";
         } else {
             dropdownMenu.style.display = "none";

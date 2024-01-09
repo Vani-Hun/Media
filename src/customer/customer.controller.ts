@@ -50,22 +50,22 @@ export class CustomerController {
   @Get('videos/like')
   @UseGuards(CusAuthGuard)
   async getVideoLiked(@Req() request: Request) {
-    return await this.customerService.getUser(request['user'].id)
+    return await this.customerService.getUser(request['user'])
   }
 
   @Get('profile/:customerId')
   @UseGuards(CusAuthGuard)
   async getViewProfile(@Param('customerId') customerId: string, @Res() res: Response, @Req() request: Request) {
-    return await this.customerService.getViewProfile(request['user'], customerId, res)
+    request['user'].customerId = customerId
+    return await this.customerService.getViewProfile(request['user'], res)
   };
 
   @Post('profile/update')
   @UseGuards(CusAuthGuard)
   @UseInterceptors(FileInterceptor('avatar'))
   async updateProfile(@UploadedFile() avatar: Express.Multer.File, @Body() body: InputSetCustomer, @Req() request: Request) {
-    body['user'] = request['user']
-    body['avatar'] = avatar
-    return await this.customerService.postProfile(body)
+    request['user'] = { ...request['user'], ...body, avatar }
+    return await this.customerService.postProfile(request['user'])
   }
 
   @Post('follow/:customerId')
@@ -139,10 +139,11 @@ export class CustomerController {
     const username = request.cookies['username']
     const phone = request.cookies['phone']
     const hashedPassword = request.cookies['hashedPassword']
-    body.hashedOTP = hashedOTP
-    body.username = username
-    body.phone = phone
-    body.hashedPassword = hashedPassword
+    body = { ...body, hashedOTP, username, phone, hashedPassword }
+    // body.hashedOTP = hashedOTP
+    // body.username = username
+    // body.phone = phone
+    // body.hashedPassword = hashedPassword
     return await this.customerService.signUpVerify(body)
   };
 

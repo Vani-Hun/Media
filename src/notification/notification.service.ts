@@ -37,7 +37,7 @@ export class NotificationService extends BaseService<Notification> {
                 } else {
                     return {};
                 }
-            } else {
+            } else if (input.type === 'Comments') {
                 const newNotification = this.repo.create({
                     user: input.video.user.id,
                     interactingUser: input.user.id,
@@ -49,6 +49,18 @@ export class NotificationService extends BaseService<Notification> {
 
                 const savedNotification = await this.repo.save(newNotification);
                 return savedNotification
+            } else {
+                const newNotification = this.repo.create({
+                    user: input.customerId,
+                    interactingUser: input.id,
+                    message: input.mess,
+                    status: false,
+                    type: input.type,
+                });
+
+                const savedNotification = await this.repo.save(newNotification);
+                return savedNotification
+
             }
         } catch (error) {
             throw new HttpException(`Failed to create notification: ${error.message}`, HttpStatus.INTERNAL_SERVER_ERROR);

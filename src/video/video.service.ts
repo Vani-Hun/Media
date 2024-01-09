@@ -29,7 +29,7 @@ export class VideoService extends BaseService<Video> {
                 video: url['videoURL'],
                 thumbnail: url['imageURL'],
                 name: input.video.filename,
-                user: input.user.id,
+                user: input.id,
                 who: input.who,
                 allowComment: Boolean(input.allowComment),
                 caption: input.caption,
@@ -44,6 +44,7 @@ export class VideoService extends BaseService<Video> {
         return await this.customerService.getUser(userId)
     }
     async uploadVideo(input) {
+        console.log("input:", input)
         try {
             const uploadFirebase = await this.firebaseConfig.firebaseAdmin.firestore().runTransaction(async (transaction) => {
                 const base64Data = input.image.replace(/^data:image\/jpeg;base64,/, '');
@@ -104,14 +105,14 @@ export class VideoService extends BaseService<Video> {
         }
     }
 
-    async updateView(videoId, userId) {
+    async updateView(input) {
         try {
             const video = await this.repo.createQueryBuilder('video')
                 .leftJoinAndSelect('video.user', 'user')
-                .where('video.id = :id', { id: videoId })
+                .where('video.id = :id', { id: input.videoId })
                 .getOneOrFail();
 
-            if (video.user.id !== userId) {
+            if (video.user.id !== input.id) {
                 video.views++;
             }
             return await this.repo.save(video);
@@ -128,11 +129,11 @@ export class VideoService extends BaseService<Video> {
                 .where('video.id = :id', { id: input.videoId })
                 .getOneOrFail();
             const newUser = new Customer();
-            newUser.id = input.user.id;
+            newUser.id = input.id;
             video.likers.push(newUser);
             video.likes++;
             await this.repo.save(video);
-            if (input.user.id !== video.user.id) {
+            if (input.id !== video.user.id) {
                 input.video = video
                 input.type = NotificationType.LIKE
                 input.mess = NotificationMess.LIKE
@@ -145,14 +146,14 @@ export class VideoService extends BaseService<Video> {
         }
     }
 
-    async updateDisLike(videoId, userId) {
+    async updateDisLike(input) {
         try {
             const video = await this.repo.createQueryBuilder('video')
                 .leftJoinAndSelect('video.likers', 'likers')
-                .where('video.id = :id', { id: videoId })
+                .where('video.id = :id', { id: input.videoId })
                 .getOneOrFail();
 
-            video.likers = video.likers.filter(liker => liker.id !== userId);
+            video.likers = video.likers.filter(liker => liker.id !== input.id);
             video.likes--;
             return await this.repo.save(video);
 
@@ -161,9 +162,9 @@ export class VideoService extends BaseService<Video> {
         }
     }
 
-    async updateShare(videoId) {
+    async updateShare(input) {
         try {
-            const video = await this.repo.findOneOrFail({ where: { id: videoId } });
+            const video = await this.repo.findOneOrFail({ where: { id: input.videoId } });
             video.shareCount++;
             return await this.repo.save(video);
         } catch (error) {
@@ -177,7 +178,7 @@ export class VideoService extends BaseService<Video> {
                 .where('video.id = :id', { id: input.videoId })
                 .getOneOrFail();
             await this.commentService.create(input)
-            if (input.user.id !== video.user.id) {
+            if (input.id !== video.user.id) {
                 input.video = video
                 input.type = NotificationType.COMMENT
                 input.mess = `${NotificationMess.COMMENT} ${input.mess}`
@@ -188,10 +189,10 @@ export class VideoService extends BaseService<Video> {
             throw new HttpException(`Failed: ${error.message}`, HttpStatus.NOT_IMPLEMENTED);
         }
     }
-    async getVideos(userId) {
+    async getVideos(input) {
         const videos = await this.repo.createQueryBuilder('video')
             .where('video.who = :who', { who: 'Public' })
-            .andWhere('user.id  <> :userId', { userId: userId })
+            .andWhere('user.id  <> :userId', { userId: input.id })
             .orderBy('video.createAt', 'DESC')
             .leftJoinAndSelect('video.user', 'user')
             .leftJoinAndSelect('video.likers', 'likers')
@@ -200,37 +201,37 @@ export class VideoService extends BaseService<Video> {
             .leftJoinAndSelect('comments.customer', 'customer')
             .getMany();
 
-        const customer = await this.customerService.getUser(userId)
+        const customer = await this.customerService.getUser(input)
 
         const likedVideoIds = videos
-            .filter(video => video.likers.some(liker => liker.id === userId))
+            .filter(video => video.likers.some(liker => liker.id === input.id))
             .map(video => video.id);
 
         return { videos, likedVideoIds, customer };
     }
 
-    async getVideoById(videoId, userId) {
-        const customer = await this.customerService.getUser(userId)
+    async getVideoById(input) {
+        const customer = await this.customerService.getUser(input)
         const video = await this.repo.findOne({
             where: {
-                id: videoId
+                id: input.videoId
             }, relations: ['user', 'comments', 'comments.video', 'comments.customer', 'likers']
         });
         return { video, customer }
 
     }
 
-    async delete(videoId, userId) {
+    async delete(input) {
         const video = await this.repo
             .createQueryBuilder('video')
             .leftJoinAndSelect('video.user', 'user')
             .leftJoinAndSelect('video.likers', 'likers')
             .leftJoinAndSelect('video.comments', 'comments')
-            .where('video.id = :id', { id: videoId })
+            .where('video.id = :id', { id: input.videoId })
             .getOne();
 
-        if (video.user.id === userId) {
-            await this.commentService.delete(videoId)
+        if (video.user.id === input.id) {
+            await this.commentService.delete(input.videoId)
             await this.repo.remove(video)
             return await this.firebaseConfig.firebaseAdmin.firestore().runTransaction(async () => {
                 await Promise.all([

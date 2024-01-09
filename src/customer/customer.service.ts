@@ -1,3 +1,4 @@
+import { NotificationService } from './../notification/notification.service';
 import { Inject, Injectable, HttpException, HttpStatus, forwardRef } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { BaseService } from 'src/common/services/base.service';
@@ -10,6 +11,7 @@ const { getStorage, getDownloadURL } = require('firebase-admin/storage');
 import { readFileSync } from 'fs';
 import * as bcrypt from 'bcrypt';
 import { SmsService } from 'src/common/services/twilio.service';
+import { NotificationMess, NotificationType } from 'src/notification/notitfication.entity';
 
 @Injectable()
 export class CustomerService extends BaseService<Customer> {
@@ -18,6 +20,7 @@ export class CustomerService extends BaseService<Customer> {
     @InjectRepository(Customer) repo: Repository<Customer>,
     private tokenService: TokenService,
     @Inject(forwardRef(() => VideoService)) private videoService: VideoService,
+    private notificationService: NotificationService,
     private smsService: SmsService
   ) {
     super(repo);
@@ -157,10 +160,10 @@ export class CustomerService extends BaseService<Customer> {
     }
   }
 
-  async getUser(userId) {
+  async getUser(input) {
     const customer = await this.repo
       .createQueryBuilder('customer')
-      .where('customer.id = :id', { id: userId })
+      .where('customer.id = :id', { id: input.id })
       .leftJoinAndSelect('customer.notifications', 'notifications')
       .leftJoinAndSelect('customer.videos', 'videos')
       .leftJoinAndSelect('customer.likedVideos', 'likedVideos')
@@ -192,21 +195,21 @@ export class CustomerService extends BaseService<Customer> {
     return { customer }
   }
 
-  async getViewProfile(user, customerId, res) {
-    const customer = await this.getUser(customerId)
-    if (user.id === customerId) {
+  async getViewProfile(input, res) {
+    const customer = await this.getUser(input.customerId)
+    if (input.id === input.customerId) {
       return res.render('customer/profile', { customer })
     } else { return res.render('customer/viewProfile', { customer }) }
   }
 
-  async postProfile(user) {
+  async postProfile(input) {
     let downloadURL;
     let updateData;
     // const url = await this.uploadFile(user)
-    if (user.avatar) {
-      const data = readFileSync(user.avatar.path);
+    if (input.avatar) {
+      const data = readFileSync(input.avatar.path);
       const fileBuffer = Buffer.from(data);
-      const filePath = `avatars/${user.user.id}`;
+      const filePath = `avatars/${input.id}`;
       const file = this.firebaseConfig.bucket.file(filePath);
 
       const [fileExists] = await file.exists();
@@ -216,44 +219,52 @@ export class CustomerService extends BaseService<Customer> {
       }
       await file.save(fileBuffer, {
         metadata: {
-          contentType: user.avatar.mimetype,
+          contentType: input.avatar.mimetype,
         },
       });
-      await this.clearTmp(user.avatar.path);
+      await this.clearTmp(input.avatar.path);
       const fileRef = await getStorage().bucket(`${this.firebaseConfig.bucket.name}`).file(`${file.name}`);
       downloadURL = await getDownloadURL(fileRef);
       updateData = {
         /* Các trường dữ liệu bạn muốn cập nhật, ví dụ: */
         logo: downloadURL,
-        username: user.username,
-        name: user.name,
-        bio: user.bio
+        username: input.username,
+        name: input.name,
+        bio: input.bio
       };
     } else {
       updateData = {
-        username: user.username,
-        name: user.name,
-        bio: user.bio
+        username: input.username,
+        name: input.name,
+        bio: input.bio
       };
     }
-    const customer = await this.repo.update({ id: user.user.id }, updateData)
+    const customer = await this.repo.update({ id: input.id }, updateData)
     return { customer }
   }
 
   async followUser(input) {
-    console.log("input:", input)
     const userRequest = await this.repo.createQueryBuilder('customer')
       .leftJoinAndSelect('customer.following', 'following')
-      .leftJoinAndSelect('customer.followers', 'followers')
       .where('customer.id = :id', { id: input.id })
       .getOneOrFail()
 
+    userRequest.following.forEach(following => {
+      if (following.id === input.customerId) {
+        console.log("DA FOLLOWwwww")
+        return {}
+      }
+    })
     const userRequested = await this.repo.createQueryBuilder('customer')
       .where('customer.id = :id', { id: input.customerId })
       .getOneOrFail()
 
+
     await userRequest.following.push(userRequested)
-    return await this.repo.save(userRequest);
+    await this.repo.save(userRequest);
+    input.type = NotificationType.FOLLOWER
+    input.mess = `${NotificationMess.FOLLOWER}.`
+    return await this.notificationService.createNotification(input)
   }
   async unfollowUser(input) {
     return await this.repo

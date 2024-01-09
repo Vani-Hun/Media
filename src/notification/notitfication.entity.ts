@@ -28,7 +28,7 @@ export class Notification extends BaseEntityUUID {
     @JoinColumn({ name: 'interacting_user' })
     interactingUser: Customer;
 
-    @ManyToOne(() => Video)
+    @ManyToOne(() => Video, { nullable: true })
     @JoinColumn({ name: 'video' })
     video: Video;
 
