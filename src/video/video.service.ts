@@ -23,7 +23,7 @@ export class VideoService extends BaseService<Video> {
         super(repo);
     }
 
-    async create(url: object, input) {
+    async create(url: object, input, res) {
         try {
             const video = await this.repo.create({
                 video: url['videoURL'],
@@ -34,17 +34,18 @@ export class VideoService extends BaseService<Video> {
                 allowComment: Boolean(input.allowComment),
                 caption: input.caption,
             });
-            return await this.repo.save(video);
+            await this.repo.save(video);
+            const customer = await this.customerService.getUser(input)
+            return res.render('customer/profile', { customer })
         } catch (error) {
             throw new HttpException(`Failed to create video: ${error.message}`, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    async getUploadVideo(userId) {
-        return await this.customerService.getUser(userId)
+    async getUploadVideo(input) {
+        return await this.customerService.getUser(input)
     }
     async uploadVideo(input) {
-        console.log("input:", input)
         try {
             const uploadFirebase = await this.firebaseConfig.firebaseAdmin.firestore().runTransaction(async (transaction) => {
                 const base64Data = input.image.replace(/^data:image\/jpeg;base64,/, '');

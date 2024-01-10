@@ -581,10 +581,8 @@
         })
             .then((data) => {
                 hideLoader()
-                window.location.href = `/customer/profile/${customer.id}`
             })
             .catch(error => {
-                // Xử lý lỗi nếu có
                 console.error('There has been a problem with your fetch operation:', error);
             });
     }

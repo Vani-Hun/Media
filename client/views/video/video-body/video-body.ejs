@@ -613,14 +613,15 @@
             const updateTimeDifference = formatTimeDifference(video.createAt);
 
             const newUrl = `/video/${video.id}`;
+            let viewCount = 0;
+            let isMuted = false
+
+            videoPlay.muted = false;
             history.pushState({ videoId: video.id }, '', newUrl);
             divMainContainer.style.display = 'none'
             navMenu.style.display = 'none'
             mainContainer.style.display = 'flex'
-            let isMuted = false
-            videoPlay.muted = false;
             svgIcon.setAttribute('fill', 'rgba(22, 24, 35)');
-            let viewCount = 0;
             copyLinkText.innerHTML = `${host}/video/${video.id}`
 
             xButton.addEventListener('click', function () {
@@ -658,8 +659,8 @@
                 .then(data => {
                     const video = data.video
                     commentsCountElement.textContent = `Comments (${video.comments.length})`;
-                    likeCountElement.textContent = video.likes;
                     commentCountElement.textContent = video.comments.length;
+                    likeCountElement.textContent = video.likes;
                     undefinedCountElement.textContent = '0';
                     usernameElement.textContent = video.user.username;
                     nameElement.textContent = video.user.name;
@@ -783,12 +784,10 @@
             //                     const intervalId = setInterval(fetchVideoInfo, 50000);
 
             likeElement.addEventListener("click", () => {
-                let likesCountNumber = parseInt(likeCountElement.innerText, 10);
                 const fillValue = svgIcon.getAttribute('fill');
                 if (fillValue === "rgba(22, 24, 35)") {
-                    likesCountNumber += 1
-                    svgIcon.setAttribute('fill', 'rgba(254, 44, 85)');
-                    likeIcon.style.color = "rgba(254, 44, 85)";
+                    likeCountElement.textContent = +likeCountElement.textContent + 1
+                    svgIcon.setAttribute('fill', 'rgba(254, 44, 85)')
                     fetch(`/video/like/${video.id}`, {
                         method: 'POST',
                     })
@@ -798,9 +797,8 @@
                             console.error('Error:', error);
                         });
                 } else {
-                    likesCountNumber -= 1
+                    likeCountElement.textContent = +likeCountElement.textContent - 1
                     svgIcon.setAttribute('fill', 'rgba(22, 24, 35)');
-                    likeIcon.style.color = "rgba(22, 24, 35)";
                     fetch(`/video/dislike/${video.id}`, {
                         method: 'POST',
                     })
@@ -810,8 +808,6 @@
                             console.error('Error:', error);
                         });
                 }
-                likeCountElement.innerText = `${likesCountNumber}`
-                likesCount.innerText = `${likesCountNumber}`
             });
 
             video.comments.forEach(comment => {
@@ -1159,6 +1155,7 @@
             })
 
             likeIcon.addEventListener("click", () => {
+
                 let likeCountElement = videoDiv.querySelector('[data-e2e="like-count"]');
 
                 if (likeIcon.style.color === "rgb(22, 24, 35)") {
@@ -1166,10 +1163,15 @@
                     likeCountElement.innerHTML = +likeCountElement.innerHTML + 1
                     fetch(`/video/like/${video.id}`, {
                         method: 'POST',
+                    }).then(response => {
+                        socket.emit('like', { id: customer.id }, (data) => console.log(data));
+                        socket.on('newCustomer', (data) => customer = data);
+
                     })
                         .catch(error => {
                             console.error('Error:', error);
                         });
+
                 } else {
                     likeIcon.style.color = "rgb(22, 24, 35)"
                     likeCountElement.innerHTML = +likeCountElement.innerHTML - 1
@@ -1179,7 +1181,8 @@
                         .catch(error => {
                             console.error('Error:', error);
                         });
-
+                    // socket.emit('like', { customer }, (data) => console.log(data));
+                    // socket.on('like', (data) => console.log(`${data}`));
                 }
             });
 

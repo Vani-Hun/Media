@@ -161,6 +161,7 @@ export class CustomerService extends BaseService<Customer> {
   }
 
   async getUser(input) {
+    console.log("input:", input)
     const customer = await this.repo
       .createQueryBuilder('customer')
       .where('customer.id = :id', { id: input.id })
@@ -196,7 +197,7 @@ export class CustomerService extends BaseService<Customer> {
   }
 
   async getViewProfile(input, res) {
-    const customer = await this.getUser(input.customerId)
+    const customer = await this.getUser(input)
     if (input.id === input.customerId) {
       return res.render('customer/profile', { customer })
     } else { return res.render('customer/viewProfile', { customer }) }
@@ -244,28 +245,33 @@ export class CustomerService extends BaseService<Customer> {
   }
 
   async followUser(input) {
-    const userRequest = await this.repo.createQueryBuilder('customer')
-      .leftJoinAndSelect('customer.following', 'following')
-      .where('customer.id = :id', { id: input.id })
-      .getOneOrFail()
+    try {
+      const userRequest = await this.repo.createQueryBuilder('customer')
+        .leftJoinAndSelect('customer.following', 'following')
+        .where('customer.id = :id', { id: input.id })
+        .getOneOrFail();
 
-    userRequest.following.forEach(following => {
-      if (following.id === input.customerId) {
-        console.log("DA FOLLOWwwww")
-        return {}
+      const isFollowed = userRequest.following.some(following => following.id === input.customerId);
+
+      if (!isFollowed) {
+        const userRequested = await this.repo.findOneOrFail(input.customerId);
+
+        userRequest.following.push(userRequested);
+        await this.repo.save(userRequest);
+
+        input.type = NotificationType.FOLLOWER;
+        input.mess = `${NotificationMess.FOLLOWER}.`;
+
+        await this.notificationService.createNotification(input);
       }
-    })
-    const userRequested = await this.repo.createQueryBuilder('customer')
-      .where('customer.id = :id', { id: input.customerId })
-      .getOneOrFail()
 
-
-    await userRequest.following.push(userRequested)
-    await this.repo.save(userRequest);
-    input.type = NotificationType.FOLLOWER
-    input.mess = `${NotificationMess.FOLLOWER}.`
-    return await this.notificationService.createNotification(input)
+      return {};
+    } catch (error) {
+      throw new HttpException(`Failed to follow user: ${error.message}`, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
+
+
   async unfollowUser(input) {
     return await this.repo
       .createQueryBuilder()

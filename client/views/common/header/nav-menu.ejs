@@ -192,10 +192,10 @@
     }
     function createNotificationElement(notification) {
         const updateTimeDifference = formatTimeDifference(notification.createAt);
-
+        let shouldSkip = false;
         const notificationDiv = document.createElement('li');
         notificationDiv.classList.add("css-1lqaxb-LiInboxItemWrapper");
-        if (notification.type === "Likes" || notification.type === "Followers") {
+        if (notification.type === "Likes") {
             notificationDiv.innerHTML = `
         <div data-e2e="inbox-list-item" class="css-7hu7c-DivItemContainer exfus50">
     <div class="css-1g5c96b-DivAvatarContainer exfus51"><a aria-label="vanihun1’s profile"
@@ -237,6 +237,41 @@
         style="background-image: url(&quot;${notification.video.thumbnail};);"></a>
 </div>
     `;
+        }
+        if (notification.type === "Followers") {
+            customer.following.some(following => {
+                if (following.id === notification.interactingUser.id) {
+                    shouldSkip = true
+                    notificationDiv.innerHTML = `
+      <div data-e2e="inbox-list-item" class="css-7hu7c-DivItemContainer exfus50"><span shape="circle" data-e2e=""
+        data-method="click_head" class="css-tuohvl-SpanAvatarContainer e1e9er4e0"
+        style="flex: 0 0 48px; width: 48px; height: 48px;"><img loading="lazy" alt=""
+            src="${notification.interactingUser.logo}"
+            class="css-1zpj2q-ImgAvatar e1e9er4e1"></span>
+    <div class="css-14aeum4-DivContentContainer exfus56"><a data-e2e="inbox-title" href="/customer/profile/${notification.interactingUser.id}"
+            data-method="click_name" aria-label="Nhèo nè’s profile" class="css-as21yl-ATitleLink exfus58">${notification.interactingUser.name}</a>
+        <p data-e2e="inbox-content" class="css-1e1fu7b-PDescText exfus510">${notification.message} ${updateTimeDifference}</p>
+    </div><button type="button" data-e2e="follow-back" class="exfus53 css-rq300g-Button-StyledFollowButton ehk74z00">Friends</button>
+</div>
+    `;
+                    return true;
+                }
+            })
+            if (!shouldSkip) {
+                notificationDiv.innerHTML = `
+      <div data-e2e="inbox-list-item" class="css-7hu7c-DivItemContainer exfus50"><span shape="circle" data-e2e=""
+        data-method="click_head" class="css-tuohvl-SpanAvatarContainer e1e9er4e0"
+        style="flex: 0 0 48px; width: 48px; height: 48px;"><img loading="lazy" alt=""
+            src="${notification.interactingUser.logo}"
+            class="css-1zpj2q-ImgAvatar e1e9er4e1"></span>
+    <div class="css-14aeum4-DivContentContainer exfus56"><a data-e2e="inbox-title" href="/customer/profile/${notification.interactingUser.id}"
+            data-method="click_name" aria-label="Nhèo nè’s profile" class="css-as21yl-ATitleLink exfus58">${notification.interactingUser.name}</a>
+        <p data-e2e="inbox-content" class="css-1e1fu7b-PDescText exfus510">${notification.message} ${updateTimeDifference}</p>
+    </div><button type="button" data-e2e="follow-back"
+        class="exfus53 css-1kkm16e-Button-StyledFollowButton ehk74z00">Follow back</button>
+</div>
+    `;
+            }
         }
 
 
@@ -331,5 +366,7 @@
     else {
         profileIcon.style = "background-image:url(https://w0.peakpx.com/wallpaper/331/769/HD-wallpaper-lazy-egg5-egg-gudetama-kawaii-lazy-egg.jpg)";
     }
+
+
 
 </script>

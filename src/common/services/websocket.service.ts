@@ -1,11 +1,12 @@
 // notification.gateway.ts
+import { Req } from '@nestjs/common';
 import { WebSocketGateway, WebSocketServer, SubscribeMessage, OnGatewayConnection, OnGatewayDisconnect } from '@nestjs/websockets';
 import { Server } from 'socket.io';
 import { CustomerService } from 'src/customer/customer.service';
 
 @WebSocketGateway()
 export class NotificationGateway implements OnGatewayConnection, OnGatewayDisconnect {
-    constructor(customerService: CustomerService) { }
+    constructor(private customerService: CustomerService) { }
 
     @WebSocketServer() server: Server;
 
@@ -14,15 +15,11 @@ export class NotificationGateway implements OnGatewayConnection, OnGatewayDiscon
     }
 
     @SubscribeMessage('like')
-    handleLike(client: any, payload: any): void {
-        console.log("client===============================:", client.id)
-        console.log('Received like=======================================:', payload);
-
-        // Thực hiện xử lý khi có sự kiện like
-        const recipientId = payload.recipientId; // Điều này phải được đặt từ phía client khi gửi sự kiện 'like'
-
-        // Gửi thông báo cho người nhận cụ thể
-        this.server.to(recipientId).emit('notification', { message: 'Someone liked your video!' });
+    async handleLike(client: any, payload: any): Promise<void> {
+        console.log("Client:", client.id)
+        console.log('Received customer:', payload);
+        const customer = await this.customerService.getUser(payload);
+        this.server.to(client.id).emit('newCustomer', { customer });
     }
 
 

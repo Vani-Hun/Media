@@ -14,93 +14,91 @@ export class VideoController {
     @Get('upload')
     @UseGuards(CusAuthGuard)
     @Render('video/upload')
-    async getUpload(@Req() request: Request) {
-        return await this.videoService.getUploadVideo(request['user'].id)
+    async getUpload(@Req() req: Request) {
+        return await this.videoService.getUploadVideo(req['user'])
     }
 
     @Post('upload')
     @UseGuards(CusAuthGuard)
     @UseInterceptors(FileInterceptor('video'))
-    async upLoad(@Body() body, @UploadedFile() video: Express.Multer.File, @Req() request: Request) {
+    async upLoad(@Body() body, @UploadedFile() video: Express.Multer.File, @Req() req: Request, @Res() res: Response) {
         if (video) {
-            request['user'] = { ...request['user'], ...body, video }
-            // body.user = request['user']
-            // body.video = video
-            const url = await this.videoService.uploadVideo(request['user'])
+            req['user'] = { ...req['user'], ...body, video }
+            const url = await this.videoService.uploadVideo(req['user'])
             if (url) {
-                return await this.videoService.create(url, request['user'])
+                return await this.videoService.create(url, req['user'], res)
             }
         }
     };
     @Get('videos')
     @UseGuards(CusAuthGuard)
     @Render('video/index')
-    async getVideos(@Req() request: Request) {
-        return await this.videoService.getVideos(request['user'])
+    async getVideos(@Req() req: Request) {
+        return await this.videoService.getVideos(req['user'])
     }
 
     @Get(':videoId')
     @UseGuards(CusAuthGuard)
     @Render('video/detail')
-    async getVideoById(@Param('videoId') videoId: string, @Req() request: Request) {
-        request['user'] = { ...request['user'], videoId }
-        return await this.videoService.getVideoById(request['user'])
+    async getVideoById(@Param('videoId') videoId: string, @Req() req: Request) {
+        req['user'] = { ...req['user'], videoId }
+        return await this.videoService.getVideoById(req['user'])
     }
 
     @Get('videoInf/:id')
     @UseGuards(CusAuthGuard)
-    async getVideo(@Param('id') videoId: string, @Req() request: Request) {
-        request['user'] = { ...request['user'], videoId }
-        return await this.videoService.getVideoById(request['user'])
+    async getVideo(@Param('id') videoId: string, @Req() req: Request) {
+        req['user'] = { ...req['user'], videoId }
+        return await this.videoService.getVideoById(req['user'])
     }
     @Post('view/:videoId')
     @UseGuards(CusAuthGuard)
-    async viewVideo(@Param('videoId') videoId: string, @Req() request: Request) {
-        request['user'] = { ...request['user'], videoId }
-        return await this.videoService.updateView(request['user'])
+    async viewVideo(@Param('videoId') videoId: string, @Req() req: Request) {
+        req['user'] = { ...req['user'], videoId }
+        return await this.videoService.updateView(req['user'])
     }
 
     @Post('like/:videoId')
     @UseGuards(CusAuthGuard)
-    async likeVideo(@Param('videoId') videoId: string, @Req() request: Request) {
-        request['user'] = { ...request['user'], videoId }
-        return await this.videoService.updateLike(request['user'])
+    async likeVideo(@Param('videoId') videoId: string, @Req() req: Request) {
+        req['user'] = { ...req['user'], videoId }
+        return await this.videoService.updateLike(req['user'])
     };
 
     @Post('dislike/:videoId')
     @UseGuards(CusAuthGuard)
-    async dislikeVideo(@Param('videoId') videoId: string, @Req() request: Request) {
-        request['user'] = { ...request['user'], videoId }
-        return await this.videoService.updateDisLike(request['user'])
+    async dislikeVideo(@Param('videoId') videoId: string, @Req() req: Request) {
+        req['user'] = { ...req['user'], videoId }
+        return await this.videoService.updateDisLike(req['user'])
     }
 
     @Post('share/:videoId')
     @UseGuards(CusAuthGuard)
-    async shareVideo(@Param('videoId') videoId: string, @Req() request: Request) {
-        request['user'] = { ...request['user'], videoId }
-        return await this.videoService.updateShare(request['user'])
+    async shareVideo(@Param('videoId') videoId: string, @Req() req: Request) {
+        req['user'] = { ...req['user'], videoId }
+        return await this.videoService.updateShare(req['user'])
     };
 
     @Post('comment/:videoId')
     @UseGuards(CusAuthGuard)
-    async commentVideo(@Body() body, @Param('videoId') videoId: string, @Req() request: Request) {
-        request['user'] = { ...request['user'], videoId, mess: body.mess }
-        return await this.videoService.createComment(request['user'])
+    async commentVideo(@Body() body, @Param('videoId') videoId: string, @Req() req: Request) {
+        req['user'] = { ...req['user'], videoId, mess: body.mess }
+        return await this.videoService.createComment(req['user'])
     }
 
 
     @Post('update')
     @UseGuards(CusAuthGuard)
-    async updateVideo(@Body() body, @Req() request: Request) {
+    async updateVideo(@Body() body, @Req() req: Request) {
         if (body) {
-            request['user'] = { ...request['user'], ...body }
-            return await this.videoService.update(request['user'])
+            req['user'] = { ...req['user'], ...body }
+            return await this.videoService.update(req['user'])
         }
     }
     @Delete('delete/:videoId')
     @UseGuards(CusAuthGuard)
-    async deleteVideo(@Param('videoId') videoId: string, @Req() request: Request) {
-        request['user'] = { ...request['user'], videoId }
-        return await this.videoService.delete(request['user'])
+    async deleteVideo(@Param('videoId') videoId: string, @Req() req: Request) {
+        req['user'] = { ...req['user'], videoId }
+        return await this.videoService.delete(req['user'])
     }
 }
