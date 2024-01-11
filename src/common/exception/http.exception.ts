@@ -23,11 +23,12 @@ export class HttpExceptionFilter implements ExceptionFilter {
       case 501:
         return { mess: 'error' }
       default:
-        this.render(response, 'home/index', {
-          title: status,
-          description: 'Page not found',
-          message: error,
-        });
+        // this.render(response, 'home/index', {
+        //   title: status,
+        //   description: 'Page not found',
+        //   message: error,
+        // });
+        return { mess: 'error' }
     }
   };
 

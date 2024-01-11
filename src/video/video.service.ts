@@ -200,15 +200,11 @@ export class VideoService extends BaseService<Video> {
             .leftJoinAndSelect('video.comments', 'comments')
             .leftJoinAndSelect('comments.video', 'video2')
             .leftJoinAndSelect('comments.customer', 'customer')
-            .getMany();
+            .getMany()
 
-        const customer = await this.customerService.getUser(input)
+        const customer = await this.customerService.getUser(input);
 
-        const likedVideoIds = videos
-            .filter(video => video.likers.some(liker => liker.id === input.id))
-            .map(video => video.id);
-
-        return { videos, likedVideoIds, customer };
+        return { videos, customer };
     }
 
     async getVideoById(input) {

@@ -441,32 +441,36 @@
 <div id="customAlert" class="custom-alert">
     <span id="alertMessage"></span>
 </div>
+<script src="/socket.io/socket.io.js"></script>
 <script>
 
     let video = JSON.parse('<%- JSON.stringify(video) %>');
+
     let customer = JSON.parse('<%- JSON.stringify(customer) %>');
-    let listVideo = []
-    fetch(`/video/videos`, {
-        method: 'GET',
-    })
-        .then(response => {
-            // Check if the response is successful (status code 2xx)
-            if (!response.ok) {
-                throw new Error(`Network response was not ok (${response.status})`);
-            }
-            // Parse the JSON data from the response
-            return response.json();
+
+    const videosData = sessionStorage.getItem('videosData')
+    let videos;
+    let indexCurrent
+
+    if (!videosData) {
+        fetch(`/video/videos/inf`, {
+            method: 'GET',
         })
-        .then(data => {
-            console.log("data:", data)
-            listVideo = data.videos.filter(videoPlaying => {
-                return videoPlaying.id !== video.id
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`Network response was not ok (${response.status})`);
+                }
+                return response.json();
+            }).then(data => {
+                console.log("data:", data.videos)
+                sessionStorage.setItem('videosData', JSON.stringify(data.videos));
+                sessionStorage.setItem('indexCurrent', 1);
+                videos = data.videos
             })
-            console.log("listVideo:", listVideo)
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
+    } else {
+        videos = JSON.parse(videosData);
+        indexCurrent = sessionStorage.getItem('indexCurrent');
+    }
 
     if (video) {
         function updateVolumeIcon(isMuted) {
@@ -532,7 +536,6 @@
             }
         }
         function createCommentElement(comment) {
-            console.log("comment:", comment)
             const updateTimeDifference = formatTimeDifference(comment.createAt);
 
             const commentDiv = document.createElement('div');
@@ -617,150 +620,33 @@
         const divCommentList = document.querySelector('.tiktok-1qp5gj2-DivCommentListContainer')
         const svgIcon = likeElement.querySelector('svg');
         const copyLinkText = document.querySelector('.tiktok-1v8b11s-PCopyLinkText')
-        const host = window.location.host;
+        const host = "<%= process.env.ORIGIN %>"
         const buttonCopyLink = document.querySelector('.tiktok-7e23lp-ButtonCopyLink')
         const updateTimeDifference = formatTimeDifference(video.createAt);
-        fetch(`/video/videoInf/${video.id}`, {
-            method: 'GET',
-        })
-            .then(response => {
-                // Check if the response is successful (status code 2xx)
-                if (!response.ok) {
-                    throw new Error(`Network response was not ok (${response.status})`);
-                }
-                // Parse the JSON data from the response
-                return response.json();
-            })
-            .then(data => {
-                const video = data.video
-                console.log("video:", video)
-                commentsCountElement.textContent = `Comments (${video.comments.length})`;
-                likeCountElement.textContent = video.likes;
-                commentCountElement.textContent = video.comments.length;
-                undefinedCountElement.textContent = '0';
-                usernameElement.textContent = video.user.username;
-                nameElement.textContent = video.user.name;
-                daysDifferenceElement.textContent = updateTimeDifference;
-                captionElement.textContent = video.caption;
-                avatarImage.src = `${video.user.logo}`;
-                videoThumbnail.src = `${video.thumbnail}`;
-                videoPlay.src = `${video.video}`
-                if (video.likers.length > 0) {
-                    video.likers.forEach(liker => {
-                        if (customer.id === liker.id) {
-                            svgIcon.setAttribute('fill', 'rgba(254, 44, 85)');
-                        }
-                    })
-                }
-                else {
-                    svgIcon.setAttribute('fill', 'rgba(22, 24, 35)');
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
+        const socket = io(host);
+        // socket.on('updateVideo', (data) => {
+        //     console.log("data:", data)
 
+        // });
+        commentsCountElement.textContent = `Comments (${video.comments.length})`;
+        likeCountElement.textContent = video.likes;
+        commentCountElement.textContent = video.comments.length;
+        undefinedCountElement.textContent = '0';
+        usernameElement.textContent = video.user.username;
+        nameElement.textContent = video.user.name;
+        daysDifferenceElement.textContent = updateTimeDifference;
+        captionElement.textContent = video.caption;
+        avatarImage.src = `${video.user.logo}`;
+        videoThumbnail.src = `${video.thumbnail}`;
+        videoPlay.src = `${video.video}`
+        svgIcon.setAttribute('fill', 'rgba(22, 24, 35)');
 
-        //         function fetchVideoInfo() {
-        //             fetch(`/video/videoInf/${video.id}`, {
-        //                 method: 'GET',
-        //             })
-        //                 .then(response => {
-        //                     if (!response.ok) {
-        //                         throw new Error(`Network response was not ok (${response.status})`);
-        //                     }
-        //                     return response.json();
-        //                 })
-        //                 .then(data => {
-        //                     const video = data.video;
-        //                     commentsCountElement.textContent = `Comments (${video.comments.length})`;
-        //                     likeCountElement.textContent = video.likes;
-        //                     commentCountElement.textContent = video.comments.length;
-        //                     undefinedCountElement.textContent = '0';
-        //                     usernameElement.textContent = video.user.username;
-        //                     nameElement.textContent = video.user.name;
-        //                     daysDifferenceElement.textContent = daysDifference;
-
-        //                     if (video.likers.length > 0) {
-        //                         video.likers.forEach(liker => {
-        //                             if (customer.id === liker.id) {
-        //                                 svgIcon.setAttribute('fill', 'rgba(254, 44, 85)');
-        //                             }
-        //                         });
-        //                     } else {
-        //                         svgIcon.setAttribute('fill', 'rgba(22, 24, 35)');
-        //                     }
-        //                     if (video.comments.length > 0) {
-        //                         const listComments = document.querySelectorAll(".listComments")
-        //                         listComments.forEach(element => {
-        //                             if (element.parentNode) {
-        //                                 element.parentNode.removeChild(element);
-        //                             }
-        //                         });
-        //                         video.comments.forEach(comment => {
-        //                             const dateObject = new Date(comment.updateAt);
-        //                             const today = new Date();
-        //                             const timeDifference = today - dateObject;
-        //                             let daysDifference;
-        //                             if (timeDifference < 1000 * 60 * 60) { // Nếu thời gian chênh lệch dưới 1 giờ
-        //                                 const minutesDifference = Math.floor(timeDifference / (1000 * 60));
-        //                                 daysDifference = `${minutesDifference}m ago`;
-        //                             } else if (timeDifference < 1000 * 60 * 60 * 24) { // Nếu thời gian chênh lệch dưới 1 ngày
-        //                                 const hoursDifference = Math.floor(timeDifference / (1000 * 60 * 60));
-        //                                 daysDifference = `${hoursDifference}h ago`;
-        //                             } else if (timeDifference > 1000 * 60 * 60 * 24 * 7) { // Nếu thời gian chênh lệch trên 1 tuần
-        //                                 const day = dateObject.getDate();
-        //                                 const month = dateObject.getMonth() + 1;
-        //                                 daysDifference = `${month}-${day}`;
-        //                             } else {
-        //                                 const difference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
-        //                                 daysDifference = `${difference}d ago`;
-        //                             }
-        //                             const commentDiv = document.createElement('div');
-        //                             commentDiv.classList = "listComments"
-        //                             commentDiv.innerHTML = `
-        //                 <div class="tiktok-1i7ohvi-DivCommentItemContainer">
-        //                     <div id="7293732457551086344" class="tiktok-ulyotp-DivCommentContentContainer e1g2efjf0"><a data-e2e="comment-avatar-1" class="e1g2efjf5 tiktok-1jatens-StyledLink-StyledUserLinkAvatar er1vbsz0" href="/@dng.l.b4" style="flex: 0 0 40px;"><span shape="circle" data-e2e="" class="tiktok-tuohvl-SpanAvatarContainer e1e9er4e0" style="width: 40px; height: 40px;"><img loading="lazy" alt="" src="${comment.customer.logo}" class="tiktok-1zpj2q-ImgAvatar"></span></a>
-        //                         <div class="tiktok-1mf23fd-DivContentContainer e1g2efjf1"><a class="e1g2efjf4 tiktok-fx1avz-StyledLink-StyledUserLinkName er1vbsz0" href="/@dng.l.b4"><span data-e2e="comment-username-1" class="tiktok-1665s4c-SpanUserNameText e1g2efjf3">${comment.customer.name}</span></a>
-        //                             <p data-e2e="comment-level-1" class="tiktok-xm2h10-PCommentText e1g2efjf6"><span dir="">${comment.text}</span></p>
-        //                             <p class="tiktok-1sun2p5-PCommentSubContent e1g2efjf9"><span data-e2e="comment-time-1" class="tiktok-4tru0g-SpanCreatedTime e1g2efjf8">${daysDifference}</span><span aria-label="Reply" role="button" data-e2e="comment-reply-1" tabindex="0" class="tiktok-ro5z69-SpanReplyButton e1g2efjf10">Reply</span></p>
-        //                         </div>
-        //                         <div class="tiktok-1swe2yf-DivActionContainer esns4rh0">
-        //                             <div aria-label="more" role="button" tabindex="0" class="tiktok-5g6iif-DivMoreContainer esns4rh1">
-        //                                 <div data-e2e="comment-more-icon"><svg class="tiktok-fzlfzu-StyledMoreIcon esns4rh2" width="1em" data-e2e="" height="1em" viewBox="0 0 48 48" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-        //                                         <path fill-rule="evenodd" clip-rule="evenodd" d="M4 24C4 21.7909 5.79086 20 8 20C10.2091 20 12 21.7909 12 24C12 26.2091 10.2091 28 8 28C5.79086 28 4 26.2091 4 24ZM20 24C20 21.7909 21.7909 20 24 20C26.2091 20 28 21.7909 28 24C28 26.2091 26.2091 28 24 28C21.7909 28 20 26.2091 20 24ZM36 24C36 21.7909 37.7909 20 40 20C42.2091 20 44 21.7909 44 24C44 26.2091 42.2091 28 40 28C37.7909 28 36 26.2091 36 24Z">
-        //                                         </path>
-        //                                     </svg></div>
-        //                             </div>
-        //                             <div aria-label="Like video
-        // {number} likes" aria-pressed="false" role="button" tabindex="0" class="tiktok-114tc9h-DivLikeWrapper ezxoskx0">
-        //                                 <div data-e2e="comment-like-icon" class="tiktok-1tvtgfz-DivLikeIcon ezxoskx2"><svg width="20" data-e2e="" height="20" viewBox="0 0 48 48" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-        //                                         <path fill-rule="evenodd" clip-rule="evenodd" d="M24 9.01703C19.0025 3.74266 11.4674 3.736 6.67302 8.56049C1.77566 13.4886 1.77566 21.4735 6.67302 26.4016L22.5814 42.4098C22.9568 42.7876 23.4674 43 24 43C24.5326 43 25.0432 42.7876 25.4186 42.4098L41.327 26.4016C46.2243 21.4735 46.2243 13.4886 41.327 8.56049C36.5326 3.736 28.9975 3.74266 24 9.01703ZM21.4938 12.2118C17.9849 8.07195 12.7825 8.08727 9.51028 11.3801C6.16324 14.7481 6.16324 20.214 9.51028 23.582L24 38.1627L38.4897 23.582C41.8368 20.214 41.8368 14.7481 38.4897 11.3801C35.2175 8.08727 30.0151 8.07195 26.5062 12.2118L26.455 12.2722L25.4186 13.3151C25.0432 13.6929 24.5326 13.9053 24 13.9053C23.4674 13.9053 22.9568 13.6929 22.5814 13.3151L21.545 12.2722L21.4938 12.2118Z">
-        //                                         </path>
-        //                                     </svg></div><span data-e2e="comment-like-count" class="tiktok-gb2mrc-SpanCount ezxoskx3" style="margin-left: 0px; margin-right: 0px;">20</span>
-        //                             </div>
-        //                         </div>
-        //                     </div>
-        //                 </div>
-        //                 `
-        //                             divCommentList.appendChild(commentDiv)
-        //                         })
-        //                     } else {
-        //                         const listComments = document.querySelectorAll(".listComments")
-        //                         listComments.forEach(element => {
-        //                             if (element.parentNode) {
-        //                                 element.parentNode.removeChild(element);
-        //                             }
-        //                         });
-
-        //                     }
-        //                 })
-        //                 .catch(error => {
-        //                     console.error('Error:', error);
-        //                 });
-        //         }
-
-        //         const intervalId = setInterval(fetchVideoInfo, 10000);
+        if (video.likers.length > 0) {
+            const isLikedByCustomer = video.likers.some(liker => liker.id === customer.id);
+            if (isLikedByCustomer) {
+                svgIcon.setAttribute('fill', 'rgba(254, 44, 85)');
+            }
+        }
 
         likeElement.addEventListener("click", () => {
             let likesCountNumber = parseInt(likeCountElement.innerText, 10);
@@ -881,7 +767,8 @@
             }
         });
         xButton.addEventListener('click', function () {
-            window.location.href = '/video/videos'
+            history.replaceState({}, '', '/video/videos');
+            history.back()
         })
         inputElement.addEventListener('input', function () {
             const postComment = document.querySelector('.tiktok-n4wkvf-DivPostButton')
@@ -946,82 +833,13 @@
             }
 
         })
-        let index = 0
         const scrollBottom = document.querySelector('.tiktok-1s9jpf8-ButtonBasicButtonContainer-StyledVideoSwitch');
         scrollBottom.addEventListener('click', () => {
-            inputElement.textContent = ''
-            postComment.style.color = 'rgba(22, 24, 35, 0.34)'
-            placeholderDiv.style.display = 'block';
-            playIcon.style.display = 'none';
-            index++;
-
-            if (index >= listVideo.length) {
-                console.log("listVideo:", listVideo)
-                index = 0;
-            }
-            const newUrl = `/video/${video.id}`;
-            history.pushState({ videoId: video.id }, '', newUrl);
-            video = listVideo[index]
-            fetch(`/video/videoInf/${video.id}`, {
-                method: 'GET',
-            })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error(`Network response was not ok (${response.status})`);
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    const video = data.video
-                    const newUrl = `/video/${video.id}`;
-                    history.pushState({ videoId: video.id }, '', newUrl);
-                    copyLinkText.innerHTML = `${host}/video/${video.id}`
-                    commentsCountElement.textContent = `Comments (${video.comments.length})`;
-                    likeCountElement.textContent = video.likes;
-                    commentCountElement.textContent = video.comments.length;
-                    undefinedCountElement.textContent = '0';
-                    usernameElement.textContent = video.user.username;
-                    nameElement.textContent = video.user.name;
-                    daysDifferenceElement.textContent = updateTimeDifference;
-                    captionElement.textContent = video.caption;
-                    avatarImage.src = `${video.user.logo}`;
-                    videoThumbnail.src = `${video.thumbnail}`;
-                    videoPlay.src = `${video.video}`
-                    if (video.comments.length > 0) {
-                        const listComments = document.querySelectorAll(".listComments")
-                        listComments.forEach(element => {
-                            if (element.parentNode) {
-                                element.parentNode.removeChild(element);
-                            }
-                        });
-                        video.comments.forEach(comment => {
-                            const commentElement = createCommentElement(comment);
-                            divCommentList.appendChild(commentElement);
-                        })
-                    } else {
-                        const listComments = document.querySelectorAll(".listComments")
-                        listComments.forEach(element => {
-                            if (element.parentNode) {
-                                element.parentNode.removeChild(element);
-                            }
-                        });
-
-                    }
-                    if (video.likers.length > 0) {
-                        video.likers.forEach(liker => {
-                            if (customer.id === liker.id) {
-                                svgIcon.setAttribute('fill', 'rgba(254, 44, 85)');
-                            }
-                        })
-                    }
-                    else {
-                        svgIcon.setAttribute('fill', 'rgba(22, 24, 35)');
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
-
+            indexCurrent++
+            let video = videos[indexCurrent]
+            history.replaceState({ indexCurrent }, '', `/video/${video.id}`);
+            sessionStorage.setItem('indexCurrent', indexCurrent);
+            window.location.href = `/video/${video.id}`
         });
     }
 </script>

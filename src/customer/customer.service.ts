@@ -161,7 +161,6 @@ export class CustomerService extends BaseService<Customer> {
   }
 
   async getUser(input) {
-    console.log("input:", input)
     const customer = await this.repo
       .createQueryBuilder('customer')
       .where('customer.id = :id', { id: input.id })
