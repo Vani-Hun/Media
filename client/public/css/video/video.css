@@ -474,8 +474,56 @@
       border-radius: 100px;
   }
 
-  .tiktok-1w6o9i7-ButtonBasicButtonContainer-StyledVideoSwitch:disabled {
-      display: none;
+  .container-unableMuted {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 9999;
+  }
+
+  .unableMuted button {
+      padding: 15px 25px;
+      border: unset;
+      border-radius: 15px;
+      color: #212121;
+      z-index: 1;
+      background: #e8e8e8;
+      position: relative;
+      font-weight: 1000;
+      font-size: 17px;
+      -webkit-box-shadow: 4px 8px 19px -3px rgba(0, 0, 0, 0.27);
+      box-shadow: 4px 8px 19px -3px rgba(0, 0, 0, 0.27);
+      transition: all 250ms;
+      overflow: hidden;
+  }
+
+  .unableMuted button::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 0;
+      border-radius: 15px;
+      background-color: #212121;
+      z-index: -1;
+      -webkit-box-shadow: 4px 8px 19px -3px rgba(0, 0, 0, 0.27);
+      box-shadow: 4px 8px 19px -3px rgba(0, 0, 0, 0.27);
+      transition: all 250ms
+  }
+
+  .unableMuted button:hover {
+      color: #e8e8e8;
+  }
+
+  .unableMuted button:hover::before {
+      width: 100%;
   }
 
   .tiktok-1s9jpf8-ButtonBasicButtonContainer-StyledVideoSwitch {
@@ -624,6 +672,42 @@
       color: var(--tux-colorConstTextInverse);
       background-color: var(--tux-colorPrimary);
       border-color: var(--tux-colorPrimary);
+  }
+
+  .tiktok-2cfmui-Button {
+      box-sizing: border-box;
+      appearance: none;
+      min-width: 96px;
+      display: inline-flex;
+      -webkit-box-pack: center;
+      justify-content: center;
+      -webkit-box-align: center;
+      align-items: center;
+      position: relative;
+      border-style: solid;
+      border-width: 1px;
+      border-radius: 2px;
+      font-family: var(--tux-fontFamilyParagraph);
+      font-weight: var(--tux-fontWeightSemibold);
+      text-decoration: none;
+      cursor: pointer;
+      background-clip: padding-box;
+      font-size: var(--tux-fontSizeP3);
+      height: 36px;
+      padding-inline: 15px;
+      color: var(--tux-colorTextPrimary);
+      background-color: var(--tux-colorBGSecondary);
+      border-color: var(--tux-colorLineSecondary);
+  }
+
+  .tiktok-2cfmui-Button:hover:not(:disabled):not([aria-disabled="true"]) {
+      background-color: var(--tux-colorBGSecondary-tint-4);
+      border-color: var(--tux-colorLinePrimary);
+  }
+
+  .tiktok-1pcikqk-Button:hover:not(:disabled):not([aria-disabled="true"]) {
+      background-color: var(--tux-colorPrimary-tint-8);
+      border-color: var(--tux-colorPrimary-tint-8);
   }
 
   .tiktok-jp3752-ButtonContent {

@@ -138,7 +138,7 @@
                 <div data-e2e="browse-video" class="tiktok-8lv75m-DivBasicPlayerWrapper e1yey0rl2">
                     <div id="xgwrapper-2-7273303434869198082" class="tiktok-web-player no-controls"
                         style="width: 100%; height: 100%;"><video playsinline="" preload="auto" crossorigin="anonymous"
-                            style="width: 100%; height: 100%;" muted autoplay loop></video>
+                            style="width: 100%; height: 100%;" autoplay loop></video>
                     </div>
                 </div>
             </div>
@@ -180,9 +180,9 @@
                         stroke="white" stroke-width="2.5" stroke-linecap="round">
                     </path>
                 </svg></button></div>
-        <button disabled="" data-e2e="arrow-left" role="button" aria-label="Go to previous video"
-            class="tiktok-1w6o9i7-ButtonBasicButtonContainer-StyledVideoSwitch e11s2kul11"><svg width="26" data-e2e=""
-                height="26" viewBox="0 0 48 48" fill="#fff" xmlns="http://www.w3.org/2000/svg">
+        <button data-e2e="arrow-left" role="button" aria-label="Go to previous video"
+            class="tiktok-1w6o9i7-ButtonBasicButtonContainer-StyledVideoSwitch"><svg width="26" data-e2e="" height="26"
+                viewBox="0 0 48 48" fill="#fff" xmlns="http://www.w3.org/2000/svg">
                 <path fill-rule="evenodd" clip-rule="evenodd"
                     d="M34.4142 22.5858L18.1213 6.29289C17.7308 5.90237 17.0976 5.90237 16.7071 6.29289L15.2929 7.70711C14.9024 8.09763 14.9024 8.7308 15.2929 9.12132L30.1716 24L15.2929 38.8787C14.9024 39.2692 14.9024 39.9024 15.2929 40.2929L16.7071 41.7071C17.0976 42.0976 17.7308 42.0976 18.1213 41.7071L34.4142 25.4142C35.1953 24.6332 35.1953 23.3668 34.4142 22.5858Z">
                 </path>
@@ -441,18 +441,28 @@
 <div id="customAlert" class="custom-alert">
     <span id="alertMessage"></span>
 </div>
+<div style="display: none;" class="container-unableMuted">
+    <div class="unableMuted">
+        <button>START!</button>
+    </div>
+</div>
+
+
 <script src="/socket.io/socket.io.js"></script>
 <script>
 
     let video = JSON.parse('<%- JSON.stringify(video) %>');
 
     let customer = JSON.parse('<%- JSON.stringify(customer) %>');
+    let followedSet = new Set(customer.following.map(following => following.id))
+    let videosData = sessionStorage.getItem('videosData')
 
-    const videosData = sessionStorage.getItem('videosData')
     let videos;
+
     let indexCurrent
 
     if (!videosData) {
+
         fetch(`/video/videos/inf`, {
             method: 'GET',
         })
@@ -461,18 +471,23 @@
                     throw new Error(`Network response was not ok (${response.status})`);
                 }
                 return response.json();
-            }).then(data => {
-                console.log("data:", data.videos)
+            })
+            .then(data => {
                 sessionStorage.setItem('videosData', JSON.stringify(data.videos));
                 sessionStorage.setItem('indexCurrent', 1);
                 videos = data.videos
+                continuePlay(video)
             })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+            });
     } else {
         videos = JSON.parse(videosData);
         indexCurrent = sessionStorage.getItem('indexCurrent');
+        continuePlay(video)
     }
 
-    if (video) {
+    function continuePlay(video) {
         function updateVolumeIcon(isMuted) {
             const svg = volumeButton.querySelector('svg');
             svg.innerHTML = '';
@@ -584,6 +599,24 @@
 
             return commentDiv;
         }
+        function showCustomAlert(message) {
+            const customAlert = document.getElementById('customAlert');
+            const alertMessage = document.getElementById('alertMessage');
+            alertMessage.textContent = message;
+            customAlert.style.display = 'block';
+            setTimeout(() => {
+                customAlert.style.display = 'none';
+            }, 1500)
+        }
+        function handleVisibilityEvent() {
+            document.hidden ? videoPlay.pause() : playIcon.style.display === 'none' ? videoPlay.play() : videoPlay.pause()
+        }
+        function handleFollow(userId) {
+            if (followedSet.has(userId)) {
+                followButton.classList = "tiktok-2cfmui-Button";
+                changeButton.innerHTML = "Following";
+            }
+        }
 
         const inputElement = document.querySelector('.public-DraftEditor-content');
         const placeholderDiv = document.querySelector('.public-DraftEditorPlaceholder-root');
@@ -623,49 +656,87 @@
         const host = "<%= process.env.ORIGIN %>"
         const buttonCopyLink = document.querySelector('.tiktok-7e23lp-ButtonCopyLink')
         const updateTimeDifference = formatTimeDifference(video.createAt);
+        const rightArrow = document.querySelector('.tiktok-1s9jpf8-ButtonBasicButtonContainer-StyledVideoSwitch');
+        const leftArrow = document.querySelector('.tiktok-1w6o9i7-ButtonBasicButtonContainer-StyledVideoSwitch')
+        const unableMuted = document.querySelector('.container-unableMuted')
+        const button_unableMuted = document.querySelector('.unableMuted')
+        const divFollowButton = document.querySelector('.tiktok-r4iroe-DivBtnWrapper')
+        const followButton = divFollowButton.querySelector('button')
+        const changeButton = document.querySelector('.tiktok-1djnsui-ButtonLabel')
         const socket = io(host);
-        // socket.on('updateVideo', (data) => {
-        //     console.log("data:", data)
+        let isMuted = false
 
-        // });
-        commentsCountElement.textContent = `Comments (${video.comments.length})`;
-        likeCountElement.textContent = video.likes;
-        commentCountElement.textContent = video.comments.length;
-        undefinedCountElement.textContent = '0';
-        usernameElement.textContent = video.user.username;
-        nameElement.textContent = video.user.name;
-        daysDifferenceElement.textContent = updateTimeDifference;
-        captionElement.textContent = video.caption;
-        avatarImage.src = `${video.user.logo}`;
-        videoThumbnail.src = `${video.thumbnail}`;
+        copyLinkText.innerHTML = `${host}/video/${video.id}`
+        handleFollow(video.user.id);
+        if (indexCurrent === '0' || !indexCurrent) {
+            leftArrow.style.display = "none"
+        } else {
+            leftArrow.style.display = "flex"
+        }
+
+        commentsCountElement.textContent = `Comments (${video.comments.length})`
+        likeCountElement.textContent = video.likes
+        commentCountElement.textContent = video.comments.length
+        undefinedCountElement.textContent = '0'
+        usernameElement.textContent = video.user.username
+        nameElement.textContent = video.user.name
+        daysDifferenceElement.textContent = updateTimeDifference
+        captionElement.textContent = video.caption
+        avatarImage.src = `${video.user.logo}`
+        videoThumbnail.src = `${video.thumbnail}`
         videoPlay.src = `${video.video}`
-        svgIcon.setAttribute('fill', 'rgba(22, 24, 35)');
+        svgIcon.setAttribute('fill', 'rgba(22, 24, 35)')
 
         if (video.likers.length > 0) {
             const isLikedByCustomer = video.likers.some(liker => liker.id === customer.id);
             if (isLikedByCustomer) {
-                svgIcon.setAttribute('fill', 'rgba(254, 44, 85)');
+                svgIcon.setAttribute('fill', 'rgba(254, 44, 85)')
             }
         }
 
         likeElement.addEventListener("click", () => {
-            let likesCountNumber = parseInt(likeCountElement.innerText, 10);
             const fillValue = svgIcon.getAttribute('fill');
             if (fillValue === "rgba(22, 24, 35)") {
-                likesCountNumber += 1
+                likeCountElement.innerText = +likeCountElement.innerText + 1
                 svgIcon.setAttribute('fill', 'rgba(254, 44, 85)');
                 fetch(`/video/like/${video.id}`, {
                     method: 'POST',
                 })
                     .then(data => {
+                        socket.emit('like', { id: customer.id }, (data) => console.log(data));
+                        socket.on('updateCustomer', (data) => {
+                            sessionStorage.setItem('customer', JSON.stringify(data.customer));
+                        });
                     })
                     .catch(error => {
                         console.error('Error:', error);
                     });
             } else {
-                likesCountNumber -= 1
+                likeCountElement.innerText = +likeCountElement.innerText - 1
                 svgIcon.setAttribute('fill', 'rgba(22, 24, 35)');
                 fetch(`/video/dislike/${video.id}`, {
+                    method: 'POST',
+                })
+                    .then(data => {
+                        socket.emit('like', { id: customer.id }, (data) => console.log(data));
+                        socket.on('updateCustomer', (data) => {
+                            sessionStorage.setItem('customer', JSON.stringify(data.customer));
+                        });
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+            }
+        });
+
+        video.comments.forEach(comment => {
+            const commentElement = createCommentElement(comment);
+            divCommentList.appendChild(commentElement);
+        })
+
+        videoPlay.addEventListener('timeupdate', function () {
+            if (videoPlay.currentTime >= 3 && !videoPlay.hasAttribute('data-viewed')) {
+                fetch(`/video/view/${video.id}`, {
                     method: 'POST',
                 })
                     .then(data => {
@@ -673,30 +744,13 @@
                     .catch(error => {
                         console.error('Error:', error);
                     });
+                videoPlay.setAttribute('data-viewed', 'true');
             }
-            likeCountElement.innerText = `${likesCountNumber}`
+            if (videoPlay.currentTime === 0 && videoPlay.hasAttribute('data-viewed')) {
+                videoPlay.removeAttribute('data-viewed');
+            }
         });
-        video.comments.forEach(comment => {
-            const commentElement = createCommentElement(comment);
-            divCommentList.appendChild(commentElement);
-        })
-        let isMuted = false
-        copyLinkText.innerHTML = `${host}/video/${video.id}`
 
-        function showCustomAlert(message) {
-            const customAlert = document.getElementById('customAlert');
-            const alertMessage = document.getElementById('alertMessage');
-
-            // Hiển thị thông báo
-            alertMessage.textContent = message;
-            customAlert.style.display = 'block';
-
-            // Đóng thông báo sau khoảng 2 giây (2000 milliseconds)
-            setTimeout(() => {
-                // Ẩn thông báo
-                customAlert.style.display = 'none';
-            }, 1500);
-        }
         buttonCopyLink.addEventListener('click', () => {
             let textToCopy = copyLinkText.innerHTML
             let textArea = document.createElement("textarea");
@@ -720,23 +774,21 @@
             }
             document.body.removeChild(textArea);
         })
-        window.addEventListener('load', function () {
+
+        button_unableMuted.addEventListener('click', function () {
+            sessionStorage.setItem('videosData', JSON.stringify(videos));
+            sessionStorage.setItem('indexCurrent', 0);
+            sessionStorage.setItem('firstURL', true);
+            unableMuted.style.display = 'none'
             videoPlay.muted = false;
             videoPlay.play();
         })
-        function handleFocusEvent() {
-            if (videoPlay.paused && playIcon.style.display === 'block') {
-                videoPlay.pause();
-            } else {
-                videoPlay.play();
-            }
-        }
 
-        window.addEventListener('focus', handleFocusEvent);
-        window.addEventListener('blur', function () {
-            videoPlay.pause();
-        });
+        videoPlay.play().catch(error => {
+            unableMuted.style.display = 'flex'
+        })
 
+        document.addEventListener('visibilitychange', handleVisibilityEvent);
 
         volumeButton.addEventListener('click', () => {
             isMuted = !isMuted;
@@ -755,6 +807,7 @@
                 }
             }
         });
+
         xgwrapper.addEventListener('click', function () {
             if (videoPlay.paused) {
                 playIcon.style.display = 'none';
@@ -766,12 +819,20 @@
                 videoPlay.setAttribute('loop', '');
             }
         });
+
         xButton.addEventListener('click', function () {
-            history.replaceState({}, '', '/video/videos');
-            history.back()
+            // history.replaceState({}, '', '/video/videos');
+            if (sessionStorage.getItem('firstURL')) {
+                sessionStorage.setItem('firstURL', false);
+                window.location.href = `/video/videos`
+            } else {
+                history.back()
+            }
+
+
         })
+
         inputElement.addEventListener('input', function () {
-            const postComment = document.querySelector('.tiktok-n4wkvf-DivPostButton')
             if (inputElement.textContent.trim() !== '') {
                 placeholderDiv.style.display = 'none';
                 postComment.style.color = 'rgba(234, 40, 78, 1)'
@@ -780,6 +841,7 @@
                 postComment.style.color = 'rgba(22, 24, 35, 0.34)'
             }
         });
+
         postComment.addEventListener('click', () => {
             if (inputElement.textContent.trim() !== '') {
                 const data = {
@@ -833,13 +895,28 @@
             }
 
         })
-        const scrollBottom = document.querySelector('.tiktok-1s9jpf8-ButtonBasicButtonContainer-StyledVideoSwitch');
-        scrollBottom.addEventListener('click', () => {
-            indexCurrent++
+
+        leftArrow.addEventListener('click', () => {
+            indexCurrent--
             let video = videos[indexCurrent]
             history.replaceState({ indexCurrent }, '', `/video/${video.id}`);
             sessionStorage.setItem('indexCurrent', indexCurrent);
             window.location.href = `/video/${video.id}`
+
+        });
+
+        rightArrow.addEventListener('click', () => {
+            indexCurrent = sessionStorage.getItem('indexCurrent');
+            indexCurrent++
+            if (indexCurrent >= videos.length) {
+                showCustomAlert("RUN OUT OF VIDEOs")
+            } else {
+                let video = videos[indexCurrent]
+                history.replaceState({ indexCurrent }, '', `/video/${video.id}`);
+                sessionStorage.setItem('indexCurrent', indexCurrent);
+                window.location.href = `/video/${video.id}`
+            }
+
         });
     }
 </script>

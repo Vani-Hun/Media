@@ -252,10 +252,13 @@ export class CustomerService extends BaseService<Customer> {
 
       const isFollowed = userRequest.following.some(following => following.id === input.customerId);
 
-      if (!isFollowed) {
-        const userRequested = await this.repo.findOneOrFail(input.customerId);
+      if (isFollowed === false) {
+        const userRequested = await this.repo.createQueryBuilder('customer')
+          .leftJoinAndSelect('customer.following', 'following')
+          .where('customer.id = :id', { id: input.customerId })
+          .getOneOrFail();
 
-        userRequest.following.push(userRequested);
+        await userRequest.following.push(userRequested);
         await this.repo.save(userRequest);
 
         input.type = NotificationType.FOLLOWER;

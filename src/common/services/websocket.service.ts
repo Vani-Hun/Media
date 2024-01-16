@@ -20,7 +20,7 @@ export class NotificationGateway implements OnGatewayConnection, OnGatewayDiscon
         console.log(`Client disconnected: ${client.id}`);
     }
 
-    @SubscribeMessage('like')
+    @SubscribeMessage('update')
     async handleLike(client: any, payload: any): Promise<void> {
         console.log("Client:", client.id)
         console.log('Received customer:', payload);
