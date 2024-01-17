@@ -694,6 +694,42 @@
             }
         }
 
+        followButton.addEventListener("click", () => {
+            if (changeButton.innerHTML === "Follow") {
+                followButton.classList = "tiktok-2cfmui-Button"
+                changeButton.innerHTML = "Following"
+                fetch(`/customer/follow/${video.user.id}`, {
+                    method: 'POST',
+                })
+                    .then(data => {
+                        socket.emit('update', { id: customer.id }, (data) => console.log(data));
+                        socket.on('updateCustomer', (data) => {
+                            customer = data.customer
+                            followedSet = new Set(customer.following.map(following => following.id))
+                        });
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+            } else {
+                changeButton.innerHTML = "Follow"
+                followButton.classList = "tiktok-1pcikqk-Button"
+                fetch(`/customer/unfollow/${video.user.id}`, {
+                    method: 'POST',
+                })
+                    .then(data => {
+                        socket.emit('update', { id: customer.id }, (data) => console.log(data));
+                        socket.on('updateCustomer', (data) => {
+                            customer = data.customer
+                            followedSet = new Set(customer.following.map(following => following.id))
+                        });
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+            }
+        })
+
         likeElement.addEventListener("click", () => {
             const fillValue = svgIcon.getAttribute('fill');
             if (fillValue === "rgba(22, 24, 35)") {

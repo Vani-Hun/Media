@@ -1,6 +1,6 @@
-  .tiktok-1qg2388-DivBrowserModeContainer {
+  /* .tiktok-1qg2388-DivBrowserModeContainer {
       display: flex;
-  }
+  } */
 
   .tiktok-1tunefa-DivVideoContainer {
       flex: 1 0 600px;
@@ -1386,15 +1386,22 @@
       margin-right: 4px;
   }
 
-  .css-1t4vwes-DivMainContainer {
+  .css-9fq6q2-DivOneColumnContainer {
       margin-top: 60px;
+  }
+
+  .css-1t4vwes-DivMainContainer {
+      position: relative;
+      margin: 0px auto;
+      width: 100%;
+      min-width: 420px;
+      flex-shrink: 1;
       display: flex;
-      width: 100vw;
-      max-width: 100%;
-      -webkit-box-pack: justify;
-      justify-content: space-between;
-      align-self: center;
-      flex: 1 1 auto;
+      -webkit-box-pack: start;
+      justify-content: flex-start;
+      flex-direction: column;
+      -webkit-box-align: center;
+      align-items: center;
   }
 
   @media screen and (max-width: 1071px) {

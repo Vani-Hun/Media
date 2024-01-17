@@ -8,7 +8,7 @@ import { CustomerService } from 'src/customer/customer.service';
 @WebSocketGateway()
 export class NotificationGateway implements OnGatewayConnection, OnGatewayDisconnect {
     constructor(private customerService: CustomerService,
-        private VideoService: VideoService) { }
+        private videoService: VideoService) { }
 
     @WebSocketServer() server: Server;
 
@@ -20,19 +20,19 @@ export class NotificationGateway implements OnGatewayConnection, OnGatewayDiscon
         console.log(`Client disconnected: ${client.id}`);
     }
 
-    @SubscribeMessage('update')
-    async handleLike(client: any, payload: any): Promise<void> {
+    @SubscribeMessage('updateCustomer')
+    async updateCustomer(client: any, payload: any): Promise<void> {
         console.log("Client:", client.id)
         console.log('Received customer:', payload);
         const customer = await this.customerService.getUser(payload);
         this.server.to(client.id).emit('updateCustomer', customer);
     }
 
-    @SubscribeMessage('viewVideo')
-    async handleViewVideo(client: any, payload: any): Promise<void> {
+    @SubscribeMessage('updateVideo')
+    async updateVideo(client: any, payload: any): Promise<void> {
         console.log("Client:", client.id)
-        console.log('Received payload:', payload);
-        // const customer = await this.customerService.getUser(payload);
-        this.server.to(client.id).emit('updateVideo', payload);
+        console.log('Received video:', payload);
+        const video = await this.videoService.getVideo(payload);
+        this.server.to(client.id).emit('updateVideo', video);
     }
 }

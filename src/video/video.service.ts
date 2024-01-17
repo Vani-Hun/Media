@@ -173,6 +173,7 @@ export class VideoService extends BaseService<Video> {
         }
     }
     async createComment(input) {
+
         try {
             const video = await this.repo.createQueryBuilder('video')
                 .leftJoinAndSelect('video.user', 'user')
@@ -184,7 +185,9 @@ export class VideoService extends BaseService<Video> {
                 input.type = NotificationType.COMMENT
                 input.mess = `${NotificationMess.COMMENT} ${input.mess}`
                 return await this.notificationService.createNotification(input)
-            } else { return video }
+            } else {
+                return video
+            }
 
         } catch (error) {
             throw new HttpException(`Failed: ${error.message}`, HttpStatus.NOT_IMPLEMENTED);
@@ -217,7 +220,18 @@ export class VideoService extends BaseService<Video> {
         return { video, customer }
 
     }
+    async getVideo(input) {
+        const video = await this.repo.createQueryBuilder('video')
+            .leftJoinAndSelect('video.user', 'user')
+            .leftJoinAndSelect('video.comments', 'comments')
+            .leftJoinAndSelect('comments.video', 'commentVideo')
+            .leftJoinAndSelect('comments.customer', 'commentCustomer')
+            .leftJoinAndSelect('video.likers', 'likers')
+            .where('video.id = :id', { id: input.id })
+            .getOne();
 
+        return { video };
+    }
     async delete(input) {
         const video = await this.repo
             .createQueryBuilder('video')

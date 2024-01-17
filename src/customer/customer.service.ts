@@ -249,14 +249,15 @@ export class CustomerService extends BaseService<Customer> {
         .leftJoinAndSelect('customer.following', 'following')
         .where('customer.id = :id', { id: input.id })
         .getOneOrFail();
+      console.log("userRequest:", userRequest)
 
       const isFollowed = userRequest.following.some(following => following.id === input.customerId);
 
       if (isFollowed === false) {
         const userRequested = await this.repo.createQueryBuilder('customer')
-          .leftJoinAndSelect('customer.following', 'following')
           .where('customer.id = :id', { id: input.customerId })
           .getOneOrFail();
+        console.log("userRequested:", userRequested)
 
         await userRequest.following.push(userRequested);
         await this.repo.save(userRequest);
