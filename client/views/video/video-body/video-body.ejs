@@ -104,8 +104,308 @@
     <div class="css-9fq6q2-DivOneColumnContainer e108hwin0">
     </div>
 </div>
-<div tabindex="0" role="dialog" aria-modal="true" style="display: none;" class="tiktok-1qg2388-DivBrowserModeContainer"
-    style="z-index: 1000;display: none;">
+
+<div id="customAlert" class="custom-alert">
+    <span id="alertMessage"></span>
+</div>
+<div style="display: none;" class="container-unableMuted">
+    <div class="unableMuted">
+        <button>START!</button>
+    </div>
+</div>
+<script>
+    let videos = JSON.parse('<%- JSON.stringify(videos) %>')
+    let likedVideoIds = customer.likedVideos
+
+    if (videos.length > 0) {
+        const host = "<%= process.env.ORIGIN %>"
+        const videosContainer = document.querySelector('.css-9fq6q2-DivOneColumnContainer')
+        const containerMain = document.querySelector('.css-1t4vwes-DivMainContainer')
+        const videoContainer = document.querySelector('.tiktok-1qg2388-DivBrowserModeContainer')
+        const navMenu = document.querySelector('.nav-menu');
+        let followedSet = new Set(customer.following.map(following => following.id))
+        let likedVideoSet = new Set(likedVideoIds.map(video => video.id))
+        sessionStorage.setItem('videosData', JSON.stringify(videos));
+        //for videos event
+        function showCustomAlert(message) {
+            const customAlert = document.getElementById('customAlert');
+            const alertMessage = document.getElementById('alertMessage');
+            alertMessage.textContent = message;
+            customAlert.style.display = 'block';
+            setTimeout(() => {
+                customAlert.style.display = 'none';
+            }, 1500);
+        }
+        function updateFollow(video, request) {
+            let indexCurrent = JSON.parse(sessionStorage.getItem('videosData'))
+
+            let indexOfVideoOfUser = indexCurrent
+                .map((index, i) => index.user.id === video.user.id ? i : -1)
+                .filter(index => index !== -1);
+            if (request === "follow") {
+                indexOfVideoOfUser.forEach(index => {
+                    let videoDiv = document.querySelectorAll('.css-1hhj6ie-DivTextInfoContainer')[index];
+                    let buttonElement = videoDiv.querySelector('button');
+                    buttonElement.classList = "css-zmqo9-Button-StyledFollowButtonTux"
+                    let buttonLabelDiv = document.querySelectorAll('.css-1djnsui-ButtonLabel')[index];
+                    buttonLabelDiv.innerHTML = "Following"
+                });
+            } else {
+                indexOfVideoOfUser.forEach(index => {
+                    let videoDiv = document.querySelectorAll('.css-1hhj6ie-DivTextInfoContainer')[index];
+                    let buttonElement = videoDiv.querySelector('button');
+                    buttonElement.classList = "css-1847gtm-Button-StyledFollowButtonTux"
+                    let buttonLabelDiv = document.querySelectorAll('.css-1djnsui-ButtonLabel')[index];
+                    buttonLabelDiv.innerHTML = "Follow"
+                });
+            }
+
+
+        }
+        function updateCustomerAndFollow(video, actionType) {
+            socket.emit('updateCustomer', { id: customer.id }, (data) => console.log(data));
+
+            socket.on('updateCustomer', (data) => {
+                customer = data.customer;
+                followedSet = new Set(customer.following.map(following => following.id));
+                updateFollow(video, actionType);
+            });
+        }
+        function updateCustomerAndLike(video, likeIcon) {
+            socket.emit('updateCustomer', { id: customer.id }, (data) => console.log(data));
+
+            socket.on('updateCustomer', (data) => {
+                customer = data.customer;
+                likedVideoIds = customer.likedVideos;
+                const likedVideoSet = new Set(likedVideoIds.map(video => video.id));
+
+                if (likedVideoSet.has(video.id)) {
+                    likeIcon.style.color = "rgba(254, 44, 85)";
+                } else {
+                    likeIcon.style.color = "rgba(22, 24, 35)";
+                }
+            });
+        }
+        function handleLike(videoId, likeIcon) {
+            likeIcon.style.color = "rgba(22, 24, 35)";
+            if (likedVideoSet.has(videoId)) {
+                likeIcon.style.color = "rgba(254, 44, 85)";
+            }
+        }
+        function handleFollow(userId, followButton, changeButton) {
+            followButton.classList = "css-1847gtm-Button-StyledFollowButtonTux";
+            changeButton.innerHTML = "Follow";
+            if (followedSet.has(userId)) {
+                followButton.classList = "css-zmqo9-Button-StyledFollowButtonTux";
+                changeButton.innerHTML = "Following";
+            }
+        }
+
+
+        // for detail video event
+        function updateVolumeIcon(isMuted) {
+            const svg = volumeButton.querySelector('svg');
+            svg.innerHTML = '';
+            if (isMuted) {
+                const path1 = document.createElementNS("http://www.w3.org/2000/svg", "path");
+                path1.setAttribute('fill-rule', 'evenodd');
+                path1.setAttribute('clip-rule', 'evenodd');
+                path1.setAttribute('d', 'M21 16.9118C21 15.2513 20.8942 15.0909 20.709 15.0221C20.5238 14.9763 20.3122 14.9992 20.1799 15.1138L15.0741 19.5258H11.4762C11.2116 19.5258 11 19.7092 11 19.9384V28.084C11 28.3132 11.2116 28.4965 11.4762 28.4965H15.0741L20.1799 32.8862C20.3122 33.0008 20.5238 33.0237 20.709 32.9779C20.8942 32.9091 21 32.7487 21 32.5882V16.9118Z'); // Đường dẫn path cho trạng thái muted
+                path1.setAttribute('fill', 'white');
+                svg.appendChild(path1);
+                const path2 = document.createElementNS("http://www.w3.org/2000/svg", "path");
+                path2.setAttribute('fill-rule', 'evenodd');
+                path2.setAttribute('clip-rule', 'evenodd');
+                path2.setAttribute('d', 'M35.098 18.9489C34.5998 18.4508 33.7921 18.4508 33.2939 18.949L30.1368 22.1061L26.9797 18.949C26.4815 18.4508 25.6738 18.4508 25.1756 18.9489C24.6775 19.4471 24.6775 20.2548 25.1756 20.753L28.3327 23.9101L25.1757 27.0672C24.6775 27.5654 24.6775 28.3731 25.1757 28.8713C25.6738 29.3694 26.4815 29.3694 26.9797 28.8713L30.1368 25.7142L33.2939 28.8713C33.7921 29.3694 34.5998 29.3694 35.0979 28.8713C35.5961 28.3731 35.5961 27.5654 35.0979 27.0672L31.9409 23.9101L35.098 20.753C35.5962 20.2548 35.5962 19.4471 35.098 18.9489Z'); // Đường dẫn path cho trạng thái muted
+                path2.setAttribute('fill', 'white');
+                svg.appendChild(path2);
+            } else {
+                const path1 = document.createElementNS("http://www.w3.org/2000/svg", "path");
+                path1.setAttribute('fill-rule', 'evenodd');
+                path1.setAttribute('clip-rule', 'evenodd');
+                path1.setAttribute('d', 'M21 16.9118C21 15.2513 20.8942 15.0909 20.709 15.0221C20.5238 14.9763 20.3122 14.9992 20.1799 15.1138L15.0741 19.5258H11.4762C11.2116 19.5258 11 19.7092 11 19.9384V28.084C11 28.3132 11.2116 28.4965 11.4762 28.4965H15.0741L20.1799 32.8862C20.3122 33.0008 20.5238 33.0237 20.709 32.9779C20.8942 32.9091 21 32.7487 21 32.5882V16.9118Z'); // Đường dẫn path cho trạng thái unmuted
+                path1.setAttribute('fill', 'white');
+                svg.appendChild(path1);
+                const path2 = document.createElementNS("http://www.w3.org/2000/svg", "path");
+                path2.setAttribute('d', 'M30.6653 15C32.7348 17.2304 34.0001 20.2174 34.0001 23.5C34.0001 26.7826 32.7348 29.7696 30.6653 32');
+                path2.setAttribute('stroke', 'white');
+                path2.setAttribute('stroke-width', '2.5');
+                path2.setAttribute('stroke-linecap', 'round');
+                svg.appendChild(path2);
+                const path3 = document.createElementNS("http://www.w3.org/2000/svg", "path");
+                path3.setAttribute('d', 'M26.8799 17.8833C28.1994 19.381 28.9999 21.347 28.9999 23.5C28.9999 25.653 28.1994 27.6191 26.8799 29.1168');
+                path3.setAttribute('stroke', 'white');
+                path3.setAttribute('stroke-width', '2.5');
+                path3.setAttribute('stroke-linecap', 'round');
+                svg.appendChild(path3);
+            }
+        }
+        function formatTimeDifference(updateAt) {
+            const dateObject = new Date(updateAt);
+            const today = new Date();
+            const timeDifference = today - dateObject;
+
+            const minuteInMilliseconds = 1000 * 60;
+            const hourInMilliseconds = minuteInMilliseconds * 60;
+            const dayInMilliseconds = hourInMilliseconds * 24;
+            const weekInMilliseconds = dayInMilliseconds * 7;
+
+            if (timeDifference < hourInMilliseconds) {
+                const minutesDifference = Math.floor(timeDifference / minuteInMilliseconds);
+                return `${minutesDifference}m ago`;
+            } else if (timeDifference < dayInMilliseconds) {
+                const hoursDifference = Math.floor(timeDifference / hourInMilliseconds);
+                return `${hoursDifference}h ago`;
+            } else if (timeDifference > weekInMilliseconds) {
+                const day = dateObject.getDate();
+                const month = dateObject.getMonth() + 1;
+                return `${month}-${day}`;
+            } else {
+                const daysDifference = Math.floor(timeDifference / dayInMilliseconds);
+                return `${daysDifference}d ago`;
+            }
+        }
+        function createCommentElement(comment) {
+            const updateTimeDifference = formatTimeDifference(comment.createAt);
+
+            const commentDiv = document.createElement('div');
+            commentDiv.classList.add("tiktok-1i7ohvi-DivCommentItemContainer");
+
+            commentDiv.innerHTML = `
+        <div class="tiktok-ulyotp-DivCommentContentContainer e1g2efjf0">
+            <a data-e2e="comment-avatar-1" class="e1g2efjf5 tiktok-1jatens-StyledLink-StyledUserLinkAvatar er1vbsz0" href="/@${comment.customer.username}" style="flex: 0 0 40px;">
+                <span shape="circle" data-e2e="" class="tiktok-tuohvl-SpanAvatarContainer e1e9er4e0" style="width: 40px; height: 40px;">
+                    <img loading="lazy" alt="" src="${comment.customer.logo}" class="tiktok-1zpj2q-ImgAvatar">
+                </span>
+            </a>
+            <div class="tiktok-1mf23fd-DivContentContainer e1g2efjf1">
+                <a class="e1g2efjf4 tiktok-fx1avz-StyledLink-StyledUserLinkName er1vbsz0" href="/@${comment.customer.username}">
+                    <span data-e2e="comment-username-1" class="tiktok-1665s4c-SpanUserNameText e1g2efjf3">${comment.customer.name}</span>
+                </a>
+                <p data-e2e="comment-level-1" class="tiktok-xm2h10-PCommentText e1g2efjf6">
+                    <span dir="">${comment.text}</span>
+                </p>
+                <p class="tiktok-1sun2p5-PCommentSubContent e1g2efjf9">
+                    <span data-e2e="comment-time-1" class="tiktok-4tru0g-SpanCreatedTime e1g2efjf8">${updateTimeDifference}</span>
+                    <span aria-label="Reply" role="button" data-e2e="comment-reply-1" tabindex="0" class="tiktok-ro5z69-SpanReplyButton e1g2efjf10">Reply</span>
+                </p>
+            </div>
+            <div class="tiktok-1swe2yf-DivActionContainer esns4rh0">
+                <div aria-label="more" role="button" tabindex="0" class="tiktok-5g6iif-DivMoreContainer esns4rh1">
+                    <div data-e2e="comment-more-icon">
+                        <svg class="tiktok-fzlfzu-StyledMoreIcon esns4rh2" width="1em" data-e2e="" height="1em" viewBox="0 0 48 48" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M4 24C4 21.7909 5.79086 20 8 20C10.2091 20 12 21.7909 12 24C12 26.2091 10.2091 28 8 28C5.79086 28 4 26.2091 4 24ZM20 24C20 21.7909 21.7909 20 24 20C26.2091 20 28 21.7909 28 24C28 26.2091 26.2091 28 24 28C21.7909 28 20 26.2091 20 24ZM36 24C36 21.7909 37.7909 20 40 20C42.2091 20 44 21.7909 44 24C44 26.2091 42.2091 28 40 28C37.7909 28 36 26.2091 36 24Z">
+                            </path>
+                        </svg>
+                    </div>
+                </div>
+                <div aria-label="Like video {number} likes" aria-pressed="false" role="button" tabindex="0" class="tiktok-114tc9h-DivLikeWrapper ezxoskx0">
+                    <div data-e2e="comment-like-icon" class="tiktok-1tvtgfz-DivLikeIcon ezxoskx2">
+                        <svg width="20" data-e2e="" height="20" viewBox="0 0 48 48" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M24 9.01703C19.0025 3.74266 11.4674 3.736 6.67302 8.56049C1.77566 13.4886 1.77566 21.4735 6.67302 26.4016L22.5814 42.4098C22.9568 42.7876 23.4674 43 24 43C24.5326 43 25.0432 42.7876 25.4186 42.4098L41.327 26.4016C46.2243 21.4735 46.2243 13.4886 41.327 8.56049C36.5326 3.736 28.9975 3.74266 24 9.01703ZM21.4938 12.2118C17.9849 8.07195 12.7825 8.08727 9.51028 11.3801C6.16324 14.7481 6.16324 20.214 9.51028 23.582L24 38.1627L38.4897 23.582C41.8368 20.214 41.8368 14.7481 38.4897 11.3801C35.2175 8.08727 30.0151 8.07195 26.5062 12.2118L26.455 12.2722L25.4186 13.3151C25.0432 13.6929 24.5326 13.9053 24 13.9053C23.4674 13.9053 22.9568 13.6929 22.5814 13.3151L21.545 12.2722L21.4938 12.2118Z">
+                            </path>
+                        </svg>
+                    </div>
+                    <span data-e2e="comment-like-count" class="tiktok-gb2mrc-SpanCount ezxoskx3" style="margin-left: 0px; margin-right: 0px;">0</span>
+                </div>
+            </div>
+        </div>
+    `;
+
+            return commentDiv;
+        }
+        function handleFollowDetail(userId, followButton, changeButton) {
+            if (followedSet.has(userId)) {
+                followButton.classList = "tiktok-2cfmui-Button";
+                changeButton.innerHTML = "Following";
+            } else {
+                followButton.classList = "tiktok-1pcikqk-Button";
+                changeButton.innerHTML = "Follow";
+            }
+        }
+        async function updateVideoDetails(video, commentsCountElement, likeCountElement, commentCountElement, undefinedCountElement, usernameElement, nameElement, daysDifferenceElement, updateTimeDifference, captionElement, avatarImage, videoThumbnail, videoPlay, svgIcon) {
+            commentsCountElement.textContent = `Comments (${video.comments.length})`;
+            likeCountElement.textContent = video.likes;
+            commentCountElement.textContent = video.comments.length;
+            undefinedCountElement.textContent = '0';
+            usernameElement.textContent = video.user.username;
+            nameElement.textContent = video.user.name;
+            daysDifferenceElement.textContent = updateTimeDifference;
+            captionElement.textContent = video.caption;
+            avatarImage.src = `${video.user.logo}`;
+            videoThumbnail.src = `${video.thumbnail}`;
+            videoPlay.src = `${video.video}`;
+            svgIcon.setAttribute('fill', 'rgba(22, 24, 35)');
+        }
+        function handleLikeDetail(videoId, svgIcon) {
+            if (likedVideoSet.has(videoId)) {
+                svgIcon.setAttribute('fill', 'rgba(254, 44, 85)');
+            }
+        }
+        function updateVideoDataAtIndex(indexToModify, newData) {
+            console.log("indexToModify:", indexToModify)
+            const currentVideosData = JSON.parse(sessionStorage.getItem('videosData')) || [];
+            currentVideosData[indexToModify] = newData;
+            videos = currentVideosData
+            sessionStorage.setItem('videosData', JSON.stringify(currentVideosData));
+        }
+        function handleVisibilityEvent(videoPlay, playIcon) {
+            document.hidden ? videoPlay.pause() : playIcon.style.display === 'none' ? videoPlay.play() : videoPlay.pause()
+        }
+        function updateLeftArrowDisplay(indexCurrent, leftArrow) {
+            if (indexCurrent === '0' || !indexCurrent) {
+                leftArrow.style.display = "none";
+            } else {
+                leftArrow.style.display = "flex";
+            }
+        }
+        function updateCustomer() {
+            socket.emit('updateCustomer', { id: customer.id }, (data) => console.log(data));
+
+            socket.on('updateCustomer', (data) => {
+                customer = data.customer;
+                likedVideoIds = customer.likedVideos;
+                likedVideoSet = new Set(likedVideoIds.map(video => video.id));
+                followedSet = new Set(customer.following.map(following => following.id));
+            });
+        }
+        function updateVideo(video) {
+            return new Promise((resolve, reject) => {
+                socket.emit('updateVideo', { id: video.id }, (data) => {
+                    resolve(data.video);
+                });
+
+                socket.on('updateVideo', (data) => {
+                    resolve(data.video);
+                });
+            });
+        }
+        function removeCommentContainers() {
+            const commentContainers = document.querySelectorAll('.tiktok-1i7ohvi-DivCommentItemContainer');
+            commentContainers.forEach(commentContainer => {
+                commentContainer.remove();
+            });
+        }
+        function appendCommentsToContainer(comments, container) {
+            comments.forEach(comment => {
+                const commentElement = createCommentElement(comment);
+                container.appendChild(commentElement);
+            });
+        }
+        function updateVideoURL(videoId) {
+            if (videoId) {
+                const currentURL = new URL(window.location.href);
+                currentURL.pathname = `/video/${videoId}`;
+                window.history.replaceState({}, "", currentURL.toString());
+            } else {
+                window.history.replaceState({}, "", `/video/videos`);
+            }
+        }
+        function createVideoContainer() {
+            const divVideo = document.createElement('div');
+            divVideo.classList = "tiktok-1qg2388-DivBrowserModeContainer"
+            divVideo.style.display = "flex";
+            divVideo.innerHTML = `
     <div class="tiktok-1tunefa-DivVideoContainer e11s2kul23">
         <div class="tiktok-zqqb1u-DivSearchBarContainer e11s2kul27">
             <div class="tiktok-1vve6pb-DivSearchBarBackground e11s2kul28"></div>
@@ -431,303 +731,12 @@
             </div>
         </div>
     </div>
-</div>
-<div id="customAlert" class="custom-alert">
-    <span id="alertMessage"></span>
-</div>
-<div style="display: none;" class="container-unableMuted">
-    <div class="unableMuted">
-        <button>START!</button>
-    </div>
-</div>
-<script>
-    let videos = JSON.parse('<%- JSON.stringify(videos) %>')
-    let likedVideoIds = customer.likedVideos
-
-    if (videos.length > 0) {
-        const videosContainer = document.querySelector('.css-9fq6q2-DivOneColumnContainer')
-        const containerMain = document.querySelector('.css-1t4vwes-DivMainContainer')
-        const videoContainer = document.querySelector('.tiktok-1qg2388-DivBrowserModeContainer')
-        const navMenu = document.querySelector('.nav-menu');
-        let followedSet = new Set(customer.following.map(following => following.id))
-        let likedVideoSet = new Set(likedVideoIds.map(video => video.id))
-
-        //for videos event
-        function showCustomAlert(message) {
-            const customAlert = document.getElementById('customAlert');
-            const alertMessage = document.getElementById('alertMessage');
-            alertMessage.textContent = message;
-            customAlert.style.display = 'block';
-            setTimeout(() => {
-                customAlert.style.display = 'none';
-            }, 1500);
-        }
-        function updateFollow(video, request) {
-            let indexCurrent = JSON.parse(sessionStorage.getItem('videosData'))
-
-            let indexOfVideoOfUser = indexCurrent
-                .map((index, i) => index.user.id === video.user.id ? i : -1)
-                .filter(index => index !== -1);
-            if (request === "follow") {
-                indexOfVideoOfUser.forEach(index => {
-                    let videoDiv = document.querySelectorAll('.css-1hhj6ie-DivTextInfoContainer')[index];
-                    let buttonElement = videoDiv.querySelector('button');
-                    buttonElement.classList = "css-zmqo9-Button-StyledFollowButtonTux"
-                    let buttonLabelDiv = document.querySelectorAll('.css-1djnsui-ButtonLabel')[index];
-                    buttonLabelDiv.innerHTML = "Following"
-                });
-            } else {
-                indexOfVideoOfUser.forEach(index => {
-                    let videoDiv = document.querySelectorAll('.css-1hhj6ie-DivTextInfoContainer')[index];
-                    let buttonElement = videoDiv.querySelector('button');
-                    buttonElement.classList = "css-1847gtm-Button-StyledFollowButtonTux"
-                    let buttonLabelDiv = document.querySelectorAll('.css-1djnsui-ButtonLabel')[index];
-                    buttonLabelDiv.innerHTML = "Follow"
-                });
-            }
-
-
-        }
-        function updateCustomerAndFollow(video, actionType) {
-            socket.emit('updateCustomer', { id: customer.id }, (data) => console.log(data));
-
-            socket.on('updateCustomer', (data) => {
-                customer = data.customer;
-                followedSet = new Set(customer.following.map(following => following.id));
-                updateFollow(video, actionType);
-            });
-        }
-        function updateCustomerAndLike(video, likeIcon) {
-            socket.emit('updateCustomer', { id: customer.id }, (data) => console.log(data));
-
-            socket.on('updateCustomer', (data) => {
-                customer = data.customer;
-                likedVideoIds = customer.likedVideos;
-                const likedVideoSet = new Set(likedVideoIds.map(video => video.id));
-
-                if (likedVideoSet.has(video.id)) {
-                    likeIcon.style.color = "rgba(254, 44, 85)";
-                } else {
-                    likeIcon.style.color = "rgba(22, 24, 35)";
-                }
-            });
-        }
-        function handleLike(videoId, likeIcon) {
-            if (likedVideoSet.has(videoId)) {
-                likeIcon.style.color = "rgba(254, 44, 85)";
-            }
-        }
-        function handleFollow(userId, followButton, changeButton) {
-            if (followedSet.has(userId)) {
-                followButton.classList = "css-zmqo9-Button-StyledFollowButtonTux";
-                changeButton.innerHTML = "Following";
-            }
+       `
+            return divVideo;
         }
 
+        function continuePlay(video, clickVideoDiv) {
 
-        // for detail video event
-        function updateVolumeIcon(isMuted) {
-            const svg = volumeButton.querySelector('svg');
-            svg.innerHTML = '';
-            if (isMuted) {
-                const path1 = document.createElementNS("http://www.w3.org/2000/svg", "path");
-                path1.setAttribute('fill-rule', 'evenodd');
-                path1.setAttribute('clip-rule', 'evenodd');
-                path1.setAttribute('d', 'M21 16.9118C21 15.2513 20.8942 15.0909 20.709 15.0221C20.5238 14.9763 20.3122 14.9992 20.1799 15.1138L15.0741 19.5258H11.4762C11.2116 19.5258 11 19.7092 11 19.9384V28.084C11 28.3132 11.2116 28.4965 11.4762 28.4965H15.0741L20.1799 32.8862C20.3122 33.0008 20.5238 33.0237 20.709 32.9779C20.8942 32.9091 21 32.7487 21 32.5882V16.9118Z'); // Đường dẫn path cho trạng thái muted
-                path1.setAttribute('fill', 'white');
-                svg.appendChild(path1);
-                const path2 = document.createElementNS("http://www.w3.org/2000/svg", "path");
-                path2.setAttribute('fill-rule', 'evenodd');
-                path2.setAttribute('clip-rule', 'evenodd');
-                path2.setAttribute('d', 'M35.098 18.9489C34.5998 18.4508 33.7921 18.4508 33.2939 18.949L30.1368 22.1061L26.9797 18.949C26.4815 18.4508 25.6738 18.4508 25.1756 18.9489C24.6775 19.4471 24.6775 20.2548 25.1756 20.753L28.3327 23.9101L25.1757 27.0672C24.6775 27.5654 24.6775 28.3731 25.1757 28.8713C25.6738 29.3694 26.4815 29.3694 26.9797 28.8713L30.1368 25.7142L33.2939 28.8713C33.7921 29.3694 34.5998 29.3694 35.0979 28.8713C35.5961 28.3731 35.5961 27.5654 35.0979 27.0672L31.9409 23.9101L35.098 20.753C35.5962 20.2548 35.5962 19.4471 35.098 18.9489Z'); // Đường dẫn path cho trạng thái muted
-                path2.setAttribute('fill', 'white');
-                svg.appendChild(path2);
-            } else {
-                const path1 = document.createElementNS("http://www.w3.org/2000/svg", "path");
-                path1.setAttribute('fill-rule', 'evenodd');
-                path1.setAttribute('clip-rule', 'evenodd');
-                path1.setAttribute('d', 'M21 16.9118C21 15.2513 20.8942 15.0909 20.709 15.0221C20.5238 14.9763 20.3122 14.9992 20.1799 15.1138L15.0741 19.5258H11.4762C11.2116 19.5258 11 19.7092 11 19.9384V28.084C11 28.3132 11.2116 28.4965 11.4762 28.4965H15.0741L20.1799 32.8862C20.3122 33.0008 20.5238 33.0237 20.709 32.9779C20.8942 32.9091 21 32.7487 21 32.5882V16.9118Z'); // Đường dẫn path cho trạng thái unmuted
-                path1.setAttribute('fill', 'white');
-                svg.appendChild(path1);
-                const path2 = document.createElementNS("http://www.w3.org/2000/svg", "path");
-                path2.setAttribute('d', 'M30.6653 15C32.7348 17.2304 34.0001 20.2174 34.0001 23.5C34.0001 26.7826 32.7348 29.7696 30.6653 32');
-                path2.setAttribute('stroke', 'white');
-                path2.setAttribute('stroke-width', '2.5');
-                path2.setAttribute('stroke-linecap', 'round');
-                svg.appendChild(path2);
-                const path3 = document.createElementNS("http://www.w3.org/2000/svg", "path");
-                path3.setAttribute('d', 'M26.8799 17.8833C28.1994 19.381 28.9999 21.347 28.9999 23.5C28.9999 25.653 28.1994 27.6191 26.8799 29.1168');
-                path3.setAttribute('stroke', 'white');
-                path3.setAttribute('stroke-width', '2.5');
-                path3.setAttribute('stroke-linecap', 'round');
-                svg.appendChild(path3);
-            }
-        }
-        function formatTimeDifference(updateAt) {
-            const dateObject = new Date(updateAt);
-            const today = new Date();
-            const timeDifference = today - dateObject;
-
-            const minuteInMilliseconds = 1000 * 60;
-            const hourInMilliseconds = minuteInMilliseconds * 60;
-            const dayInMilliseconds = hourInMilliseconds * 24;
-            const weekInMilliseconds = dayInMilliseconds * 7;
-
-            if (timeDifference < hourInMilliseconds) {
-                const minutesDifference = Math.floor(timeDifference / minuteInMilliseconds);
-                return `${minutesDifference}m ago`;
-            } else if (timeDifference < dayInMilliseconds) {
-                const hoursDifference = Math.floor(timeDifference / hourInMilliseconds);
-                return `${hoursDifference}h ago`;
-            } else if (timeDifference > weekInMilliseconds) {
-                const day = dateObject.getDate();
-                const month = dateObject.getMonth() + 1;
-                return `${month}-${day}`;
-            } else {
-                const daysDifference = Math.floor(timeDifference / dayInMilliseconds);
-                return `${daysDifference}d ago`;
-            }
-        }
-        function createCommentElement(comment) {
-            const updateTimeDifference = formatTimeDifference(comment.createAt);
-
-            const commentDiv = document.createElement('div');
-            commentDiv.classList.add("tiktok-1i7ohvi-DivCommentItemContainer");
-
-            commentDiv.innerHTML = `
-        <div class="tiktok-ulyotp-DivCommentContentContainer e1g2efjf0">
-            <a data-e2e="comment-avatar-1" class="e1g2efjf5 tiktok-1jatens-StyledLink-StyledUserLinkAvatar er1vbsz0" href="/@${comment.customer.username}" style="flex: 0 0 40px;">
-                <span shape="circle" data-e2e="" class="tiktok-tuohvl-SpanAvatarContainer e1e9er4e0" style="width: 40px; height: 40px;">
-                    <img loading="lazy" alt="" src="${comment.customer.logo}" class="tiktok-1zpj2q-ImgAvatar">
-                </span>
-            </a>
-            <div class="tiktok-1mf23fd-DivContentContainer e1g2efjf1">
-                <a class="e1g2efjf4 tiktok-fx1avz-StyledLink-StyledUserLinkName er1vbsz0" href="/@${comment.customer.username}">
-                    <span data-e2e="comment-username-1" class="tiktok-1665s4c-SpanUserNameText e1g2efjf3">${comment.customer.name}</span>
-                </a>
-                <p data-e2e="comment-level-1" class="tiktok-xm2h10-PCommentText e1g2efjf6">
-                    <span dir="">${comment.text}</span>
-                </p>
-                <p class="tiktok-1sun2p5-PCommentSubContent e1g2efjf9">
-                    <span data-e2e="comment-time-1" class="tiktok-4tru0g-SpanCreatedTime e1g2efjf8">${updateTimeDifference}</span>
-                    <span aria-label="Reply" role="button" data-e2e="comment-reply-1" tabindex="0" class="tiktok-ro5z69-SpanReplyButton e1g2efjf10">Reply</span>
-                </p>
-            </div>
-            <div class="tiktok-1swe2yf-DivActionContainer esns4rh0">
-                <div aria-label="more" role="button" tabindex="0" class="tiktok-5g6iif-DivMoreContainer esns4rh1">
-                    <div data-e2e="comment-more-icon">
-                        <svg class="tiktok-fzlfzu-StyledMoreIcon esns4rh2" width="1em" data-e2e="" height="1em" viewBox="0 0 48 48" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                            <path fill-rule="evenodd" clip-rule="evenodd" d="M4 24C4 21.7909 5.79086 20 8 20C10.2091 20 12 21.7909 12 24C12 26.2091 10.2091 28 8 28C5.79086 28 4 26.2091 4 24ZM20 24C20 21.7909 21.7909 20 24 20C26.2091 20 28 21.7909 28 24C28 26.2091 26.2091 28 24 28C21.7909 28 20 26.2091 20 24ZM36 24C36 21.7909 37.7909 20 40 20C42.2091 20 44 21.7909 44 24C44 26.2091 42.2091 28 40 28C37.7909 28 36 26.2091 36 24Z">
-                            </path>
-                        </svg>
-                    </div>
-                </div>
-                <div aria-label="Like video {number} likes" aria-pressed="false" role="button" tabindex="0" class="tiktok-114tc9h-DivLikeWrapper ezxoskx0">
-                    <div data-e2e="comment-like-icon" class="tiktok-1tvtgfz-DivLikeIcon ezxoskx2">
-                        <svg width="20" data-e2e="" height="20" viewBox="0 0 48 48" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                            <path fill-rule="evenodd" clip-rule="evenodd" d="M24 9.01703C19.0025 3.74266 11.4674 3.736 6.67302 8.56049C1.77566 13.4886 1.77566 21.4735 6.67302 26.4016L22.5814 42.4098C22.9568 42.7876 23.4674 43 24 43C24.5326 43 25.0432 42.7876 25.4186 42.4098L41.327 26.4016C46.2243 21.4735 46.2243 13.4886 41.327 8.56049C36.5326 3.736 28.9975 3.74266 24 9.01703ZM21.4938 12.2118C17.9849 8.07195 12.7825 8.08727 9.51028 11.3801C6.16324 14.7481 6.16324 20.214 9.51028 23.582L24 38.1627L38.4897 23.582C41.8368 20.214 41.8368 14.7481 38.4897 11.3801C35.2175 8.08727 30.0151 8.07195 26.5062 12.2118L26.455 12.2722L25.4186 13.3151C25.0432 13.6929 24.5326 13.9053 24 13.9053C23.4674 13.9053 22.9568 13.6929 22.5814 13.3151L21.545 12.2722L21.4938 12.2118Z">
-                            </path>
-                        </svg>
-                    </div>
-                    <span data-e2e="comment-like-count" class="tiktok-gb2mrc-SpanCount ezxoskx3" style="margin-left: 0px; margin-right: 0px;">0</span>
-                </div>
-            </div>
-        </div>
-    `;
-
-            return commentDiv;
-        }
-        function handleFollowDetail(userId, followButton, changeButton) {
-            if (followedSet.has(userId)) {
-                followButton.classList = "tiktok-2cfmui-Button";
-                changeButton.innerHTML = "Following";
-            } else {
-                followButton.classList = "tiktok-1pcikqk-Button";
-                changeButton.innerHTML = "Follow";
-            }
-        }
-        function updateVideoDetails(video, commentsCountElement, likeCountElement, commentCountElement, undefinedCountElement, usernameElement, nameElement, daysDifferenceElement, updateTimeDifference, captionElement, avatarImage, videoThumbnail, videoPlay, svgIcon) {
-            commentsCountElement.textContent = `Comments (${video.comments.length})`;
-            likeCountElement.textContent = video.likes;
-            commentCountElement.textContent = video.comments.length;
-            undefinedCountElement.textContent = '0';
-            usernameElement.textContent = video.user.username;
-            nameElement.textContent = video.user.name;
-            daysDifferenceElement.textContent = updateTimeDifference;
-            captionElement.textContent = video.caption;
-            avatarImage.src = `${video.user.logo}`;
-            videoThumbnail.src = `${video.thumbnail}`;
-            videoPlay.src = `${video.video}`;
-            svgIcon.setAttribute('fill', 'rgba(22, 24, 35)');
-        }
-        function handleLikeDetail(videoId, svgIcon) {
-            if (likedVideoSet.has(videoId)) {
-                svgIcon.setAttribute('fill', 'rgba(254, 44, 85)');
-            }
-        }
-        function updateVideoDataAtIndex(indexToModify, newData) {
-            const currentVideosData = JSON.parse(sessionStorage.getItem('videosData')) || [];
-            currentVideosData[indexToModify] = newData;
-            sessionStorage.setItem('videosData', JSON.stringify(currentVideosData));
-        }
-        function handleVisibilityEvent(event, videoPlay, playIcon) {
-            document.hidden ? videoPlay.pause() : playIcon.style.display === 'none' ? videoPlay.play() : videoPlay.pause()
-        }
-        function updateLeftArrowDisplay(indexCurrent, leftArrow) {
-            if (indexCurrent === '0' || !indexCurrent) {
-                leftArrow.style.display = "none";
-            } else {
-                leftArrow.style.display = "flex";
-            }
-        }
-        function updateCustomer() {
-            socket.emit('updateCustomer', { id: customer.id }, (data) => console.log(data));
-
-            socket.on('updateCustomer', (data) => {
-                customer = data.customer;
-                likedVideoIds = customer.likedVideos;
-                likedVideoSet = new Set(likedVideoIds.map(video => video.id));
-                followedSet = new Set(customer.following.map(following => following.id));
-            });
-
-        }
-        function updateVideo(video) {
-            return new Promise((resolve, reject) => {
-                socket.emit('updateVideo', { id: video.id }, (data) => {
-                    resolve(data.video);
-                });
-
-                socket.on('updateVideo', (data) => {
-                    resolve(data.video);
-                });
-            });
-        }
-        function removeCommentContainers() {
-            const commentContainers = document.querySelectorAll('.tiktok-1i7ohvi-DivCommentItemContainer');
-            commentContainers.forEach(commentContainer => {
-                commentContainer.remove();
-            });
-        }
-        function appendCommentsToContainer(comments, container) {
-            comments.forEach(comment => {
-                const commentElement = createCommentElement(comment);
-                container.appendChild(commentElement);
-            });
-        }
-
-        // Gọi hàm khi bạn muốn thêm các phần tử vào container
-
-
-
-
-        // let intervalId = setInterval(myFunction, 7000);
-
-        // setTimeout(function () {updateVideo
-        //     clearInterval(intervalId);
-        //     console.log('Dừng gọi mỗi 5 giây');
-        // }, 30000);
-
-        function continuePlay(video) {
             const inputElement = document.querySelector('.public-DraftEditor-content');
             const placeholderDiv = document.querySelector('.public-DraftEditorPlaceholder-root');
             const xButton = document.querySelector('.tiktok-yg0pvs-ButtonBasicButtonContainer-StyledCloseIconContainer');
@@ -738,7 +747,6 @@
             const videoPlay = xgwrapper.querySelector('video');
             const mainContainer = document.querySelector('.tiktok-1qg2388-DivBrowserModeContainer')
             const divMainContainer = document.querySelector('.css-1t4vwes-DivMainContainer')
-            const navMenu = document.querySelector('.nav-menu')
             const thumbnailDiv = document.querySelector('.tiktok-xhj3u2-StyledVideoBlurBackground');
             const videoThumbnail = thumbnailDiv.querySelector('img');
             const avatarImage = document.querySelector('.tiktok-uha12h-DivContainer').querySelector('img');
@@ -756,7 +764,6 @@
             const divCommentList = document.querySelector('.tiktok-1qp5gj2-DivCommentListContainer')
             const svgIcon = likeElement.querySelector('svg');
             const copyLinkText = document.querySelector('.tiktok-1v8b11s-PCopyLinkText')
-            const host = "<%= process.env.ORIGIN %>"
             const buttonCopyLink = document.querySelector('.tiktok-7e23lp-ButtonCopyLink')
             const updateTimeDifference = formatTimeDifference(video.createAt);
             const rightArrow = document.querySelector('.tiktok-1s9jpf8-ButtonBasicButtonContainer-StyledVideoSwitch');
@@ -767,10 +774,17 @@
             const followButton = divFollowButton.querySelector('button')
             const changeButton = document.querySelector('.tiktok-1djnsui-ButtonLabel')
             let indexCurrent = sessionStorage.getItem('indexCurrent');
-
+            const divVideo = document.querySelector('.tiktok-1qg2388-DivBrowserModeContainer')
             let isMuted = false
 
+            const handleVisibilityChange = () => {
+                handleVisibilityEvent(videoPlay, playIcon);
+            }
+
             copyLinkText.innerHTML = `${host}/video/${video.id}`
+            indexCurrent = +indexCurrent
+
+            updateVideoURL(video.id);
 
             handleFollowDetail(video.user.id, followButton, changeButton);
 
@@ -779,6 +793,8 @@
             updateVideoDetails(video, commentsCountElement, likeCountElement, commentCountElement, undefinedCountElement, usernameElement, nameElement, daysDifferenceElement, updateTimeDifference, captionElement, avatarImage, videoThumbnail, videoPlay, svgIcon);
 
             handleLikeDetail(video.id, svgIcon);
+
+            removeCommentContainers();
 
             appendCommentsToContainer(video.comments, divCommentList);
 
@@ -790,8 +806,11 @@
                     fetch(`/customer/follow/${video.user.id}`, {
                         method: 'POST',
                     })
-                        .then(data => {
+                        .then(async (data) => {
                             updateCustomer()
+                            let newVideo = await updateVideo(video)
+                            video = await newVideo
+                            await updateVideoDataAtIndex(indexCurrent, video);
                         })
                         .catch(error => {
                             console.error('Error:', error);
@@ -802,8 +821,11 @@
                     fetch(`/customer/unfollow/${video.user.id}`, {
                         method: 'POST',
                     })
-                        .then(data => {
+                        .then(async (data) => {
                             updateCustomer()
+                            let newVideo = await updateVideo(video)
+                            video = await newVideo
+                            await updateVideoDataAtIndex(indexCurrent, video);
                         })
                         .catch(error => {
                             console.error('Error:', error);
@@ -819,7 +841,10 @@
                     fetch(`/video/like/${video.id}`, {
                         method: 'POST',
                     })
-                        .then(data => {
+                        .then(async (data) => {
+                            let newVideo = await updateVideo(video)
+                            video = await newVideo
+                            await updateVideoDataAtIndex(indexCurrent, video);
                             updateCustomer()
                         })
                         .catch(error => {
@@ -831,7 +856,10 @@
                     fetch(`/video/dislike/${video.id}`, {
                         method: 'POST',
                     })
-                        .then(data => {
+                        .then(async (data) => {
+                            let newVideo = await updateVideo(video)
+                            video = await newVideo
+                            await updateVideoDataAtIndex(indexCurrent, video);
                             updateCustomer()
                         })
                         .catch(error => {
@@ -889,7 +917,7 @@
 
                             let newVideo = await updateVideo(video)
                             video = await newVideo
-                            console.log("video:", video)
+                            await updateVideoDetails(video, commentsCountElement, likeCountElement, commentCountElement, undefinedCountElement, usernameElement, nameElement, daysDifferenceElement, updateTimeDifference, captionElement, avatarImage, videoThumbnail, videoPlay, svgIcon);
                             await updateVideoDataAtIndex(indexCurrent, video);
                         })
                         .catch(error => {
@@ -898,8 +926,6 @@
                 }
 
             })
-
-
 
             videoPlay.addEventListener('timeupdate', function () {
                 if (videoPlay.currentTime >= 4 && !videoPlay.hasAttribute('data-viewed')) {
@@ -942,21 +968,11 @@
                 document.body.removeChild(textArea);
             })
 
-            // button_unableMuted.addEventListener('click', function () {
-            //     sessionStorage.setItem('videosData', JSON.stringify(videos));
-            //     sessionStorage.setItem('indexCurrent', 0);
-            //     sessionStorage.setItem('firstURL', true);
-            //     unableMuted.style.display = 'none'
-            //     videoPlay.muted = false;
-            //     videoPlay.play();
-            // })
-
             videoPlay.play().catch(error => {
                 console.log("error:", error)
-                // unableMuted.style.display = 'flex'
             })
 
-            document.addEventListener('visibilitychange', (event) => handleVisibilityEvent(event, videoPlay, playIcon));
+            document.addEventListener('visibilitychange', handleVisibilityChange);
 
             volumeButton.addEventListener('click', () => {
                 isMuted = !isMuted;
@@ -989,16 +1005,36 @@
             });
 
             xButton.addEventListener('click', function () {
-                // history.replaceState({}, '', '/video/videos');
-                // if (sessionStorage.getItem('firstURL')) {
-                //     sessionStorage.setItem('firstURL', false);
-                //     window.location.href = `/video/videos`
-                // } else {
-                //     history.back()
-                // }
-                videoContainer.style.display = 'none'
-                videosContainer.style.display = 'flex'
+                divVideo.remove();
+                videosContainer.style.display = 'block'
                 navMenu.style.display = 'flex'
+                updateVideoURL(null)
+                document.removeEventListener('visibilitychange', handleVisibilityChange);
+                updateCustomer()
+                let videos = JSON.parse(sessionStorage.getItem('videosData'))
+                let indexToScroll = JSON.parse(sessionStorage.getItem('indexCurrent'))
+                videos.forEach((video, index) => {
+                    const videoDiv = document.querySelectorAll('.videoDiv');
+                    const videosDiv = document.querySelectorAll('.videoDiv')[index];
+                    const likeIcon = videosDiv.querySelector("#like-icon");
+                    let likesCount = videosDiv.querySelector("[data-e2e='like-count']");
+                    let commentCount = videosDiv.querySelector("[data-e2e='comment-count']");
+                    let shareCount = videosDiv.querySelector("[data-e2e='share-count']");
+                    likesCount.innerHTML = video.likes
+                    commentCount.innerHTML = video.comments.length
+                    shareCount.innerHTML = video.shareCount
+                    const followButton = videosDiv.querySelector('.css-1hhj6ie-DivTextInfoContainer.etvrc4k7 button');
+                    let changeButton = videosDiv.querySelector('.css-1djnsui-ButtonLabel')
+                    handleLike(video.id, likeIcon);
+                    handleFollow(video.user.id, followButton, changeButton);
+
+                    if (indexToScroll >= 0 && indexToScroll < videos.length) {
+                        console.log("indexToScroll:", indexToScroll)
+                        console.log("videos.length:", videos.length)
+
+                        videoDiv[indexToScroll].scrollIntoView({ behavior: 'smooth' });
+                    }
+                })
             })
 
             inputElement.addEventListener('input', function () {
@@ -1012,32 +1048,40 @@
             });
 
             leftArrow.addEventListener('click', () => {
-                removeCommentContainers();
+
                 indexCurrent--
                 video = videos[indexCurrent]
-                // history.replaceState({ indexCurrent }, '', `/video/${video.id}`);
                 sessionStorage.setItem('indexCurrent', indexCurrent);
+                playIcon.style.display = 'none';
+                copyLinkText.innerHTML = `${host}/video/${video.id}`
+                removeCommentContainers();
                 updateVideoDetails(video, commentsCountElement, likeCountElement, commentCountElement, undefinedCountElement, usernameElement, nameElement, daysDifferenceElement, updateTimeDifference, captionElement, avatarImage, videoThumbnail, videoPlay, svgIcon);
                 handleFollowDetail(video.user.id, followButton, changeButton);
                 handleLikeDetail(video.id, svgIcon);
                 updateLeftArrowDisplay(indexCurrent, leftArrow);
                 appendCommentsToContainer(video.comments, divCommentList);
+                updateVideoURL(video.id);
+                updateCustomer()
             });
 
             rightArrow.addEventListener('click', () => {
-                removeCommentContainers();
-                indexCurrent++
-                if (indexCurrent >= videos.length) {
+
+                if (indexCurrent === videos.length - 1) {
                     showCustomAlert("RUN OUT OF VIDEOs")
                 } else {
+                    indexCurrent++
                     video = videos[indexCurrent]
                     sessionStorage.setItem('indexCurrent', indexCurrent);
-
+                    playIcon.style.display = 'none';
+                    copyLinkText.innerHTML = `${host}/video/${video.id}`
+                    removeCommentContainers();
+                    updateLeftArrowDisplay(indexCurrent, leftArrow);
                     updateVideoDetails(video, commentsCountElement, likeCountElement, commentCountElement, undefinedCountElement, usernameElement, nameElement, daysDifferenceElement, updateTimeDifference, captionElement, avatarImage, videoThumbnail, videoPlay, svgIcon);
                     handleFollowDetail(video.user.id, followButton, changeButton);
                     handleLikeDetail(video.id, svgIcon);
-                    updateLeftArrowDisplay(indexCurrent, leftArrow);
                     appendCommentsToContainer(video.comments, divCommentList);
+                    updateVideoURL(video.id);
+                    updateCustomer()
                 }
 
             });
@@ -1045,7 +1089,6 @@
 
         videos.forEach((video, index) => {
             const videoDiv = document.createElement('div')
-            sessionStorage.setItem('videosData', JSON.stringify(videos));
             videoDiv.classList = "videoDiv"
 
             videoDiv.innerHTML = `
@@ -1112,15 +1155,15 @@
                         <div class="css-1cifsuk-DivActionItemContainer e1whjx9o0"><button type="button" aria-label="Like video
 5.5M likes" aria-pressed="false" class="css-1ok4pbl-ButtonActionItem e1hk3hf90"><span data-e2e="like-icon" id="like-icon" class="css-6jur1x-SpanIconWrapper" style="color: rgb(22, 24, 35);"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor">
                                 <use xlink: href="#heart-fill-03bd63df"></use>
-                            </svg></span><strong data-e2e="like-count" class="css-w1dlre-StrongText">${video.likes}</strong></button><button type="button" aria-label="Read or add comments
+                            </svg></span><strong data-e2e="like-count" class="">${video.likes}</strong></button><button type="button" aria-label="Read or add comments
 43.7K comments" class="css-1ok4pbl-ButtonActionItem e1hk3hf90"><span data-e2e="comment-icon" id="comment-icon" class="css-6jur1x-SpanIconWrapper" style="color: rgb(22, 24, 35);"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor">
                                     <use xlink: href="#Bubble_Ellipsis_Right_Fill-a497dc09"></use>
-                                </svg></span><strong data-e2e="comment-count" class="css-w1dlre-StrongText">${video.comments.length}</strong></button><button type="button" aria-label="Add to Favorites. 733.3K added to Favorites" class="css-1ok4pbl-ButtonActionItem e1hk3hf90"><span data-e2e="undefined-icon" class="css-6jur1x-SpanIconWrapper" style="color: rgb(22, 24, 35);"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor">
+                                </svg></span><strong data-e2e="comment-count" class="">${video.comments.length}</strong></button><button type="button" aria-label="Add to Favorites. 733.3K added to Favorites" class="css-1ok4pbl-ButtonActionItem e1hk3hf90"><span data-e2e="undefined-icon" class="css-6jur1x-SpanIconWrapper" style="color: rgb(22, 24, 35);"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor">
                                     <use xlink: href="#uncollect-8a52664d"></use>
-                                </svg></span><strong data-e2e="undefined-count" class="css-w1dlre-StrongText">${video.shareCount}</strong></button><button type="button" aria-label="Share video
+                                </svg></span><strong data-e2e="undefined-count" class="">${video.shareCount}</strong></button><button type="button" aria-label="Share video
 180.6K shares" aria-expanded="false" class="css-1ok4pbl-ButtonActionItem e1hk3hf90"><span data-e2e="share-icon" id="share-icon" class="css-6jur1x-SpanIconWrapper" style="color: rgb(22, 24, 35);"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor">
                                     <use xlink: href="#pc-share-44d9fe83"></use>
-                                </svg></span><strong data-e2e="share-count" class="css-w1dlre-StrongText">${video.shareCount}</strong></button></div>
+                                </svg></span><strong data-e2e="share-count" class="">${video.shareCount}</strong></button></div>
                     </div>
                 </div>
             </div>
@@ -1129,7 +1172,7 @@
 
             const clickVideoDiv = videoDiv.querySelector('.css-rnjquf-DivVideoPlayerContainer');
             const likeIcon = videoDiv.querySelector("#like-icon");
-            const likesCount = videoDiv.querySelector(".css-w1dlre-StrongText[data-e2e='like-count']");
+            const likesCount = videoDiv.querySelector("[data-e2e='like-count']");
             const commentIcon = videoDiv.querySelector("#comment-icon");
             const shareIcon = videoDiv.querySelector('#share-icon');
             const followButton = videoDiv.querySelector('.css-1847gtm-Button-StyledFollowButtonTux')
@@ -1219,16 +1262,14 @@
             })
 
             clickVideoDiv.addEventListener('click', () => {
-                sessionStorage.setItem('videosData', JSON.stringify(videos));
                 sessionStorage.setItem('indexCurrent', index);
-
-                videoContainer.style.display = 'flex'
                 videosContainer.style.display = 'none'
                 navMenu.style.display = 'none'
+                const divVideo = createVideoContainer();
+                document.body.appendChild(divVideo)
                 continuePlay(video)
             });
         }
         )
-
     }
 </script>
