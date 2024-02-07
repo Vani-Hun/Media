@@ -1,3 +1,8 @@
 <%- include("../common/head.ejs") %>
-    <%- include('../common/header/header.ejs',customer) %>
-        <%- include('./customer-body/customer-profile.ejs',customer) %>
+    <!-- <div class="bigDiv" style="min-height: 100vh;display: flex;flex-direction: column;justify-content: flex-start"> -->
+    <%- include("../common/nav-menu.ejs",customer) %>
+        <div class="tiktok-14dcx2q-DivBodyContainer">
+            <%- include("../common/nav-menu-middle.ejs") %>
+                <%- include('./customer-body/customer-profile.ejs',customer) %>
+        </div>
+        <!-- </div> -->

@@ -9,7 +9,7 @@ export enum NotificationType {
     COMMENT = 'Comments',
     MENTIONS_AND_TAGS = 'Mention and tags',
     FOLLOWER = 'Followers'
-}
+};
 
 export enum NotificationMess {
     LIKE = 'liked your video.',

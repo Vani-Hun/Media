@@ -105,27 +105,32 @@
     </div>
 </div>
 
-<div id="customAlert" class="custom-alert">
+<!-- <div id="customAlert" class="custom-alert">
     <span id="alertMessage"></span>
 </div>
 <div style="display: none;" class="container-unableMuted">
     <div class="unableMuted">
         <button>START!</button>
     </div>
-</div>
+</div> -->
+
 <script>
     let videos = JSON.parse('<%- JSON.stringify(videos) %>')
+    let video = JSON.parse('<%- JSON.stringify(video) %>')
     let likedVideoIds = customer.likedVideos
+    sessionStorage.setItem('videosData', JSON.stringify(videos));
+
 
     if (videos.length > 0) {
         const host = "<%= process.env.ORIGIN %>"
+        const bigDiv = document.querySelector('.css-14dcx2q-DivBodyContainer')
         const videosContainer = document.querySelector('.css-9fq6q2-DivOneColumnContainer')
         const containerMain = document.querySelector('.css-1t4vwes-DivMainContainer')
         const videoContainer = document.querySelector('.tiktok-1qg2388-DivBrowserModeContainer')
         const navMenu = document.querySelector('.nav-menu');
         let followedSet = new Set(customer.following.map(following => following.id))
         let likedVideoSet = new Set(likedVideoIds.map(video => video.id))
-        sessionStorage.setItem('videosData', JSON.stringify(videos));
+
         //for videos event
         function showCustomAlert(message) {
             const customAlert = document.getElementById('customAlert');
@@ -177,7 +182,7 @@
             socket.on('updateCustomer', (data) => {
                 customer = data.customer;
                 likedVideoIds = customer.likedVideos;
-                const likedVideoSet = new Set(likedVideoIds.map(video => video.id));
+                likedVideoSet = new Set(likedVideoIds.map(video => video.id));
 
                 if (likedVideoSet.has(video.id)) {
                     likeIcon.style.color = "rgba(254, 44, 85)";
@@ -193,11 +198,34 @@
             }
         }
         function handleFollow(userId, followButton, changeButton) {
-            followButton.classList = "css-1847gtm-Button-StyledFollowButtonTux";
-            changeButton.innerHTML = "Follow";
-            if (followedSet.has(userId)) {
-                followButton.classList = "css-zmqo9-Button-StyledFollowButtonTux";
-                changeButton.innerHTML = "Following";
+            if (customer.id === userId) {
+                let mainDiv = document.querySelector('.css-1hhj6ie-DivTextInfoContainer')
+                let dotButton = document.querySelector('.inline-flex-DivActionContainer')
+                if (dotButton) {
+                    dotButton.remove()
+                }
+                followButton.remove()
+
+                const divVideo = document.createElement('div');
+                divVideo.classList = "inline-flex-DivActionContainer"
+                divVideo.style.display = "inline-flex";
+                divVideo.innerHTML = `
+            <svg class="css-1xafdg4-StyledEllipsisHorizontal e161jvwg1" width="1em" data-e2e="" height="1em" viewBox="0 0 48 48"
+    fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+    <path fill-rule="evenodd" clip-rule="evenodd"
+        d="M4 24C4 21.7909 5.79086 20 8 20C10.2091 20 12 21.7909 12 24C12 26.2091 10.2091 28 8 28C5.79086 28 4 26.2091 4 24ZM20 24C20 21.7909 21.7909 20 24 20C26.2091 20 28 21.7909 28 24C28 26.2091 26.2091 28 24 28C21.7909 28 20 26.2091 20 24ZM36 24C36 21.7909 37.7909 20 40 20C42.2091 20 44 21.7909 44 24C44 26.2091 42.2091 28 40 28C37.7909 28 36 26.2091 36 24Z">
+    </path>
+</svg>
+            `
+
+                mainDiv.appendChild(divVideo)
+            } else {
+                followButton.classList = "css-1847gtm-Button-StyledFollowButtonTux";
+                changeButton.innerHTML = "Follow";
+                if (followedSet.has(userId)) {
+                    followButton.classList = "css-zmqo9-Button-StyledFollowButtonTux";
+                    changeButton.innerHTML = "Following";
+                }
             }
         }
 
@@ -315,13 +343,35 @@
             return commentDiv;
         }
         function handleFollowDetail(userId, followButton, changeButton) {
-            if (followedSet.has(userId)) {
-                followButton.classList = "tiktok-2cfmui-Button";
-                changeButton.innerHTML = "Following";
+            let mainDiv = document.querySelector('.tiktok-85dfh6-DivInfoContainer')
+            let childNodes = mainDiv.childNodes;
+            if (userId === customer.id) {
+                childNodes[3].innerHTML = `
+                <div data-e2e="video-setting" class="css-1dcgmzm-DivActionContainer e161jvwg0"><svg
+        class="css-1xafdg4-StyledEllipsisHorizontal e161jvwg1" width="1em" data-e2e="" height="1em" viewBox="0 0 48 48"
+        fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+        <path fill-rule="evenodd" clip-rule="evenodd"
+            d="M4 24C4 21.7909 5.79086 20 8 20C10.2091 20 12 21.7909 12 24C12 26.2091 10.2091 28 8 28C5.79086 28 4 26.2091 4 24ZM20 24C20 21.7909 21.7909 20 24 20C26.2091 20 28 21.7909 28 24C28 26.2091 26.2091 28 24 28C21.7909 28 20 26.2091 20 24ZM36 24C36 21.7909 37.7909 20 40 20C42.2091 20 44 21.7909 44 24C44 26.2091 42.2091 28 40 28C37.7909 28 36 26.2091 36 24Z">
+        </path>
+    </svg></div>
+                `
             } else {
-                followButton.classList = "tiktok-1pcikqk-Button";
-                changeButton.innerHTML = "Follow";
+                childNodes[3].innerHTML = `
+<button class="tiktok-1pcikqk-Button">
+    <div class="tiktok-jp3752-ButtonContent e1v8cfre2">
+        <div class="tiktok-1djnsui-ButtonLabel e1v8cfre3">Follow</div>
+    </div>
+</button>
+`
+                if (followedSet.has(userId)) {
+                    followButton.classList = "tiktok-2cfmui-Button";
+                    changeButton.innerHTML = "Following";
+                } else {
+                    followButton.classList = "tiktok-1pcikqk-Button";
+                    changeButton.innerHTML = "Follow";
+                }
             }
+
         }
         async function updateVideoDetails(video, commentsCountElement, likeCountElement, commentCountElement, undefinedCountElement, usernameElement, nameElement, daysDifferenceElement, updateTimeDifference, captionElement, avatarImage, videoThumbnail, videoPlay, svgIcon) {
             commentsCountElement.textContent = `Comments (${video.comments.length})`;
@@ -734,8 +784,52 @@
        `
             return divVideo;
         }
+        function createToolThree() {
+            const divCustomAlert = document.createElement('div');
+            const divUnableVideo = document.createElement('div');
+            divCustomAlert.id = "customAlert"
+            divCustomAlert.classList = "custom-alert"
+            divUnableVideo.classList = "container-unableMuted"
+            divCustomAlert.style.display = "none";
+            divUnableVideo.style.display = "none";
+            divCustomAlert.innerHTML = `
+    <span id="alertMessage"></span>
+       `
+            divUnableVideo.innerHTML = `
+    <div class="unableMuted">
+        <button>START!</button>
+    </div>
+`
+            return { divCustomAlert, divUnableVideo };
+        }
+        function updateVideosUI() {
+            let videos = JSON.parse(sessionStorage.getItem('videosData'));
+            let indexToScroll = JSON.parse(sessionStorage.getItem('indexCurrent'));
 
-        function continuePlay(video, clickVideoDiv) {
+            videos.forEach((video, index) => {
+                const videoDivs = document.querySelectorAll('.videoDiv');
+                const currentVideoDiv = videoDivs[index];
+                const likeIcon = currentVideoDiv.querySelector("#like-icon");
+                let likesCount = currentVideoDiv.querySelector("[data-e2e='like-count']");
+                let commentCount = currentVideoDiv.querySelector("[data-e2e='comment-count']");
+                let shareCount = currentVideoDiv.querySelector("[data-e2e='share-count']");
+                const followButton = currentVideoDiv.querySelector('.css-1hhj6ie-DivTextInfoContainer button');
+                let changeButton = currentVideoDiv.querySelector('.css-1djnsui-ButtonLabel');
+
+                likesCount.innerHTML = video.likes;
+                commentCount.innerHTML = video.comments.length;
+                shareCount.innerHTML = video.shareCount;
+
+                handleLike(video.id, likeIcon);
+                handleFollow(video.user.id, followButton, changeButton);
+
+                if (indexToScroll >= 0 && indexToScroll < videos.length) {
+                    videoDivs[indexToScroll].scrollIntoView({ behavior: 'instant' });
+                }
+            });
+        }
+
+        function continuePlay(video) {
 
             const inputElement = document.querySelector('.public-DraftEditor-content');
             const placeholderDiv = document.querySelector('.public-DraftEditorPlaceholder-root');
@@ -970,6 +1064,16 @@
 
             videoPlay.play().catch(error => {
                 console.log("error:", error)
+                unableMuted.style.display = 'flex'
+            })
+
+            button_unableMuted.addEventListener('click', function () {
+                sessionStorage.setItem('videosData', JSON.stringify(videos));
+                sessionStorage.setItem('indexCurrent', 0);
+                sessionStorage.setItem('firstURL', true);
+                unableMuted.style.display = 'none'
+                videoPlay.muted = false;
+                videoPlay.play();
             })
 
             document.addEventListener('visibilitychange', handleVisibilityChange);
@@ -1006,35 +1110,12 @@
 
             xButton.addEventListener('click', function () {
                 divVideo.remove();
-                videosContainer.style.display = 'block'
+                bigDiv.style.display = 'flex'
                 navMenu.style.display = 'flex'
                 updateVideoURL(null)
                 document.removeEventListener('visibilitychange', handleVisibilityChange);
                 updateCustomer()
-                let videos = JSON.parse(sessionStorage.getItem('videosData'))
-                let indexToScroll = JSON.parse(sessionStorage.getItem('indexCurrent'))
-                videos.forEach((video, index) => {
-                    const videoDiv = document.querySelectorAll('.videoDiv');
-                    const videosDiv = document.querySelectorAll('.videoDiv')[index];
-                    const likeIcon = videosDiv.querySelector("#like-icon");
-                    let likesCount = videosDiv.querySelector("[data-e2e='like-count']");
-                    let commentCount = videosDiv.querySelector("[data-e2e='comment-count']");
-                    let shareCount = videosDiv.querySelector("[data-e2e='share-count']");
-                    likesCount.innerHTML = video.likes
-                    commentCount.innerHTML = video.comments.length
-                    shareCount.innerHTML = video.shareCount
-                    const followButton = videosDiv.querySelector('.css-1hhj6ie-DivTextInfoContainer.etvrc4k7 button');
-                    let changeButton = videosDiv.querySelector('.css-1djnsui-ButtonLabel')
-                    handleLike(video.id, likeIcon);
-                    handleFollow(video.user.id, followButton, changeButton);
-
-                    if (indexToScroll >= 0 && indexToScroll < videos.length) {
-                        console.log("indexToScroll:", indexToScroll)
-                        console.log("videos.length:", videos.length)
-
-                        videoDiv[indexToScroll].scrollIntoView({ behavior: 'smooth' });
-                    }
-                })
+                updateVideosUI()
             })
 
             inputElement.addEventListener('input', function () {
@@ -1048,7 +1129,6 @@
             });
 
             leftArrow.addEventListener('click', () => {
-
                 indexCurrent--
                 video = videos[indexCurrent]
                 sessionStorage.setItem('indexCurrent', indexCurrent);
@@ -1065,7 +1145,6 @@
             });
 
             rightArrow.addEventListener('click', () => {
-
                 if (indexCurrent === videos.length - 1) {
                     showCustomAlert("RUN OUT OF VIDEOs")
                 } else {
@@ -1087,16 +1166,27 @@
             });
         }
 
+        if (video !== null) {
+            videos = [video, ...videos]
+            sessionStorage.setItem('videosData', JSON.stringify(videos));
+            sessionStorage.setItem('indexCurrent', 0);
+            bigDiv.style.display = 'none'
+            navMenu.style.display = 'none'
+            const divVideo = createVideoContainer();
+            const { divCustomAlert, divUnableVideo } = createToolThree()
+            document.body.append(divVideo, divCustomAlert, divUnableVideo)
+            continuePlay(video)
+        }
+
         videos.forEach((video, index) => {
             const videoDiv = document.createElement('div')
             videoDiv.classList = "videoDiv"
-
             videoDiv.innerHTML = `
              <div data-e2e="recommend-list-item-container" class="css-14bp9b0-DivItemContainer etvrc4k0"><a class="avatar-anchor etvrc4k4 css-m1rpgs-StyledLink er1vbsz0" data-e2e="video-author-avatar" aria-label="Adam’s profile" href="/customer/profile/${video.user.id}">
                 <div class="css-uha12h-DivContainer e1vl87hj1" style="width: 56px; height: 56px;"><span shape="circle" data-e2e="" class="e1vl87hj2 css-1bzan2v-SpanAvatarContainer-StyledAvatar e1e9er4e0" style="width: 56px; height: 56px;"><img loading="lazy" alt="" src='${video.user.logo}' class="css-1zpj2q-ImgAvatar e1e9er4e1"></span></div>
             </a>
                 <div class="css-1l0odge-DivContentContainer etvrc4k1">
-                    <div class="css-1hhj6ie-DivTextInfoContainer etvrc4k7">
+                    <div class="css-1hhj6ie-DivTextInfoContainer">
                         <div class="css-1mnwhn0-DivAuthorContainer etvrc4k6"><a class="avatar-anchor etvrc4k4 css-m1rpgs-StyledLink er1vbsz0" href="/customer/profile/${video.user.id}">
                             <div class="css-uha12h-DivContainer e1vl87hj1" style="width: 40px; height: 40px;"><span shape="circle" data-e2e="" class="e1vl87hj2 css-gcksof-SpanAvatarContainer-StyledAvatar e1e9er4e0" style="width: 40px; height: 40px;"><img loading="lazy" alt="" class="css-1zpj2q-ImgAvatar e1e9er4e1"></span></div>
                         </a><a class="emt6k1z1 css-1ew4g6u-StyledLink-StyledAuthorAnchor er1vbsz0" href="/customer/profile/${video.user.id}">
@@ -1155,15 +1245,15 @@
                         <div class="css-1cifsuk-DivActionItemContainer e1whjx9o0"><button type="button" aria-label="Like video
 5.5M likes" aria-pressed="false" class="css-1ok4pbl-ButtonActionItem e1hk3hf90"><span data-e2e="like-icon" id="like-icon" class="css-6jur1x-SpanIconWrapper" style="color: rgb(22, 24, 35);"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor">
                                 <use xlink: href="#heart-fill-03bd63df"></use>
-                            </svg></span><strong data-e2e="like-count" class="">${video.likes}</strong></button><button type="button" aria-label="Read or add comments
+                            </svg></span><strong data-e2e="like-count" class="css-w1dlre-StrongText">${video.likes}</strong></button><button type="button" aria-label="Read or add comments
 43.7K comments" class="css-1ok4pbl-ButtonActionItem e1hk3hf90"><span data-e2e="comment-icon" id="comment-icon" class="css-6jur1x-SpanIconWrapper" style="color: rgb(22, 24, 35);"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor">
                                     <use xlink: href="#Bubble_Ellipsis_Right_Fill-a497dc09"></use>
-                                </svg></span><strong data-e2e="comment-count" class="">${video.comments.length}</strong></button><button type="button" aria-label="Add to Favorites. 733.3K added to Favorites" class="css-1ok4pbl-ButtonActionItem e1hk3hf90"><span data-e2e="undefined-icon" class="css-6jur1x-SpanIconWrapper" style="color: rgb(22, 24, 35);"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor">
+                                </svg></span><strong data-e2e="comment-count" class="css-w1dlre-StrongText">${video.comments.length}</strong></button><button type="button" aria-label="Add to Favorites. 733.3K added to Favorites" class="css-1ok4pbl-ButtonActionItem e1hk3hf90"><span data-e2e="undefined-icon" class="css-6jur1x-SpanIconWrapper" style="color: rgb(22, 24, 35);"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor">
                                     <use xlink: href="#uncollect-8a52664d"></use>
-                                </svg></span><strong data-e2e="undefined-count" class="">${video.shareCount}</strong></button><button type="button" aria-label="Share video
+                                </svg></span><strong data-e2e="undefined-count" class="css-w1dlre-StrongText">${video.shareCount}</strong></button><button type="button" aria-label="Share video
 180.6K shares" aria-expanded="false" class="css-1ok4pbl-ButtonActionItem e1hk3hf90"><span data-e2e="share-icon" id="share-icon" class="css-6jur1x-SpanIconWrapper" style="color: rgb(22, 24, 35);"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor">
                                     <use xlink: href="#pc-share-44d9fe83"></use>
-                                </svg></span><strong data-e2e="share-count" class="">${video.shareCount}</strong></button></div>
+                                </svg></span><strong data-e2e="share-count" class="css-w1dlre-StrongText">${video.shareCount}</strong></button></div>
                     </div>
                 </div>
             </div>
@@ -1215,8 +1305,11 @@
                     likeCountElement.innerHTML = +likeCountElement.innerHTML + 1
                     fetch(`/video/like/${video.id}`, {
                         method: 'POST',
-                    }).then(response => {
+                    }).then(async (response) => {
                         updateCustomerAndLike(video, likeIcon);
+                        let newVideo = await updateVideo(video)
+                        video = await newVideo
+                        await updateVideoDataAtIndex(index, video);
                     })
                         .catch(error => {
                             console.error('Error:', error);
@@ -1225,8 +1318,11 @@
                     likeCountElement.innerHTML = +likeCountElement.innerHTML - 1
                     fetch(`/video/dislike/${video.id}`, {
                         method: 'POST',
-                    }).then(response => {
+                    }).then(async (response) => {
                         updateCustomerAndLike(video, likeIcon);
+                        let newVideo = await updateVideo(video)
+                        video = await newVideo
+                        await updateVideoDataAtIndex(index, video);
                     })
                         .catch(error => {
                             console.error('Error:', error);
@@ -1262,12 +1358,13 @@
             })
 
             clickVideoDiv.addEventListener('click', () => {
+                let videos = JSON.parse(sessionStorage.getItem('videosData'));
                 sessionStorage.setItem('indexCurrent', index);
-                videosContainer.style.display = 'none'
+                bigDiv.style.display = 'none'
                 navMenu.style.display = 'none'
                 const divVideo = createVideoContainer();
                 document.body.appendChild(divVideo)
-                continuePlay(video)
+                continuePlay(videos[index])
             });
         }
         )

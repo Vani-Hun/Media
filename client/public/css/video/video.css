@@ -1386,8 +1386,23 @@
       margin-right: 4px;
   }
 
-  .css-9fq6q2-DivOneColumnContainer {
+  .css-w1dlre-StrongText {
+      color: rgba(22, 24, 35, 0.75);
+      font-family: TikTokFont, Arial, Tahoma, PingFangSC, sans-serif;
+      font-size: 12px;
+      line-height: 16px;
+      text-align: center;
+  }
+
+  .css-14dcx2q-DivBodyContainer {
       margin-top: 60px;
+      display: flex;
+      width: 100vw;
+      max-width: 100%;
+      -webkit-box-pack: justify;
+      justify-content: space-between;
+      align-self: center;
+      flex: 1 1 auto;
   }
 
   .css-1t4vwes-DivMainContainer {
@@ -1402,6 +1417,31 @@
       flex-direction: column;
       -webkit-box-align: center;
       align-items: center;
+  }
+
+  .css-1dcgmzm-DivActionContainer {
+      position: relative;
+      flex: 0 0 24px;
+      width: 24px;
+      height: 24px;
+  }
+
+  .inline-flex-DivActionContainer {
+      position: relative;
+      flex: 0 0 24px;
+      width: 24px;
+      height: 36px;
+      min-width: 96px;
+      right: 0px;
+      position: absolute;
+      top: 28px;
+      justify-content: center;
+  }
+
+  .css-1xafdg4-StyledEllipsisHorizontal {
+      width: 24px;
+      height: 24px;
+      cursor: pointer;
   }
 
   @media screen and (max-width: 1071px) {

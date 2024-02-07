@@ -146,6 +146,7 @@
     let listItem = document.querySelector('[data-e2e="logout-entrance"]');
     const listNotifications = document.querySelector('.css-1cz26jb-UlInboxItemListContainer')
     const buttons = document.querySelectorAll('#header-inbox-bar button');
+    let timeSet
 
 
     buttons.forEach(button => {
@@ -154,13 +155,10 @@
         });
     });
 
-
-
     function showLoader() {
         let loader = document.querySelector('.loader');
         loader.classList.add('visible');
     }
-
     function hideLoader() {
         let loader = document.querySelector('.loader');
         loader.classList.remove('visible');
@@ -299,12 +297,32 @@
         })
 
     }
-
-    inboxIcon.addEventListener('click', () => {
+    function hideNotifications() {
+        if (!inboxIcon.contains(event.target) && !notifications.contains(event.target)) {
+            notifications.style.display = "none";
+            document.removeEventListener('click', hideNotifications);
+        }
+    };
+    function showDropdownMenu() {
+        clearTimeout(timeSet);
+        if (dropdownMenu.style.display === "none") {
+            notifications.style.display = "none";
+            dropdownMenu.style.display = "block";
+        }
+    };
+    function hideDropdownMenu(event) {
+        timeSet = setTimeout(() => {
+            dropdownMenu.style.display = "none";
+            document.removeEventListener('click', hideDropdownMenu);
+        }, 800)
+    };
+    inboxIcon.addEventListener('click', (event) => {
         if (notifications.style.display === "none") {
             dropdownMenu.style.display = "none";
             notifications.style.display = "block";
             numberNotification.style.display = 'none'
+            document.addEventListener('click', hideNotifications);
+            event.stopPropagation();
             fetch(`/notification/check`, {
                 method: 'POST',
             })
@@ -318,12 +336,12 @@
         }
     })
 
-    profileIcon.addEventListener("click", function () {
-        if (dropdownMenu.style.display === "none") {
-            notifications.style.display = "none";
-            dropdownMenu.style.display = "block";
-        } else {
-            dropdownMenu.style.display = "none";
+    profileIcon.addEventListener("mouseenter", function (event) {
+        if (notifications.style.display === "none") {
+            showDropdownMenu()
+            dropdownMenu.addEventListener("mouseleave", hideDropdownMenu);
+            dropdownMenu.addEventListener("mouseover", showDropdownMenu);
+            document.addEventListener('click', hideDropdownMenu);
         }
     });
 

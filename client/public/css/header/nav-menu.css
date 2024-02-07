@@ -70,14 +70,14 @@
 .nav-menu {
     display: flex;
     justify-content: space-around;
-    box-shadow: rgba(221, 221, 221, 0.12) 0px 1px 1px;
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 1px;
     height: 60px;
     width: 100%;
     top: 0px;
     position: fixed;
     -webkit-box-align: center;
     align-items: center;
-    background: #eeeeef;
+    background: rgb(255, 255, 255);
     z-index: 1000;
 }
 
@@ -100,12 +100,6 @@
 
 .nav-menu .nav-menu-brand .logo-brand img {
     width: 70px;
-}
-
-
-.menu-list {
-    margin-top: 30px;
-    /* Thay đổi giá trị này để điều chỉnh khoảng cách từ đỉnh của trang */
 }
 
 .menu-list .menu-item {
@@ -686,7 +680,7 @@
 .css-ejp1tv-DivContainer {
     position: absolute;
     z-index: 2;
-    background: rgb(250, 248, 248);
+    background: rgb(255, 255, 255);
     border-radius: 8px;
     top: calc(100% + 12px);
     box-shadow: rgba(0, 0, 0, 0.12) 0px 4px 16px;
@@ -704,13 +698,39 @@
 
 .css-e30u3h-UlPopupContainer {
     font-family: TikTokFont, Arial, Tahoma, PingFangSC, sans-serif;
-    font-weight: 600;
-    font-size: 16px;
+    font-weight: 700;
+    font-size: 18px;
     line-height: 21px;
     padding: 8px 0px;
     margin: 0px;
     min-width: 223px;
     list-style: none;
+}
+
+.css-1n18b5h-UlPopupContainer {
+    font-family: TikTokFont, Arial, Tahoma, PingFangSC, sans-serif;
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 21px;
+    list-style: none;
+    margin: 0px;
+    padding: 8px 16px;
+    white-space: nowrap;
+    min-width: 200px;
+}
+
+.css-rrnssd-LiPopupItem {
+    position: relative;
+    padding: 13px;
+}
+
+.css-1qijq2p-ButtonAction {
+    border: none;
+    background: none;
+    outline: none;
+    padding: 0px;
+    cursor: pointer;
+    color: black;
 }
 
 .css-iqu7v6-LiItemWrapper {
@@ -809,4 +829,355 @@
     height: 56px;
     background: center center / cover no-repeat;
     border-radius: 2px;
+}
+
+@media screen and (max-width: 1071px) {
+    .css-ir29em-DivSideNavContainer {
+        width: 72px;
+        flex: 0 0 72px;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .css-ir29em-DivSideNavContainer {
+        z-index: 99;
+    }
+}
+
+.css-ir29em-DivSideNavContainer {
+    position: relative;
+    height: 100%;
+    width: 240px;
+    flex: 0 0 240px;
+}
+
+@media screen and (max-width: 1071px) {
+    .css-118dbw7-ALink-StyledTmpLink {
+        -webkit-box-pack: center;
+        justify-content: center;
+    }
+}
+
+.css-118dbw7-ALink-StyledTmpLink {
+    position: relative;
+    display: flex;
+    -webkit-box-pack: start;
+    justify-content: flex-start;
+    -webkit-box-align: center;
+    align-items: center;
+    padding: 8px;
+    box-sizing: border-box;
+    border-radius: 4px;
+    font-size: 32px;
+    transition: background 200ms ease-in-out 0s;
+}
+
+@media screen and (max-width: 1071px) {
+    .css-bt9hlt-DivWrapper {
+        padding: 12px 0px 26px;
+    }
+}
+
+.css-bt9hlt-DivWrapper {
+    flex-shrink: 0;
+    padding: 20px 0px 26px 8px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    -webkit-box-align: stretch;
+    align-items: stretch;
+    min-height: 100%;
+}
+
+@media screen and (max-width: 1071px) {
+    .css-qf469v-DivScrollContainer-StyledScroll {
+        padding: 0px 8px;
+        width: 72px;
+        flex: 0 0 72px;
+        box-shadow: rgba(0, 0, 0, 0.06) 0px 2px 8px;
+        border-right: 1px solid rgba(22, 24, 35, 0.12);
+    }
+}
+
+.css-qf469v-DivScrollContainer-StyledScroll {
+    overflow: hidden auto;
+    overscroll-behavior-y: contain;
+    perspective: 1px;
+    transform-style: preserve-3d;
+    perspective-origin: right top;
+    top: 60px;
+    bottom: 0px;
+    /* width: 240px; */
+    background: rgb(255, 255, 255);
+    position: fixed;
+    z-index: 99;
+    padding-right: 8px;
+}
+
+@media screen and (max-width: 1071px) {
+    .css-1rvr9ul-NavMainNavContainer {
+        padding: 0px;
+    }
+}
+
+.css-1rvr9ul-NavMainNavContainer {
+    margin-bottom: 8px;
+    padding: 0px;
+}
+
+.css-nwhccz-UlMainNav {
+    padding: 0px;
+    margin: 0px;
+    list-style-type: none;
+}
+
+@media screen and (max-width: 1071px) {
+    .css-1dhhdo4-SpanMainNavText {
+        display: none;
+    }
+}
+
+.css-1dhhdo4-SpanMainNavText {
+    color: rgb(22, 24, 35);
+    font-family: TikTokFont, Arial, Tahoma, PingFangSC, sans-serif;
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 24px;
+    margin-left: 8px;
+}
+
+.css-35pnuj-SpanMainNavText {
+    color: rgb(254, 44, 85);
+    font-family: TikTokFont, Arial, Tahoma, PingFangSC, sans-serif;
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 24px;
+    margin-left: 8px;
+}
+
+@media screen and (max-width: 1071px) {
+    .css-35pnuj-SpanMainNavText {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 1071px) {
+    .css-qrbz7k-DivUserContainer {
+        padding: 8px 0px;
+    }
+}
+
+.css-qrbz7k-DivUserContainer {
+    padding: 16px 0px;
+    color: rgba(22, 24, 35, 0.75);
+    font-family: TikTokFont, Arial, Tahoma, PingFangSC, sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 18px;
+    position: relative;
+}
+
+.css-qrbz7k-DivUserContainer::before {
+    content: "";
+    position: absolute;
+    left: 8px;
+    right: 8px;
+    top: 0px;
+    height: 1px;
+    background: rgba(22, 24, 35, 0.12);
+    transform: scaleY(0.5);
+}
+
+@media screen and (max-width: 1071px) {
+    .css-1a758rb-H2Title {
+        display: none;
+    }
+}
+
+.css-1a758rb-H2Title {
+    padding: 0px 8px;
+    margin-bottom: 8px;
+    font-family: TikTokFont, Arial, Tahoma, PingFangSC, sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 18px;
+}
+
+.css-j1fxk6-UlAccountList {
+    padding: 0px;
+    margin: 0px;
+    list-style-type: none;
+}
+
+.css-1mo2fkg-DivUserLinkContainer {
+    padding: 8px;
+    display: flex;
+    flex-direction: row;
+    -webkit-box-align: center;
+    align-items: center;
+    position: relative;
+    border-radius: 4px;
+    transition: background 200ms ease-in-out 0s;
+}
+
+@media screen and (max-width: 1071px) {
+    .css-n1lhfn-DivContainer-StyledUserAvatar {
+        margin-right: 0px;
+        margin-left: 2px;
+    }
+}
+
+.css-n1lhfn-DivContainer-StyledUserAvatar {
+    position: relative;
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    justify-content: center;
+    margin-right: 12px;
+    flex: 0 0 48px;
+}
+
+.css-gcksof-SpanAvatarContainer-StyledAvatar {
+    display: inline-block;
+    box-sizing: border-box;
+    margin: 0px;
+    padding: 0px;
+    font-feature-settings: "tnum";
+    position: relative;
+    overflow: hidden;
+    color: rgb(255, 255, 255);
+    white-space: nowrap;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 32px;
+    border-radius: 50%;
+    border-color: rgba(22, 24, 35, 0.12);
+    border-width: 0.5px;
+    cursor: pointer;
+    background-color: rgba(136, 136, 136, 0.5);
+}
+
+.css-1zpj2q-ImgAvatar {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.css-yt7cul-DivUserTitleWrapper {
+    display: flex;
+    flex-direction: row;
+    -webkit-box-align: center;
+    align-items: center;
+}
+
+.css-1c5w9i8-SpanUserTitle {
+    color: rgb(22, 24, 35);
+    font-family: TikTokFont, Arial, Tahoma, PingFangSC, sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 21px;
+    margin-top: -2px;
+    max-width: 145px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.css-vm571n-PUserDesc {
+    color: rgba(22, 24, 35, 0.75);
+    font-family: TikTokFont, Arial, Tahoma, PingFangSC, sans-serif;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 15px;
+    max-width: 145px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+@media screen and (max-width: 1071px) {
+    .css-b1mrwj-ButtonShowMoreText {
+        display: none;
+    }
+}
+
+.css-b1mrwj-ButtonShowMoreText {
+    background: transparent;
+    border: none;
+    padding: 0px 8px;
+    margin-top: 8px;
+    cursor: pointer;
+}
+
+.css-2tp5px-PShowMoreText {
+    color: rgb(254, 44, 85);
+    font-family: TikTokFont, Arial, Tahoma, PingFangSC, sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 18px;
+}
+
+@media screen and (max-width: 1071px) {
+    .css-12zznuq-StyledLink-StyledTmpLink {
+        -webkit-box-pack: center;
+        justify-content: center;
+    }
+}
+
+.css-12zznuq-StyledLink-StyledTmpLink {
+    position: relative;
+    display: flex;
+    -webkit-box-pack: start;
+    justify-content: flex-start;
+    -webkit-box-align: center;
+    align-items: center;
+    padding: 8px;
+    box-sizing: border-box;
+    border-radius: 4px;
+    font-size: 32px;
+    transition: background 200ms ease-in-out 0s;
+}
+
+.css-17q4no2-DivIconPaddingContainer {
+    width: 32px;
+    height: 32px;
+    font-size: 24px;
+    padding: 4px;
+}
+
+.css-gopybs-StyledArrowDown {
+    margin-left: 4px;
+    transition: all 0.3s ease 0s;
+    transform: none;
+    display: none;
+}
+
+.css-l5ex3n-DivScrollBar {
+    position: absolute;
+    padding: 0px 4px;
+    top: 0px;
+    transition: opacity 0.5s ease 0s;
+    opacity: 0;
+    right: 0px;
+    transform-origin: right top;
+}
+
+.css-4jy5wt-DivScrollBarThumb {
+    width: 6px;
+    height: 100%;
+    border-radius: 3px;
+    background: rgba(22, 24, 35, 0.06);
+}
+
+@media screen and (max-width: 1071px) {
+    .css-v7yw3g-StyledLink-StyledUserContentLink {
+        display: none;
+    }
+}
+
+.css-v7yw3g-StyledLink-StyledUserContentLink {
+    -webkit-box-flex: 1;
+    flex-grow: 1;
+    height: 32px;
 }

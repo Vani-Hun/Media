@@ -15,31 +15,47 @@ export class NotificationService extends BaseService<Notification> {
 
     async createNotification(input): Promise<Notification | {}> {
         try {
-            if (input.type === 'Likes') {
-                const existingNotification = await this.repo
+            if (input.type === 'Likes' || input.type === 'Followers') {
+                const existingLikesAndFollowersNotification = await this.repo
                     .createQueryBuilder('notification')
-                    .where('notification.video = :id', { id: input.video.id })
-                    .andWhere('notification.type = :type', { type: 'Likes' })
-                    .andWhere('notification.interactingUser = :interactingUser', { interactingUser: input.id })
-                    .getOne();
-                if (existingNotification) {
+                    .where('(notification.video = :videoId AND notification.type = :likesType) OR (notification.type = :followersType)')
+                    .andWhere('notification.interactingUser = :interactingUser', { videoId: input.video ? input.video.id : null, likesType: 'Likes', followersType: 'Followers', interactingUser: input.id })
+                    .getMany();
+
+                if (existingLikesAndFollowersNotification.length > 1) {
                     return {};
+                } else {
+                    const newNotification = this.repo.create({
+                        user: input.video && input.video.user ? input.video.user.id : input.customerId,
+                        interactingUser: input.id,
+                        video: input.video ? input.video.id : null,
+                        message: input.mess,
+                        status: false,
+                        type: input.type,
+                    });
+
+                    return await this.repo.save(newNotification);
                 }
             }
-            const newNotification = this.repo.create({
-                user: input.customerId || input.video.user.id,
-                interactingUser: input.id,
-                video: input.video?.id,
-                message: input.mess,
-                status: false,
-                type: input.type,
-            });
-            console.log("newNotification:", newNotification)
-
-            const savedNotification = await this.repo.save(newNotification);
-            return savedNotification
         } catch (error) {
             throw new HttpException(`Failed to create notification: ${error.message}`, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    async deleteNotification(input) {
+        console.log("input:", input)
+        try {
+            const existingNotification = await this.repo
+                .createQueryBuilder('notification')
+                .where('(notification.video = :videoId AND notification.type = :likesType) OR (notification.type = :followersType AND notification.video IS NULL)')
+                .andWhere('notification.interactingUser = :interactingUser', { videoId: input.video ? input.video.id : null, likesType: 'Likes', followersType: 'Followers', interactingUser: input.id })
+                .getOne();
+            if (!existingNotification) {
+                return {}
+            }
+            return await this.repo.remove(existingNotification)
+        } catch (error) {
+            throw new HttpException(`Failed to delete notification: ${error.message}`, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

@@ -77,7 +77,6 @@ export class CustomerService extends BaseService<Customer> {
   };
 
   async facebookLogin(input, res) {
-    console.log("input:", input)
     const data = await this.repo.findOne({
       where: { email: input.id }
     })
@@ -177,6 +176,7 @@ export class CustomerService extends BaseService<Customer> {
       .leftJoinAndSelect('likedVideos.comments', 'commentslikedVideo')
       .leftJoinAndSelect('likedVideos.likers', 'likerslikedVideo')
       .leftJoinAndSelect('commentslikedVideo.customer', 'commentCustomer')
+      .leftJoinAndSelect('commentsVideo.customer', 'commentsVideoCustomer')
       .orderBy('videos.createAt', 'DESC')
       .addOrderBy('notifications.createAt', 'DESC')
       .getOneOrFail();
@@ -249,7 +249,6 @@ export class CustomerService extends BaseService<Customer> {
         .leftJoinAndSelect('customer.following', 'following')
         .where('customer.id = :id', { id: input.id })
         .getOneOrFail();
-      console.log("userRequest:", userRequest)
 
       const isFollowed = userRequest.following.some(following => following.id === input.customerId);
 
@@ -257,7 +256,6 @@ export class CustomerService extends BaseService<Customer> {
         const userRequested = await this.repo.createQueryBuilder('customer')
           .where('customer.id = :id', { id: input.customerId })
           .getOneOrFail();
-        console.log("userRequested:", userRequested)
 
         await userRequest.following.push(userRequested);
         await this.repo.save(userRequest);
@@ -276,6 +274,9 @@ export class CustomerService extends BaseService<Customer> {
 
 
   async unfollowUser(input) {
+    console.log("input:", input)
+    input.type = NotificationType.FOLLOWER;
+    await this.notificationService.deleteNotification(input);
     return await this.repo
       .createQueryBuilder()
       .relation(Customer, 'following')

@@ -153,9 +153,10 @@ export class VideoService extends BaseService<Video> {
                 .leftJoinAndSelect('video.likers', 'likers')
                 .where('video.id = :id', { id: input.videoId })
                 .getOneOrFail();
-
             video.likers = video.likers.filter(liker => liker.id !== input.id);
             video.likes--;
+            input = { video, type: NotificationType.LIKE, ...input }
+            await this.notificationService.deleteNotification(input);
             return await this.repo.save(video);
 
         } catch (error) {
@@ -207,17 +208,25 @@ export class VideoService extends BaseService<Video> {
 
         const customer = await this.customerService.getUser(input);
 
-        return { videos, customer };
+        return { videos, customer, video: null };
     }
 
     async getVideoById(input) {
-        const customer = await this.customerService.getUser(input)
-        const video = await this.repo.findOne({
-            where: {
-                id: input.videoId
-            }, relations: ['user', 'comments', 'comments.video', 'comments.customer', 'likers']
-        });
-        return { video, customer }
+        console.log("input:", input)
+        const video = await this.repo.createQueryBuilder('video')
+            .where('video.who = :who', { who: 'Public' })
+            .andWhere('video.id  = :id', { id: input.videoId })
+            .orderBy('video.createAt', 'DESC')
+            .leftJoinAndSelect('video.user', 'user')
+            .leftJoinAndSelect('video.likers', 'likers')
+            .leftJoinAndSelect('video.comments', 'comments')
+            .leftJoinAndSelect('comments.video', 'video2')
+            .leftJoinAndSelect('comments.customer', 'customer')
+            .getOne()
+        console.log("video:", video)
+
+        const { videos, customer } = await this.getVideos(input)
+        return { video, videos, customer }
 
     }
     async getVideo(input) {

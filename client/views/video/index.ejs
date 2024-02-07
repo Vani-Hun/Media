@@ -1,3 +1,6 @@
 <%- include("../common/head.ejs", {content: "VANI" , keyword: "Laugh" , title: "Better" }) %>
-    <%- include("../common/header/header.ejs",customer) %>
-        <%- include('./video-body/video-body.ejs',videos) %>
+    <%- include("../common/nav-menu.ejs",customer) %>
+        <div class="css-14dcx2q-DivBodyContainer e1irlpdw0">
+            <%- include("../common/nav-menu-middle.ejs") %>
+                <%- include('./video-body/video-body.ejs',videos) %>
+        </div>

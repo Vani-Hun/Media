@@ -44,8 +44,9 @@ export class VideoController {
 
     @Get(':videoId')
     @UseGuards(CusAuthGuard)
-    @Render('video/detail')
+    @Render('video/index')
     async getVideoById(@Param('videoId') videoId: string, @Req() req: Request) {
+        console.log("videoId:", videoId)
         req['user'] = { ...req['user'], videoId }
         return await this.videoService.getVideoById(req['user'])
     }
