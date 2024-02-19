@@ -29,7 +29,7 @@ export class VideoController {
                 return await this.videoService.create(url, req['user'], res)
             }
         }
-    };
+    }
     @Get('videos')
     @UseGuards(CusAuthGuard)
     @Render('video/index')
@@ -49,7 +49,7 @@ export class VideoController {
         console.log("videoId:", videoId)
         req['user'] = { ...req['user'], videoId }
         return await this.videoService.getVideoById(req['user'])
-    }
+    };
 
     @Get('videoInf/:id')
     @UseGuards(CusAuthGuard)
