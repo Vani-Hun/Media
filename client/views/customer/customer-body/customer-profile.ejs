@@ -533,11 +533,11 @@
     const videoContainer = document.querySelector('[data-e2e="user-post-item-list"]');
     const listVideoDiv = document.querySelector('.tiktok-10qtkim-DivShareLayoutBase-StyledShareLayoutV2')
     const navMenuMiddle = document.querySelector('.css-r0hg2a-DivSideNavContainer')
-    window.addEventListener('popstate', function (event) {
-        const newPathname = window.location.pathname;
-        console.log("newPathname:", newPathname)
-        window.location.href = newPathname
-    });
+    window.history.replaceState({}, "pageProfile", `${host}/customer/profile/${customer.id}`)
+    window.onpopstate = function (event) {
+        window.location.href = window.location.pathname
+    }
+
     function showCustomAlert(message) {
         const customAlert = document.getElementById('customAlert');
         const alertMessage = document.getElementById('alertMessage');
@@ -756,11 +756,12 @@
             container.appendChild(commentElement);
         });
     }
-    function updateURL(url, type) {
+    function updateURL(url, unsed, type) {
+        unsed ? unsed : 'null'
         if (type === 'push') {
-            window.history.pushState({}, "", url);
+            window.history.pushState({}, unsed, url);
         } else {
-            window.history.replaceState({}, "", url);
+            window.history.replaceState({}, unsed, url);
         }
     }
     function createVideoContainer() {
@@ -1236,118 +1237,15 @@
         let isMuted = false
         const buttonActionVideo = document.querySelectorAll('.css-1qijq2p-ButtonAction.e161jvwg4');
 
-
-        buttonActionVideo.forEach(button => {
-            button.addEventListener('click', function (event) {
-                event.preventDefault()
-                const buttonText = this.innerText;
-                if (buttonText === "Delete") {
-                    showLoader()
-                    fetch(`/video/delete/${video.id}`, {
-                        method: 'DELETE',
-                    }).then((data) => {
-                        hideLoader()
-                        window.location.href = `/customer/profile/${customer.id}`
-                    })
-                        .catch(error => {
-                            console.error('Error:', error);
-                        });
-                } else {
-                    editVideoForm.style.display = 'block'
-                    const editWho = document.querySelector('.css-17hfips-DivContainer')
-                    const selectedElement = document.querySelector('.css-1bi8eji-PSelected');
-                    selectedElement.textContent = video.who
-
-                    function handleClick() {
-                        console.log("click:")
-                        const edit = document.querySelector('.css-cyte9w-UlOptionsContainer')
-                        if (edit.style.display == 'none') {
-                            edit.style.display = 'block'
-                        } else {
-                            edit.style.display = 'none'
-                        }
-                        const optionsItems = document.querySelectorAll('.css-162z403-LiOptionsItem');
-                        optionsItems.forEach(item => {
-                            item.addEventListener('click', function () {
-                                const selectedTitle = this.getAttribute('title');
-                                selectedElement.textContent = selectedTitle;
-                            });
-                        })
-                    }
-
-                    editWho.addEventListener('click', handleClick);
-
-
-
-                    const divSwitchContainers = document.querySelectorAll('.css-3uij16-DivSwitchItemContainer');
-                    const switchWrapper = document.querySelector('.css-12xzmck-DivSwitchWrapper');
-                    const switchIcon = document.querySelector('.css-9lvgjp-SpanSwitchIcon');
-                    const doneButton = document.querySelector('.css-6fnltj-ButtonSave')
-                    let isSwitchOn = video.allowComment;
-                    if (!isSwitchOn) {
-                        switchWrapper.style.background = 'gray';
-                        switchIcon.style.left = '23px';
-                        isSwitchOn = false
-                    }
-                    divSwitchContainers.forEach(divSwitchContainer => {
-                        const buttonSwitch = divSwitchContainer.querySelector('.css-ge3lma-ButtonSwitchContainer');
-                        buttonSwitch.addEventListener('click', function () {
-                            const buttonText = divSwitchContainer.innerText.trim();
-                            if (buttonText === "Allow comments") {
-                                isSwitchOn = !isSwitchOn;
-                                if (isSwitchOn) {
-                                    switchWrapper.style.background = 'rgb(11, 224, 155)';
-                                    switchIcon.style.left = 'calc(100% - 2px)';
-                                    isSwitchOn = true
-                                } else {
-                                    switchWrapper.style.background = 'gray';
-                                    switchIcon.style.left = '23px';
-                                    isSwitchOn = false
-                                }
-                            }
-                        })
-                    })
-
-                    doneButton.addEventListener('click', function handleButtonClick(event) {
-                        editWho.removeEventListener('click', handleClick);
-                        showLoader();
-                        const data = {
-                            video: video.id,
-                            allowComment: isSwitchOn,
-                            who: selectedElement.textContent
-                        };
-                        fetch('/video/update', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify(data)
-                        })
-                            .then(async (response) => {
-                                let newVideo = await updateVideo(video);
-                                video = await newVideo;
-                                setSpanOtherInfosContent(spanOtherInfos, newVideo, customer, updateTimeDifference);
-                                hideLoader();
-                                editVideoForm.style.display = 'none';
-                                doneButton.removeEventListener('click', handleButtonClick);
-                            })
-                            .catch(error => {
-                                console.error('Error:', error);
-                            });
-                    });
-                }
-            });
-        });
-
         const handleVisibilityChange = () => {
             handleVisibilityEvent(videoPlay, playIcon);
         }
 
         copyLinkText.innerHTML = `${host}/video/${video.id}`
-        // indexCurrent = +indexCurrent
+        indexCurrent = +indexCurrent
 
 
-        updateURL(`/video/${video.id}`, 'push');
+        updateURL(`/video/${video.id}`, "pageProfile", 'push');
 
         updateLeftArrowDisplay(indexCurrent, leftArrow);
 
@@ -1552,7 +1450,7 @@
             navMenu.style.display = 'flex'
             listVideoDiv.style.display = 'flex'
             navMenuMiddle.style.display = 'flex'
-            updateURL(`/customer/profile/${customer.id}`, 'replace')
+            updateURL(`/customer/profile/${customer.id}`, "pageProfile", 'push')
             document.removeEventListener('visibilitychange', handleVisibilityChange);
             updateCustomer()
         })
@@ -1570,7 +1468,7 @@
         leftArrow.addEventListener('click', () => {
             indexCurrent--
             video = videos[indexCurrent]
-            sessionStorage.setItem('indexCurrent', indexCurrent);
+            sessionStorage.setItem('indexCurrentVideoProfile', indexCurrent);
             playIcon.style.display = 'none';
             copyLinkText.innerHTML = `${host}/video/${video.id}`
             removeCommentContainers();
@@ -1579,7 +1477,7 @@
             handleLikeDetail(video.id, svgIcon);
             updateLeftArrowDisplay(indexCurrent, leftArrow);
             appendCommentsToContainer(video.comments, divCommentList);
-            updateURL(`/video/${video.id}`, 'replace');
+            updateURL(`/video/${video.id}`, null, 'replace');
             updateCustomer()
         });
 
@@ -1589,7 +1487,7 @@
             } else {
                 indexCurrent++
                 video = videos[indexCurrent]
-                sessionStorage.setItem('indexCurrent', indexCurrent);
+                sessionStorage.setItem('indexCurrentVideoProfile', indexCurrent);
                 playIcon.style.display = 'none';
                 copyLinkText.innerHTML = `${host}/video/${video.id}`
                 removeCommentContainers();
@@ -1598,10 +1496,112 @@
                 // handleFollowDetail(video.user.id, followButton, changeButton);
                 handleLikeDetail(video.id, svgIcon);
                 appendCommentsToContainer(video.comments, divCommentList);
-                updateURL(`/video/${video.id}`, 'replace');
+                updateURL(`/video/${video.id}`, null, 'replace');
                 updateCustomer()
             }
 
+        });
+
+        buttonActionVideo.forEach(button => {
+            button.addEventListener('click', function (event) {
+                event.preventDefault()
+                const buttonText = this.innerText;
+                if (buttonText === "Delete") {
+                    showLoader()
+                    fetch(`/video/delete/${video.id}`, {
+                        method: 'DELETE',
+                    }).then((data) => {
+                        hideLoader()
+                        window.location.href = `/customer/profile/${customer.id}`
+                    })
+                        .catch(error => {
+                            console.error('Error:', error);
+                        });
+                } else {
+                    editVideoForm.style.display = 'block'
+                    const editWho = document.querySelector('.css-17hfips-DivContainer')
+                    const selectedElement = document.querySelector('.css-1bi8eji-PSelected');
+                    selectedElement.textContent = video.who
+
+                    function handleClick() {
+                        console.log("click:")
+                        const edit = document.querySelector('.css-cyte9w-UlOptionsContainer')
+                        if (edit.style.display == 'none') {
+                            edit.style.display = 'block'
+                        } else {
+                            edit.style.display = 'none'
+                        }
+                        const optionsItems = document.querySelectorAll('.css-162z403-LiOptionsItem');
+                        optionsItems.forEach(item => {
+                            item.addEventListener('click', function () {
+                                const selectedTitle = this.getAttribute('title');
+                                selectedElement.textContent = selectedTitle;
+                            });
+                        })
+                    }
+
+                    editWho.addEventListener('click', handleClick);
+
+
+
+                    const divSwitchContainers = document.querySelectorAll('.css-3uij16-DivSwitchItemContainer');
+                    const switchWrapper = document.querySelector('.css-12xzmck-DivSwitchWrapper');
+                    const switchIcon = document.querySelector('.css-9lvgjp-SpanSwitchIcon');
+                    const doneButton = document.querySelector('.css-6fnltj-ButtonSave')
+                    let isSwitchOn = video.allowComment;
+                    if (!isSwitchOn) {
+                        switchWrapper.style.background = 'gray';
+                        switchIcon.style.left = '23px';
+                        isSwitchOn = false
+                    }
+                    divSwitchContainers.forEach(divSwitchContainer => {
+                        const buttonSwitch = divSwitchContainer.querySelector('.css-ge3lma-ButtonSwitchContainer');
+                        buttonSwitch.addEventListener('click', function () {
+                            const buttonText = divSwitchContainer.innerText.trim();
+                            if (buttonText === "Allow comments") {
+                                isSwitchOn = !isSwitchOn;
+                                if (isSwitchOn) {
+                                    switchWrapper.style.background = 'rgb(11, 224, 155)';
+                                    switchIcon.style.left = 'calc(100% - 2px)';
+                                    isSwitchOn = true
+                                } else {
+                                    switchWrapper.style.background = 'gray';
+                                    switchIcon.style.left = '23px';
+                                    isSwitchOn = false
+                                }
+                            }
+                        })
+                    })
+
+                    doneButton.addEventListener('click', function handleButtonClick(event) {
+                        editWho.removeEventListener('click', handleClick);
+                        showLoader();
+                        const data = {
+                            video: video.id,
+                            allowComment: isSwitchOn,
+                            who: selectedElement.textContent
+                        };
+                        fetch('/video/update', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(data)
+                        })
+                            .then(async (response) => {
+                                let newVideo = await updateVideo(video);
+                                video = await newVideo;
+                                setSpanOtherInfosContent(spanOtherInfos, newVideo, customer, updateTimeDifference);
+                                hideLoader();
+                                editVideoForm.style.display = 'none';
+                                doneButton.removeEventListener('click', handleButtonClick);
+                            })
+                            .catch(error => {
+                                console.error('Error:', error);
+                            });
+                    });
+                }
+            });
         });
     }
 

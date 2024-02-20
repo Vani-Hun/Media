@@ -111,6 +111,9 @@
     let likedVideoIds = customer.likedVideos
     sessionStorage.setItem('videosData', JSON.stringify(videos));
 
+    window.onpopstate = function (event) {
+        window.location.href = window.location.pathname
+    }
 
     if (videos.length > 0) {
         const host = "<%= process.env.ORIGIN %>"
@@ -436,14 +439,13 @@
             });
         }
         function updateVideoURL(url, type) {
-            // const currentURL = new URL(window.location.href);
-            // currentURL.pathname = `/video/${videoId}`;
             if (type === 'push') {
                 window.history.pushState({}, "", url);
             } else {
                 window.history.replaceState({}, "", url);
             }
         }
+
         function createVideoContainer() {
             const divVideo = document.createElement('div');
             divVideo.classList = "tiktok-1qg2388-DivBrowserModeContainer"
@@ -879,9 +881,11 @@
 
             const handlePopState = function (event) {
                 const newPathname = window.location.pathname;
-                // xButton.click();
-                window.location.href = newPathname
+                console.log("newPathname:", newPathname)
+                xButton.click();
+                // window.location.href = newPathname
             };
+
 
             copyLinkText.innerHTML = `${host}/video/${video.id}`
             indexCurrent = +indexCurrent
@@ -1122,9 +1126,8 @@
                 listVideoDiv.style.display = 'flex'
                 listDiv.style.marginTop = '60px'
                 navMenuMiddle.style.display = 'flex'
-                // window.removeEventListener('popstate', handlePopState);
                 document.removeEventListener('visibilitychange', handleVisibilityChange);
-                updateVideoURL(`/video/videos`, 'replace');
+                updateVideoURL(`/video/videos`, 'push');
                 updateCustomer()
                 updateVideosUI()
             })
@@ -1174,10 +1177,7 @@
                     updateCustomer()
                 }
 
-            });
-
-            window.addEventListener('popstate', handlePopState);
-
+            })
         }
 
         if (video !== null) {
