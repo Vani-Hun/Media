@@ -104,9 +104,18 @@
     <div class="css-9fq6q2-DivOneColumnContainer e108hwin0">
     </div>
 </div>
-<div id="customAlert" class="custom-alert" style="display: none;">
-    <span id="alertMessage">Link copied successfully</span>
-</div>
+<div id="customAlert" class="css-14feuhu" style="display: none;"><span>
+        <div class="css-14feuhu-notice" style="right: 50%;">
+            <div class="css-14feuhu-notice-content">
+                <div role="alert" class="css-9aj0a0-DivMessageContainer e1wz89c90"
+                    style="display: flex; justify-content: center; align-items: center;"><img
+                        src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTE3Ljg0MDQgNi44NTk4NkMxOC4wMzc3IDYuNjYyMDcgMTguMzU4NyA2LjY2NDI1IDE4LjU1MzMgNi44NjQ3MUwxOS40NTc0IDcuNzk2MjlDMTkuNjQ3NSA3Ljk5MjE3IDE5LjY0NTQgOC4zMDQzMiAxOS40NTI2IDguNDk3NTlMMTAuNTU4MiAxNy40MTYzQzEwLjEwNSAxNy44NzA3IDkuMzczMzMgMTcuODU5NiA4LjkzMzY2IDE3LjM5MTZMNC44MzY4MSAxMy4wMzA2QzQuNjQ5OTEgMTIuODMxNyA0LjY1NzExIDEyLjUxOTYgNC44NTI5OSAxMi4zMjk1TDUuNzgzNzQgMTEuNDI2MUM1Ljk4NDE4IDExLjIzMTUgNi4zMDUxNCAxMS4yMzg5IDYuNDk2MzkgMTEuNDQyNUw5Ljc4MjE0IDE0Ljk0MDFMMTcuODQwNCA2Ljg1OTg2WiIgZmlsbD0iIzBCRTA5QiIvPgo8L3N2Zz4K"
+                        aria-hidden="true" style="width: 24px; height: 24px; margin-right: 8px;"><span
+                        id="alertMessage">Settings updated
+                    </span></div>
+            </div>
+        </div>
+    </span></div>
 <script>
     let videos = JSON.parse('<%- JSON.stringify(videos) %>')
     let video = JSON.parse('<%- JSON.stringify(video) %>')
@@ -134,7 +143,7 @@
             const customAlert = document.getElementById('customAlert');
             const alertMessage = document.getElementById('alertMessage');
             alertMessage.textContent = message;
-            customAlert.style.display = 'block';
+            customAlert.style.display = 'flex';
             setTimeout(() => {
                 customAlert.style.display = 'none';
             }, 1500);
@@ -779,9 +788,18 @@
         </div>
     </div>
     
-<div id="customAlert" class="custom-alert">
-    <span id="alertMessage"></span>
-</div>
+<div class="css-14feuhu" style="display: none;"><span>
+        <div class="css-14feuhu-notice" style="right: 50%;">
+            <div class="css-14feuhu-notice-content">
+                <div role="alert" class="css-9aj0a0-DivMessageContainer e1wz89c90"
+                    style="display: flex; justify-content: center; align-items: center;"><img
+                        src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTE3Ljg0MDQgNi44NTk4NkMxOC4wMzc3IDYuNjYyMDcgMTguMzU4NyA2LjY2NDI1IDE4LjU1MzMgNi44NjQ3MUwxOS40NTc0IDcuNzk2MjlDMTkuNjQ3NSA3Ljk5MjE3IDE5LjY0NTQgOC4zMDQzMiAxOS40NTI2IDguNDk3NTlMMTAuNTU4MiAxNy40MTYzQzEwLjEwNSAxNy44NzA3IDkuMzczMzMgMTcuODU5NiA4LjkzMzY2IDE3LjM5MTZMNC44MzY4MSAxMy4wMzA2QzQuNjQ5OTEgMTIuODMxNyA0LjY1NzExIDEyLjUxOTYgNC44NTI5OSAxMi4zMjk1TDUuNzgzNzQgMTEuNDI2MUM1Ljk4NDE4IDExLjIzMTUgNi4zMDUxNCAxMS4yMzg5IDYuNDk2MzkgMTEuNDQyNUw5Ljc4MjE0IDE0Ljk0MDFMMTcuODQwNCA2Ljg1OTg2WiIgZmlsbD0iIzBCRTA5QiIvPgo8L3N2Zz4K"
+                        aria-hidden="true" style="width: 24px; height: 24px; margin-right: 8px;"><span
+                        id="alertMessage">Settings updated
+                    </span></div>
+            </div>
+        </div>
+    </span></div>
 <div style="display: none;" class="container-unableMuted">
     <div class="unableMuted">
         <button>START!</button>
@@ -794,7 +812,7 @@
             const divCustomAlert = document.createElement('div');
             const divUnableVideo = document.createElement('div');
             divCustomAlert.id = "customAlert"
-            divCustomAlert.classList = "custom-alert"
+            divCustomAlert.classList = "css-14feuhu"
             divUnableVideo.classList = "container-unableMuted"
             divCustomAlert.style.display = "none";
             divUnableVideo.style.display = "none";

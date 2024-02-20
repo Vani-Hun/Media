@@ -531,3 +531,32 @@
     width: 20px;
     margin-right: 8px;
 }
+
+.css-14feuhu {
+    font-family: TikTokFont, PingFangSC, sans-serif;
+    font-weight: 600;
+    position: fixed;
+    top: 16px;
+    left: 0px;
+    color: rgb(255, 255, 255);
+    z-index: 2003;
+    width: 100%;
+    pointer-events: none;
+    user-select: none;
+    display: flex;
+    justify-content: center;
+}
+
+.css-14feuhu-notice-content {
+    background-color: rgba(84, 84, 84, 0.92);
+    display: inline-block;
+    padding: 10px 8px;
+    pointer-events: all;
+    max-width: 100%;
+    border-radius: 2px;
+}
+
+.css-9aj0a0-DivMessageContainer {
+    width: 50vw;
+    direction: ltr;
+}
