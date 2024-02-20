@@ -1,0 +1,533 @@
+.css-l3wolk-DivSettingContainer {
+    position: absolute;
+    inset: 60px 0px 0px;
+    background-color: rgb(244, 244, 244);
+}
+
+@media screen and (max-width: 1222px) {
+    .css-1s5z84g-DivSettingBack {
+        display: none;
+    }
+}
+
+.css-1s5z84g-DivSettingBack {
+    position: absolute;
+    top: 32px;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    -webkit-box-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    align-items: center;
+    background: rgba(22, 24, 35, 0.03);
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 1;
+    left: calc(50% - 611px);
+}
+
+.css-45b2fy-StyledArrowLeft {
+    width: 20px;
+    height: 20px;
+    transform: rotate(0deg);
+}
+
+@media screen and (max-width: 1222px) {
+    .css-12dglg6-DivLayoutContainer {
+        max-width: 760px;
+        min-width: 760px;
+        -webkit-box-pack: center;
+        justify-content: center;
+    }
+}
+
+.css-12dglg6-DivLayoutContainer {
+    margin: auto;
+    height: calc(-60px + 100vh);
+    max-width: 1100px;
+    min-width: 1100px;
+    display: flex;
+    -webkit-box-pack: justify;
+    justify-content: space-between;
+    -webkit-box-align: stretch;
+    align-items: stretch;
+    padding-top: 16px;
+}
+
+@media screen and (max-width: 1222px) {
+    .css-1fw1dvk-DivLayoutNav {
+        display: none;
+    }
+}
+
+.css-1fw1dvk-DivLayoutNav {
+    flex: 0 0 356px;
+    position: relative;
+}
+
+.css-1f4dsax-DivNavScrollContainer {
+    width: 356px;
+    padding: 16px 0px;
+    background-color: rgb(255, 255, 255);
+    box-shadow: rgba(0, 0, 0, 0.06) 0px 2px 8px;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    overflow: hidden auto;
+    position: absolute;
+    bottom: 0px;
+    top: 0px;
+}
+
+.css-5pte1-DivNavItem {
+    height: 52px;
+    padding: 14px 24px;
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.css-6ac2kf-SpanIconContainer {
+    margin-right: 12px;
+    color: rgb(254, 44, 85);
+}
+
+.css-1qkrpk7-SpanItemContent {
+    font-size: 18px;
+    font-weight: 600;
+    color: rgb(254, 44, 85);
+}
+
+.css-5pte1-DivNavItem {
+    height: 52px;
+    padding: 14px 24px;
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.css-i4qhse-SpanIconContainer {
+    margin-right: 12px;
+}
+
+.css-vv6rvs-SpanItemContent {
+    font-size: 18px;
+    color: rgb(22, 24, 35);
+    font-weight: 600;
+}
+
+.css-5pte1-DivNavItem {
+    height: 52px;
+    padding: 14px 24px;
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.css-3kukfb-DivContentContainer {
+    overflow-y: auto;
+    background-color: rgb(255, 255, 255);
+    box-shadow: rgba(0, 0, 0, 0.06) 0px 2px 8px;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    flex: 0 0 728px;
+    box-sizing: border-box;
+    padding: 16px 24px 24px;
+    z-index: 1;
+}
+
+.css-1uspwvc-DivContent {
+    display: block;
+    position: relative;
+    padding-bottom: 16px;
+}
+
+.css-1gkp6yn-DivManageContainer {
+    position: relative;
+    padding-top: 8px;
+}
+
+.css-1hc1bvf-DivSettingTitle {
+    font-size: 24px;
+    line-height: 32px;
+    margin: 0px 8px 20px;
+    font-weight: 700;
+    color: rgb(22, 24, 35);
+    display: block;
+    -webkit-box-pack: justify;
+    justify-content: space-between;
+}
+
+.css-zq7bq-DivSettingSubTitle {
+    font-size: 18px;
+    line-height: 24px;
+    font-weight: 600;
+    color: rgb(22, 24, 35);
+    margin: 0px 16px 12px;
+}
+
+.css-gl3fv8-DivDeleteContainer {
+    position: relative;
+}
+
+.css-1emos6j-DivSettingOption {
+    font-size: 16px;
+    line-height: 22px;
+    color: rgb(22, 24, 35);
+    margin: 0px 16px;
+}
+
+.css-1qvzq68-DivDeleteAction {
+    font-size: 16px;
+    line-height: 22px;
+    margin: 0px 16px;
+    color: rgb(254, 44, 85);
+    position: absolute;
+    bottom: 0px;
+    cursor: pointer;
+    right: 0px;
+}
+
+.css-1mmeuxl-DivWebPushMargin {
+    height: 36px;
+    position: relative;
+}
+
+.css-1mmeuxl-DivWebPushMargin::after {
+    content: "";
+    display: block;
+    position: absolute;
+    width: 200%;
+    height: 1px;
+    background: rgba(22, 24, 35, 0.12);
+    top: 16px;
+    left: 0px;
+    transform: scale(0.5);
+    transform-origin: left center;
+}
+
+.css-3111na-DivManageAccountItemContainer {
+    position: relative;
+}
+
+.css-bc7qa0-DivSettingDescription {
+    font-size: 12px;
+    line-height: 15px;
+    color: rgba(22, 24, 35, 0.6);
+    margin-right: 84px;
+    margin-left: 16px;
+}
+
+.css-8y336y-DivCountry {
+    display: inline-flex;
+    position: absolute;
+    top: 50%;
+    margin: 0px 16px;
+    transform: translateY(-50%);
+    font-size: 16px;
+    line-height: 24px;
+    color: rgba(22, 24, 35, 0.6);
+    right: 20px;
+}
+
+.css-1ox8t85-DivArrowIcon {
+    display: inline-flex;
+    position: absolute;
+    top: 50%;
+    margin: 0px 16px;
+    transform: translateY(-50%);
+    right: 0px;
+}
+
+.css-1uspwvc-DivContent::after {
+    content: " ";
+    display: block;
+    position: absolute;
+    width: 200%;
+    height: 1px;
+    background: rgba(22, 24, 35, 0.12);
+    transform: matrix(1, 0, 0, -1, 0, 0) scale(0.5);
+    transform-origin: left center;
+    bottom: 0px;
+    left: 0px;
+}
+
+.css-1uspwvc-DivContent:not(:first-of-type) {
+    margin-top: 32px;
+}
+
+.css-92entz-DivPrivacyContainer {
+    position: relative;
+}
+
+.css-i2eo55-DivSettingSubrow:not(:last-child) {
+    border-bottom: 1px solid rgba(22, 24, 35, 0.12);
+    padding-bottom: 16px;
+}
+
+.css-i2eo55-DivSettingSubrow:not(:first-child) {
+    margin-top: 16px;
+}
+
+.css-i2eo55-DivSettingSubrow {
+    position: relative;
+}
+
+.css-1r9l3py-DivPrivacySwitchContainer {
+    display: inline-flex;
+    position: absolute;
+    top: 32px;
+    margin: 0px 16px;
+    right: 0px;
+}
+
+.css-ge3lma-ButtonSwitchContainer {
+    font-size: 16px;
+    line-height: 21px;
+    border: none;
+    background: none;
+    outline: none;
+    padding: 0px;
+    position: relative;
+    overflow: visible;
+    display: inline-flex;
+    -webkit-box-align: center;
+    align-items: center;
+    color: rgb(22, 24, 35);
+    font-family: TikTokFont, Arial, Tahoma, PingFangSC, sans-serif;
+    cursor: pointer;
+}
+
+.css-q2tggl-DivSwitchWrapper {
+    position: relative;
+    width: 44px;
+    height: 24px;
+    left: 0px;
+    top: 0px;
+    background: rgba(22, 24, 35, 0.12);
+    border-radius: 100px;
+    transition: all 0.4s cubic-bezier(0.075, 0.82, 0.165, 1) 0s;
+}
+
+.css-1k71ajl-SpanSwitchIcon {
+    position: absolute;
+    display: flex;
+    -webkit-box-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    align-items: center;
+    width: 20px;
+    height: 20px;
+    left: 2px;
+    top: 50%;
+    transform: translateY(-50%);
+    border-radius: 100px;
+    background: rgb(255, 255, 255);
+    box-shadow: rgba(0, 0, 0, 0.15) 0px 1px 2px;
+    transition: all 0.4s cubic-bezier(0.075, 0.82, 0.165, 1) 0s;
+}
+
+.css-ioirjx-DivPushBrowserSwitch {
+    display: flex;
+    position: absolute;
+    top: 87px;
+    right: 16px;
+}
+
+.css-6hbn4n-DivPreferenceSettingContainer:last-child {
+    margin-bottom: -16px;
+}
+
+.css-6hbn4n-DivPreferenceSettingContainer {
+    display: inline-block;
+    width: 100%;
+    position: relative;
+}
+
+.css-jo8qt4-DivBusinessAccountContainer {
+    position: relative;
+    padding-top: 8px;
+}
+
+.css-1xqbwt2-DivBusinessAccountItemContainer {
+    position: relative;
+}
+
+.css-1t7m3om-DivPAContainer {
+    position: relative;
+    padding-top: 8px;
+}
+
+.css-1fpq24a-DivPAItemContainer {
+    position: relative;
+}
+
+.css-szcbns-ButtonSwitchContainer-AdsSwitch {
+    font-size: 16px;
+    line-height: 21px;
+    border: none;
+    background: none;
+    outline: none;
+    padding: 0px;
+    overflow: visible;
+    display: inline-flex;
+    -webkit-box-align: center;
+    align-items: center;
+    color: rgb(22, 24, 35);
+    font-family: TikTokFont, Arial, Tahoma, PingFangSC, sans-serif;
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 16px;
+}
+
+.css-12xzmck-DivSwitchWrapper {
+    position: relative;
+    width: 44px;
+    height: 24px;
+    left: 0px;
+    top: 0px;
+    background: rgb(11, 224, 155);
+    border-radius: 100px;
+    transition: all 0.4s cubic-bezier(0.075, 0.82, 0.165, 1) 0s;
+}
+
+.css-9lvgjp-SpanSwitchIcon {
+    position: absolute;
+    display: flex;
+    -webkit-box-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    align-items: center;
+    width: 20px;
+    height: 20px;
+    left: calc(100% - 2px);
+    top: 50%;
+    transform: translate(-100%, -50%);
+    border-radius: 100px;
+    background: rgb(255, 255, 255);
+    box-shadow: rgba(0, 0, 0, 0.15) 0px 1px 2px;
+    transition: all 0.4s cubic-bezier(0.075, 0.82, 0.165, 1) 0s;
+}
+
+.css-194f7c9-DivScreenTimeSettingContainer {
+    position: relative;
+    padding-top: 8px;
+}
+
+.css-7k9tfq-DivSettingScreenTimeTitle {
+    font-size: 24px;
+    line-height: 32px;
+    margin: 0px 8px 20px;
+    font-weight: 700;
+    color: rgb(22, 24, 35);
+    display: flex;
+    -webkit-box-pack: start;
+    justify-content: flex-start;
+    -webkit-box-align: center;
+    align-items: center;
+    gap: 8px;
+}
+
+.css-sjmvpd-DivSettingScreenTimeIcon {
+    color: rgba(22, 24, 35, 0.34);
+}
+
+.css-1p3wa3v-DivScreenTimeSettingItemContainer {
+    position: relative;
+    margin-bottom: 26px;
+}
+
+.css-1h6vky0-DivScreenTimeSubTitle {
+    font-size: 16px;
+    line-height: 24px;
+    font-weight: 600;
+    color: rgb(22, 24, 35);
+    margin: 0px 16px 12px;
+}
+
+.css-112kmpl-DivArrowIcon {
+    display: inline-flex;
+    position: absolute;
+    top: 50%;
+    margin: 0px 16px;
+    transform: translateY(-50%);
+    cursor: pointer;
+    right: 0px;
+}
+
+.css-tz5zhj-DivArrowIconText {
+    font-size: 16px;
+    line-height: 15px;
+    color: rgba(22, 24, 35, 0.6);
+    margin-right: 6px;
+}
+
+.css-qubwpm-DivScreenTimeSummaryContainer {
+    position: relative;
+    padding-top: 8px;
+}
+
+.css-xta7mi-DivScreenTimeSummaryItemContainer {
+    position: relative;
+    margin-bottom: 26px;
+}
+
+.css-1b4mcis-ScreenTimeSpanIconContainer {
+    display: flex;
+    position: absolute;
+    top: 15px;
+    right: 16px;
+}
+
+.css-xjwnb9-ADWTips {
+    display: inline-flex;
+    position: absolute;
+    top: 50%;
+    margin: 0px 16px;
+    right: 0px;
+}
+
+.css-1x6bo8q {
+    color: var(--tux-colorPrimary);
+    font-size: 20px;
+}
+
+.css-8308si-StyledArrowTriangleDownFill {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+.css-i42ndf-AdsIcon {
+    width: 24px;
+    height: 24px;
+    transform: rotateY(0deg);
+}
+
+.css-e0rxz1-StyledArrow {
+    position: absolute;
+    top: -8px;
+    right: 70px;
+}
+
+.css-1g0p6jv-StyledInboxIcon {
+    cursor: pointer;
+    display: block;
+}
+
+.css-y48l9g-StyledIcon {
+    width: 26px;
+    height: 26px;
+    transform: none;
+}
+
+.css-qeydvm-StyledPlusIcon {
+    height: 20px;
+    width: 20px;
+    margin-right: 8px;
+}

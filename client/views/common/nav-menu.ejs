@@ -356,7 +356,12 @@
             const hrefPaths = ['/customer/profile', '/customer/setting', '/customer/feedback'];
             if (index < hrefPaths.length) {
                 listItem.onclick = function () {
-                    window.location.href = `${hrefPaths[index]}/${customer.id}`;
+                    if (index == 0) {
+                        window.location.href = `${hrefPaths[index]}/${customer.id}`;
+                    } else {
+                        window.location.href = `${hrefPaths[index]}`;
+                    }
+
                 };
             }
         }

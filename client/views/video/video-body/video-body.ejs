@@ -877,6 +877,7 @@
             const divVideo = document.querySelector('.tiktok-1qg2388-DivBrowserModeContainer')
             let isMuted = false
             const divRigtVideo = divVideo.querySelector('.tiktok-1tunefa-DivVideoContainer')
+            let isScrolling;
 
             const handleVisibilityChange = () => {
                 handleVisibilityEvent(videoPlay, playIcon);
@@ -888,7 +889,6 @@
                 xButton.click();
                 // window.location.href = newPathname
             };
-
 
             copyLinkText.innerHTML = `${host}/video/${video.id}`
             indexCurrent = +indexCurrent
@@ -1204,8 +1204,6 @@
                 }
 
             });
-
-            let isScrolling;
 
             divRigtVideo.addEventListener('mouseenter', function () {
                 console.log("mouseenter")

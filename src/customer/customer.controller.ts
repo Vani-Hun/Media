@@ -91,9 +91,11 @@ export class CustomerController {
     return { message: null, customer: null };
   }
 
-  @Get('setting/:customerId')
+  @Get('setting')
+  @UseGuards(CusAuthGuard)
   @Render('customer/setting')
-  getSetting() {
+  async getSetting(@Req() request: Request,) {
+    return await this.customerService.getUser(request['user'])
   }
 
   @Get('log-out')
