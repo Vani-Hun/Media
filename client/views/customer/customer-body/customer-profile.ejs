@@ -533,7 +533,6 @@
     const videoContainer = document.querySelector('[data-e2e="user-post-item-list"]');
     const listVideoDiv = document.querySelector('.tiktok-10qtkim-DivShareLayoutBase-StyledShareLayoutV2')
     const navMenuMiddle = document.querySelector('.css-r0hg2a-DivSideNavContainer')
-    window.history.replaceState({}, "pageProfile", `${host}/customer/profile/${customer.id}`)
     window.onpopstate = function (event) {
         window.location.href = window.location.pathname
     }

@@ -104,7 +104,9 @@
     <div class="css-9fq6q2-DivOneColumnContainer e108hwin0">
     </div>
 </div>
-
+<div id="customAlert" class="custom-alert" style="display: none;">
+    <span id="alertMessage">Link copied successfully</span>
+</div>
 <script>
     let videos = JSON.parse('<%- JSON.stringify(videos) %>')
     let video = JSON.parse('<%- JSON.stringify(video) %>')
@@ -874,6 +876,7 @@
             let indexCurrent = sessionStorage.getItem('indexCurrent');
             const divVideo = document.querySelector('.tiktok-1qg2388-DivBrowserModeContainer')
             let isMuted = false
+            const divRigtVideo = divVideo.querySelector('.tiktok-1tunefa-DivVideoContainer')
 
             const handleVisibilityChange = () => {
                 handleVisibilityEvent(videoPlay, playIcon);
@@ -1178,6 +1181,58 @@
                 }
 
             })
+
+            document.addEventListener('keydown', function (event) {
+                switch (event.key) {
+                    case "ArrowUp":
+                        if (indexCurrent > '0') {
+                            leftArrow.click()
+                        }
+                        break;
+                    case "ArrowDown":
+                        rightArrow.click()
+                        break;
+                    case "ArrowLeft":
+                        video.currentTime -= 3;
+                        break;
+                    case "ArrowRight":
+                        videoPlay.currentTime += 3;
+                        break;
+                    case " ":
+                        xgwrapper.click()
+                        break;
+                }
+
+            });
+
+            let isScrolling;
+
+            divRigtVideo.addEventListener('mouseenter', function () {
+                console.log("mouseenter")
+                isMouseOver = true;
+            });
+
+            divRigtVideo.addEventListener('mouseleave', function () {
+                console.log("mouseleave")
+                isMouseOver = false;
+            });
+
+            window.addEventListener("wheel", function (event) {
+                if (!isMouseOver) {
+                    return;
+                }
+                window.clearTimeout(isScrolling);
+                isScrolling = setTimeout(function () {
+                    if (event.deltaY > 0) {
+                        rightArrow.click()
+                    } else {
+                        if (indexCurrent > '0') {
+                            leftArrow.click()
+                        }
+                    }
+                }, 80);
+
+            }, false);
         }
 
         if (video !== null) {
@@ -1192,7 +1247,14 @@
             const { divCustomAlert, divUnableVideo } = createToolThree()
             document.body.append(divVideo, divCustomAlert, divUnableVideo)
             continuePlay(video)
+        } else {
+            if (window.location.pathname !== "/video/videos") {
+                updateVideoURL(`/video/videos`, 'replace');
+                showCustomAlert("Not found video");
+            }
+
         }
+
 
         videos.forEach((video, index) => {
             const videoDiv = document.createElement('div')

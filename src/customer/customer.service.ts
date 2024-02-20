@@ -160,8 +160,7 @@ export class CustomerService extends BaseService<Customer> {
   }
 
   async getUser(input) {
-    const customer = await this.repo
-      .createQueryBuilder('customer')
+    const customer = await this.repo.createQueryBuilder('customer')
       .where('customer.id = :id', { id: input.id })
       .leftJoinAndSelect('customer.notifications', 'notifications')
       .leftJoinAndSelect('customer.videos', 'videos')
@@ -183,6 +182,8 @@ export class CustomerService extends BaseService<Customer> {
 
     return { customer }
   }
+
+
 
   async getVideoLiked(userId) {
     const customer = await this.repo.createQueryBuilder('customer')
