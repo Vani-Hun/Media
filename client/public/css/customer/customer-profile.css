@@ -25,6 +25,17 @@
 
 }
 
+.css-14dcx2q-DivBodyContainer {
+    /* margin-top: 60px; */
+    display: flex;
+    width: 100vw;
+    max-width: 100%;
+    -webkit-box-pack: justify;
+    justify-content: space-between;
+    align-self: center;
+    flex: 1 1 auto;
+}
+
 .css-1xo9k5n-H1ShareTitle {
     font-family: TikTokDisplayFont, Arial, Tahoma, PingFangSC, sans-serif;
     font-weight: 700;
@@ -1135,6 +1146,7 @@ body strong {
     border-bottom: 0.5px solid rgba(22, 24, 35, 0.12);
 }
 
+
 .tiktok-1um014y-InputText-StyledInputTextArea {
     width: 360px;
     border-radius: 4px;
@@ -1295,6 +1307,8 @@ body.modal-open {
     cursor: pointer;
     background-color: rgba(136, 136, 136, 0.5);
 }
+
+
 
 .tiktok-1zpj2q-ImgAvatarUpdate {
     width: 100%;
@@ -1485,4 +1499,524 @@ body.modal-open {
     height: 1px;
     background: rgba(22, 24, 35, 0.12);
     transform: scaleY(0.5);
+}
+
+.css-1mavlr4-UserContainer {
+    flex: 1 1 auto;
+    overflow: hidden;
+}
+
+@media screen and (max-width: 703px) {
+    .css-10qtkim-DivShareLayoutBase-StyledShareLayoutV2 {
+        max-width: 520px;
+        min-width: 520px;
+    }
+}
+
+.css-10qtkim-DivShareLayoutBase-StyledShareLayoutV2 {
+    display: flex;
+    padding: 90px 24px 36px;
+    flex-direction: column;
+    flex: 1 1 auto;
+    min-height: calc(-59px + 100vh);
+    margin: 0px auto;
+    box-sizing: content-box;
+}
+
+.css-1hfe8ic-DivShareLayoutContentV2 {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.css-1g04lal-DivShareLayoutHeader-StyledDivShareLayoutHeaderV2 {
+    position: relative;
+    flex: 0 0 auto;
+    margin-bottom: 20px;
+    box-sizing: border-box;
+    max-width: 624px;
+    padding-right: 92px;
+}
+
+.css-1gk89rh-DivShareInfo {
+    display: flex;
+    flex-direction: row;
+    -webkit-box-align: center;
+    align-items: center;
+}
+
+.css-uha12h-DivContainer {
+    position: relative;
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    justify-content: center;
+}
+
+.css-gcksof-SpanAvatarContainer-StyledAvatar {
+    display: inline-block;
+    box-sizing: border-box;
+    margin: 0px;
+    padding: 0px;
+    font-feature-settings: "tnum";
+    position: relative;
+    overflow: hidden;
+    color: rgb(255, 255, 255);
+    white-space: nowrap;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 32px;
+    border-radius: 50%;
+    border-color: rgba(22, 24, 35, 0.12);
+    border-width: 0.5px;
+    cursor: pointer;
+    background-color: rgba(136, 136, 136, 0.5);
+}
+
+.css-1zpj2q-ImgAvatar {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.css-12ijsdd-H3CountInfos {
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    margin-top: 22px;
+    color: rgba(18, 18, 18, 0.75);
+}
+
+.css-mgke3u-DivNumber:not(:last-child) {
+    margin-right: 20px;
+}
+
+.css-mgke3u-DivNumber {
+    color: rgb(22, 24, 35);
+    font-family: TikTokFont, Arial, Tahoma, PingFangSC, sans-serif;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 24px;
+    display: flex;
+    direction: ltr;
+    -webkit-box-align: baseline;
+    align-items: baseline;
+    cursor: pointer;
+}
+
+.css-1ubs7lq-SpanUnit {
+    color: rgba(22, 24, 35, 0.75);
+    font-family: TikTokFont, Arial, Tahoma, PingFangSC, sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 20px;
+    display: inline-block;
+    margin-left: 6px;
+}
+
+.css-4ac4gk-H2ShareDesc {
+    text-align: left;
+    color: rgb(22, 24, 35);
+    font-family: TikTokFont, Arial, Tahoma, PingFangSC, sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 21px;
+    white-space: pre-line;
+    margin-top: 10px;
+}
+
+.css-1gaw23l-DivButtonsContainer {
+    position: absolute;
+    top: 11px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: row;
+    -webkit-box-pack: justify;
+    justify-content: space-between;
+    gap: 18px;
+    right: 1px;
+}
+
+.css-adnylo-DivShareActions {
+    position: relative;
+    cursor: pointer;
+}
+
+.css-usq6rj-DivMoreActions {
+    position: relative;
+    cursor: pointer;
+}
+
+.css-833rgq-DivShareLayoutMain {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    -webkit-box-pack: start;
+    justify-content: flex-start;
+    min-height: 490px;
+    align-items: flex-start;
+    min-width: 520px;
+    position: relative;
+}
+
+.css-1vwnqbc-DivVideoFeedTab {
+    position: relative;
+    top: 0px;
+    z-index: 0;
+    display: flex;
+    flex-direction: row;
+    -webkit-box-align: stretch;
+    align-items: stretch;
+    justify-content: stretch;
+    width: 100%;
+    height: 44px;
+    margin-bottom: 8px;
+    background-color: rgb(255, 255, 255);
+}
+
+.css-8i8qcr-PPost {
+    font-family: TikTokFont, Arial, Tahoma, PingFangSC, sans-serif;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 24px;
+    position: relative;
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    justify-content: center;
+    flex-shrink: 0;
+    height: 44px;
+    padding: 0px 32px;
+    cursor: pointer;
+    text-align: center;
+    color: rgb(22, 24, 35);
+}
+
+.css-163yq8j-PFavorite {
+    font-family: TikTokFont, Arial, Tahoma, PingFangSC, sans-serif;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 24px;
+    position: relative;
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    justify-content: center;
+    flex-shrink: 0;
+    height: 44px;
+    padding: 0px 32px;
+    cursor: pointer;
+    text-align: center;
+    color: rgb(115, 116, 123);
+}
+
+.css-1w1pypo-SpanLiked {
+    margin-left: 6px;
+}
+
+.css-r7ao4-PLike {
+    font-family: TikTokFont, Arial, Tahoma, PingFangSC, sans-serif;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 24px;
+    position: relative;
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    justify-content: center;
+    flex-shrink: 0;
+    height: 44px;
+    padding: 0px px 32px;
+    cursor: pointer;
+    text-align: center;
+    color: rgb(115, 116, 123);
+}
+
+.css-1f8gh88-DivBottomLine {
+    position: absolute;
+    height: 2px;
+    background: rgb(22, 24, 35);
+    bottom: 0px;
+    transition: transform 0.3s ease 0s;
+}
+
+.css-1vwnqbc-DivVideoFeedTab::after {
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    content: "";
+    width: 100%;
+    height: 1px;
+    background-color: rgba(0, 0, 0, 0.12);
+    transform: scaleY(0.5);
+}
+
+.css-1qb12g8-DivThreeColumnContainer {
+    width: 100%;
+}
+
+.css-wjuodt-DivVideoFeedV2 {
+    display: grid;
+    width: 100%;
+    gap: 24px 16px;
+    grid-template-columns: repeat(auto-fill, minmax(184px, 1fr));
+}
+
+.css-x6y88p-DivItemContainerV2 {
+    border-radius: 4px;
+}
+
+.css-x6f6za-DivContainer-StyledDivContainerV2 {
+    position: relative;
+    width: 100%;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.css-1as5cen-DivWrapper {
+    position: absolute;
+    inset: 0px;
+}
+
+a:not([class]) {
+    text-decoration-skip-ink: auto;
+}
+
+@media screen and (max-width: 479px) {
+    .css-1yvkaiq-CanvasPlaceholder {
+        width: 100%;
+        height: auto;
+    }
+}
+
+.css-1yvkaiq-CanvasPlaceholder {
+    display: block;
+    visibility: hidden;
+    height: 100%;
+}
+
+.css-1wa52dp-DivPlayerContainer {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+}
+
+.css-1jxhpnd-DivContainer {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    position: relative;
+    background-color: rgba(22, 24, 35, 0.06);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    justify-content: center;
+}
+
+.css-41hm0z {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+img,
+picture {
+    max-width: 100%;
+    display: block;
+}
+
+.css-41hm0z img {
+    object-fit: cover;
+}
+
+@media screen and (max-width: 479px) {
+    .css-11u47i-DivCardFooter {
+        padding-top: 72px;
+    }
+}
+
+.css-11u47i-DivCardFooter {
+    position: absolute;
+    width: 100%;
+    bottom: 0px;
+    height: 100px;
+    background: linear-gradient(rgba(22, 24, 35, 0) 2.92%, rgba(22, 24, 35, 0.5) 98.99%);
+    padding: 67px 13px 17px;
+}
+
+@media screen and (max-width: 479px) {
+    .css-h342g4-StyledPlay {
+        vertical-align: -0.15em;
+    }
+}
+
+.css-h342g4-StyledPlay {
+    margin-right: 4px;
+    vertical-align: middle;
+}
+
+.css-dirst9-StrongVideoCount {
+    color: rgb(255, 255, 255);
+    font-family: TikTokFont;
+    font-weight: 600;
+    vertical-align: middle;
+    font-size: 16px;
+}
+
+.css-vi46v1-DivDesContainer {
+    display: flex;
+    position: relative;
+}
+
+.css-16ou6xi-DivTagCardDesc {
+    font-family: TikTokFont;
+    font-weight: 400;
+    padding: 2px 4px 0px;
+    height: 28px;
+    overflow: hidden;
+    box-sizing: content-box;
+}
+
+.css-1wrhn5c-AMetaCaptionLine {
+    display: block;
+    margin-top: 4px;
+}
+
+@media screen and (max-width: 479px) {
+    .css-kqbg74-DivContainer {
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+    }
+}
+
+.css-kqbg74-DivContainer {
+    font-size: 16px;
+    word-break: break-word;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    font-family: TikTokFont;
+    font-weight: 600;
+    line-height: 22px;
+    color: rgb(22, 24, 35);
+    pointer-events: none;
+}
+
+.css-j2a19r-SpanText {
+    font-weight: 400;
+}
+
+.css-10ss1i1-SpanInfoExpandWrapper {
+    position: absolute;
+    display: flex;
+    top: -28px;
+    right: 0px;
+}
+
+.css-1pchix1-SpanUnit {
+    color: rgba(22, 24, 35, 0.75);
+    font-family: TikTokFont, Arial, Tahoma, PingFangSC, sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 20px;
+    display: inline-block;
+    margin-left: 6px;
+}
+
+.css-ntsum2-DivNumber {
+    color: rgb(22, 24, 35);
+    font-family: TikTokFont, Arial, Tahoma, PingFangSC, sans-serif;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 24px;
+    display: flex;
+    direction: ltr;
+    -webkit-box-align: baseline;
+    align-items: baseline;
+}
+
+.tiktok-d84lpe-ModalContainer {
+    box-sizing: border-box;
+}
+
+.tiktok-ai36k9-ModalBackdrop {
+    box-sizing: border-box;
+    position: fixed;
+    inset: 0px;
+    background: var(--tux-colorSDSecondary);
+    transition-property: opacity;
+    transition-duration: 300ms;
+    transition-timing-function: linear;
+    opacity: 1;
+}
+
+.tiktok-17s26nl-ModalContentContainer {
+    box-sizing: border-box;
+    position: fixed;
+    inset: 0px;
+    display: flex;
+    -webkit-box-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    align-items: center;
+    overflow: auto;
+    z-index: 20;
+}
+
+.tiktok-15neh3t-ModalContentVerticalPositionContainer {
+    display: flex;
+    -webkit-box-pack: center;
+    justify-content: center;
+    align-items: flex-start;
+    max-height: 100vh;
+    overflow: visible;
+}
+
+.tiktok-ihckm8-ModalContentVerticalPositionPadding {
+    display: flex;
+    -webkit-box-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    align-items: center;
+    padding: 32px 16px;
+    max-width: 100vw;
+}
+
+.tiktok-19l8hzs-ModalContentSection {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    -webkit-box-align: stretch;
+    align-items: stretch;
+    -webkit-box-pack: start;
+    justify-content: flex-start;
+    position: relative;
+    outline: 0px;
+    max-width: calc(-32px + 100vw);
+    background: var(--tux-colorBGPrimary);
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 2px 12px;
+    border-radius: 8px;
+    overflow: hidden;
+    width: auto;
+    transition-property: transform, opacity;
+    transition-duration: 300ms;
+    transition-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+    opacity: 1;
+    transform: none;
+}
+
+.tiktok-gr0dyb-DivContentContainer {
+    width: 700px;
+    padding: 8px 24px 0px;
 }

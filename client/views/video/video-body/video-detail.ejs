@@ -635,7 +635,6 @@
         const videoPlay = document.getElementById('xgwrapper-2-7273303434869198082').querySelector('video');
         const mainContainer = document.querySelector('.tiktok-1qg2388-DivBrowserModeContainer')
         const divMainContainer = document.querySelector('.css-1t4vwes-DivMainContainer')
-        const navMenu = document.querySelector('.nav-menu')
         const thumbnailDiv = document.querySelector('.tiktok-xhj3u2-StyledVideoBlurBackground');
         const videoThumbnail = thumbnailDiv.querySelector('img');
         const avatarImage = document.querySelector('.tiktok-uha12h-DivContainer').querySelector('img');
@@ -704,7 +703,7 @@
                     .then(data => {
                         socket.emit('update', { id: customer.id }, (data) => console.log(data));
                         socket.on('updateCustomer', (data) => {
-                            customer = data.customer
+                            customer = data
                             followedSet = new Set(customer.following.map(following => following.id))
                         });
                     })
@@ -720,7 +719,7 @@
                     .then(data => {
                         socket.emit('update', { id: customer.id }, (data) => console.log(data));
                         socket.on('updateCustomer', (data) => {
-                            customer = data.customer
+                            customer = data
                             followedSet = new Set(customer.following.map(following => following.id))
                         });
                     })

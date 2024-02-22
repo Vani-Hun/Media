@@ -279,6 +279,7 @@
         </div>
     </div>
 </form>
+
 <div id="tux-portal-container"
     style="position: absolute;display: none; z-index: 9999; height: 0px; width: 0px; top: 0px; left: 0px;">
     <div>
@@ -393,11 +394,7 @@
             </div>
         </div>
     </span></div>
-<div style="display: none;" class="container-unableMuted">
-    <div class="unableMuted">
-        <button>START!</button>
-    </div>
-</div>
+
 <script>
     const logo = document.querySelector('.tiktok-1zpj2q-ImgAvatar')
     const userName = document.querySelector('.tiktok-1xo9k5n-H1ShareTitle');
@@ -430,7 +427,8 @@
         const avatarInput = document.querySelector('.tiktok-4jv9vo-InputUpload.e13yu7jj22');
         const avatarPreview = document.querySelector('.tiktok-1zpj2q-ImgAvatarUpdate');
         const Form = document.getElementById('Form');
-
+        navMenu.style.zIndex = '0'
+        navMenuMiddle.style.zIndex = '0'
         function showLoader() {
             var loader = document.querySelector('.loader');
             loader.classList.add('visible');
@@ -447,15 +445,16 @@
             usernameInput.value = customer.username;
             nameInput.value = customer.name;
             profileBioInput.value = customer.bio;
-            navMenu.style.display = 'flex'
+            navMenu.style.zIndex = '11'
+            navMenuMiddle.style.zIndex = '10'
             document.body.classList.remove('modal-open');
             editProfileButton.removeEventListener('click', this);
         }
 
         document.body.classList.add('modal-open');
         saveButton.disabled = true;
-        editProfileForm.style.display = 'block';
-        navMenu.style.display = 'none'
+        editProfileForm.style.display = 'flex';
+
         charCountElement.textContent = `${profileBioInput.value.length}/80`
 
         closeButton.addEventListener('click', hideEditProfileForm);
@@ -541,7 +540,6 @@
     let divVideoFeed = document.querySelector('.tiktok-yvmafn-DivVideoFeedV2')
     const videoContainer = document.querySelector('[data-e2e="user-post-item-list"]');
     const listVideoDiv = document.querySelector('.tiktok-10qtkim-DivShareLayoutBase-StyledShareLayoutV2')
-    const navMenuMiddle = document.querySelector('.css-r0hg2a-DivSideNavContainer')
     window.onpopstate = function (event) {
         window.location.href = window.location.pathname
     }
@@ -735,7 +733,7 @@
     function updateCustomer() {
         socket.emit('updateCustomer', { id: customer.id }, (err) => console.error(err));
         socket.on('updateCustomer', (data) => {
-            customer = data.customer;
+            customer = data;
             likedVideoIds = customer.likedVideos;
             likedVideoSet = new Set(likedVideoIds.map(video => video.id));
             followedSet = new Set(customer.following.map(following => following.id));

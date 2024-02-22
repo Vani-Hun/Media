@@ -2,6 +2,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import * as admin from 'firebase-admin';
+import { getAuth, signInWithPhoneNumber } from 'firebase/auth';
 
 @Module({
     imports: [ConfigModule],
@@ -27,6 +28,7 @@ import * as admin from 'firebase-admin';
                     credential: admin.credential.cert(serviceAccountTyped),
                     storageBucket: 'gs://fir-76c15.appspot.com', // Lấy giá trị từ configService
                 });
+
                 const bucket = firebaseAdmin.storage().bucket();
                 bucket.setCorsConfiguration([
                     {

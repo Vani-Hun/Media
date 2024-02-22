@@ -48,6 +48,7 @@ export class CustomerService extends BaseService<Customer> {
     const existingUser = await this.repo.findOne({
       where: { email: input.emails[0].value }
     })
+    console.log("existingUser:", existingUser)
     if (!existingUser) {
       const userCreate = {
         logo: input.photos[0].value,
@@ -111,18 +112,19 @@ export class CustomerService extends BaseService<Customer> {
   async signUp(input: InputSetAuth, res) {
     const existingUser = await this.repo.findOne({
       where: [{ username: input.username }, { email: input.username }],
-    });
+    })
 
     if (!existingUser) {
       const otp = Math.floor(Math.random() * 1000000).toString()
       const formattedPhoneNumber = `+84${input.phone.slice(1)}`;
-      await this.smsService.sendOtpViaSms(formattedPhoneNumber, otp);
-      const hashedOTP = await bcrypt.hash(otp, 10);
+      // await this.smsService.sendOtpViaSms(formattedPhoneNumber, otp);
+
+      // const hashedOTP = await bcrypt.hash(otp, 10);
       const hashedPassword = await bcrypt.hash(input.password, 10);
       res.cookie('username', input.username, { httpOnly: true, maxAge: 60 * 1000 })
       res.cookie('phone', input.phone, { httpOnly: true, maxAge: 60 * 1000 })
       res.cookie('hashedPassword', hashedPassword, { httpOnly: true, maxAge: 60 * 1000 })
-      res.cookie('hashedOTP', hashedOTP, { httpOnly: true, maxAge: 60 * 1000 });
+      // res.cookie('hashedOTP', hashedOTP, { httpOnly: true, maxAge: 60 * 1000 });
       return res.redirect('/customer/verify-otp');
     }
     throw new HttpException('Your username or email is already registered.', HttpStatus.CONFLICT);
@@ -131,11 +133,11 @@ export class CustomerService extends BaseService<Customer> {
   async signUpOAuth2(input: InputSetAuth) {
     const existingUser = await this.repo
       .createQueryBuilder('user')
-      .where('user.username = :username OR user.email = :email', {
-        username: input.username,
+      .where('user.email = :email', {
         email: input.username,
       })
       .getOne();
+    console.log("existingUser:", existingUser)
     if (!existingUser) {
       const newUser = this.repo.create({ ...input });
       const createUser = await this.repo.save(newUser);
@@ -160,7 +162,7 @@ export class CustomerService extends BaseService<Customer> {
   }
 
   async getUser(input) {
-    const customer = await this.repo.createQueryBuilder('customer')
+    return await this.repo.createQueryBuilder('customer')
       .where('customer.id = :id', { id: input.id })
       .leftJoinAndSelect('customer.notifications', 'notifications')
       .leftJoinAndSelect('customer.videos', 'videos')
@@ -179,8 +181,6 @@ export class CustomerService extends BaseService<Customer> {
       .orderBy('videos.createAt', 'DESC')
       .addOrderBy('notifications.createAt', 'DESC')
       .getOneOrFail();
-
-    return { customer }
   }
 
 
@@ -200,7 +200,11 @@ export class CustomerService extends BaseService<Customer> {
     const customer = await this.getUser(input)
     if (input.id === input.customerId) {
       return res.render('customer/profile', { customer })
-    } else { return res.render('customer/viewProfile', { customer }) }
+    } else {
+      input.id = input.customerId
+      const user = await this.getUser(input)
+      return res.render('customer/viewProfile', { customer, user })
+    }
   }
 
   async postProfile(input) {
@@ -275,7 +279,6 @@ export class CustomerService extends BaseService<Customer> {
 
 
   async unfollowUser(input) {
-    console.log("input:", input)
     input.type = NotificationType.FOLLOWER;
     await this.notificationService.deleteNotification(input);
     return await this.repo

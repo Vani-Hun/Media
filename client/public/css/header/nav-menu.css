@@ -71,14 +71,14 @@
     display: flex;
     justify-content: space-around;
     box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 1px;
-    height: 60px;
+    height: 70px;
     width: 100%;
     top: 0px;
     position: fixed;
     -webkit-box-align: center;
     align-items: center;
     background: rgb(255, 255, 255);
-    z-index: 1000;
+    z-index: 11;
 }
 
 .nav-menu.scrolled {
@@ -910,7 +910,7 @@
     /* width: 240px; */
     background: rgb(255, 255, 255);
     position: fixed;
-    z-index: 99;
+    z-index: 10;
     padding-right: 8px;
 }
 
@@ -1180,4 +1180,123 @@
     -webkit-box-flex: 1;
     flex-grow: 1;
     height: 32px;
+}
+
+.css-3z2zs6-DivHeaderCenterContainer {
+    position: relative;
+    min-width: 200px;
+    padding: 0px 8px;
+    width: 516px;
+}
+
+.css-1asq5wp-DivSearchFormContainer {
+    position: relative;
+}
+
+.css-dhqzc6-FormElement {
+    display: flex;
+    flex-direction: row;
+    -webkit-box-align: center;
+    align-items: center;
+    padding: 12px 16px;
+    background: rgba(22, 24, 35, 0.06);
+    border-radius: 92px;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    margin: 0px;
+}
+
+.css-1yf5w3n-InputElement:placeholder-shown {
+    text-overflow: ellipsis;
+}
+
+.css-1yf5w3n-InputElement {
+    font-family: TikTokFont, Arial, Tahoma, PingFangSC, sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 21px;
+    border: none;
+    background: transparent;
+    outline: none;
+    padding: 0px;
+    width: 100%;
+    color: rgb(22, 24, 35);
+    caret-color: rgb(254, 44, 85);
+    appearance: textfield;
+}
+
+.css-hck1rr-SpanSpliter {
+    width: 1px;
+    height: 28px;
+    margin: -3px 0;
+    background: rgba(22, 24, 35, .12);
+}
+
+.css-16dy42q-ButtonSearch {
+    padding: 11px 16px 11px 12px;
+    margin: -12px -16px -12px 0px;
+    font-size: 0px;
+    cursor: pointer;
+    outline: none;
+    border: none;
+    background: transparent;
+}
+
+.css-17iic05-DivSearchIconContainer {
+    outline: none;
+}
+
+.css-1yf5w3n-InputElement~.e14ntknm1 {
+    display: none;
+}
+
+.css-1mdii59-DivInputBorder {
+    display: none;
+    position: absolute;
+    inset: 0px;
+    border: 1px solid rgba(22, 24, 35, 0.2);
+    border-radius: 92px;
+    z-index: -1;
+}
+
+.css-szsi1x-DivUploadContainer {
+    margin-left: 0px;
+    position: relative;
+}
+
+.css-2gvzau-ALink-StyledLink {
+    display: block;
+}
+
+.css-1qup28j-DivUpload {
+    min-width: 110px;
+    padding: 0px 16px;
+    height: 45px;
+    border: 1px solid rgba(22, 24, 35, 0.12);
+    border-radius: 2px;
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    justify-content: center;
+    background: rgb(255, 255, 255);
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.css-1qup28j-DivUpload:hover {
+    background-color: var(--tux-colorBGSecondary-tint-4);
+}
+
+.css-qeydvm-StyledPlusIcon {
+    height: 20px;
+    width: 20px;
+    margin-right: 8px;
+}
+
+.css-y3rt08-SpanUploadText {
+    font-style: normal;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 24px;
 }

@@ -22,8 +22,6 @@ export class NotificationGateway implements OnGatewayConnection, OnGatewayDiscon
 
     @SubscribeMessage('updateCustomer')
     async updateCustomer(client: any, payload: any): Promise<void> {
-        // console.log("Client:", client.id)
-        // console.log('Received customer:', payload);
         const customer = await this.customerService.getUser(payload);
         this.server.to(client.id).emit('updateCustomer', customer);
     }

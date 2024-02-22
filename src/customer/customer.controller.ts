@@ -127,7 +127,6 @@ export class CustomerController {
   @Get('verify-otp')
   @Render('customer/sign-up-otp')
   async getVerifyOtp(@Query('error') error: string) {
-    console.log("errorgetVerifyOtp:", typeof error)
     if (error) {
       return { message: error, customer: null };
     }

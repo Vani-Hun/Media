@@ -141,6 +141,7 @@ export class VideoService extends BaseService<Video> {
                 return await this.notificationService.createNotification(input)
             } else {
                 return { video }
+
             }
         } catch (error) {
             throw new HttpException(`Failed to update like: ${error.message}`, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -205,14 +206,13 @@ export class VideoService extends BaseService<Video> {
             .leftJoinAndSelect('comments.video', 'video2')
             .leftJoinAndSelect('comments.customer', 'customer')
             .getMany()
-        const { customer } = await this.customerService.getUser(input);
+        const customer = await this.customerService.getUser(input);
 
         return { videos, customer, video: null };
     }
 
     async getVideoById(input) {
         try {
-            console.log("input:", input)
             const { videos, customer } = await this.getVideos(input)
             let video = await this.repo.createQueryBuilder('video')
                 .where('video.id  = :id', { id: input.videoId })
@@ -223,14 +223,11 @@ export class VideoService extends BaseService<Video> {
                 .leftJoinAndSelect('comments.video', 'video2')
                 .leftJoinAndSelect('comments.customer', 'customer')
                 .getOne()
-            console.log("video:", video)
 
             if (video.user.id !== input.id && video.who === "Private") {
                 console.log("Private:")
                 video = null
-                console.log("video:", video)
             } else if (video.user.id !== input.id && video.who === "Friends") {
-                console.log("Friends:")
                 const isFollowing = customer.following.some(user => user.id === video.user.id);
                 const isFollower = customer.followers.some(user => user.id === video.user.id);
                 if (!isFollowing || !isFollower) {

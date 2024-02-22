@@ -32,12 +32,16 @@
                             placeholder="Your confirm password" required>
                         <div class="error-message" id="confirm-password-error"></div>
                     </div>
-                    <button class="sign" type="submit" id="signupButton">Sign up</button>
+
+                    <button class="sign" id="sign-in-button">Sign up</button>
 
                 </form>
-                <!-- Các nút đăng nhập bằng tài khoản mạng xã hội -->
+                <!-- <div>
+                    <button class="signup" id="sign-in-button">Sign up</button>
+
+                </div> -->
+
                 <div class="social-message">
-                    <!-- Các nút xã hội và thông điệp -->
                 </div>
                 <div class="signup">Already have an account?
                     <a rel="noopener noreferrer" href="/customer/sign-in" class="">Log in</a>
@@ -49,10 +53,36 @@
     <li class="ball"></li>
     <li class="ball"></li>
 </div>
-<div id="customAlert" class="custom-alert">
-    <span id="alertMessage"></span>
-</div>
-<script>
+<div id="customAlert" class="css-14feuhu" style="display: none;"><span>
+        <div class="css-14feuhu-notice" style="right: 50%;">
+            <div class="css-14feuhu-notice-content">
+                <div role="alert" class="css-9aj0a0-DivMessageContainer e1wz89c90"
+                    style="display: flex; justify-content: center; align-items: center;"><img
+                        src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTE3Ljg0MDQgNi44NTk4NkMxOC4wMzc3IDYuNjYyMDcgMTguMzU4NyA2LjY2NDI1IDE4LjU1MzMgNi44NjQ3MUwxOS40NTc0IDcuNzk2MjlDMTkuNjQ3NSA3Ljk5MjE3IDE5LjY0NTQgOC4zMDQzMiAxOS40NTI2IDguNDk3NTlMMTAuNTU4MiAxNy40MTYzQzEwLjEwNSAxNy44NzA3IDkuMzczMzMgMTcuODU5NiA4LjkzMzY2IDE3LjM5MTZMNC44MzY4MSAxMy4wMzA2QzQuNjQ5OTEgMTIuODMxNyA0LjY1NzExIDEyLjUxOTYgNC44NTI5OSAxMi4zMjk1TDUuNzgzNzQgMTEuNDI2MUM1Ljk4NDE4IDExLjIzMTUgNi4zMDUxNCAxMS4yMzg5IDYuNDk2MzkgMTEuNDQyNUw5Ljc4MjE0IDE0Ljk0MDFMMTcuODQwNCA2Ljg1OTg2WiIgZmlsbD0iIzBCRTA5QiIvPgo8L3N2Zz4K"
+                        aria-hidden="true" style="width: 24px; height: 24px; margin-right: 8px;"><span
+                        id="alertMessage">Settings updated
+                    </span></div>
+            </div>
+        </div>
+    </span></div>
+
+<script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js'
+    import { getAnalytics } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics.js'
+    import { getAuth, signInWithPhoneNumber, RecaptchaVerifier } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js'
+    import { getFirestore } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js'
+    var firebaseConfig = {
+        apiKey: "AIzaSyAbjYYbreGwSN-pY5UoNZp-KF4yJcgWNV8",
+        authDomain: "fir-76c15.firebaseapp.com",
+        projectId: "fir-76c15",
+        storageBucket: "fir-76c15.appspot.com",
+        messagingSenderId: "112323394158",
+        appId: "1:112323394158:web:db2d6bf8492a523ced847f",
+        measurementId: "G-Q7ZQR4556T"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
     function showLoader() {
         var loader = document.querySelector('.loader');
         loader.classList.add('visible');
@@ -64,17 +94,13 @@
     function showCustomAlert(message) {
         const customAlert = document.getElementById('customAlert');
         const alertMessage = document.getElementById('alertMessage');
-
-        // Hiển thị thông báo
         alertMessage.textContent = message;
-        customAlert.style.display = 'block';
-
-        // Đóng thông báo sau khoảng 2 giây (2000 milliseconds)
+        customAlert.style.display = 'flex';
         setTimeout(() => {
-            // Ẩn thông báo
             customAlert.style.display = 'none';
         }, 1500);
     }
+
     document.addEventListener('DOMContentLoaded', function () {
         const messageElement = document.querySelector('.alert-primary');
         if (messageElement.textContent.trim() !== '') {
@@ -97,7 +123,10 @@
         let otpForm = document.querySelector('.form-otp');
         let formContainer = document.querySelector('.form-container');
 
-        registrationForm.addEventListener('submit', function (event) {
+        registrationForm.addEventListener('submit', async function (event) {
+            // Ngăn chặn hành động mặc định của sự kiện submit
+            event.preventDefault();
+
             let isValid = true;
 
             if (!validateUsername()) {
@@ -114,11 +143,30 @@
                 isValid = false;
             }
 
-            if (!isValid) {
-                event.preventDefault();
+            if (isValid) {
+                showLoader();
+                const phoneNumber = `+84${phoneInput.value.trim().slice(1)}`;
+                console.log("phoneNumber:", phoneNumber)
+                auth.languageCode = 'it';
+                try {
+                    window.recaptchaVerifier = await new RecaptchaVerifier(auth, 'sign-in-button', {
+                        'size': 'invisible',
+                        'callback': (response, err) => {
+                            console.log("reCAPTCHA response:", response);
+                            showCustomAlert(error)
+                        }
+                    });
+                    window.confirmationResult = await signInWithPhoneNumber(auth, phoneNumber, window.recaptchaVerifier);
+                    await hideLoader();
+                    window.location.href = await "/customer/sign-up/verify-otp"
+                } catch (error) {
+                    console.log("error:", error)
+                    showCustomAlert(error)
+                    hideLoader()
+                }
             }
-
         });
+
 
         usernameInput.addEventListener('input', validateUsername);
         phoneInput.addEventListener('input', validatePhone);

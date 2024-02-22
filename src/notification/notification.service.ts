@@ -43,7 +43,6 @@ export class NotificationService extends BaseService<Notification> {
     }
 
     async deleteNotification(input) {
-        console.log("input:", input)
         try {
             const existingNotification = await this.repo
                 .createQueryBuilder('notification')

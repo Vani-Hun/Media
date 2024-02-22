@@ -4,6 +4,7 @@
         <div class="otp-title">Verification Code</div>
         <p class="otp-message">We have sent a verification code to your mobile number</p>
         <p class="otp-message" id="otp-error"></p>
+
         <div class="otp-inputs">
             <input id="input1" type="text" maxlength="1" oninput="moveToNextInput(this, 'input2', 'input1')">
             <input id="input2" type="text" maxlength="1" oninput="moveToNextInput(this, 'input3', 'input1')">
@@ -27,7 +28,66 @@
 <div id="customAlert" class="custom-alert">
     <span id="alertMessage"></span>
 </div>
+<!-- 
+<script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js'
+    import { getAnalytics } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics.js'
+    import { getAuth, signInWithPhoneNumber, RecaptchaVerifier } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js'
+    import { getFirestore } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js'
+
+    var firebaseConfig = {
+        apiKey: "AIzaSyAbjYYbreGwSN-pY5UoNZp-KF4yJcgWNV8",
+        authDomain: "fir-76c15.firebaseapp.com",
+        projectId: "fir-76c15",
+        storageBucket: "fir-76c15.appspot.com",
+        messagingSenderId: "112323394158",
+        appId: "1:112323394158:web:db2d6bf8492a523ced847f",
+        measurementId: "G-Q7ZQR4556T"
+    };
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const phoneNumber = "0399427359";
+    auth.languageCode = 'it';
+    window.recaptchaVerifier = new RecaptchaVerifier(auth, 'sign-in-button', {
+        'size': 'invisible',
+        'callback': (response) => {
+            const appVerifier = window.recaptchaVerifier;
+            console.log("response:", response)
+            signInWithPhoneNumber(auth, phoneNumber, appVerifier)
+                .then((confirmationResult) => {
+                    window.confirmationResult = confirmationResult;
+                    console.log("confirmationResult:", confirmationResult)
+                }).catch((error) => {
+                    console.log("error:", error)
+                });
+        }
+    });
+
+    // window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
+    //     'size': 'normal',
+    //     'callback': (response) => {
+    //         console.log("response:", response)
+    //         const appVerifier = window.recaptchaVerifier;
+    //         console.log("appVerifier:", appVerifier)
+    //         signInWithPhoneNumber(auth, phoneNumber, appVerifier)
+    //             .then((confirmationResult) => {
+    //                 window.confirmationResult = confirmationResult;
+    //                 console.log("confirmationResult:", confirmationResult)
+    //             }).catch((error) => {
+    //                 console.log("error:", error)
+    //             });
+    //     },
+    //     'expired-callback': () => {
+    //         // Response expired. Ask user to solve reCAPTCHA again.
+    //         // ...
+    //     }
+    // });
+
+</script> -->
+
 <script>
+
+
     let message = JSON.parse('<%- JSON.stringify(message) %>');
     const otpErrorElement = document.getElementById('otp-error');
     function setOtpErrorText(text) {
@@ -97,23 +157,32 @@
             document.getElementById('input5').value +
             document.getElementById('input6').value;
         const data = { otp: otpValue };
-        showLoader()
-        fetch('/customer/verify-otp', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
+        // showLoader()
+        // fetch('/customer/verify-otp', {
+        //     method: 'POST',
+        //     headers: {
+        //         'Content-Type': 'application/json'
+        //     },
+        //     body: JSON.stringify(data)
 
-        })
-            .then(response => {
-                if (response.ok) {
-                    if (response.redirected) { window.location.href = response.url; }
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
+        // })
+        //     .then(response => {
+        //         if (response.ok) {
+        //             if (response.redirected) { window.location.href = response.url; }
+        //         }
+        //     })
+        //     .catch(error => {
+        //         console.error('Error:', error);
+        //     });
+        let code = otpValue
+        console.log("code:", code)
+
+        window.confirmationResult.confirm(code).then(function (result) {
+            var user = result.user;
+            console.log(user);
+        }).catch(function (error) {
+            console.error(error);
+        });
         console.log('OTP Sent!');
     }
 

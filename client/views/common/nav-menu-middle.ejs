@@ -98,40 +98,53 @@
                         <div class="css-qrbz7k-DivUserContainer e4a681b0">
                             <h2 data-e2e="following-accounts" class="css-1a758rb-H2Title e4a681b1">Following accounts
                             </h2>
-                            <ul class="css-j1fxk6-UlAccountList e4a681b7">
-                                <li>
-                                    <div role="link" tabindex="0" aria-label="Gia Huy’s profile"
-                                        class="css-1mo2fkg-DivUserLinkContainer e797se20"><a
-                                            data-e2e="following-user-avatar" tabindex="-1"
-                                            aria-label="Gia Huy’s profile" class="css-22xkqc-StyledLink er1vbsz0"
-                                            href="/@huygia19503">
-                                            <div class="e797se22 css-n1lhfn-DivContainer-StyledUserAvatar e1vl87hj1"
-                                                style="width: 32px; height: 32px;"><span shape="circle" data-e2e=""
-                                                    class="e1vl87hj2 css-gcksof-SpanAvatarContainer-StyledAvatar e1e9er4e0"
-                                                    style="width: 32px; height: 32px;"><img loading="lazy" alt=""
-                                                        src="https://p16-sign-va.tiktokcdn.com/tos-maliva-avt-0068/1619d801cacb8f56a4a26b77c5551463~c5_100x100.jpeg?lk3s=a5d48078&amp;x-expires=1706551200&amp;x-signature=UfMpltCj%2Bb3wSz8QOjaMmyihh%2BY%3D"
-                                                        class="css-1zpj2q-ImgAvatar e1e9er4e1"></span></div>
-                                        </a><a tabindex="-1"
-                                            class="e797se24 css-v7yw3g-StyledLink-StyledUserContentLink er1vbsz0"
-                                            aria-label="Gia Huy’s profile" href="/@huygia19503">
-                                            <div class="css-yt7cul-DivUserTitleWrapper e797se26"><span
-                                                    data-e2e="following-user-title"
-                                                    class="css-1c5w9i8-SpanUserTitle e797se27">huygia19503</span></div>
-                                            <p data-e2e="following-user-desc" class="css-vm571n-PUserDesc e797se29">Gia
-                                                Huy</p>
-                                        </a></div>
-                                </li>
-                            </ul><button data-e2e="following-see-all" aria-expanded="false"
-                                aria-labelledby="side-nav-following-see-all"
-                                class="css-b1mrwj-ButtonShowMoreText e4a681b4">
-                                <p id="side-nav-following-see-all" class="css-2tp5px-PShowMoreText e4a681b3">See more
-                                </p><svg class="css-gopybs-StyledArrowDown e4a681b5" width="16" data-e2e="" height="16"
-                                    viewBox="0 0 48 48" fill="rgba(254, 44, 85, 1)" xmlns="http://www.w3.org/2000/svg">
-                                    <path fill-rule="evenodd" clip-rule="evenodd"
-                                        d="M21.8788 33.1213L7.58586 18.8284C7.19534 18.4379 7.19534 17.8047 7.58586 17.4142L10.4143 14.5858C10.8048 14.1953 11.438 14.1953 11.8285 14.5858L24.0001 26.7574L36.1716 14.5858C36.5622 14.1953 37.1953 14.1953 37.5859 14.5858L40.4143 17.4142C40.8048 17.8047 40.8048 18.4379 40.4143 18.8284L26.1214 33.1213C24.9498 34.2929 23.0503 34.2929 21.8788 33.1213Z">
-                                    </path>
-                                </svg>
-                            </button>
+                            <% for(let i=0; i < customer.following.length; i++) { %>
+                                <ul class="css-j1fxk6-UlAccountList e4a681b7">
+                                    <li>
+                                        <div role="link" tabindex="0"
+                                            aria-label="<%= customer.following[i].name %> profile"
+                                            class="css-1mo2fkg-DivUserLinkContainer e797se20">
+                                            <a data-e2e="following-user-avatar" tabindex="-1"
+                                                aria-label="<%= customer.following[i].name %> profile"
+                                                class="css-22xkqc-StyledLink er1vbsz0"
+                                                href="/customer/profile/<%= customer.following[i].id %>">
+                                                <div class="e797se22 css-n1lhfn-DivContainer-StyledUserAvatar e1vl87hj1"
+                                                    style="width: 32px; height: 32px;"><span shape="circle" data-e2e=""
+                                                        class="e1vl87hj2 css-gcksof-SpanAvatarContainer-StyledAvatar e1e9er4e0"
+                                                        style="width: 32px; height: 32px;"><img loading="lazy" alt=""
+                                                            src="<%= customer.following[i].logo%>"
+                                                            class="css-1zpj2q-ImgAvatar e1e9er4e1"></span></div>
+                                            </a><a tabindex="-1"
+                                                class="e797se24 css-v7yw3g-StyledLink-StyledUserContentLink er1vbsz0"
+                                                aria-label="profile"
+                                                href="/customer/profile/<%= customer.following[i].id %>">
+                                                <div class="css-yt7cul-DivUserTitleWrapper e797se26"><span
+                                                        data-e2e="following-user-title"
+                                                        class="css-1c5w9i8-SpanUserTitle e797se27">
+                                                        <%= customer.following[i].username %>
+                                                    </span>
+                                                </div>
+                                                <p data-e2e="following-user-desc" class="css-vm571n-PUserDesc e797se29">
+                                                    <%= customer.following[i].name %>
+                                                </p>
+                                            </a>
+                                        </div>
+                                    </li>
+                                </ul>
+                                <% } %>
+                                    <button data-e2e="following-see-all" aria-expanded="false"
+                                        aria-labelledby="side-nav-following-see-all"
+                                        class="css-b1mrwj-ButtonShowMoreText e4a681b4">
+                                        <p id="side-nav-following-see-all" class="css-2tp5px-PShowMoreText e4a681b3">See
+                                            more
+                                        </p><svg class="css-gopybs-StyledArrowDown e4a681b5" width="16" data-e2e=""
+                                            height="16" viewBox="0 0 48 48" fill="rgba(254, 44, 85, 1)"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                                d="M21.8788 33.1213L7.58586 18.8284C7.19534 18.4379 7.19534 17.8047 7.58586 17.4142L10.4143 14.5858C10.8048 14.1953 11.438 14.1953 11.8285 14.5858L24.0001 26.7574L36.1716 14.5858C36.5622 14.1953 37.1953 14.1953 37.5859 14.5858L40.4143 17.4142C40.8048 17.8047 40.8048 18.4379 40.4143 18.8284L26.1214 33.1213C24.9498 34.2929 23.0503 34.2929 21.8788 33.1213Z">
+                                            </path>
+                                        </svg>
+                                    </button>
                         </div>
                         <div data-e2e="eh-footer-icon" class="css-pf8kfy-DivEhEntranceSideContainer e125wy4z0"><a
                                 href="https://effecthouse.tiktok.com/download?utm_campaign=ttweb_entrance_v1&amp;utm_source=tiktok_webapp_main"
@@ -149,3 +162,6 @@
         </div>
     </div>
 </div>
+<script>
+    const navMenuMiddle = document.querySelector('.css-r0hg2a-DivSideNavContainer')
+</script>
