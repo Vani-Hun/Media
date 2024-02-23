@@ -176,8 +176,9 @@
         //     });
         let code = otpValue
         console.log("code:", code)
-
+        console.log("window.confirmationResult:", window.confirmationResult)
         window.confirmationResult.confirm(code).then(function (result) {
+
             var user = result.user;
             console.log(user);
         }).catch(function (error) {

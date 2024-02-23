@@ -135,9 +135,19 @@
                             <%= user.followers.length%>
                         </strong><span data-e2e="followers" class="css-1ubs7lq-SpanUnit e1457k4r2">Followers</span>
                     </div>
-                    <div class="css-ntsum2-DivNumber e1457k4r1"><strong title="Likes" data-e2e="likes-count">
-                            <%= user.likes%>
-                        </strong><span data-e2e="likes" class="css-1pchix1-SpanUnit e1457k4r2">Likes</span></div>
+                    <% let totalLikes=0; %>
+                        <% if (user.videos.length>= 1) { %>
+                            <% for (let i=0; i < user.videos.length; i++) { %>
+                                <% totalLikes +=user.videos[i].likes; %>
+                                    <% } %>
+                                        <% } %>
+                                            <div class="css-ntsum2-DivNumber e1457k4r1">
+                                                <strong title="Likes" data-e2e="likes-count">
+                                                    <%= totalLikes %>
+                                                </strong>
+                                                <span data-e2e="likes"
+                                                    class="css-1pchix1-SpanUnit e1457k4r2">Likes</span>
+                                            </div>
                 </h3>
                 <h2 data-e2e="user-bio" class="css-4ac4gk-H2ShareDesc e1457k4r3">
                     <%= user.bio%>
@@ -1321,7 +1331,7 @@
     listLike.addEventListener('click', () => {
         bottomLine.style.transform = "translateX(122px)";
         bottomLine.style.width = "165px";
-        let parentElement = document.querySelector('.css-yvmafn-DivVideoFeedV2');
+        let parentElement = document.querySelector('.css-wjuodt-DivVideoFeedV2');
         while (parentElement.firstChild) {
             parentElement.removeChild(parentElement.firstChild);
         }

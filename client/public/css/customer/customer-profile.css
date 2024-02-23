@@ -1515,7 +1515,7 @@ body.modal-open {
 
 .css-10qtkim-DivShareLayoutBase-StyledShareLayoutV2 {
     display: flex;
-    padding: 90px 24px 36px;
+    padding: 40px 24px 36px;
     flex-direction: column;
     flex: 1 1 auto;
     min-height: calc(-59px + 100vh);
