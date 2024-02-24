@@ -56,7 +56,7 @@ export class NotificationService extends BaseService<Notification> {
         } catch (error) {
             throw new HttpException(`Failed to delete notification: ${error.message}`, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-    }
+    };
 
     async checkNotification(userId: string) {
         return await this.repo

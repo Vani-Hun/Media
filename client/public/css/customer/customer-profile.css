@@ -25,17 +25,6 @@
 
 }
 
-.css-14dcx2q-DivBodyContainer {
-    /* margin-top: 60px; */
-    display: flex;
-    width: 100vw;
-    max-width: 100%;
-    -webkit-box-pack: justify;
-    justify-content: space-between;
-    align-self: center;
-    flex: 1 1 auto;
-}
-
 .css-1xo9k5n-H1ShareTitle {
     font-family: TikTokDisplayFont, Arial, Tahoma, PingFangSC, sans-serif;
     font-weight: 700;
@@ -2019,4 +2008,24 @@ picture {
 .tiktok-gr0dyb-DivContentContainer {
     width: 700px;
     padding: 8px 24px 0px;
+}
+
+.css-gvq8tv-DivFollowButtonWrapper {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    min-width: 208px;
+    height: 36px;
+    line-height: 22px;
+    z-index: unset;
+    opacity: 0;
+}
+
+.css-1djryq8-DivMessageContainer {
+    display: flex;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    opacity: 1;
+    z-index: unset;
 }

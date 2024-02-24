@@ -110,10 +110,9 @@
                                     data-e2e="follow-button" aria-label="Follow Gia Huy"
                                     class="e18e4obn5 css-1tfhw3c-Button-StyledFollowButton ehk74z00">Follow</button>
                             </div>
-                            <div class="css-b8igea-DivMessageContainer e18e4obn1"><a
-                                    class="css-22xkqc-StyledLink er1vbsz0"
-                                    href="/messages?lang=en&amp;u=6590316523741757442"
-                                    style="text-decoration: none;"><button type="button"
+                            <div class="css-1djryq8-DivMessageContainer e18e4obn1"><a
+                                    class="css-22xkqc-StyledLink er1vbsz0" style="text-decoration: none;"><button
+                                        type="button"
                                         class="e18e4obn3 css-1btqthh-Button-StyledMessageButton ehk74z00">Messages</button></a>
                                 <div class="css-1us3psh-DivFollowIconContainer e18e4obn6"><svg width="20" data-e2e=""
                                         height="20" viewBox="0 0 48 48" fill="currentColor"
@@ -228,10 +227,15 @@
     let bottomLine = document.querySelector(".css-1f8gh88-DivBottomLine");
     const videoContainer = document.querySelector('.css-wjuodt-DivVideoFeedV2');
     const listVideoDiv = document.querySelector('.css-1mavlr4-UserContainer')
-
-    // window.onpopstate = function (event) {
-    //     window.location.href = window.location.pathname
-    // }
+    const listDiv = document.querySelector(".css-14dcx2q-DivBodyContainer")
+    const divShareFollowContainer = document.querySelector('.css-1xwagd1-DivShareFollowContainer')
+    const divFollowButtonWrapper = document.querySelector('.css-1h3j14u-DivFollowButtonWrapper')
+    const divMessageContainer = document.querySelector('.css-1djryq8-DivMessageContainer')
+    const divFollowIconContainer = document.querySelector('.css-1us3psh-DivFollowIconContainer')
+    const mainMessages = document.getElementById('main-content-messages')
+    window.onpopstate = function (event) {
+        window.location.href = window.location.pathname
+    }
 
     function showCustomAlert(message) {
         const customAlert = document.getElementById('customAlert');
@@ -519,7 +523,7 @@
             <div class="tiktok-1ap2cv9-DivVideoControlBottom e1rpry1m6"></div>
         </div><svg id="playIcon" style="display:none" xmlns="http://www.w3.org/2000/svg" width="70" height="70"
             fill="#fff" data-e2e="browse-video-play" class="tiktok-196swoi-StyledPlayIcon e11s2kul5">
-            <use xlink:href="#Play_Fill-6957a00f"></use>
+            <use xlink:href=""></use>
         </svg><button role="button" aria-label="Close" data-e2e="browse-close"
             class="tiktok-yg0pvs-ButtonBasicButtonContainer-StyledCloseIconContainer e11s2kul7"><svg width="18"
                 data-e2e="" height="18" viewBox="0 0 9 10" fill="#fff" xmlns="http://www.w3.org/2000/svg">
@@ -558,7 +562,7 @@
             </svg></button>
         <div tabindex="0" data-e2e="browse-ellipsis" class="tiktok-q969e7-DivIconWrapper e11s2kul18"><svg
                 xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor">
-                <use xlink:href="#Ellipsis_Horizontal_Fill-9ee69fcf"></use>
+                <use xlink:href=""></use>
             </svg></div>
     </div>
     <div class="tiktok-1qjw4dg-DivContentContainer e1mecfx00">
@@ -592,7 +596,7 @@
 <div tabindex="-1" class="css-ejp1tv-DivContainer" style="right: -11px;display: none;";>
     <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="rgba(37, 37, 37, 1)"
         class="css-1ny6agx-StyledTopArrow e2ipgxl1" style="right: 10px;">
-        <use xlink:href="#tip_arrow_white-99f4b53c"></use>
+        <use xlink:href=""></use>
     </svg>
     <ul class="css-1n18b5h-UlPopupContainer e161jvwg2">
         <li data-e2e="video-privacy-settings" class="css-rrnssd-LiPopupItem e161jvwg3"><button type="button"
@@ -621,7 +625,7 @@
                 class="epjbyn1 tiktok-v80f7r-StyledLink-StyledLink er1vbsz0" aria-label="" href=""><svg
                     xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="rgba(22, 24, 35, 1)" styletype="1"
                     class="tiktok-ftrwfo-MusicNoteIcon epjbyn4">
-                    <use xlink:href="#Music_Note-8c658968"></use>
+                    <use xlink:href=""></use>
                 </svg>
                 <div class="tiktok-pvx3oa-DivMusicText epjbyn3">original sound - 🍪</div>
             </a></h4>
@@ -806,7 +810,14 @@
        `
         return divVideo;
     }
-
+    function renderFollowContainer() {
+        const isCustomerFollowingUser = customer.following.some(following => following.id === user.id);
+        if (isCustomerFollowingUser) {
+            divFollowButtonWrapper.style.display = 'none'
+        } else {
+            divMessageContainer.style.display = 'none'
+        }
+    }
     function displayVideosTemplate(video) {
         const template =
             `
@@ -859,7 +870,6 @@
             videoElement.innerHTML = displayVideosTemplate(video)
             videoContainer.appendChild(videoElement);
             videoElement.addEventListener('click', () => {
-                console.log("click:")
                 listVideoDiv.style.display = 'none'
                 navMenu.style.display = 'none'
                 navMenuMiddle.style.display = 'none'
@@ -918,9 +928,9 @@
 
         copyLinkText.innerHTML = `${host}/video/${video.id}`
         indexCurrent = +indexCurrent
+        listDiv.style.marginTop = '0'
 
-
-        // updateURL(`/video/${video.id}`, "pageProfile", 'push');
+        updateURL(`/video/${video.id}`, "pageProfile", 'push');
 
         updateLeftArrowDisplay(indexCurrent, leftArrow);
 
@@ -1110,8 +1120,8 @@
         });
 
         xButton.addEventListener('click', function () {
-            console.log("window.history:", window.history)
             divVideo.remove();
+            listDiv.style.marginTop = '60px'
             navMenu.style.display = 'flex'
             listVideoDiv.style.display = 'flex'
             navMenuMiddle.style.display = 'flex'
@@ -1327,6 +1337,7 @@
     likedVideoSet = new Set(likedVideoIds.map(video => video.id))
 
     displayVideos(videos)
+    renderFollowContainer()
 
     listLike.addEventListener('click', () => {
         bottomLine.style.transform = "translateX(122px)";
@@ -1335,7 +1346,7 @@
         while (parentElement.firstChild) {
             parentElement.removeChild(parentElement.firstChild);
         }
-        fetch(`/customer/videos/like`, {
+        fetch(`/customer/videos/like/${user.id}`, {
             method: 'GET',
         })
             .then(response => {
@@ -1345,7 +1356,7 @@
                 return response.json();
             })
             .then(data => {
-                displayVideos(data.customer.likedVideos)
+                displayVideos(customer.likedVideos)
             })
             .catch(error => { console.error("Error:", error) })
 
@@ -1355,11 +1366,42 @@
     listPost.addEventListener('click', () => {
         bottomLine.style.transform = "translateX(0px)";
         bottomLine.style.width = "122px";
-        let parentElement = document.querySelector('.css-yvmafn-DivVideoFeedV2');
+        let parentElement = document.querySelector('.css-wjuodt-DivVideoFeedV2');
         while (parentElement.firstChild) {
             parentElement.removeChild(parentElement.firstChild);
         }
         displayVideos(user.videos)
     })
-
+    divFollowButtonWrapper.addEventListener('click', () => {
+        divFollowButtonWrapper.style.display = 'none'
+        divMessageContainer.style.display = 'flex'
+        fetch(`/customer/follow/${user.id}`, {
+            method: 'POST',
+        })
+            .then(data => {
+                updateCustomer()
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    })
+    divMessageContainer.addEventListener('click', () => {
+        mainMessages.style.display = 'flex'
+        listVideoDiv.style.display = 'none'
+        navMenu.style.display = 'none'
+        navMenuMiddle.style.display = 'none'
+    })
+    divFollowIconContainer.addEventListener('click', () => {
+        divFollowButtonWrapper.style.display = 'block'
+        divMessageContainer.style.display = 'none'
+        fetch(`/customer/unfollow/${user.id}`, {
+            method: 'POST',
+        })
+            .then(data => {
+                updateCustomer()
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    })
 </script>

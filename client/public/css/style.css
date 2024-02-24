@@ -1,6 +1,7 @@
 @import url(./common/root.css);
-@import url(./customer/customer.css);
-@import url(./header/header.css);
-@import url(./home/home.css);
 @import url(./common/btn.css);
+@import url(./common/message.css);
+@import url(./customer/customer.css);
+@import url(./menu/menu.css);
+@import url(./home/home.css);
 @import url(./video/video.css);
