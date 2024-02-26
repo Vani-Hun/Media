@@ -4,6 +4,8 @@ import { JoinTable, Column, Entity, OneToMany, ManyToMany, AfterInsert, PrimaryC
 import { Video } from 'src/video/video.entity';
 import { Comment } from 'src/comment/comment.entity';
 import { Notification } from 'src/notification/notitfication.entity';
+import { Message } from 'src/message/message.entity';
+import { Conversation } from 'src/conversation/conversation.entity';
 @Entity()
 export class Customer extends BaseEntityUUID {
 
@@ -27,6 +29,12 @@ export class Customer extends BaseEntityUUID {
 
   @Column({ nullable: true })
   password: string;
+
+  @Column({ nullable: true, default: "Everyone" })
+  messageStatus: string;
+
+  @OneToMany(() => Conversation, conversation => conversation.user, { cascade: true })
+  conversations: Conversation[];
 
   @Column({ nullable: true })
   permission: string;

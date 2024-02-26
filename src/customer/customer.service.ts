@@ -165,6 +165,7 @@ export class CustomerService extends BaseService<Customer> {
     return await this.repo.createQueryBuilder('customer')
       .where('customer.id = :id', { id: input.id })
       .leftJoinAndSelect('customer.notifications', 'notifications')
+      .leftJoinAndSelect('customer.messages', 'messages')
       .leftJoinAndSelect('customer.videos', 'videos')
       .leftJoinAndSelect('customer.likedVideos', 'likedVideos')
       .leftJoinAndSelect('customer.following', 'following')

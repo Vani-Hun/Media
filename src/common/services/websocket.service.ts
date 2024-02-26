@@ -7,8 +7,10 @@ import { CustomerService } from 'src/customer/customer.service';
 
 @WebSocketGateway()
 export class NotificationGateway implements OnGatewayConnection, OnGatewayDisconnect {
-    constructor(private customerService: CustomerService,
-        private videoService: VideoService) { }
+    constructor(
+        private customerService: CustomerService,
+        private videoService: VideoService
+    ) { }
 
     @WebSocketServer() server: Server;
 
@@ -22,6 +24,13 @@ export class NotificationGateway implements OnGatewayConnection, OnGatewayDiscon
 
     @SubscribeMessage('updateCustomer')
     async updateCustomer(client: any, payload: any): Promise<void> {
+        // const customer = await this.customerService.getUser(payload);
+        // this.server.to(client.id).emit('updateCustomer', customer);
+    }
+
+    @SubscribeMessage('sendMessage')
+    async sendMessage(client: any, payload: any): Promise<void> {
+        console.log("payload:", payload)
         const customer = await this.customerService.getUser(payload);
         this.server.to(client.id).emit('updateCustomer', customer);
     }

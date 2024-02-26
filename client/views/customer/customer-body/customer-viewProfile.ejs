@@ -232,7 +232,7 @@
     const divFollowButtonWrapper = document.querySelector('.css-1h3j14u-DivFollowButtonWrapper')
     const divMessageContainer = document.querySelector('.css-1djryq8-DivMessageContainer')
     const divFollowIconContainer = document.querySelector('.css-1us3psh-DivFollowIconContainer')
-    const mainMessages = document.getElementById('main-content-messages')
+
     window.onpopstate = function (event) {
         window.location.href = window.location.pathname
     }
@@ -1390,6 +1390,7 @@
         listVideoDiv.style.display = 'none'
         navMenu.style.display = 'none'
         navMenuMiddle.style.display = 'none'
+        updateURL(`/message`, "pageMessage", 'push');
     })
     divFollowIconContainer.addEventListener('click', () => {
         divFollowButtonWrapper.style.display = 'block'
@@ -1404,4 +1405,36 @@
                 console.error('Error:', error);
             });
     })
+    const placeHolder = document.getElementById('placeholder-7nbq6')
+    let inputElement = document.querySelector('.DraftEditor-editorContainer');
+    let sendMessage = document.querySelector('.css-d7yhdo-StyledSendButton')
+    const divChatBottom = document.querySelector('.css-fqfkc9-DivChatBottom')
+    inputElement.addEventListener('input', function () {
+        if (inputElement.innerText !== '') {
+            console.log("inputElement.innerText:", inputElement.innerText)
+            placeHolder.style.display = 'none'
+            sendMessage.style.display = 'block'
+        } else {
+            sendMessage.style.display = 'none'
+            placeHolder.style.display = 'block'
+        }
+    });
+    sendMessage.addEventListener('click', () => {
+        socket.emit('register', { userId: user.id, customerId: customer.id });
+        socket.emit('sendMessage', { senderId: customer.id, receiverId: user.id, mess: inputElement.innerText }, err => console.error(err));
+    });
+    socket.on('sendMessage', (data) => {
+        console.log("data:", data)
+
+    });
+
+
+
+    socket.on('private message', function (msg) {
+        console.log('Private message:', msg);
+    });
+
+    function sendPrivateMessage(targetCustomerId, message) {
+        socket.emit('private message', { targetCustomerId, message });
+    }
 </script>

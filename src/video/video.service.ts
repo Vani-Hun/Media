@@ -43,7 +43,8 @@ export class VideoService extends BaseService<Video> {
     }
 
     async getUploadVideo(input) {
-        return await this.customerService.getUser(input)
+        const customer = await this.customerService.getUser(input)
+        return { customer }
     }
     async uploadVideo(input) {
         try {
