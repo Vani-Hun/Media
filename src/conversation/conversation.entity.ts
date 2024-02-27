@@ -9,12 +9,13 @@ import { Message } from 'src/message/message.entity';
 export class Conversation extends BaseEntityUUID {
 
     @ManyToOne(() => Customer)
-    @JoinColumn({ name: 'user' })
-    user: Customer;
+    @JoinColumn({ name: 'user_id' })
+    user_id: Customer;
 
-    @Column({ nullable: true })
-    participant_id: string;
+    @ManyToOne(() => Customer)
+    @JoinColumn({ name: 'participant_id' })
+    participant_id: Customer;
 
-    @OneToMany(() => Message, conversation => conversation.conversation, { cascade: true })
+    @OneToMany(() => Message, conversation => conversation.conversation_id, { cascade: true })
     messages: Message[];
 }

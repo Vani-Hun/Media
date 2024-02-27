@@ -174,7 +174,11 @@
     const listNotifications = document.querySelector('.css-1cz26jb-UlInboxItemListContainer')
     const buttons = document.querySelectorAll('#header-inbox-bar button');
     let timeSet
+    socket.emit('userConnected', { userId: null, customerId: customer.id });
+    socket.on('sendMessage', (data) => {
+        console.log("data:", data)
 
+    });
 
     buttons.forEach(button => {
         button.addEventListener('click', function () {

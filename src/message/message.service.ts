@@ -25,5 +25,9 @@ export class MessageService extends BaseService<Message> {
         const customer = await this.customerService.getUser(input)
         return { customer }
     }
+    async createMessage(input) {
+        console.log("input:", input)
+        return await this.repo.save(this.repo.create({ conversation_id: input.conversationId, user_id: input.senderId, text: input.mess }))
+    }
 
 }

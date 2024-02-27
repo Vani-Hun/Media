@@ -33,8 +33,12 @@ export class Customer extends BaseEntityUUID {
   @Column({ nullable: true, default: "Everyone" })
   messageStatus: string;
 
-  @OneToMany(() => Conversation, conversation => conversation.user, { cascade: true })
+  @OneToMany(() => Conversation, conversation => conversation.user_id, { cascade: true })
   conversations: Conversation[];
+
+
+  @OneToMany(() => Message, message => message.user_id, { cascade: true })
+  messages: Message[];
 
   @Column({ nullable: true })
   permission: string;

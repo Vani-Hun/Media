@@ -48,7 +48,6 @@ export class CustomerService extends BaseService<Customer> {
     const existingUser = await this.repo.findOne({
       where: { email: input.emails[0].value }
     })
-    console.log("existingUser:", existingUser)
     if (!existingUser) {
       const userCreate = {
         logo: input.photos[0].value,
@@ -165,11 +164,13 @@ export class CustomerService extends BaseService<Customer> {
     return await this.repo.createQueryBuilder('customer')
       .where('customer.id = :id', { id: input.id })
       .leftJoinAndSelect('customer.notifications', 'notifications')
-      .leftJoinAndSelect('customer.messages', 'messages')
+      .leftJoinAndSelect('customer.conversations', 'conversations')
       .leftJoinAndSelect('customer.videos', 'videos')
       .leftJoinAndSelect('customer.likedVideos', 'likedVideos')
       .leftJoinAndSelect('customer.following', 'following')
       .leftJoinAndSelect('customer.followers', 'followers')
+      .leftJoinAndSelect('conversations.participant_id', 'participant')
+      // .leftJoinAndSelect('conversations.messages', 'messages')
       .leftJoinAndSelect('videos.user', 'user')
       .leftJoinAndSelect('videos.comments', 'commentsVideo')
       .leftJoinAndSelect('videos.likers', 'likers')
@@ -181,7 +182,7 @@ export class CustomerService extends BaseService<Customer> {
       .leftJoinAndSelect('commentsVideo.customer', 'commentsVideoCustomer')
       .orderBy('videos.createAt', 'DESC')
       .addOrderBy('notifications.createAt', 'DESC')
-      .getOneOrFail();
+      .getOne();
   }
 
 

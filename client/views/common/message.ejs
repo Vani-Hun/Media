@@ -18,32 +18,7 @@
         <div class="css-bh4lwh-DivListContent etdtmal5">
             <div class="etdtmal6 css-m565fe-DivScrollContainer-StyledScroll e1b4u1n1"
                 style="height: 100%; padding-left: unset; padding-right: 0px;">
-                <div class="css-149gota-DivScrollWrapper e1b4u1n2" style="height: 100%;">
-                    <div id="more-acton-icon-0" tabindex="0" data-e2e="chat-list-item"
-                        class="css-sts95t-DivItemWrapper eii3f6d3">
-                        <div class="css-7d6k4j-DivItemInfo eii3f6d4">
-                            <div class="css-bvlt9t-DivInfoAvatarWrapper eii3f6d5"><span shape="circle" data-e2e=""
-                                    class="eii3f6d6 css-16n5gb9-SpanAvatarContainer-StyledAvatar e1e9er4e0"
-                                    style="width: 56px; height: 56px;"><img loading="lazy" alt=""
-                                        src="https://p16-sign-useast2a.tiktokcdn.com/tos-useast2a-avt-0068-giso/699b3f21cb933640a0395e002c34763c~c5_100x100.jpeg?lk3s=a5d48078&amp;x-expires=1708966800&amp;x-signature=DhmyztvZVAXDHboYwCuwoSSjNNg%3D"
-                                        class="css-1zpj2q-ImgAvatar e1e9er4e1"></span>
-                                <div class="css-4gp65x-DivInfoAvatarMask eii3f6d7"></div>
-                            </div>
-                            <div class="css-hqqyyv-DivInfoTextWrapper eii3f6d8" style="padding-left: 15px;">
-                                <p class="css-2tydh5-PInfoNickname eii3f6d9">Hùng Nguyễn</p>
-                                <p class="css-iynzpe-PInfoExtractTime eii3f6d10"><span
-                                        class="css-1o8wi3q-SpanInfoExtract eii3f6d12"></span><span
-                                        class="css-1wvhgqg-SpanInfoTime eii3f6d13">12:41 AM</span></p>
-                            </div>
-                        </div><svg fill="currentColor" role="button" tabindex="0" aria-expanded="false"
-                            aria-haspopup="true" aria-controls="" data-e2e="more-action-icon"
-                            class="css-1rbeczr-StyledMoreActionIcon eii3f6d0" viewBox="0 0 48 48"
-                            xmlns="http://www.w3.org/2000/svg" width="1em" height="1em">
-                            <path
-                                d="M5 24a4 4 0 1 1 8 0 4 4 0 0 1-8 0Zm15 0a4 4 0 1 1 8 0 4 4 0 0 1-8 0Zm15 0a4 4 0 1 1 8 0 4 4 0 0 1-8 0Z">
-                            </path>
-                        </svg>
-                    </div>
+                <div class="css-149gota-DivScrollMessage" style="height: 100%;">
                     <div aria-live="off" class="css-12s51wa-DivMessageStatus etdtmal7">
                         <div></div>
                         <div></div>
@@ -92,14 +67,6 @@
                                     class="notranslate public-DraftEditor-content" contenteditable="true" role="textbox"
                                     spellcheck="false" tabindex="0"
                                     style="outline: none; user-select: text; overflow-wrap: break-word;">
-                                    <div data-contents="true">
-                                        <div class="" data-block="true" data-editor="7nbq6" data-offset-key="4goi0-0-0">
-                                            <div data-offset-key="4goi0-0-0"
-                                                class="public-DraftStyleDefault-block public-DraftStyleDefault-ltr">
-                                                <span data-offset-key="4goi0-0-0"><br data-text="true"></span>
-                                            </div>
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -135,4 +102,33 @@
 
 <script>
     const mainMessages = document.getElementById('main-content-messages')
+    const divScrollMessage = document.querySelector('.css-149gota-DivScrollMessage')
+
+    customer.conversations.forEach(conversation => {
+        const divMess = ` 
+<div id="more-acton-icon-0" tabindex="0" data-e2e="chat-list-item" class="css-sts95t-DivItemWrapper eii3f6d3">
+    <div class="css-7d6k4j-DivItemInfo eii3f6d4">
+        <div class="css-bvlt9t-DivInfoAvatarWrapper eii3f6d5"><span shape="circle" data-e2e=""
+                class="eii3f6d6 css-16n5gb9-SpanAvatarContainer-StyledAvatar e1e9er4e0"
+                style="width: 56px; height: 56px;"><img loading="lazy" alt=""
+                    src="${conversation.participant_id.logo}"
+                    class="css-1zpj2q-ImgAvatar e1e9er4e1"></span>
+            <div class="css-4gp65x-DivInfoAvatarMask eii3f6d7"></div>
+        </div>
+        <div class="css-hqqyyv-DivInfoTextWrapper eii3f6d8">
+            <p class="css-2tydh5-PInfoNickname eii3f6d9">${conversation.participant_id.name}</p>
+        </div>
+    </div><svg fill="currentColor" role="button" tabindex="0" aria-expanded="false" aria-haspopup="true"
+        aria-controls="" data-e2e="more-action-icon" class="css-1rbeczr-StyledMoreActionIcon eii3f6d0"
+        viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em">
+        <path
+            d="M5 24a4 4 0 1 1 8 0 4 4 0 0 1-8 0Zm15 0a4 4 0 1 1 8 0 4 4 0 0 1-8 0Zm15 0a4 4 0 1 1 8 0 4 4 0 0 1-8 0Z">
+        </path>
+    </svg>
+</div>
+    `
+        divScrollMessage.innerHTML += divMess;
+    })
+
+
 </script>

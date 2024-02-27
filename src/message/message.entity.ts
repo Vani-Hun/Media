@@ -10,8 +10,12 @@ import { Conversation } from 'src/conversation/conversation.entity';
 export class Message extends BaseEntityUUID {
 
     @ManyToOne(() => Conversation)
-    @JoinColumn({ name: 'conversation' })
-    conversation: Conversation;
+    @JoinColumn({ name: 'conversation_id' })
+    conversation_id: Conversation;
+
+    @ManyToOne(() => Customer)
+    @JoinColumn({ name: 'user_id' })
+    user_id: Customer;
 
     @Column({ nullable: true })
     text: string;

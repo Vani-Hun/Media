@@ -9,10 +9,12 @@ import { CustomerModule } from 'src/customer/customer.module';
 import { ConversationService } from './conversation.service';
 import { ConversationController } from './conversation.controller';
 import { Conversation } from './conversation.entity';
+import { MessageModule } from 'src/message/message.module';
 @Module({
     imports: [
         forwardRef(() => CustomerModule),
         forwardRef(() => CommonModule),
+        forwardRef(() => MessageModule),
         NotificationModule,
         TypeOrmModule.forFeature([Conversation]),
         MulterModule.register({ storage }),

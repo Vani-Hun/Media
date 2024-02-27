@@ -1372,6 +1372,21 @@
         }
         displayVideos(user.videos)
     })
+
+
+
+    const divChatBox = document.querySelector('.css-d0yksp-DivChatBox')
+    const divChatHeaderContentWrapper = divChatBox.querySelector('.css-py020d-DivChatHeaderContentWrapper')
+    const pNickname = divChatHeaderContentWrapper.querySelector('.css-jqv74s-PNickname')
+    const pUniqueId = divChatHeaderContentWrapper.querySelector('.css-1nlqpbq-PUniqueId')
+    const pInfoNickname = document.querySelector('.css-2tydh5-PInfoNickname')
+    const imgAvatar = divChatHeaderContentWrapper.querySelector('.css-1zpj2q-ImgAvatar')
+    const text = divChatBox.querySelector('.public-DraftEditor-content')
+    const placeHolder = document.getElementById('placeholder-7nbq6')
+    let inputElement = divChatBox.querySelector('.DraftEditor-editorContainer');
+    let sendMessage = divChatBox.querySelector('.css-d7yhdo-StyledSendButton')
+    const divChatMainContent = divChatBox.querySelector('.css-okl125-DivChatMainContent')
+
     divFollowButtonWrapper.addEventListener('click', () => {
         divFollowButtonWrapper.style.display = 'none'
         divMessageContainer.style.display = 'flex'
@@ -1390,7 +1405,11 @@
         listVideoDiv.style.display = 'none'
         navMenu.style.display = 'none'
         navMenuMiddle.style.display = 'none'
-        updateURL(`/message`, "pageMessage", 'push');
+        // updateURL(`/message`, "pageMessage", 'push');
+        pNickname.textContent = user.name
+        pUniqueId.textContent = user.username
+        pInfoNickname.textContent = user.name
+        imgAvatar.src = user.logo
     })
     divFollowIconContainer.addEventListener('click', () => {
         divFollowButtonWrapper.style.display = 'block'
@@ -1405,13 +1424,11 @@
                 console.error('Error:', error);
             });
     })
-    const placeHolder = document.getElementById('placeholder-7nbq6')
-    let inputElement = document.querySelector('.DraftEditor-editorContainer');
-    let sendMessage = document.querySelector('.css-d7yhdo-StyledSendButton')
-    const divChatBottom = document.querySelector('.css-fqfkc9-DivChatBottom')
-    inputElement.addEventListener('input', function () {
-        if (inputElement.innerText !== '') {
-            console.log("inputElement.innerText:", inputElement.innerText)
+
+
+    text.addEventListener('input', function () {
+        if (text.textContent !== '') {
+            console.log("inputElement.textContent:", text.textContent)
             placeHolder.style.display = 'none'
             sendMessage.style.display = 'block'
         } else {
@@ -1419,22 +1436,74 @@
             placeHolder.style.display = 'block'
         }
     });
+
     sendMessage.addEventListener('click', () => {
-        socket.emit('register', { userId: user.id, customerId: customer.id });
-        socket.emit('sendMessage', { senderId: customer.id, receiverId: user.id, mess: inputElement.innerText }, err => console.error(err));
+        const today = new Date();
+        let formattedDate = today.toString().split(':').slice(0, 2).join(':');
+        socket.emit('sendMessage', { senderId: customer.id, receiverId: user.id, mess: text.textContent }, (data, err) => {
+            let divMess
+            if (err) {
+                divMess = `
+    <div class="css-ryubmp-DivTimeContainer ediam1h7"><span tabindex="0">${formattedDate}</span></div>
+    <div data-e2e="chat-item" class="css-ca9jkb-DivChatItemWrapper e9j91380">
+        <div tabindex="0" class="css-dmjtfp-DivMessageContainer e9j91381"><a tabindex="-1"
+                class="css-22xkqc-StyledLink er1vbsz0" href="/customer/profile/${customer.id}"><span shape="circle"
+                    data-e2e="chat-avatar" class="css-tuohvl-SpanAvatarContainer e1e9er4e0"
+                    style="width: 32px; height: 32px;"><img loading="lazy" alt=""
+                        src="${customer.logo}"
+                        class="css-1zpj2q-ImgAvatar e1e9er4e1"></span></a>
+            <div class="css-1r46dss-DivTextContainer e9j91382">
+                <p class="css-1rdxtjl-PText e9j91385">${text.textContent}</p>
+            </div>
+            <div data-e2e="dm-warning"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em"
+                    fill="currentColor" class="css-1b0h12s-StyledIconFail e9j91387">
+                   <path fill="#FF4C3A" fill-rule="evenodd"
+    d="M12 3.856a9 9 0 1 0 0 18 9 9 0 0 0 0-18m-11 9c0-6.075 4.925-11 11-11s11 4.925 11 11-4.925 11-11 11-11-4.924-11-11m12.5 4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m-2-9.5a.5.5 0 0 0-.5.5v5.5a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-5.5a.5.5 0 0 0-.5-.5z"
+    clip-rule="evenodd"></path>
+                </svg></div>
+            <div tabindex="0" role="button" aria-haspopup="true" aria-expanded="false"
+                class="css-1v4ad6m-DivIconMore e9j91388"><svg width="24" data-e2e="" height="24" viewBox="0 0 48 48"
+                    fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" clip-rule="evenodd"
+                        d="M4 24C4 21.7909 5.79086 20 8 20C10.2091 20 12 21.7909 12 24C12 26.2091 10.2091 28 8 28C5.79086 28 4 26.2091 4 24ZM20 24C20 21.7909 21.7909 20 24 20C26.2091 20 28 21.7909 28 24C28 26.2091 26.2091 28 24 28C21.7909 28 20 26.2091 20 24ZM36 24C36 21.7909 37.7909 20 40 20C42.2091 20 44 21.7909 44 24C44 26.2091 42.2091 28 40 28C37.7909 28 36 26.2091 36 24Z">
+                    </path>
+                </svg></div>
+        </div>
+    </div>
+   `
+            }
+            else {
+                divMess = `
+    <div class="css-ryubmp-DivTimeContainer ediam1h7"><span tabindex="0">${formattedDate}</span></div>
+    <div data-e2e="chat-item" class="css-ca9jkb-DivChatItemWrapper e9j91380">
+        <div tabindex="0" class="css-dmjtfp-DivMessageContainer e9j91381"><a tabindex="-1"
+                class="css-22xkqc-StyledLink er1vbsz0" href="/customer/profile/${customer.id}"><span shape="circle"
+                    data-e2e="chat-avatar" class="css-tuohvl-SpanAvatarContainer e1e9er4e0"
+                    style="width: 32px; height: 32px;"><img loading="lazy" alt=""
+                        src="${customer.logo}"
+                        class="css-1zpj2q-ImgAvatar e1e9er4e1"></span></a>
+            <div class="css-1r46dss-DivTextContainer e9j91382">
+                <p class="css-1rdxtjl-PText e9j91385">${text.textContent}</p>
+            </div>
+            <div tabindex="0" role="button" aria-haspopup="true" aria-expanded="false"
+                class="css-1v4ad6m-DivIconMore e9j91388"><svg width="24" data-e2e="" height="24" viewBox="0 0 48 48"
+                    fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" clip-rule="evenodd"
+                        d="M4 24C4 21.7909 5.79086 20 8 20C10.2091 20 12 21.7909 12 24C12 26.2091 10.2091 28 8 28C5.79086 28 4 26.2091 4 24ZM20 24C20 21.7909 21.7909 20 24 20C26.2091 20 28 21.7909 28 24C28 26.2091 26.2091 28 24 28C21.7909 28 20 26.2091 20 24ZM36 24C36 21.7909 37.7909 20 40 20C42.2091 20 44 21.7909 44 24C44 26.2091 42.2091 28 40 28C37.7909 28 36 26.2091 36 24Z">
+                    </path>
+                </svg></div>
+        </div>
+    </div>
+   `}
+
+            divChatMainContent.innerHTML += divMess;
+            text.textContent = ''
+            sendMessage.style.display = 'none'
+            placeHolder.style.display = 'block'
+        });
     });
-    socket.on('sendMessage', (data) => {
-        console.log("data:", data)
 
-    });
+    socket.emit('userConnected', { userId: user.id, customerId: customer.id });
 
 
-
-    socket.on('private message', function (msg) {
-        console.log('Private message:', msg);
-    });
-
-    function sendPrivateMessage(targetCustomerId, message) {
-        socket.emit('private message', { targetCustomerId, message });
-    }
 </script>

@@ -9,10 +9,12 @@ import { CommonModule } from 'src/common/common.module';
 import { FirebaseConfigModule } from 'src/common/utils/firebase.config';
 import { NotificationModule } from 'src/notification/notification.module';
 import { CustomerModule } from 'src/customer/customer.module';
+import { ConversationModule } from 'src/conversation/conversation.module';
 @Module({
     imports: [
         forwardRef(() => CustomerModule),
         forwardRef(() => CommonModule),
+        forwardRef(() => ConversationModule),
         NotificationModule,
         TypeOrmModule.forFeature([Message]),
         MulterModule.register({ storage }),

@@ -1,3 +1,4 @@
+import { MessageService } from './../message/message.service';
 import { HttpException, Injectable, UnauthorizedException, Inject, HttpStatus, forwardRef } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { BaseService } from 'src/common/services/base.service';
@@ -17,13 +18,25 @@ export class ConversationService extends BaseService<Conversation> {
     constructor(@Inject('FIREBASE_CONFIG') protected readonly firebaseConfig,
         @InjectRepository(Conversation) repo: Repository<Conversation>,
         @Inject(forwardRef(() => CustomerService)) private customerService: CustomerService,
-        private notificationService: NotificationService
+        private notificationService: NotificationService,
+        private messageService: MessageService
     ) {
         super(repo);
     }
-    async getPage(input) {
-        const customer = await this.customerService.getUser(input)
-        return { customer }
+    async createConversation(input) {
+        console.log("input:", input)
+        const check = await this.repo.createQueryBuilder('conversation')
+            .where('conversation.user_id = :user_id', { user_id: input.senderId })
+            .andWhere('conversation.participant_id = :participant_id', { participant_id: input.receiverId })
+            .getOne()
+        console.log("check:", check)
+        if (!check) {
+            const conversation = await this.repo.save(this.repo.create({ user_id: input.senderId, participant_id: input.receiverId }))
+            input.conversationId = await conversation.id;
+        } else {
+            input.conversationId = await check.id;
+        }
+        return await this.messageService.createMessage(input)
     }
 
 }
