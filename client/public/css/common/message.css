@@ -137,12 +137,6 @@
     background-color: rgba(136, 136, 136, 0.5);
 }
 
-.css-1zpj2q-ImgAvatar {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
 .css-4gp65x-DivInfoAvatarMask {
     position: absolute;
     left: 0px;
@@ -244,9 +238,20 @@
     margin-top: 2px;
 }
 
+.css-1jzidcu-DivTimeContainer {
+    color: rgba(22, 24, 35, 0.5);
+    font-family: TikTokFont;
+    margin-top: 0px;
+    padding-top: 20px;
+    margin-bottom: 8px;
+    font-size: 12px;
+    line-height: 15px;
+    text-align: center;
+}
+
 .css-96mvex-DivChatMain {
     display: flex;
-    flex-direction: column-reverse;
+    flex-direction: column;
     flex: 1 1 0%;
     overflow-y: auto;
     width: 100%;
@@ -384,6 +389,13 @@
     flex: 0 0 auto;
 }
 
+.css-101150x-DivMessageContainer {
+    display: flex;
+    flex-direction: row-reverse;
+    align-self: flex-end;
+    margin: 8px 12px 8px 0px;
+}
+
 .css-dmjtfp-DivMessageContainer {
     display: flex;
     flex-direction: row-reverse;
@@ -391,24 +403,13 @@
     margin: 8px 12px 8px 0px;
 }
 
-.css-tuohvl-SpanAvatarContainer {
-    display: inline-block;
-    box-sizing: border-box;
-    margin: 0px;
-    padding: 0px;
-    font-feature-settings: "tnum";
-    position: relative;
-    overflow: hidden;
-    color: rgb(255, 255, 255);
-    white-space: nowrap;
-    text-align: center;
-    vertical-align: middle;
-    line-height: 32px;
-    border-radius: 50%;
-    background-color: rgba(136, 136, 136, 0.5);
+.css-dmjtfp-DivMessageContainer .e9j91382 {
+    background: rgba(22, 24, 35, 0.06);
+    margin-right: 8px;
+    margin-left: 0px;
 }
 
-.css-dmjtfp-DivMessageContainer .e9j91382 {
+.css-101150x-DivMessageContainer .e9j91382 {
     background: rgba(22, 24, 35, 0.06);
     margin-right: 8px;
     margin-left: 0px;
@@ -460,6 +461,11 @@
     cursor: pointer;
 }
 
+#more-acton-icon-0:hover {
+    background-color: rgb(241, 241, 241);
+    cursor: pointer;
+}
+
 .css-1rdxtjl-PText {
     white-space: pre-wrap;
     word-break: break-word;
@@ -479,4 +485,11 @@
     height: 24px;
     margin: 9px 16px 0px;
     cursor: pointer;
+}
+
+.css-qkrs52-DivMessageContainer {
+    display: flex;
+    flex-direction: row;
+    align-self: flex-start;
+    margin: 8px 0px 8px 24px;
 }

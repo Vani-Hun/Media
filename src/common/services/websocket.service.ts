@@ -36,6 +36,7 @@ export class NotificationGateway implements OnGatewayConnection, OnGatewayDiscon
         }
         this.userMap.push(user)
     }
+
     @SubscribeMessage('sendMessage')
     async sendMessage(client: any, payload: any): Promise<void> {
         try {
@@ -51,6 +52,11 @@ export class NotificationGateway implements OnGatewayConnection, OnGatewayDiscon
         }
     }
 
+    @SubscribeMessage('updateMessage')
+    async updateMessage(client: any, payload: any): Promise<void> {
+        const getList = await this.conversationService.getList(payload)
+        this.server.to(client.id).emit('updateMessage', getList);
+    }
 
     @SubscribeMessage('updateCustomer')
     async updateCustomer(client: any, payload: any): Promise<void> {

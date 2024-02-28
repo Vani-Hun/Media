@@ -11,10 +11,9 @@ import { ConversationService } from './conversation.service';
 export class ConversationController {
     constructor(private conversationService: ConversationService) { }
 
-    @Get('/')
+    @Get('list')
     @UseGuards(CusAuthGuard)
-    @Render('customer/message')
-    async getPage(@Req() request: Request) {
-
+    async getList(@Req() request: Request) {
+        return await this.conversationService.getList(request['user'])
     }
 }

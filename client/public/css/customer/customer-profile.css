@@ -1563,12 +1563,6 @@ body.modal-open {
     background-color: rgba(136, 136, 136, 0.5);
 }
 
-.css-1zpj2q-ImgAvatar {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
 .css-12ijsdd-H3CountInfos {
     display: flex;
     -webkit-box-align: center;

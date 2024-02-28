@@ -37,9 +37,6 @@ export class Customer extends BaseEntityUUID {
   conversations: Conversation[];
 
 
-  @OneToMany(() => Message, message => message.user_id, { cascade: true })
-  messages: Message[];
-
   @Column({ nullable: true })
   permission: string;
 

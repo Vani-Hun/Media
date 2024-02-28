@@ -24,19 +24,31 @@ export class ConversationService extends BaseService<Conversation> {
         super(repo);
     }
     async createConversation(input) {
-        console.log("input:", input)
-        const check = await this.repo.createQueryBuilder('conversation')
+        const isExistConversation = await this.repo.createQueryBuilder('conversation')
             .where('conversation.user_id = :user_id', { user_id: input.senderId })
             .andWhere('conversation.participant_id = :participant_id', { participant_id: input.receiverId })
             .getOne()
-        console.log("check:", check)
-        if (!check) {
+
+        if (!isExistConversation) {
             const conversation = await this.repo.save(this.repo.create({ user_id: input.senderId, participant_id: input.receiverId }))
             input.conversationId = await conversation.id;
         } else {
-            input.conversationId = await check.id;
+            isExistConversation.count++
+            await this.repo.save(isExistConversation)
+            input.conversationId = await isExistConversation.id;
         }
         return await this.messageService.createMessage(input)
+    }
+
+    async getList(input) {
+        return await this.repo.createQueryBuilder('conversation')
+            .where('conversation.user_id = :user_id', { user_id: input.id })
+            .orWhere('conversation.participant_id = :participant_id', { participant_id: input.id })
+            .leftJoinAndSelect('conversation.user_id', 'user_id')
+            .leftJoinAndSelect('conversation.participant_id', 'participant_id')
+            .leftJoinAndSelect('conversation.messages', 'messages')
+            .orderBy('conversation.updateAt', 'DESC')
+            .getMany()
     }
 
 }

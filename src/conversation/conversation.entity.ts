@@ -18,4 +18,7 @@ export class Conversation extends BaseEntityUUID {
 
     @OneToMany(() => Message, conversation => conversation.conversation_id, { cascade: true })
     messages: Message[];
+
+    @Column({ default: 0 })
+    count: number;
 }

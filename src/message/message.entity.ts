@@ -13,9 +13,8 @@ export class Message extends BaseEntityUUID {
     @JoinColumn({ name: 'conversation_id' })
     conversation_id: Conversation;
 
-    @ManyToOne(() => Customer)
-    @JoinColumn({ name: 'user_id' })
-    user_id: Customer;
+    @Column({ nullable: false })
+    user_id: string;
 
     @Column({ nullable: true })
     text: string;
