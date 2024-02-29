@@ -169,6 +169,8 @@ export class CustomerService extends BaseService<Customer> {
       .leftJoinAndSelect('customer.likedVideos', 'likedVideos')
       .leftJoinAndSelect('customer.following', 'following')
       .leftJoinAndSelect('customer.followers', 'followers')
+      .leftJoinAndSelect('conversations.participant_id', 'participant_id')
+      .leftJoinAndSelect('conversations.user_id', 'user_id')
       .leftJoinAndSelect('videos.user', 'user')
       .leftJoinAndSelect('videos.comments', 'commentsVideo')
       .leftJoinAndSelect('videos.likers', 'likers')

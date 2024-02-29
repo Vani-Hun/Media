@@ -52,10 +52,16 @@ export class NotificationGateway implements OnGatewayConnection, OnGatewayDiscon
         }
     }
 
+    @SubscribeMessage('updateMessages')
+    async updateMessages(client: any, payload: any): Promise<void> {
+        const getList = await this.conversationService.getListContact(payload)
+        this.server.to(client.id).emit('updateMessages', getList);
+    }
+
     @SubscribeMessage('updateMessage')
     async updateMessage(client: any, payload: any): Promise<void> {
-        const getList = await this.conversationService.getList(payload)
-        this.server.to(client.id).emit('updateMessage', getList);
+        const getContact = await this.conversationService.getContact(payload)
+        this.server.to(client.id).emit('updateMessage', getContact);
     }
 
     @SubscribeMessage('updateCustomer')

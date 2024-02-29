@@ -27,7 +27,7 @@ export class MessageService extends BaseService<Message> {
     }
     async createMessage(input) {
         console.log("input:", input)
-        return await this.repo.save(this.repo.create({ conversation_id: input.conversationId, user_id: input.senderId, text: input.mess }))
+        return await this.repo.save(this.repo.create({ conversation_id: input.conversationId, user_id: input.senderId, text: input.mess, status: null }))
     }
 
 }

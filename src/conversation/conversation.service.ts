@@ -25,8 +25,13 @@ export class ConversationService extends BaseService<Conversation> {
     }
     async createConversation(input) {
         const isExistConversation = await this.repo.createQueryBuilder('conversation')
-            .where('conversation.user_id = :user_id', { user_id: input.senderId })
-            .andWhere('conversation.participant_id = :participant_id', { participant_id: input.receiverId })
+            .where('(conversation.user_id = :user_id AND conversation.participant_id = :participant_id) OR (conversation.user_id = :inverse_user_id AND conversation.participant_id = :inverse_participant_id)',
+                {
+                    user_id: input.senderId,
+                    participant_id: input.receiverId,
+                    inverse_user_id: input.receiverId,
+                    inverse_participant_id: input.senderId
+                })
             .getOne()
 
         if (!isExistConversation) {
@@ -40,7 +45,7 @@ export class ConversationService extends BaseService<Conversation> {
         return await this.messageService.createMessage(input)
     }
 
-    async getList(input) {
+    async getListContact(input) {
         return await this.repo.createQueryBuilder('conversation')
             .where('conversation.user_id = :user_id', { user_id: input.id })
             .orWhere('conversation.participant_id = :participant_id', { participant_id: input.id })
@@ -49,6 +54,17 @@ export class ConversationService extends BaseService<Conversation> {
             .leftJoinAndSelect('conversation.messages', 'messages')
             .orderBy('conversation.updateAt', 'DESC')
             .getMany()
+    }
+
+    async getContact(input) {
+        return await this.repo.createQueryBuilder('conversation')
+            .where('conversation.user_id = :user_id', { user_id: input.id })
+            .orWhere('conversation.participant_id = :participant_id', { participant_id: input.id })
+            .leftJoinAndSelect('conversation.user_id', 'user_id')
+            .leftJoinAndSelect('conversation.participant_id', 'participant_id')
+            .leftJoinAndSelect('conversation.messages', 'messages')
+            .orderBy('conversation.updateAt', 'DESC')
+            .getOne()
     }
 
 }

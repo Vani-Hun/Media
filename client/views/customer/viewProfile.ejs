@@ -1,9 +1,9 @@
 <%- include("../common/head.ejs") %>
     <div style="min-height: 100vh;display: flex;flex-direction: column;justify-content: flex-start;">
         <%- include("../common/nav-menu.ejs",customer) %>
-            <div class="css-14dcx2q-DivBodyContainer">
-                <%- include("../common/nav-menu-middle.ejs") %>
-                    <%- include("../common/message.ejs") %>
+            <%- include("../common/message.ejs") %>
+                <div class="css-14dcx2q-DivBodyContainer">
+                    <%- include("../common/nav-menu-middle.ejs") %>
                         <%- include('./customer-body/customer-viewProfile.ejs',user) %>
-            </div>
+                </div>
     </div>

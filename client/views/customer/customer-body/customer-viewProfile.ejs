@@ -1391,9 +1391,9 @@
         mainMessages.style.display = 'flex'
         listVideoDiv.style.display = 'none'
         navMenuMiddle.style.display = 'none'
-        // updateURL(`/message`, "pageMessage", 'push');
-
+        updateMessage(user)
     })
+
 
     divFollowIconContainer.addEventListener('click', () => {
         divFollowButtonWrapper.style.display = 'block'
@@ -1409,5 +1409,4 @@
             });
     })
 
-    // socket.emit('userConnected', { userId: user.id, customerId: customer.id });
 </script>

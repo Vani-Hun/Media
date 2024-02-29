@@ -13,7 +13,7 @@ export class ConversationController {
 
     @Get('list')
     @UseGuards(CusAuthGuard)
-    async getList(@Req() request: Request) {
-        return await this.conversationService.getList(request['user'])
+    async getListContact(@Req() request: Request) {
+        return await this.conversationService.getListContact(request['user'])
     }
 }

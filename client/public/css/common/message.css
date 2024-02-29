@@ -249,6 +249,17 @@
     text-align: center;
 }
 
+.css-62oc03-SpanNewMessage {
+    position: absolute;
+    display: block;
+    width: 8px;
+    height: 8px;
+    top: 32px;
+    background: rgb(254, 44, 85);
+    border-radius: 50%;
+    right: 24px;
+}
+
 .css-96mvex-DivChatMain {
     display: flex;
     flex-direction: column;
