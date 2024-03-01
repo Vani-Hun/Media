@@ -106,12 +106,16 @@
             return
         }
         conversations.forEach((conversation, index) => {
+            let messages = conversation.messages
+            messages.sort((a, b) => new Date(a.createAt) - new Date(b.createAt))
+            let lastMessage = messages[conversation.messages.length - 1]
             let user = conversation.user_id
             let participant = conversation.participant_id
+            let divContact
             if (user.id === customer.id) {
                 user = participant
             }
-            const divContact = `
+            divContact = `
     <div id="more-acton-icon-0" tabindex="0" data-e2e="chat-list-item" class="css-1gs3mwd-DivItemWrapper">
         <div class="css-7d6k4j-DivItemInfo eii3f6d4">
             <div class="css-bvlt9t-DivInfoAvatarWrapper eii3f6d5"><span shape="circle" data-e2e=""
@@ -127,7 +131,7 @@
         </div>
         <span style="display:none" class="css-62oc03-SpanNewMessage"></span>
         <svg fill="currentColor" role="button" tabindex="0" aria-expanded="false" aria-haspopup="true"
-            aria-controls="" data-e2e="more-action-icon" class="css-1rbeczr-StyledMoreActionIcon eii3f6d0"
+            aria-controls="" data-e2e="more-action-icon" style="display:none" class="css-1rbeczr-StyledMoreActionIcon eii3f6d0"
             viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em">
             <path
                 d="M5 24a4 4 0 1 1 8 0 4 4 0 0 1-8 0Zm15 0a4 4 0 1 1 8 0 4 4 0 0 1-8 0Zm15 0a4 4 0 1 1 8 0 4 4 0 0 1-8 0Z">
@@ -135,16 +139,57 @@
         </svg>
     </div>
         `
+            if (lastMessage) {
+                if (lastMessage.user_id !== customer.id && lastMessage.status === null) {
+                    divContact = `
+    <div id="more-acton-icon-0" tabindex="0" data-e2e="chat-list-item" class="css-1gs3mwd-DivItemWrapper">
+        <div class="css-7d6k4j-DivItemInfo eii3f6d4">
+            <div class="css-bvlt9t-DivInfoAvatarWrapper eii3f6d5"><span shape="circle" data-e2e=""
+                    class="eii3f6d6 css-16n5gb9-SpanAvatarContainer-StyledAvatar e1e9er4e0"
+                    style="width: 56px; height: 56px;"><img loading="lazy" alt=""
+                        src="${user.logo}"
+                        class="css-1zpj2q-ImgAvatar e1e9er4e1"></span>
+                <div class="css-4gp65x-DivInfoAvatarMask eii3f6d7"></div>
+            </div>
+            <div class="css-hqqyyv-DivInfoTextWrapper eii3f6d8">
+                <p class="css-2tydh5-PInfoNickname eii3f6d9">${user.name}</p>
+            </div>
+        </div>
+        <span class="css-62oc03-SpanNewMessage"></span>
+        <svg fill="currentColor" role="button" tabindex="0" aria-expanded="false" aria-haspopup="true"
+            aria-controls="" data-e2e="more-action-icon" style="display:none" class="css-1rbeczr-StyledMoreActionIcon eii3f6d0"
+            viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em">
+            <path
+                d="M5 24a4 4 0 1 1 8 0 4 4 0 0 1-8 0Zm15 0a4 4 0 1 1 8 0 4 4 0 0 1-8 0Zm15 0a4 4 0 1 1 8 0 4 4 0 0 1-8 0Z">
+            </path>
+        </svg>
+    </div>
+        `
+                }
+
+            }
+
             divScrollMessage.innerHTML += divContact;
         }
         )
     }
 
     function handleTabClick(divItemWrappers, divItemWrapper) {
+        const spanNewMessage = document.querySelectorAll('.css-62oc03-SpanNewMessage')
         divItemWrappers.forEach(divItemWrapper => {
             divItemWrapper.classList = 'css-1gs3mwd-DivItemWrapper'
         })
         divItemWrapper.classList = 'css-sts95t-DivItemWrapper'
+        fetch(`/conversation/read/${conversations[indexCurrentContact].id}`, {
+            method: 'POST',
+        })
+            .then(data => {
+                console.log("data:", data)
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        spanNewMessage[indexCurrentContact].style.display = 'none'
     }
 
     function renderDivDivChatHeader(conversation) {
@@ -232,6 +277,7 @@
         const divItemWrappers = document.querySelectorAll('.css-1gs3mwd-DivItemWrapper');
         divItemWrappers.forEach((div, index) => {
             div.addEventListener('click', function () {
+                indexCurrentContact = index
                 handleTabClick(divItemWrappers, this);
                 divDivChatHeader.style.display = 'flex'
                 divChatMain.style.display = 'flex'
@@ -240,7 +286,7 @@
                 divChatMain.innerHTML = convo ? convo : '';
                 divChatMain.scrollTop = divChatMain.scrollHeight;
                 divChatBottom.style.display = 'flex'
-                indexCurrentContact = index
+
             });
         });
     }
@@ -303,12 +349,14 @@
         const today = new Date();
         const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
         const formattedDate = new Date(today).toLocaleDateString(undefined, options);
+        const divChatHeaderContentWrapper = document.querySelector('.css-py020d-DivChatHeaderContentWrapper a')
+        const urlUser = divChatHeaderContentWrapper.href.split('/')
         const user = conversations[indexCurrentContact].user_id
         let receiverId = conversations[indexCurrentContact].participant_id.id
         if (user.id !== customer.id) {
             receiverId = user.id
         }
-        socket.emit('sendMessage', { senderId: customer.id, receiverId: receiverId, mess: text.textContent.trim() }, (data, err) => {
+        socket.emit('sendMessage', { senderId: customer.id, receiverId: urlUser[urlUser.length - 1], mess: text.textContent.trim() }, (data, err) => {
             let divMess
             if (err) {
                 divMess = `
@@ -378,9 +426,20 @@
     });
 
     divBackIconContainer.addEventListener('click', () => {
-        // mainMessages.style.display = 'flex'
-        // listVideoDiv.style.display = 'none'
-        // navMenuMiddle.style.display = 'none'
-    })
+        const containers = [
+            document.querySelector('.css-1t4vwes-DivMainContainer'),
+            document.querySelector('.tiktok-14dcx2q-DivBodyContainer'),
+            document.querySelector('.css-14dcx2q-DivBodyContainer'),
+        ];
+
+        mainMessages.style.display = 'none';
+        navMenuMiddle.style.display = 'flex';
+
+        for (let i = 0; i < containers.length; i++) {
+            if (containers[i]) {
+                containers[i].style.display = 'flex';
+            }
+        }
+    });
 
 </script>

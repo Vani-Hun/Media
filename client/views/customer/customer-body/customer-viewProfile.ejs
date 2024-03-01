@@ -204,18 +204,6 @@
     <li class="ball"></li>
     <li class="ball"></li>
 </div>
-<div id="customAlert" class="css-14feuhu" style="display: none;"><span>
-        <div class="css-14feuhu-notice" style="right: 50%;">
-            <div class="css-14feuhu-notice-content">
-                <div role="alert" class="css-9aj0a0-DivMessageContainer e1wz89c90"
-                    style="display: flex; justify-content: center; align-items: center;"><img
-                        src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTE3Ljg0MDQgNi44NTk4NkMxOC4wMzc3IDYuNjYyMDcgMTguMzU4NyA2LjY2NDI1IDE4LjU1MzMgNi44NjQ3MUwxOS40NTc0IDcuNzk2MjlDMTkuNjQ3NSA3Ljk5MjE3IDE5LjY0NTQgOC4zMDQzMiAxOS40NTI2IDguNDk3NTlMMTAuNTU4MiAxNy40MTYzQzEwLjEwNSAxNy44NzA3IDkuMzczMzMgMTcuODU5NiA4LjkzMzY2IDE3LjM5MTZMNC44MzY4MSAxMy4wMzA2QzQuNjQ5OTEgMTIuODMxNyA0LjY1NzExIDEyLjUxOTYgNC44NTI5OSAxMi4zMjk1TDUuNzgzNzQgMTEuNDI2MUM1Ljk4NDE4IDExLjIzMTUgNi4zMDUxNCAxMS4yMzg5IDYuNDk2MzkgMTEuNDQyNUw5Ljc4MjE0IDE0Ljk0MDFMMTcuODQwNCA2Ljg1OTg2WiIgZmlsbD0iIzBCRTA5QiIvPgo8L3N2Zz4K"
-                        aria-hidden="true" style="width: 24px; height: 24px; margin-right: 8px;"><span
-                        id="alertMessage">Settings updated
-                    </span></div>
-            </div>
-        </div>
-    </span></div>
 <script>
     let user = JSON.parse('<%- JSON.stringify(user) %>');
     let videos = user.videos
@@ -232,7 +220,7 @@
     const divFollowButtonWrapper = document.querySelector('.css-1h3j14u-DivFollowButtonWrapper')
     const divMessageContainer = document.querySelector('.css-1djryq8-DivMessageContainer')
     const divFollowIconContainer = document.querySelector('.css-1us3psh-DivFollowIconContainer')
-
+    const bigDiv = document.getElementById('bigDiv')
     window.onpopstate = function (event) {
         window.location.href = window.location.pathname
     }
@@ -873,6 +861,7 @@
                 listVideoDiv.style.display = 'none'
                 navMenu.style.display = 'none'
                 navMenuMiddle.style.display = 'none'
+                bigDiv.style.display = 'none'
                 sessionStorage.setItem('indexCurrentVideoProfile', index);
                 const divVideo = createVideoContainer();
                 document.body.appendChild(divVideo)
@@ -921,6 +910,7 @@
         const buttonActionVideo = document.querySelectorAll('.css-1qijq2p-ButtonAction.e161jvwg4');
         const divRigtVideo = divVideo.querySelector('.tiktok-1tunefa-DivVideoContainer')
         let isScrolling;
+        let isMouseOver
         let isMuted = false
         const handleVisibilityChange = () => {
             handleVisibilityEvent(videoPlay, playIcon);
@@ -1124,6 +1114,7 @@
             listDiv.style.marginTop = '60px'
             navMenu.style.display = 'flex'
             listVideoDiv.style.display = 'flex'
+            bigDiv.style.display = 'flex'
             navMenuMiddle.style.display = 'flex'
             updateURL(`/customer/profile/${user.id}`, "pageProfile", 'push')
             document.removeEventListener('visibilitychange', handleVisibilityChange);
@@ -1282,24 +1273,38 @@
         document.addEventListener('keydown', function (event) {
             switch (event.key) {
                 case "ArrowUp":
+                    if (!isMouseOver) {
+                        return;
+                    }
                     if (indexCurrent > '0') {
                         leftArrow.click()
                     }
                     break;
                 case "ArrowDown":
+                    if (!isMouseOver) {
+                        return;
+                    }
                     rightArrow.click()
                     break;
                 case "ArrowLeft":
+                    if (!isMouseOver) {
+                        return;
+                    }
                     video.currentTime -= 3;
                     break;
                 case "ArrowRight":
+                    if (!isMouseOver) {
+                        return;
+                    }
                     videoPlay.currentTime += 3;
                     break;
                 case " ":
+                    if (!isMouseOver) {
+                        return;
+                    }
                     xgwrapper.click()
                     break;
             }
-
         });
 
         divRigtVideo.addEventListener('mouseenter', function () {

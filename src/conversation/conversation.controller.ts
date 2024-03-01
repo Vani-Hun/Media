@@ -16,4 +16,11 @@ export class ConversationController {
     async getListContact(@Req() request: Request) {
         return await this.conversationService.getListContact(request['user'])
     }
+
+    @Post('read/:conversationId')
+    @UseGuards(CusAuthGuard)
+    async readMessage(@Req() request: Request, @Param('conversationId') conversationId: string) {
+        request['user'].conversationId = conversationId
+        return await this.conversationService.readMessage(request['user'])
+    }
 }

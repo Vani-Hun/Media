@@ -24,47 +24,88 @@ export class ConversationService extends BaseService<Conversation> {
         super(repo);
     }
     async createConversation(input) {
-        const isExistConversation = await this.repo.createQueryBuilder('conversation')
-            .where('(conversation.user_id = :user_id AND conversation.participant_id = :participant_id) OR (conversation.user_id = :inverse_user_id AND conversation.participant_id = :inverse_participant_id)',
-                {
-                    user_id: input.senderId,
-                    participant_id: input.receiverId,
-                    inverse_user_id: input.receiverId,
-                    inverse_participant_id: input.senderId
-                })
-            .getOne()
+        try {
+            const isExistConversation = await this.repo.createQueryBuilder('conversation')
+                .where('(conversation.user_id = :user_id AND conversation.participant_id = :participant_id) OR (conversation.user_id = :inverse_user_id AND conversation.participant_id = :inverse_participant_id)',
+                    {
+                        user_id: input.senderId,
+                        participant_id: input.receiverId,
+                        inverse_user_id: input.receiverId,
+                        inverse_participant_id: input.senderId
+                    })
+                .getOne();
 
-        if (!isExistConversation) {
-            const conversation = await this.repo.save(this.repo.create({ user_id: input.senderId, participant_id: input.receiverId }))
-            input.conversationId = await conversation.id;
-        } else {
-            isExistConversation.count++
-            await this.repo.save(isExistConversation)
-            input.conversationId = await isExistConversation.id;
+            let conversation;
+            if (!isExistConversation) {
+                conversation = await this.repo.save(this.repo.create({ user_id: input.senderId, participant_id: input.receiverId }));
+            } else {
+                isExistConversation.count++
+                conversation = await this.repo.save(isExistConversation);
+            }
+
+            input.conversationId = conversation.id;
+
+            return await this.messageService.createMessage(input);
+        } catch (error) {
+            console.error(`Failed to create or update conversation: ${error}`);
+            throw error;
         }
-        return await this.messageService.createMessage(input)
     }
 
     async getListContact(input) {
-        return await this.repo.createQueryBuilder('conversation')
-            .where('conversation.user_id = :user_id', { user_id: input.id })
-            .orWhere('conversation.participant_id = :participant_id', { participant_id: input.id })
-            .leftJoinAndSelect('conversation.user_id', 'user_id')
-            .leftJoinAndSelect('conversation.participant_id', 'participant_id')
-            .leftJoinAndSelect('conversation.messages', 'messages')
-            .orderBy('conversation.updateAt', 'DESC')
-            .getMany()
+        try {
+            return await this.repo.createQueryBuilder('conversation')
+                .where('conversation.user_id = :user_id', { user_id: input.id })
+                .orWhere('conversation.participant_id = :participant_id', { participant_id: input.id })
+                .leftJoinAndSelect('conversation.user_id', 'user')
+                .leftJoinAndSelect('conversation.participant_id', 'participant')
+                .leftJoinAndSelect('conversation.messages', 'messages')
+                .orderBy('conversation.updateAt', 'DESC')
+                .getMany();
+        } catch (error) {
+            console.error(`Failed to get contact list: ${error}`);
+            throw error;
+        }
+    }
+
+    async readMessage(input) {
+        try {
+            let conversation = await this.repo
+                .createQueryBuilder('conversation')
+                .where('conversation.id = :id', { id: input.conversationId })
+                .leftJoinAndSelect('conversation.user_id', 'user')
+                .leftJoinAndSelect('conversation.participant_id', 'participant')
+                .leftJoinAndSelect('conversation.messages', 'messages')
+                .orderBy('messages.createAt', 'ASC')
+                .getOne();
+            if (conversation && conversation.messages && conversation.messages.length > 0) {
+                if (conversation.messages[conversation.messages.length - 1].user_id !== input.id) {
+                    conversation.messages[conversation.messages.length - 1].status = input.id;
+                    await this.repo.save(conversation);
+                }
+
+            } else {
+                throw new Error('Conversation not found or no messages in the conversation');
+            }
+        } catch (error) {
+            console.error(`Failed to read message: ${error}`);
+            throw error;
+        }
     }
 
     async getContact(input) {
-        return await this.repo.createQueryBuilder('conversation')
-            .where('conversation.user_id = :user_id', { user_id: input.id })
-            .orWhere('conversation.participant_id = :participant_id', { participant_id: input.id })
-            .leftJoinAndSelect('conversation.user_id', 'user_id')
-            .leftJoinAndSelect('conversation.participant_id', 'participant_id')
-            .leftJoinAndSelect('conversation.messages', 'messages')
-            .orderBy('conversation.updateAt', 'DESC')
-            .getOne()
+        try {
+            return await this.repo.createQueryBuilder('conversation')
+                .where('conversation.user_id = :user_id', { user_id: input.id })
+                .orWhere('conversation.participant_id = :participant_id', { participant_id: input.id })
+                .leftJoinAndSelect('conversation.user_id', 'user')
+                .leftJoinAndSelect('conversation.participant_id', 'participant')
+                .leftJoinAndSelect('conversation.messages', 'messages')
+                .orderBy('conversation.updateAt', 'DESC')
+                .getOne();
+        } catch (error) {
+            console.error(`Failed to get contact: ${error}`);
+            throw error;
+        }
     }
-
 }

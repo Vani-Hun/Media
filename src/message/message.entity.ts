@@ -19,4 +19,7 @@ export class Message extends BaseEntityUUID {
     @Column({ nullable: true })
     text: string;
 
+    @Column({ nullable: true })
+    status: string;
+
 }
