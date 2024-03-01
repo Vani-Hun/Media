@@ -312,6 +312,7 @@
             socket.emit('updateMessages', { id: customer.id }, (err) => err ? reject(err) : null);
             socket.on('updateMessages', (data) => {
                 conversations = data;
+                console.log("conversations:", conversations)
                 if (input) {
                     conversations.push(input);
                 }

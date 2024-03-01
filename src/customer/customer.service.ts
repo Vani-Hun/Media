@@ -180,8 +180,8 @@ export class CustomerService extends BaseService<Customer> {
       .leftJoinAndSelect('likedVideos.likers', 'likerslikedVideo')
       .leftJoinAndSelect('commentslikedVideo.customer', 'commentCustomer')
       .leftJoinAndSelect('commentsVideo.customer', 'commentsVideoCustomer')
-      .orderBy('videos.createAt', 'DESC')
-      .addOrderBy('notifications.createAt', 'DESC')
+      .orderBy('videos.createdAt', 'DESC')
+      .addOrderBy('notifications.createdAt', 'DESC')
       .getOne();
   }
 

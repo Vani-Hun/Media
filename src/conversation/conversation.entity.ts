@@ -21,4 +21,4 @@ export class Conversation extends BaseEntityUUID {
 
     @Column({ default: 0 })
     count: number;
-}
+};
