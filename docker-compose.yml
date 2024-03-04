@@ -1,7 +1,7 @@
 version: '3'
 services:
   web:
-    build: 
+    build:
       context: .
       dockerfile: Dockerfile
     ports:
@@ -10,8 +10,4 @@ services:
       - /home/app/node_modules
       - /home/app/dist
       - ./src:/home/app/src
-    command: [
-      'npm',
-      'run',
-      'start:dev'
-    ]
+    command: [ 'npm', 'start' ]
