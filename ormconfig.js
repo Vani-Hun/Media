@@ -7,7 +7,7 @@ module.exports = {
   database: process.env.DB_NAME,
   entities: ['dist/**/*.entity.js'],
   autoLoadEntities: true,
-  logging: false,
+  logging: true,
   migrationsTableName: 'migration_table_dev',
   migrations: ['dist/migrations/*.js'],
   cli: {
