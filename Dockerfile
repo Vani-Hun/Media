@@ -4,10 +4,10 @@ WORKDIR /home/app
 
 COPY package*.json ./
 
-COPY . .
-
 RUN npm install
 
-# RUN npm install -g @nestjs/cli
+COPY . .
 
-CMD ["npm", "start"]
+RUN npm install -g @nestjs/cli
+
+CMD ["npx", "nest", "start"]
