@@ -8,6 +8,6 @@ RUN npm install
 
 COPY . .
 
-RUN npm install -g @nestjs/cli
+# RUN npm install -g @nestjs/cli
 
 CMD ["npx", "nest", "start"]
