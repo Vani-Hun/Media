@@ -11,7 +11,7 @@ export const DatabaseModule = TypeOrmModule.forRootAsync({
     database: configService.get<string>('DB_NAME'),
     entities: ['dist/**/*.entity.js'],
     autoLoadEntities: false,
-    logging: false,
+    logging: true,
     migrationsTableName: 'migration_table_dev',
     migrations: ['dist/migrations/*.js'],
     cli: {
