@@ -14,6 +14,6 @@ async function bootstrap() {
   app.use(cookieParser());
   app.useGlobalFilters(new HttpExceptionFilter());
 
-  await app.listen(process.env.PORT);
+  await app.listen(3000);
 }
 bootstrap()
