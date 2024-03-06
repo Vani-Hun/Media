@@ -109,6 +109,7 @@ export class CustomerService extends BaseService<Customer> {
   }
 
   async signUp(input: InputSetAuth, res) {
+    console.log("input:", input)
     const existingUser = await this.repo.findOne({
       where: [{ username: input.username }, { email: input.username }],
     })
@@ -120,14 +121,14 @@ export class CustomerService extends BaseService<Customer> {
 
       // const hashedOTP = await bcrypt.hash(otp, 10);
       const hashedPassword = await bcrypt.hash(input.password, 10);
-      res.cookie('username', input.username, { httpOnly: true, maxAge: 60 * 1000 })
-      res.cookie('phone', input.phone, { httpOnly: true, maxAge: 60 * 1000 })
-      res.cookie('hashedPassword', hashedPassword, { httpOnly: true, maxAge: 60 * 1000 })
+      res.cookie('username', input.username, { maxAge: 120 * 1000 })
+      res.cookie('phone', input.phone, { maxAge: 120 * 1000 })
+      res.cookie('hashedPassword', hashedPassword, { maxAge: 120 * 1000 })
       // res.cookie('hashedOTP', hashedOTP, { httpOnly: true, maxAge: 60 * 1000 });
-      return res.redirect('/customer/verify-otp');
+      return res.render('customer/sign-up-otp', { customer: null, message: null })
     }
     throw new HttpException('Your username or email is already registered.', HttpStatus.CONFLICT);
-  }
+  };
 
   async signUpOAuth2(input: InputSetAuth) {
     const existingUser = await this.repo
@@ -148,16 +149,17 @@ export class CustomerService extends BaseService<Customer> {
 
 
   async signUpVerify(input) {
-    if (input.otp && input.hashedOTP) {
-      const compare = await bcrypt.compare(input.otp, input.hashedOTP);
-      if (compare) {
-        return this.repo.save(this.repo.create({ username: input.username, name: `user${input.username}`, password: input.hashedPassword, phone: input.phone }));
-      } else {
-        throw new HttpException('OTP not correct', HttpStatus.UNPROCESSABLE_ENTITY);
-      }
-    } else {
-      throw new HttpException('OTP is expired, please click cancel', HttpStatus.FORBIDDEN);
-    }
+    return this.repo.save(this.repo.create({ username: input.username, name: `user${input.username}`, password: input.hashedPassword, phone: input.phone }));
+    // if (input.otp && input.hashedOTP) {
+    //   const compare = await bcrypt.compare(input.otp, input.hashedOTP);
+    //   if (compare) {
+    //     return this.repo.save(this.repo.create({ username: input.username, name: `user${input.username}`, password: input.hashedPassword, phone: input.phone }));
+    //   } else {
+    //     throw new HttpException('OTP not correct', HttpStatus.UNPROCESSABLE_ENTITY);
+    //   }
+    // } else {
+    //   throw new HttpException('OTP is expired, please click cancel', HttpStatus.FORBIDDEN);
+    // }
   }
 
   async getUser(input) {

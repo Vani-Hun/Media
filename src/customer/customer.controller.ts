@@ -141,14 +141,13 @@ export class CustomerController {
   }
 
   @Post('verify-otp')
-  @Render('home/index')
+
   async verifyOtp(@Body() body, @Res() res: Response, @Req() request: Request) {
-    const hashedOTP = request.cookies['hashedOTP']
+    // const hashedOTP = request.cookies['hashedOTP']
     const username = request.cookies['username']
     const phone = request.cookies['phone']
     const hashedPassword = request.cookies['hashedPassword']
-    body = { ...body, hashedOTP, username, phone, hashedPassword }
-    // body.hashedOTP = hashedOTP
+    body = { ...body, username, phone, hashedPassword }
     // body.username = username
     // body.phone = phone
     // body.hashedPassword = hashedPassword

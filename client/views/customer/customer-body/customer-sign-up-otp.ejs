@@ -16,6 +16,7 @@
         <div class="button-otp">
             <button id="cancelButton" class="otp-action" type="button"
                 onclick="window.location.href='/customer/sign-up'">Cancel</button>
+            <button id="sendOTPButton" class="otp-action" type="button">Send</button>
             <button id="verifyButton" class="otp-action" type="submit" disabled>Verify me</button>
         </div>
     </form>
@@ -25,75 +26,46 @@
     <li class="ball"></li>
     <li class="ball"></li>
 </div>
-<div id="customAlert" class="custom-alert">
-    <span id="alertMessage"></span>
-</div>
-<!-- 
+
 <script type="module">
     import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js'
     import { getAnalytics } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics.js'
     import { getAuth, signInWithPhoneNumber, RecaptchaVerifier } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js'
     import { getFirestore } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js'
 
-    var firebaseConfig = {
-        apiKey: "AIzaSyAbjYYbreGwSN-pY5UoNZp-KF4yJcgWNV8",
-        authDomain: "fir-76c15.firebaseapp.com",
-        projectId: "fir-76c15",
-        storageBucket: "fir-76c15.appspot.com",
-        messagingSenderId: "112323394158",
-        appId: "1:112323394158:web:db2d6bf8492a523ced847f",
-        measurementId: "G-Q7ZQR4556T"
-    };
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const phoneNumber = "0399427359";
-    auth.languageCode = 'it';
-    window.recaptchaVerifier = new RecaptchaVerifier(auth, 'sign-in-button', {
-        'size': 'invisible',
-        'callback': (response) => {
-            const appVerifier = window.recaptchaVerifier;
-            console.log("response:", response)
-            signInWithPhoneNumber(auth, phoneNumber, appVerifier)
-                .then((confirmationResult) => {
-                    window.confirmationResult = confirmationResult;
-                    console.log("confirmationResult:", confirmationResult)
-                }).catch((error) => {
-                    console.log("error:", error)
-                });
-        }
-    });
+    function initializeFirebase() {
 
-    // window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
-    //     'size': 'normal',
-    //     'callback': (response) => {
-    //         console.log("response:", response)
-    //         const appVerifier = window.recaptchaVerifier;
-    //         console.log("appVerifier:", appVerifier)
-    //         signInWithPhoneNumber(auth, phoneNumber, appVerifier)
-    //             .then((confirmationResult) => {
-    //                 window.confirmationResult = confirmationResult;
-    //                 console.log("confirmationResult:", confirmationResult)
-    //             }).catch((error) => {
-    //                 console.log("error:", error)
-    //             });
-    //     },
-    //     'expired-callback': () => {
-    //         // Response expired. Ask user to solve reCAPTCHA again.
-    //         // ...
-    //     }
-    // });
+        const firebaseConfig = {
+            apiKey: "AIzaSyAbjYYbreGwSN-pY5UoNZp-KF4yJcgWNV8",
+            authDomain: "fir-76c15.firebaseapp.com",
+            projectId: "fir-76c15",
+            storageBucket: "fir-76c15.appspot.com",
+            messagingSenderId: "112323394158",
+            appId: "1:112323394158:web:db2d6bf8492a523ced847f",
+            measurementId: "G-Q7ZQR4556T"
+        };
 
-</script> -->
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
 
-<script>
+        return { app, auth };
+    }
 
-
-    let message = JSON.parse('<%- JSON.stringify(message) %>');
-    const otpErrorElement = document.getElementById('otp-error');
     function setOtpErrorText(text) {
         otpErrorElement.textContent = text;
     }
-    setOtpErrorText(message);
+
+    function getCookie(name) {
+        const cookies = document.cookie.split(';');
+        console.log("cookies:", cookies)
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.startsWith(name + '=')) {
+                return cookie.substring(name.length + 1);
+            }
+        }
+        return null;
+    }
 
     function showLoader() {
         var loader = document.querySelector('.loader');
@@ -106,17 +78,60 @@
     function showCustomAlert(message) {
         const customAlert = document.getElementById('customAlert');
         const alertMessage = document.getElementById('alertMessage');
-
-        // Hiển thị thông báo
         alertMessage.textContent = message;
-        customAlert.style.display = 'block';
-
-        // Đóng thông báo sau khoảng 2 giây (2000 milliseconds)
+        customAlert.style.display = 'flex';
         setTimeout(() => {
-            // Ẩn thông báo
             customAlert.style.display = 'none';
         }, 1500);
     }
+
+    async function sendOTP(phone, app, auth, sendOTPButton) {
+        const phoneNumber = `+84${phone.trim().slice(1)}`;
+        auth.languageCode = 'it';
+        try {
+            window.recaptchaVerifier = await new RecaptchaVerifier(auth, 'sendOTPButton', {
+                'size': 'invisible',
+                'callback': (response, err) => {
+                    showCustomAlert(error)
+                }
+            });
+            sendOTPButton.style.display = 'none'
+            window.confirmationResult = await signInWithPhoneNumber(auth, phoneNumber, window.recaptchaVerifier);
+            setOtpErrorText("Sent")
+        } catch (error) {
+            console.log("error:", error)
+            setOtpErrorText("Failed to send OTP. Please try again or click 'Cancel' to sign up anew.")
+            sendOTPButton.style.display = 'flex'
+        }
+    }
+
+    let message = JSON.parse('<%- JSON.stringify(message) %>');
+
+    const sendOTPButton = document.getElementById('sendOTPButton')
+    const { app, auth } = initializeFirebase();
+
+    const otpErrorElement = document.getElementById('otp-error');
+    let clickCountSendOTPButton = 0;
+    setOtpErrorText(message);
+
+
+    sendOTPButton.addEventListener('click', () => {
+        const phone = getCookie('phone');
+
+        // Check if the click count is less than 4
+        if (clickCountSendOTPButton < 4) {
+            sendOTP(phone, app, auth, sendOTPButton);
+            clickCountSendOTPButton++;
+        } else {
+            window.location.href = "/customer/sign-up"
+        }
+    });
+
+
+</script>
+
+<script>
+    const otpErrorElement2 = document.getElementById('otp-error');
     function moveToNextInput(currentInput, nextInputId, prevInputId) {
         const maxLength = parseInt(currentInput.getAttribute('maxlength'));
         const currentLength = currentInput.value.length;
@@ -137,6 +152,7 @@
 
         checkInputsFilled();
     }
+
     function checkInputsFilled() {
         const inputs = Array.from({ length: 6 }, (_, index) => document.getElementById(`input${index + 1}`).value);
         const isAllFilled = inputs.every(value => value !== '' && !isNaN(value));
@@ -149,6 +165,9 @@
         }
     }
 
+    function setOtpErrorText(text) {
+        otpErrorElement2.textContent = text;
+    }
     function verifyOtp() {
         const otpValue = document.getElementById('input1').value +
             document.getElementById('input2').value +
@@ -156,35 +175,33 @@
             document.getElementById('input4').value +
             document.getElementById('input5').value +
             document.getElementById('input6').value;
-        const data = { otp: otpValue };
-        // showLoader()
-        // fetch('/customer/verify-otp', {
-        //     method: 'POST',
-        //     headers: {
-        //         'Content-Type': 'application/json'
-        //     },
-        //     body: JSON.stringify(data)
+        showLoader()
 
-        // })
-        //     .then(response => {
-        //         if (response.ok) {
-        //             if (response.redirected) { window.location.href = response.url; }
-        //         }
-        //     })
-        //     .catch(error => {
-        //         console.error('Error:', error);
-        //     });
-        let code = otpValue
-        console.log("code:", code)
-        console.log("window.confirmationResult:", window.confirmationResult)
-        window.confirmationResult.confirm(code).then(function (result) {
+        if (window.confirmationResult) {
+            window.confirmationResult.confirm(otpValue).then(function (result) {
 
-            var user = result.user;
-            console.log(user);
-        }).catch(function (error) {
-            console.error(error);
-        });
-        console.log('OTP Sent!');
+                fetch('/customer/verify-otp', {
+                    method: 'POST'
+                })
+                    .then(response => {
+                        if (response.ok) {
+                            showCustomAlert("Success")
+                            window.location.href = "/customer/sign-in"
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+
+            }).catch(function (error) {
+                console.error(error);
+
+                setOtpErrorText("The OTP entered is either incorrect or has expired. Please try again or click 'Cancel' to start the sign-up process anew.")
+            });
+        } else {
+            hideLoader()
+            setOtpErrorText("The OTP entered is either incorrect or has expired. Please try again or click 'Cancel' to start the sign-up process anew.")
+        }
+
     }
-
 </script>
