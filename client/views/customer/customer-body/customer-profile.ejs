@@ -605,7 +605,7 @@
         }
     }
     function createCommentElement(comment) {
-        const updateTimeDifference = formatTimeDifference(comment.createAt);
+        const updateTimeDifference = formatTimeDifference(comment.createdAt);
 
         const commentDiv = document.createElement('div');
         commentDiv.classList.add("tiktok-1i7ohvi-DivCommentItemContainer");
@@ -1220,7 +1220,7 @@
         const svgIcon = likeElement.querySelector('svg');
         const copyLinkText = divVideo.querySelector('.tiktok-1v8b11s-PCopyLinkText')
         const buttonCopyLink = divVideo.querySelector('.tiktok-7e23lp-ButtonCopyLink')
-        const updateTimeDifference = formatTimeDifference(video.createAt);
+        const updateTimeDifference = formatTimeDifference(video.createdAt);
         const rightArrow = divVideo.querySelector('.tiktok-1s9jpf8-ButtonBasicButtonContainer-StyledVideoSwitch');
         const leftArrow = divVideo.querySelector('.tiktok-1w6o9i7-ButtonBasicButtonContainer-StyledVideoSwitch')
         let indexCurrent = sessionStorage.getItem('indexCurrentVideoProfile');
@@ -1443,7 +1443,6 @@
         });
 
         xButton.addEventListener('click', function () {
-            console.log("window.history:", window.history)
             divVideo.remove();
             navMenu.style.display = 'flex'
             listVideoDiv.style.display = 'flex'
@@ -1524,7 +1523,6 @@
                     selectedElement.textContent = video.who
 
                     function handleClick() {
-                        console.log("click:")
                         const edit = document.querySelector('.css-cyte9w-UlOptionsContainer')
                         if (edit.style.display == 'none') {
                             edit.style.display = 'block'
@@ -1642,12 +1640,10 @@
         });
 
         divRigtVideo.addEventListener('mouseenter', function () {
-            console.log("mouseenter")
             isMouseOver = true;
         });
 
         divRigtVideo.addEventListener('mouseleave', function () {
-            console.log("mouseleave")
             isMouseOver = false;
         });
 

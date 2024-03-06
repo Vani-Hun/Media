@@ -37,8 +37,9 @@
                                 <li>
                                     <div><a data-e2e="nav-friends"
                                             class="e14l9ebt5 css-12zznuq-StyledLink-StyledTmpLink er1vbsz0"
-                                            href="/friends"><svg width="32" data-e2e="" height="32" viewBox="0 0 48 48"
-                                                fill="rgba(22, 24, 35, 1)" xmlns="http://www.w3.org/2000/svg">
+                                            href="/video/friends"><svg width="32" data-e2e="" height="32"
+                                                viewBox="0 0 48 48" fill="rgba(22, 24, 35, 1)"
+                                                xmlns="http://www.w3.org/2000/svg">
                                                 <path fill-rule="evenodd" clip-rule="evenodd"
                                                     d="M18 12.5C15.5897 12.5 13.5849 14.5018 13.5849 17.0345C13.5849 19.5672 15.5897 21.569 18 21.569C20.4103 21.569 22.4151 19.5672 22.4151 17.0345C22.4151 14.5018 20.4103 12.5 18 12.5ZM10.5849 17.0345C10.5849 12.9017 13.8766 9.5 18 9.5C22.1234 9.5 25.4151 12.9017 25.4151 17.0345C25.4151 21.1673 22.1234 24.569 18 24.569C13.8766 24.569 10.5849 21.1673 10.5849 17.0345ZM18 29.8793C14.0801 29.8793 10.7403 32.5616 9.69697 36.2673C9.5473 36.7989 9.03833 37.1708 8.49337 37.0811L7.50662 36.9189C6.96166 36.8292 6.58837 36.3131 6.72325 35.7776C8.00732 30.6788 12.5509 26.8793 18 26.8793C23.449 26.8793 27.9927 30.6788 29.2767 35.7776C29.4116 36.3131 29.0383 36.8292 28.4934 36.9189L27.5066 37.0811C26.9617 37.1708 26.4527 36.7989 26.303 36.2673C25.2597 32.5616 21.9199 29.8793 18 29.8793Z">
                                                 </path>
@@ -152,8 +153,6 @@
         if (buttonShowMoreText.innerText == 'See less') {
             initialItems = 5;
             for (let i = initialItems; i < allItems.length; i++) {
-                console.log("i:", i)
-                console.log("allItems.length:", allItems.length)
                 allItems[i].style.display = 'none';
             }
             buttonShowMoreText.innerText = 'See more';

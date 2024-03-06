@@ -213,7 +213,7 @@
         }
     }
     function createNotificationElement(notification) {
-        const updateTimeDifference = formatTimeDifference(notification.createAt);
+        const updateTimeDifference = formatTimeDifference(notification.createdAt);
         let shouldSkip = false;
         const notificationDiv = document.createElement('li');
         notificationDiv.classList.add("css-1lqaxb-LiInboxItemWrapper");
@@ -377,7 +377,6 @@
     });
 
     profileIcon.addEventListener("mouseenter", function (event) {
-        console.log("mouseenter:")
         if (notifications.style.display === "none") {
             showDropdownMenu()
         }

@@ -219,6 +219,7 @@
     const divShareFollowContainer = document.querySelector('.css-1xwagd1-DivShareFollowContainer')
     const divFollowButtonWrapper = document.querySelector('.css-1h3j14u-DivFollowButtonWrapper')
     const divMessageContainer = document.querySelector('.css-1djryq8-DivMessageContainer')
+    const divMessageIconContainer = document.querySelector('.css-1btqthh-Button-StyledMessageButton')
     const divFollowIconContainer = document.querySelector('.css-1us3psh-DivFollowIconContainer')
     const bigDiv = document.getElementById('bigDiv')
     window.onpopstate = function (event) {
@@ -297,7 +298,7 @@
         }
     }
     function createCommentElement(comment) {
-        const updateTimeDifference = formatTimeDifference(comment.createAt);
+        const updateTimeDifference = formatTimeDifference(comment.createdAt);
 
         const commentDiv = document.createElement('div');
         commentDiv.classList.add("tiktok-1i7ohvi-DivCommentItemContainer");
@@ -898,7 +899,7 @@
         const svgIcon = likeElement.querySelector('svg');
         const copyLinkText = divVideo.querySelector('.tiktok-1v8b11s-PCopyLinkText')
         const buttonCopyLink = divVideo.querySelector('.tiktok-7e23lp-ButtonCopyLink')
-        const updateTimeDifference = formatTimeDifference(video.createAt);
+        const updateTimeDifference = formatTimeDifference(video.createdAt);
         const rightArrow = divVideo.querySelector('.tiktok-1s9jpf8-ButtonBasicButtonContainer-StyledVideoSwitch');
         const leftArrow = divVideo.querySelector('.tiktok-1w6o9i7-ButtonBasicButtonContainer-StyledVideoSwitch')
         let indexCurrent = sessionStorage.getItem('indexCurrentVideoProfile');
@@ -1190,7 +1191,6 @@
                     selectedElement.textContent = video.who
 
                     function handleClick() {
-                        console.log("click:")
                         const edit = document.querySelector('.css-cyte9w-UlOptionsContainer')
                         if (edit.style.display == 'none') {
                             edit.style.display = 'block'
@@ -1308,12 +1308,10 @@
         });
 
         divRigtVideo.addEventListener('mouseenter', function () {
-            console.log("mouseenter")
             isMouseOver = true;
         });
 
         divRigtVideo.addEventListener('mouseleave', function () {
-            console.log("mouseleave")
             isMouseOver = false;
         });
 
@@ -1392,7 +1390,7 @@
             });
     })
 
-    divMessageContainer.addEventListener('click', () => {
+    divMessageIconContainer.addEventListener('click', () => {
         mainMessages.style.display = 'flex'
         listVideoDiv.style.display = 'none'
         navMenuMiddle.style.display = 'none'

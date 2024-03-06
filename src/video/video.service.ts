@@ -212,6 +212,41 @@ export class VideoService extends BaseService<Video> {
         return { videos, customer, video: null };
     }
 
+    async getVideosFollowing(input) {
+        try {
+            const customer = await this.customerService.getUserWithFollowingVideos(input);
+            const followingUsers = customer.following;
+            let videos = [];
+            followingUsers.forEach(user => {
+                const visibleVideo = user.videos.find(video => video.who !== "Private");
+                if (visibleVideo) {
+                    videos.push(visibleVideo);
+                }
+            })
+            return { videos, customer, video: null };
+        } catch (error) {
+            console.error('Error in getVideosFollowing:', error);
+            throw new HttpException(`Failed: ${error.message}`, HttpStatus.NOT_IMPLEMENTED);
+        }
+    };
+
+
+    async getVideosFriends(input) {
+        const videos = await this.repo.createQueryBuilder('video')
+            .where('video.who = :who', { who: 'Public' })
+            .andWhere('user.id  <> :userId', { userId: input.id })
+            .orderBy('video.createdAt', 'DESC')
+            .leftJoinAndSelect('video.user', 'user')
+            .leftJoinAndSelect('video.likers', 'likers')
+            .leftJoinAndSelect('video.comments', 'comments')
+            .leftJoinAndSelect('comments.video', 'video2')
+            .leftJoinAndSelect('comments.customer', 'customer')
+            .getMany()
+        const customer = await this.customerService.getUser(input);
+
+        return { videos, customer, video: null };
+    }
+
     async getVideoById(input) {
         try {
             const { videos, customer } = await this.getVideos(input)

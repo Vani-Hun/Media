@@ -185,7 +185,35 @@ export class CustomerService extends BaseService<Customer> {
       .getOne();
   }
 
+  async getUserWithFollowingVideos(input) {
+    return await this.repo.createQueryBuilder('customer')
+      .where('customer.id = :id', { id: input.id })
+      .leftJoinAndSelect('customer.notifications', 'notifications')
+      .leftJoinAndSelect('customer.conversations', 'conversations')
+      .leftJoinAndSelect('customer.videos', 'videos')
+      .leftJoinAndSelect('customer.likedVideos', 'likedVideos')
+      .leftJoinAndSelect('customer.following', 'following')
+      .leftJoinAndSelect('customer.followers', 'followers')
+      .leftJoinAndSelect('following.videos', 'followingVideos')
+      .leftJoinAndSelect('conversations.participant_id', 'participant_id')
+      .leftJoinAndSelect('conversations.user_id', 'user_id')
+      // .leftJoinAndSelect('videos.user', 'user')
+      // .leftJoinAndSelect('videos.comments', 'commentsVideo')
+      // .leftJoinAndSelect('videos.likers', 'likers')
+      .leftJoinAndSelect('notifications.interactingUser', 'interactingUser')
+      .leftJoinAndSelect('notifications.video', 'video')
+      .leftJoinAndSelect('likedVideos.comments', 'commentslikedVideo')
+      .leftJoinAndSelect('likedVideos.likers', 'likerslikedVideo')
+      // .leftJoinAndSelect('commentslikedVideo.customer', 'commentCustomer')
+      // .leftJoinAndSelect('commentsVideo.customer', 'commentsVideoCustomer')
+      .leftJoinAndSelect('followingVideos.user', 'followingVideosUser')
+      .leftJoinAndSelect('followingVideos.comments', 'commentsVideo')
+      .leftJoinAndSelect('followingVideos.likers', 'likers')
+      .orderBy('videos.createdAt', 'DESC')
+      .addOrderBy('notifications.createdAt', 'DESC')
 
+      .getOne();
+  }
 
   async getVideoLiked(userId) {
     const customer = await this.repo.createQueryBuilder('customer')

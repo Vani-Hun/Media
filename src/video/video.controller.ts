@@ -30,12 +30,29 @@ export class VideoController {
             }
         }
     }
+
     @Get('videos')
     @UseGuards(CusAuthGuard)
     @Render('video/index')
     async getVideos(@Req() req: Request) {
         return await this.videoService.getVideos(req['user'])
     }
+
+    @Get('following')
+    @UseGuards(CusAuthGuard)
+    @Render('video/index')
+    async getVideosFollowing(@Req() req: Request) {
+        return await this.videoService.getVideosFollowing(req['user'])
+    }
+
+    @Get('friends')
+    @UseGuards(CusAuthGuard)
+    @Render('video/index')
+    async getVideosFriends(@Req() req: Request) {
+        return await this.videoService.getVideosFriends(req['user'])
+    }
+
+
     @Get('videos/inf')
     @UseGuards(CusAuthGuard)
     async getVideosInf(@Req() req: Request) {

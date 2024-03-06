@@ -107,7 +107,7 @@
         }
         conversations.forEach((conversation, index) => {
             let messages = conversation.messages
-            messages.sort((a, b) => new Date(a.createAt) - new Date(b.createAt))
+            messages.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt))
             let lastMessage = messages[conversation.messages.length - 1]
             let user = conversation.user_id
             let participant = conversation.participant_id
@@ -227,11 +227,11 @@
             return
         }
 
-        messages.sort((a, b) => new Date(a.createAt) - new Date(b.createAt));
+        messages.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
 
         for (let message of messages) {
             const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
-            const formattedDate = new Date(message.createAt).toLocaleDateString(undefined, options);
+            const formattedDate = new Date(message.createdAt).toLocaleDateString(undefined, options);
 
             let logo = customer.logo
             let userId = customer.ids
@@ -312,7 +312,6 @@
             socket.emit('updateMessages', { id: customer.id }, (err) => err ? reject(err) : null);
             socket.on('updateMessages', (data) => {
                 conversations = data;
-                console.log("conversations:", conversations)
                 if (input) {
                     conversations.push(input);
                 }

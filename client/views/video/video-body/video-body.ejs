@@ -127,7 +127,7 @@
         window.location.href = window.location.pathname
     }
 
-    if (videos.length > 0) {
+    if (videos && videos.length > 0) {
         const host = "<%= process.env.ORIGIN %>"
         const videosContainer = document.querySelector('.css-9fq6q2-DivOneColumnContainer')
         const containerMain = document.querySelector('.css-1t4vwes-DivMainContainer')
@@ -180,7 +180,6 @@
 
             socket.on('updateCustomer', (data) => {
                 customer = data;
-                console.log("customer:", customer)
                 followedSet = new Set(customer.following.map(following => following.id));
                 updateFollow(video, actionType);
             });
@@ -304,7 +303,7 @@
             }
         }
         function createCommentElement(comment) {
-            const updateTimeDifference = formatTimeDifference(comment.createAt);
+            const updateTimeDifference = formatTimeDifference(comment.createdAt);
 
             const commentDiv = document.createElement('div');
             commentDiv.classList.add("tiktok-1i7ohvi-DivCommentItemContainer");
@@ -365,14 +364,8 @@
         </path>
     </svg></div>
                 `
+
             } else {
-                childNodes[3].innerHTML = `
-<button class="tiktok-1pcikqk-Button">
-    <div class="tiktok-jp3752-ButtonContent e1v8cfre2">
-        <div class="tiktok-1djnsui-ButtonLabel e1v8cfre3">Follow</div>
-    </div>
-</button>
-`
                 if (followedSet.has(userId)) {
                     followButton.classList = "tiktok-2cfmui-Button";
                     changeButton.innerHTML = "Following";
@@ -381,7 +374,6 @@
                     changeButton.innerHTML = "Follow";
                 }
             }
-
         }
         async function updateVideoDetails(video, commentsCountElement, likeCountElement, commentCountElement, undefinedCountElement, usernameElement, nameElement, daysDifferenceElement, updateTimeDifference, captionElement, avatarImage, videoThumbnail, videoPlay, svgIcon) {
             commentsCountElement.textContent = `Comments (${video.comments.length})`;
@@ -403,7 +395,6 @@
             }
         }
         function updateVideoDataAtIndex(indexToModify, newData) {
-            console.log("indexToModify:", indexToModify)
             const currentVideosData = JSON.parse(sessionStorage.getItem('videosData')) || [];
             currentVideosData[indexToModify] = newData;
             videos = currentVideosData
@@ -583,7 +574,7 @@
                                         class="tiktok-pocgy1-SpanEllipsis"></span><span style="margin: 0px 4px;"> ·
                                     </span><span></span></span></a>
                             <div data-e2e="browse-follow" class="tiktok-r4iroe-DivBtnWrapper"><button
-                                    class="tiktok-1pcikqk-Button e1v8cfre0">
+                                    class="tiktok-1pcikqk-Button">
                                     <div class="tiktok-jp3752-ButtonContent e1v8cfre2">
                                         <div class="tiktok-1djnsui-ButtonLabel e1v8cfre3">Follow</div>
                                     </div>
@@ -834,7 +825,6 @@
             let videos = JSON.parse(sessionStorage.getItem('videosData'));
             let indexToScroll = JSON.parse(sessionStorage.getItem('indexCurrent'));
             if (indexToScroll >= 0 && indexToScroll < videos.length) {
-                console.log("indexToScroll:", indexToScroll)
                 videoDivs[indexToScroll].scrollIntoView({ behavior: 'instant' });
             }
             videos.forEach((video, index) => {
@@ -886,7 +876,7 @@
             const svgIcon = likeElement.querySelector('svg');
             const copyLinkText = document.querySelector('.tiktok-1v8b11s-PCopyLinkText')
             const buttonCopyLink = document.querySelector('.tiktok-7e23lp-ButtonCopyLink')
-            const updateTimeDifference = formatTimeDifference(video.createAt);
+            const updateTimeDifference = formatTimeDifference(video.createdAt);
             const rightArrow = document.querySelector('.tiktok-1s9jpf8-ButtonBasicButtonContainer-StyledVideoSwitch');
             const leftArrow = document.querySelector('.tiktok-1w6o9i7-ButtonBasicButtonContainer-StyledVideoSwitch')
             const unableMuted = document.querySelector('.container-unableMuted')
@@ -906,7 +896,6 @@
 
             const handlePopState = function (event) {
                 const newPathname = window.location.pathname;
-                console.log("newPathname:", newPathname)
                 xButton.click();
                 // window.location.href = newPathname
             };
@@ -929,7 +918,6 @@
             appendCommentsToContainer(video.comments, divCommentList);
 
             followButton.addEventListener("click", () => {
-                console.log(video)
                 if (changeButton.innerHTML === "Follow") {
                     followButton.classList = "tiktok-2cfmui-Button"
                     changeButton.innerHTML = "Following"
@@ -1244,12 +1232,10 @@
             });
 
             divRigtVideo.addEventListener('mouseenter', function () {
-                console.log("mouseenter")
                 isMouseOver = true;
             });
 
             divRigtVideo.addEventListener('mouseleave', function () {
-                console.log("mouseleave")
                 isMouseOver = false;
             });
 
@@ -1285,10 +1271,10 @@
             document.body.append(divVideo, divCustomAlert, divUnableVideo)
             continuePlay(video)
         } else {
-            if (window.location.pathname !== "/video/videos") {
-                updateVideoURL(`/video/videos`, 'replace');
-                showCustomAlert("Not found video");
-            }
+            // if (window.location.pathname !== "/video/videos") {
+            //     updateVideoURL(`/video/videos`, 'replace');
+            //     showCustomAlert("Not found video");
+            // }
 
         }
 
