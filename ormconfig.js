@@ -8,9 +8,9 @@ module.exports = {
   entities: ['dist/**/*.entity.js'],
   autoLoadEntities: true,
   logging: true,
-  migrationsTableName: 'migration_table_dev',
-  migrations: ['dist/migrations/*.js'],
-  cli: {
-    migrationsDir: 'src/migrations',
-  },
+  // migrationsTableName: 'migration_table_dev',
+  // migrations: ['dist/migrations/*.js'],
+  // cli: {
+  //   migrationsDir: 'src/migrations',
+  // },
 };

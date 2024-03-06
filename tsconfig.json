@@ -17,14 +17,14 @@
     "strictBindCallApply": false, // Tắt kiểm tra nghiêm ngặt cho bind, call và apply
     "forceConsistentCasingInFileNames": false, // Tắt bắt buộc việc duy nhất kiểu chữ trong tên tệp
     "noFallthroughCasesInSwitch": false, // Tắt kiểm tra cho trường hợp rơi vào trong câu lệnh switch
-    "typeRoots": [
-      "./node_modules/@types" // Chỉ định vị trí của các tệp định nghĩa kiểu
-    ],
-    "types": [
-      "node" // Chỉ định các loại cần bao gồm từ gói @types
-    ]
+    // "typeRoots": [
+    //   "./node_modules/@types" // Chỉ định vị trí của các tệp định nghĩa kiểu
+    // ],
+    // "types": [
+    //   "node" // Chỉ định các loại cần bao gồm từ gói @types
+    // ]
   },
-  "include": [
-    "src/**/*.ts" // Chỉ định các tệp để bao gồm trong quá trình biên dịch (tất cả các tệp TypeScript trong thư mục src)
-  ]
+  // "include": [
+  //   "src/**/*.ts" // Chỉ định các tệp để bao gồm trong quá trình biên dịch (tất cả các tệp TypeScript trong thư mục src)
+  // ]
 }
