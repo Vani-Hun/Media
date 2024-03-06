@@ -30,7 +30,7 @@
                                                 higher</span></div>
                                         <div class="jsx-2834184006 children-vertical-center"><span
                                                 class="css-162omej">Up to 10 minutes</span></div>
-                                        <div class="jsx-2834184006"><span class="css-162omej">Less than 10 GB</span>
+                                        <div class="jsx-2834184006"><span class="css-162omej">Less than 10 MB</span>
                                         </div>
                                     </div>
                                     <div class="jsx-2834184006 file-select-button"><button class="css-byn4hh"
@@ -460,7 +460,11 @@
         selectedFile = event.target.files[0];
 
         if (selectedFile) {
-
+            let maxSizeInBytes = 10 * 1024 * 1024;
+            if (selectedFile.size > maxSizeInBytes) {
+                alert('Dung lượng video vượt quá giới hạn cho phép.');
+                window.location.href = "/video/upload"
+            }
             videoFormBefore.style.display = 'none';
             videoFormaAfter.style.display = 'block';
 
