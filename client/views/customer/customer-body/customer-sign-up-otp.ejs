@@ -2,7 +2,6 @@
     <form id="otpForm" class="form-otp" onsubmit="event.preventDefault(); verifyOtp();">
         <div class="otp-title">OTP</div>
         <div class="otp-title">Verification Code</div>
-        <p class="otp-message">We have sent a verification code to your mobile number</p>
         <p class="otp-message" id="otp-error"></p>
 
         <div class="otp-inputs">
@@ -97,7 +96,7 @@
             });
             sendOTPButton.style.display = 'none'
             window.confirmationResult = await signInWithPhoneNumber(auth, phoneNumber, window.recaptchaVerifier);
-            setOtpErrorText("Sent")
+            setOtpErrorText("We have sent a verification code to your mobile number")
         } catch (error) {
             console.log("error:", error)
             setOtpErrorText("Failed to send OTP. Please try again or click 'Cancel' to sign up anew.")
