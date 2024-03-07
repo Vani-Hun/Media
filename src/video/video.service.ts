@@ -23,6 +23,12 @@ export class VideoService extends BaseService<Video> {
         super(repo);
     }
 
+    private areFriends(customerId: string, users): boolean {
+
+        const areFriends = users.some(user => user.id === customerId)
+        return areFriends
+    }
+
     async create(url: object, input, res) {
         try {
             const video = await this.repo.create({
@@ -38,13 +44,20 @@ export class VideoService extends BaseService<Video> {
             const customer = await this.customerService.getUser(input)
             return res.render('customer/profile', { customer })
         } catch (error) {
+            console.error(`Error in create video: ${error.message}`);
             throw new HttpException(`Failed to create video: ${error.message}`, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     async getUploadVideo(input) {
-        const customer = await this.customerService.getUser(input)
-        return { customer }
+        try {
+            const customer = await this.customerService.getUser(input)
+            return { customer }
+        } catch (error) {
+            console.error(`Error in googleLogin: ${error.message}`);
+            throw new HttpException('Internal Server Error', HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
     }
     async uploadVideo(input) {
         try {
@@ -193,23 +206,32 @@ export class VideoService extends BaseService<Video> {
             }
 
         } catch (error) {
-            throw new HttpException(`Failed: ${error.message}`, HttpStatus.NOT_IMPLEMENTED);
+            throw new HttpException(`Failed: ${error.message}`, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
     async getVideos(input) {
-        const videos = await this.repo.createQueryBuilder('video')
-            .where('video.who = :who', { who: 'Public' })
-            .andWhere('user.id  <> :userId', { userId: input.id })
-            .orderBy('video.createdAt', 'DESC')
-            .leftJoinAndSelect('video.user', 'user')
-            .leftJoinAndSelect('video.likers', 'likers')
-            .leftJoinAndSelect('video.comments', 'comments')
-            .leftJoinAndSelect('comments.video', 'video2')
-            .leftJoinAndSelect('comments.customer', 'customer')
-            .getMany()
-        const customer = await this.customerService.getUser(input);
+        try {
+            const publicVideos = await this.repo.createQueryBuilder('video')
+                .where('video.who = :who', { who: 'Public' })
+                .andWhere('user.id  <> :userId', { userId: input.id })
+                .orderBy('video.createdAt', 'DESC')
+                .leftJoinAndSelect('video.user', 'user')
+                .leftJoinAndSelect('video.likers', 'likers')
+                .leftJoinAndSelect('video.comments', 'comments')
+                .leftJoinAndSelect('comments.video', 'video2')
+                .leftJoinAndSelect('comments.customer', 'customer')
+                .getMany()
+            const { videos: videosFollowing, customer: customerFollowing } = await this.getVideosFollowing(input);
 
-        return { videos, customer, video: null };
+            let videos = [...publicVideos, ...videosFollowing];
+
+            const customer = await this.customerService.getUser(input);
+
+            return { videos, customer, video: null };
+        } catch (error) {
+            console.error(`Error in getVideos: ${error.message}`);
+            throw new HttpException('Error in getVideos.', HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     async getVideosFollowing(input) {
@@ -217,34 +239,33 @@ export class VideoService extends BaseService<Video> {
             const customer = await this.customerService.getUserWithFollowingVideos(input);
             const followingUsers = customer.following;
             let videos = [];
-            followingUsers.forEach(user => {
-                const visibleVideo = user.videos.find(video => video.who !== "Private");
-                if (visibleVideo) {
-                    videos.push(visibleVideo);
+            for (const user of followingUsers) {
+                const foundVideo = user.videos.find(video => video.who === 'Public' || (video.who === 'Friends' && this.areFriends(customer.id, user.following)));
+                if (foundVideo) {
+                    videos.push(foundVideo);
                 }
-            })
+            }
             return { videos, customer, video: null };
         } catch (error) {
             console.error('Error in getVideosFollowing:', error);
-            throw new HttpException(`Failed: ${error.message}`, HttpStatus.NOT_IMPLEMENTED);
+            throw new HttpException(`Failed: ${error.message}`, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     };
 
-
     async getVideosFriends(input) {
-        const videos = await this.repo.createQueryBuilder('video')
-            .where('video.who = :who', { who: 'Public' })
-            .andWhere('user.id  <> :userId', { userId: input.id })
-            .orderBy('video.createdAt', 'DESC')
-            .leftJoinAndSelect('video.user', 'user')
-            .leftJoinAndSelect('video.likers', 'likers')
-            .leftJoinAndSelect('video.comments', 'comments')
-            .leftJoinAndSelect('comments.video', 'video2')
-            .leftJoinAndSelect('comments.customer', 'customer')
-            .getMany()
-        const customer = await this.customerService.getUser(input);
+        try {
+            const customer = await this.customerService.getUserWithFollowingVideos(input);
 
-        return { videos, customer, video: null };
+            const friendVideos = customer.following
+                .filter((user) => this.areFriends(customer.id, user.following))
+                .map((user) => user.videos.find((video) => video.who === "Public" || video.who === "Friends"))
+                .filter((video) => video !== undefined);
+
+            return { videos: friendVideos, customer, video: null };
+        } catch (error) {
+            console.error('Error in getVideosFollowing:', error);
+            throw new HttpException(`Failed: ${error.message}`, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     async getVideoById(input) {
@@ -272,7 +293,7 @@ export class VideoService extends BaseService<Video> {
             }
             return { video, videos, customer }
         } catch (error) {
-            throw new HttpException(`Failed: ${error.message}`, HttpStatus.NOT_IMPLEMENTED);
+            throw new HttpException(`Failed: ${error.message}`, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -307,7 +328,7 @@ export class VideoService extends BaseService<Video> {
                 ])
             })
         } else {
-            throw new HttpException('Failed delete', HttpStatus.NOT_IMPLEMENTED)
+            throw new HttpException('Failed delete', HttpStatus.INTERNAL_SERVER_ERROR)
         }
     }
 
