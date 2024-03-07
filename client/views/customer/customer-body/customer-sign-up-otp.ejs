@@ -130,6 +130,15 @@
 </script>
 
 <script>
+    function showCustomAlert(message) {
+        const customAlert = document.getElementById('customAlert');
+        const alertMessage = document.getElementById('alertMessage');
+        alertMessage.textContent = message;
+        customAlert.style.display = 'flex';
+        setTimeout(() => {
+            customAlert.style.display = 'none';
+        }, 1500);
+    }
     const otpErrorElement2 = document.getElementById('otp-error');
     function moveToNextInput(currentInput, nextInputId, prevInputId) {
         const maxLength = parseInt(currentInput.getAttribute('maxlength'));
@@ -182,21 +191,23 @@
                 fetch('/customer/verify-otp', {
                     method: 'POST'
                 })
-                    .then(response => {
-                        if (response.ok) {
-                            showCustomAlert("Success")
-                            window.location.href = "/customer/sign-in"
-                        }
-                    })
                     .catch(error => {
                         console.error('Error:', error);
                     });
 
+                setTimeout(() => {
+                    showCustomAlert("Success");
+                }, 2000);
+                hideLoader()
+                setTimeout(() => {
+                    window.location.href = "/customer/sign-in";
+                }, 4000);
             }).catch(function (error) {
                 console.error(error);
-
+                hideLoader()
                 setOtpErrorText("The OTP entered is either incorrect or has expired. Please try again or click 'Cancel' to start the sign-up process anew.")
             });
+
         } else {
             hideLoader()
             setOtpErrorText("The OTP entered is either incorrect or has expired. Please try again or click 'Cancel' to start the sign-up process anew.")
