@@ -9,7 +9,7 @@ import { Conversation } from 'src/conversation/conversation.entity';
 @Entity()
 export class Customer extends BaseEntityUUID {
 
-  @Column({ default: "" })
+  @Column({ nullable: true })
   logo: string;
 
   @Column({ nullable: true })

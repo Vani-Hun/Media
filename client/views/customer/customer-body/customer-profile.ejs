@@ -296,7 +296,7 @@
     const editProfileForm = document.getElementById('editProfileForm');
     const editProfileButton = document.querySelector('.tiktok-16gecda-Button-StyledEditButton');
 
-    logo.src = customer.logo;
+    logo.src = customer.logo ? customer.logo : "";
     userName.textContent = customer.username;
     userSubtitle.textContent = customer.name;
     followersCount.textContent = customer.followers.length;
