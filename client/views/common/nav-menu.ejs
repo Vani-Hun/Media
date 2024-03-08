@@ -406,7 +406,7 @@
         }
     })
 
-    if (customer !== null && customer.logo !== null) {
+    if (customer !== null && customer.logo !== null && customer.logo !== "") {
         profileIcon.style = `background-image:url( ${customer.logo} )`
         let countNoti = 0
         customer.notifications.forEach(notification => {

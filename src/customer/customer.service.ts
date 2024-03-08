@@ -347,8 +347,8 @@ export class CustomerService extends BaseService<Customer> {
       const customer = await this.repo.update({ id: input.id }, updateData)
       return { customer }
     } catch (error) {
-      console.error(`Error in getViewProfile: ${error.message}`);
-      throw new HttpException('Error in getViewProfile.', HttpStatus.INTERNAL_SERVER_ERROR);
+      console.error(`Error in update: ${error.message}`);
+      throw new HttpException('Error in update.', HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 
