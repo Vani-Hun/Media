@@ -1898,3 +1898,169 @@
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
       z-index: 9999;
   }
+
+  .mention,
+  .mention:visited {
+      color: rgb(254, 44, 85);
+      cursor: pointer;
+      display: inline-block;
+      padding-left: 2px;
+      padding-right: 2px;
+      border-radius: 2px;
+      text-decoration: none;
+  }
+
+  .container.jsx-1768246377 .container-at.jsx-1768246377 {
+      width: 100%;
+      font-family: var(--tux-fontFamilyParagraph);
+      font-weight: var(--tux-fontWeightSemibold);
+  }
+
+  .container-at.jsx-1768246377 {
+      position: absolute;
+      z-index: 1;
+      top: 100%;
+      left: 0px;
+  }
+
+  .container.jsx-1768246377 .margin-t-4.jsx-1768246377 {
+      margin-top: 4px;
+  }
+
+  .input-container-v2.jsx-2893442251 {
+      display: flex;
+      min-height: 46px;
+      border: 1px solid var(--tux-colorLineSecondary);
+      border-radius: 4px;
+  }
+
+  .input-container-v2.jsx-2893442251 .search-icon.jsx-2893442251 {
+      width: 24px;
+      height: 24px;
+      margin-left: 12px;
+      margin-top: 9px;
+  }
+
+  .input-container-v2.jsx-2893442251 .search-friends.jsx-2893442251 {
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 22px;
+      font-family: var(--tux-fontFamilyParagraph);
+      padding: 12px 10px;
+      flex: 1 1 auto;
+      border-style: none;
+      outline-style: none;
+      word-break: break-word;
+  }
+
+  .input-container-v2.jsx-2893442251 .close-icon.jsx-2893442251 {
+      width: 26px;
+      height: 26px;
+      margin-top: 9px;
+      margin-right: 9px;
+  }
+
+  .scroll-parent {
+      width: 100%;
+      position: relative;
+      max-height: 225px;
+      overflow: auto;
+      background: rgb(255, 255, 255);
+      box-shadow: rgba(34, 90, 89, 0.2) 2px 0px 20px -20px, rgba(34, 90, 89, 0.2) 0px 8px 20px -2px, rgba(34, 90, 89, 0.2) 0px 0px 20px -20px;
+      top: -1px;
+      border-radius: 0px 0px 4px 4px;
+      border-top-width: 1px;
+      border-top-color: var(--tux-colorLineSecondary);
+      border-top-style: solid;
+      padding: 20px 0px;
+  }
+
+  .container.jsx-4101445897 {
+      display: flex;
+      -webkit-box-pack: justify;
+      justify-content: space-between;
+  }
+
+  .container.jsx-4101445897 .user-col.full-width.jsx-4101445897 {
+      width: 100%;
+  }
+
+  .container.jsx-4101445897 .user-col.jsx-4101445897 {
+      display: flex;
+      flex-direction: column;
+  }
+
+  .container.jsx-4101445897 .user-col.jsx-4101445897 .title.jsx-4101445897 {
+      color: var(--tux-colorTextTertiary);
+      font-family: "TikTok Font Regular", Arial, Tahoma, PingFangSC, sans-serif, "Segoe UI Emoji", "Noto Emoji";
+      font-weight: 400;
+      font-size: 15px;
+      line-height: 18px;
+      margin-left: 24px;
+      margin-bottom: 8px;
+  }
+
+  .container.jsx-2459045678 {
+      height: 68px;
+      padding: 10px 30px 10px 24px;
+      display: flex;
+      cursor: pointer;
+  }
+
+  .container.jsx-2459045678:hover {
+      background-color: #f0f0f0;
+      cursor: pointer;
+  }
+
+  .container.jsx-2459045678 .avatar.jsx-2459045678 {
+      height: 48px;
+      width: 48px;
+      min-width: 48px;
+      border-radius: 50%;
+      display: block;
+  }
+
+  .container.jsx-2459045678 .user-info.jsx-2459045678 {
+      display: flex;
+      flex-direction: column;
+      margin-left: 12px;
+      margin-top: 4px;
+      overflow: hidden;
+  }
+
+  .container.jsx-2459045678 .user-info.jsx-2459045678 .name.jsx-2459045678 {
+      font-family: var(--tux-fontFamilyParagraph);
+      font-size: 17px;
+      line-height: 20px;
+      font-style: normal;
+      font-weight: 600;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+      height: 20px;
+      color: rgb(22, 24, 35);
+  }
+
+  .container.jsx-2459045678 .user-info.jsx-2459045678 .user-id.jsx-2459045678 {
+      font-family: var(--tux-fontFamilyParagraph);
+      font-size: 14px;
+      line-height: 17px;
+      margin-top: 2px;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+      height: 18px;
+      color: var(--tux-colorTextTertiary);
+  }
+
+  #cancelButton:hover {
+      background-color: #f0f0f0;
+      cursor: pointer;
+  }
+
+  #cancelButton {
+      text-align: center;
+      line-height: 2rem;
+      font-weight: 700;
+      background-color: rgba(254, 44, 85, 1);
+  }

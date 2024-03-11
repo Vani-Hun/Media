@@ -3,6 +3,7 @@ import { BaseEntityUUID } from 'src/common/entities/base.entity';
 import { Column, Entity, OneToMany, ManyToOne, JoinColumn, ManyToMany, JoinTable } from 'typeorm';
 import { Comment } from 'src/comment/comment.entity';
 import { Customer } from 'src/customer/customer.entity';
+import { Hashtag } from 'src/hashtag/hashtag.entity';
 
 @Entity()
 export class Video extends BaseEntityUUID {
@@ -51,4 +52,12 @@ export class Video extends BaseEntityUUID {
 
     @OneToMany(() => Notification, notification => notification.video, { cascade: true })
     notification: Notification[];
+
+    @ManyToMany(() => Hashtag, hashtag => hashtag.videos)
+    @JoinTable({
+        name: 'video_hashtag',
+        joinColumn: { name: 'video_id', referencedColumnName: 'id' },
+        inverseJoinColumn: { name: 'hashtag_id', referencedColumnName: 'id' },
+    })
+    hashtags: Hashtag[];
 }

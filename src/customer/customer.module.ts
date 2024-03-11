@@ -12,11 +12,13 @@ import { CommentModule } from 'src/comment/comment.module';
 import { NotificationModule } from 'src/notification/notification.module';
 import { MessageModule } from 'src/message/message.module';
 import { ConversationModule } from 'src/conversation/conversation.module';
+import { HashtagModule } from 'src/hashtag/hashtag.module';
 @Module({
   imports: [
     forwardRef(() => CommonModule),
     forwardRef(() => VideoModule),
     forwardRef(() => ConversationModule),
+    forwardRef(() => HashtagModule),
     NotificationModule,
     TypeOrmModule.forFeature([Customer]),
     MulterModule.register({ storage }),
