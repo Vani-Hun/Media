@@ -14,7 +14,7 @@ export enum NotificationType {
 export enum NotificationMess {
     LIKE = 'liked your video.',
     COMMENT = 'comment your video:',
-    MENTIONS_AND_TAGS = 'Mention and tags',
+    MENTIONS_AND_TAGS = 'You have been mentioned in a post.',
     FOLLOWER = 'Followes you'
 }
 @Entity()

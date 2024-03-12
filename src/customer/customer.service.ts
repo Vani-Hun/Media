@@ -220,6 +220,7 @@ export class CustomerService extends BaseService<Customer> {
         .leftJoinAndSelect('videos.user', 'user')
         .leftJoinAndSelect('videos.comments', 'commentsVideo')
         .leftJoinAndSelect('videos.likers', 'likers')
+        .leftJoinAndSelect('videos.hashtags', 'hashtags')
         .leftJoinAndSelect('notifications.interactingUser', 'interactingUser')
         .leftJoinAndSelect('notifications.video', 'video')
         .leftJoinAndSelect('likedVideos.comments', 'commentslikedVideo')
@@ -229,11 +230,23 @@ export class CustomerService extends BaseService<Customer> {
         .orderBy('videos.createdAt', 'DESC')
         .addOrderBy('notifications.createdAt', 'DESC')
         .getOne();
+
     } catch (error) {
       console.error(`Error in getUser: ${error.message}`);
       throw new HttpException('Error in getUser.', HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+  }
+
+  async getSimpleUser(input) {
+    try {
+      return await this.repo.createQueryBuilder('customer')
+        .where('customer.username = :username', { username: input.mention })
+        .getOne();
+    } catch (error) {
+      console.error(`Error in getUser: ${error.message}`);
+      throw new HttpException('Error in getUser.', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
   async getUserWithFollowingVideos(input) {

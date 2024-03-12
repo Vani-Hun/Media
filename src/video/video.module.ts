@@ -10,10 +10,12 @@ import { CustomerModule } from 'src/customer/customer.module';
 import { MulterModule } from '@nestjs/platform-express';
 import { VideoController } from './video.controller';
 import { NotificationModule } from 'src/notification/notification.module';
+import { HashtagModule } from 'src/hashtag/hashtag.module';
 @Module({
     imports: [
         forwardRef(() => CommonModule),
         forwardRef(() => CustomerModule),
+        HashtagModule,
         TypeOrmModule.forFeature([Video]),
         CommentModule,
         NotificationModule,

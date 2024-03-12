@@ -1321,9 +1321,9 @@
   .tiktok-lso1ai-DivInputAreaContainer {
       color: rgb(22, 24, 35);
       font-family: TikTokFont, Arial, Tahoma, PingFangSC, sans-serif;
-      /* max-height: 68px; */
+      max-height: 68px;
       /* Chiều cao tối đa của ô */
-      /* overflow-y: hidden; */
+      overflow-y: hidden;
       /* Hiển thị thanh cuộn khi nội dung vượt quá chiều cao tối đa */
       font-size: 14px;
       line-height: 17px;
@@ -1658,10 +1658,6 @@
 
   .css-j2a19r-SpanText {
       font-weight: 400;
-  }
-
-  .css-1rhses0-DivText * {
-      fill: rgb(22, 24, 35);
   }
 
   .css-9s4tdv-DivMusicTagsWrapper {

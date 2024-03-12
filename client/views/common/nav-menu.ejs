@@ -151,8 +151,9 @@
 
 <script src="/socket.io/socket.io.js"></script>
 <script type="text/javascript">
+
     let customer = JSON.parse('<%- JSON.stringify(customer) %>');
-    console.log("customer:", customer)
+    console.log(customer)
     const host = "<%= process.env.ORIGIN %>"
     const socket = io(host);
     const navMenu = document.querySelector('.nav-menu');

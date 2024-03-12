@@ -376,6 +376,19 @@
             }
         }
         async function updateVideoDetails(video, commentsCountElement, likeCountElement, commentCountElement, undefinedCountElement, usernameElement, nameElement, daysDifferenceElement, updateTimeDifference, captionElement, avatarImage, videoThumbnail, videoPlay, svgIcon) {
+            const replaceHashtagsWithLinks = (match, p1) => {
+                const foundHashtag = video.hashtags.find(hashtag => hashtag.name === p1);
+                if (foundHashtag) {
+                    return `<a data-e2e="search-common-link" target="_self" rel="opener"
+                 class="css-g8ml1x-StyledLink-StyledCommonLink"  
+                 href="/hashtag/${foundHashtag.name}/videos"><strong color="rgba(43, 93, 185, 1)" 
+                 class="css-1p6dp51-StrongText">#${foundHashtag.name} </strong></a>`;
+                }
+                return match;
+            };
+
+            const resultCaptionWithLinks = video.caption.replace(/#(\w+)/g, replaceHashtagsWithLinks);
+
             commentsCountElement.textContent = `Comments (${video.comments.length})`;
             likeCountElement.textContent = video.likes;
             commentCountElement.textContent = video.comments.length;
@@ -383,11 +396,35 @@
             usernameElement.textContent = video.user.username;
             nameElement.textContent = video.user.name;
             daysDifferenceElement.textContent = updateTimeDifference;
-            captionElement.textContent = video.caption;
+            captionElement.innerHTML = resultCaptionWithLinks;
             avatarImage.src = `${video.user.logo}`;
             videoThumbnail.src = `${video.thumbnail}`;
             videoPlay.src = `${video.video}`;
             svgIcon.setAttribute('fill', 'rgba(22, 24, 35)');
+        }
+        async function updateVideoDetailsNotSouce(video, commentsCountElement, likeCountElement, commentCountElement, undefinedCountElement, usernameElement, nameElement, daysDifferenceElement, updateTimeDifference, captionElement, avatarImage, videoThumbnail) {
+            const replaceHashtagsWithLinks = (match, p1) => {
+                const foundHashtag = video.hashtags.find(hashtag => hashtag.name === p1);
+                if (foundHashtag) {
+                    return `<a data-e2e="search-common-link" target="_self" rel="opener"
+                 class="css-g8ml1x-StyledLink-StyledCommonLink"  
+                 href="/hashtag/${foundHashtag.name}/videos"><strong color="rgba(43, 93, 185, 1)" 
+                 class="css-1p6dp51-StrongText">#${foundHashtag.name} </strong></a>`;
+                }
+                return match;
+            };
+
+            const resultCaptionWithLinks = video.caption.replace(/#(\w+)/g, replaceHashtagsWithLinks);
+            commentsCountElement.textContent = `Comments (${video.comments.length})`;
+            likeCountElement.textContent = video.likes;
+            commentCountElement.textContent = video.comments.length;
+            undefinedCountElement.textContent = '0';
+            usernameElement.textContent = video.user.username;
+            nameElement.textContent = video.user.name;
+            daysDifferenceElement.textContent = updateTimeDifference;
+            captionElement.innerHTML = resultCaptionWithLinks;
+            avatarImage.src = `${video.user.logo}`;
+            videoThumbnail.src = `${video.thumbnail}`;
         }
         function handleLikeDetail(videoId, svgIcon) {
             if (likedVideoSet.has(videoId)) {
@@ -588,8 +625,6 @@
                                     <div class=" tiktok-1d7krfw-DivOverflowContainer e1mzilcj5">
                                         <div data-e2e="browse-video-desc" class="tiktok-1wdx3tj-DivContainer ejg0rhn0">
                                             <span class="tiktok-j2a19r-SpanText efbd9f0"></span>
-
-                                            <span class="tiktok-j2a19r-SpanText efbd9f0"> </span>
                                         </div>
                                     </div>
                                 </div>
@@ -846,10 +881,10 @@
             });
         }
 
-        function continuePlay(video) {
+        function continuePlay(video, divVideo) {
 
-            const inputElement = document.querySelector('.public-DraftEditor-content');
-            const placeholderDiv = document.querySelector('.public-DraftEditorPlaceholder-root');
+            const inputElement = divVideo.querySelector('.public-DraftEditor-content');
+            const placeholderDiv = document.getElementById('placeholder-erend');
             const xButton = document.querySelector('.tiktok-yg0pvs-ButtonBasicButtonContainer-StyledCloseIconContainer');
             const volumeButton = document.querySelector('.tiktok-6mttet-ButtonVoiceControlNew');
             const threeDot = document.querySelector(".tiktok-q969e7-DivIconWrapper");
@@ -885,7 +920,7 @@
             const followButton = divFollowButton.querySelector('button')
             const changeButton = document.querySelector('.tiktok-1djnsui-ButtonLabel')
             let indexCurrent = sessionStorage.getItem('indexCurrent');
-            const divVideo = document.querySelector('.tiktok-1qg2388-DivBrowserModeContainer')
+
             let isMuted = false
             const divRigtVideo = divVideo.querySelector('.tiktok-1tunefa-DivVideoContainer')
             let isScrolling;
@@ -1035,7 +1070,7 @@
 
                             let newVideo = await updateVideo(video)
                             video = await newVideo
-                            await updateVideoDetails(video, commentsCountElement, likeCountElement, commentCountElement, undefinedCountElement, usernameElement, nameElement, daysDifferenceElement, updateTimeDifference, captionElement, avatarImage, videoThumbnail, videoPlay, svgIcon);
+                            await updateVideoDetailsNotSouce(video, commentsCountElement, likeCountElement, commentCountElement, undefinedCountElement, usernameElement, nameElement, daysDifferenceElement, updateTimeDifference, captionElement, avatarImage, videoThumbnail);
                             await updateVideoDataAtIndex(indexCurrent, video);
                         })
                         .catch(error => {
@@ -1269,7 +1304,7 @@
             const divVideo = createVideoContainer();
             const { divCustomAlert, divUnableVideo } = createToolThree()
             document.body.append(divVideo, divCustomAlert, divUnableVideo)
-            continuePlay(video)
+            continuePlay(video, divVideo)
         } else {
             // if (window.location.pathname !== "/video/videos") {
             //     updateVideoURL(`/video/videos`, 'replace');
@@ -1468,7 +1503,7 @@
                 navMenuMiddle.style.display = 'none'
                 const divVideo = createVideoContainer();
                 document.body.appendChild(divVideo)
-                continuePlay(videos[index])
+                continuePlay(videos[index], divVideo)
             });
         }
         )

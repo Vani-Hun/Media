@@ -571,7 +571,7 @@
                 currentContent = currentContent.substring(0, currentContent.length - 1);
                 console.log("currentContent:", currentContent)
                 const userName = container.querySelector('.jsx-2459045678.user-id')
-                textBox.innerText = currentContent + `"@${userName.textContent.trim()}"`;
+                textBox.innerText = currentContent + `@${userName.textContent.trim()}`;
                 containerTag.style.display = "none"
             })
         })
@@ -580,10 +580,13 @@
     hashTagButton.addEventListener('click', () => {
         textBox.innerText += "#";
         let currentContent = textBox.innerText;
-        if (currentContent.endsWith("#") + hashtagRegex) {
+        let lastHashIndex = currentContent.lastIndexOf("#");
+        let endIndex = currentContent.indexOf(" ", lastHashIndex + 1);
+
+        if (lastHashIndex !== -1 && endIndex === -1) {
             timeoutId = setTimeout(() => {
-                const hashtagName = currentContent.slice(currentContent.lastIndexOf("#") + 1);
-                fetch(`/hashtag/${hashtagName}`, {
+                let substringToEnd = (endIndex !== -1) ? currentContent.slice(lastHashIndex + 1, endIndex) : currentContent.slice(lastHashIndex + 1);
+                fetch(`/hashtag/${encodeURIComponent(substringToEnd)}`, {
                     method: 'GET',
                 })
                     .then((response) => {
@@ -614,10 +617,10 @@
 
     textBox.addEventListener('input', function (event) {
         clearTimeout(timeoutId);
-
         let currentContent = textBox.innerText;
         const newContent = currentContent.charAt(currentContent.length - 1);
-
+        let lastHashIndex = currentContent.lastIndexOf("#");
+        let endIndex = currentContent.indexOf(" ", lastHashIndex + 1);
         if (newContent.endsWith("@")) {
             const friends = areFriends(customer.following, customer.followers)
             createContainerFriends(friends)
@@ -626,19 +629,17 @@
             containerFriends.forEach(container => {
                 container.addEventListener('click', () => {
                     currentContent = currentContent.substring(0, currentContent.length - 1);
-                    console.log("currentContent:", currentContent)
                     const userName = container.querySelector('.jsx-2459045678.user-id')
-                    textBox.innerText = currentContent + `"@${userName.textContent.trim()}"`;
+                    textBox.innerText = currentContent + `@${userName.textContent.trim()}`;
                     containerTag.style.display = "none"
                 })
             })
         }
 
-        if (currentContent.lastIndexOf("#") !== -1 && hashtagRegex.test(currentContent.slice(currentContent.lastIndexOf("#") + 1))) {
-
+        if (lastHashIndex !== -1 && endIndex === -1) {
             timeoutId = setTimeout(() => {
-                const hashtagName = currentContent.slice(currentContent.lastIndexOf("#") + 1);
-                fetch(`/hashtag/${encodeURIComponent(hashtagName)}`, {
+                let substringToEnd = (endIndex !== -1) ? currentContent.slice(lastHashIndex + 1, endIndex) : currentContent.slice(lastHashIndex + 1);
+                fetch(`/hashtag/${encodeURIComponent(substringToEnd)}`, {
                     method: 'GET',
                 })
                     .then((response) => {
@@ -655,7 +656,7 @@
                             container.addEventListener('click', () => {
                                 currentContent = currentContent.substring(0, currentContent.lastIndexOf("#"));
                                 const hashtag = container.querySelector('.jsx-2459045678.name');
-                                textBox.innerText = currentContent + `"#${hashtag.textContent.trim()}"`;
+                                textBox.innerText = currentContent + `#${hashtag.textContent.trim()}`;
                                 containerTag.style.display = "none";
                             });
                         });
@@ -665,6 +666,7 @@
                     });
             }, 2000);
         }
+
 
 
         if (currentContent.length >= MAX_CHARACTERS) {
@@ -718,7 +720,7 @@
         })
             .then((data) => {
                 hideLoader()
-                window.location.href = `/ customer / profile / ${customer.id}`
+                window.location.href = `/customer/profile/${customer.id}`
             })
             .catch(error => {
                 console.error('There has been a problem with your fetch operation:', error);

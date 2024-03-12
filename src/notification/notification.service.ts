@@ -37,6 +37,19 @@ export class NotificationService extends BaseService<Notification> {
                     return await this.repo.save(newNotification);
                 }
             }
+            if (input.type === 'Mention and tags') {
+                const newNotification = this.repo.create({
+                    user: input.mention,
+                    interactingUser: input.video.user,
+                    video: input.video ? input.video.id : null,
+                    message: input.mess,
+                    status: false,
+                    type: input.type,
+                });
+
+                return await this.repo.save(newNotification);
+            }
+
         } catch (error) {
             throw new HttpException(`Failed to create notification: ${error.message}`, HttpStatus.INTERNAL_SERVER_ERROR);
         }

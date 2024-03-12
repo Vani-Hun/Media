@@ -26,6 +26,7 @@ export class VideoController {
             req['user'] = { ...req['user'], ...body, video }
             const url = await this.videoService.uploadVideo(req['user'])
             if (url) {
+                req['user'].image = ""
                 return await this.videoService.create(url, req['user'], res)
             }
         }

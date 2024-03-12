@@ -15,6 +15,14 @@ export class HashtagController {
     @UseGuards(CusAuthGuard)
     async getHashTag(@Req() request: Request, @Param('nameHashTag') nameHashTag: string) {
         request['user'].nameHashTag = nameHashTag
-        return await this.hashtagService.getHashTag(request['user'])
+        return await this.hashtagService.getHashTags(request['user'])
+    }
+
+    @Get('/:nameHashTag/videos')
+    @UseGuards(CusAuthGuard)
+    @Render('video/index')
+    async getHashTagVideos(@Req() request: Request, @Param('nameHashTag') nameHashTag: string) {
+        request['user'].nameHashTag = nameHashTag
+        return await this.hashtagService.getHashTagVideos(request['user'])
     }
 }

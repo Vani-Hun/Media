@@ -1,4 +1,5 @@
-import { HttpException, Injectable, UnauthorizedException, Inject, HttpStatus, forwardRef } from '@nestjs/common';
+import { HashtagService } from './../hashtag/hashtag.service';
+import { HttpException, Injectable, UnauthorizedException, Inject, HttpStatus, forwardRef, Redirect } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { BaseService } from 'src/common/services/base.service';
 import { Repository, getConnection, getManager, getRepository } from 'typeorm';
@@ -18,7 +19,8 @@ export class VideoService extends BaseService<Video> {
         @InjectRepository(Video) repo: Repository<Video>,
         @Inject(forwardRef(() => CustomerService)) private customerService: CustomerService,
         private commentService: CommentService,
-        private notificationService: NotificationService
+        private notificationService: NotificationService,
+        private hashtagService: HashtagService
     ) {
         super(repo);
     }
@@ -30,7 +32,25 @@ export class VideoService extends BaseService<Video> {
     }
 
     async create(url: object, input, res) {
+        console.log("input:", input);
         try {
+            let hashtagRegex = /#(\w+)/g;
+            let mentionRegex = /@(\w+)/g;
+
+            let hashtags = (input.caption.match(hashtagRegex) || []).map(match => match.substring(1));
+            console.log("hashtags:", hashtags)
+            let mentions = (input.caption.match(mentionRegex) || []).map(match => match.substring(1));
+            console.log("mentions:", mentions)
+            let tags = []
+
+            if (hashtags.length > 0) {
+                for (const hashtag of hashtags) {
+                    input.nameHashTag = hashtag;
+                    const tag = await this.hashtagService.getHashTag(input);
+                    tags.push(tag);
+                }
+            }
+
             const video = await this.repo.create({
                 video: url['videoURL'],
                 thumbnail: url['imageURL'],
@@ -39,15 +59,31 @@ export class VideoService extends BaseService<Video> {
                 who: input.who,
                 allowComment: Boolean(input.allowComment),
                 caption: input.caption,
+                hashtags: tags
             });
-            await this.repo.save(video);
-            const customer = await this.customerService.getUser(input)
-            return res.render('customer/profile', { customer })
+
+            const videoResult = await this.repo.save(video);
+
+            // Kiểm tra xem mentions có rỗng hay không
+            if (mentions.length > 0) {
+                await Promise.all(mentions.map(async (mention) => {
+                    input.mention = mention;
+                    const customer = await this.customerService.getSimpleUser(input)
+                    input.video = videoResult;
+                    input.mess = NotificationMess.MENTIONS_AND_TAGS
+                    input.mention = customer.id
+                    input.type = NotificationType.MENTIONS_AND_TAGS
+                    await this.notificationService.createNotification(input);
+                }));
+            }
+
+            return res.redirect(`/customer/profile/${input.id}`)
         } catch (error) {
             console.error(`Error in create video: ${error.message}`);
             throw new HttpException(`Failed to create video: ${error.message}`, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
 
     async getUploadVideo(input) {
         try {
@@ -218,16 +254,42 @@ export class VideoService extends BaseService<Video> {
                 .leftJoinAndSelect('video.user', 'user')
                 .leftJoinAndSelect('video.likers', 'likers')
                 .leftJoinAndSelect('video.comments', 'comments')
+                .leftJoinAndSelect('video.hashtags', 'hashtags')
                 .leftJoinAndSelect('comments.video', 'video2')
                 .leftJoinAndSelect('comments.customer', 'customer')
                 .getMany()
             const { videos: videosFollowing, customer: customerFollowing } = await this.getVideosFollowing(input);
-
             let videos = [...publicVideos, ...videosFollowing];
-
+            const uniqueVideoIds = new Set<string>();
+            videos = videos.filter(video => {
+                const isUnique = !uniqueVideoIds.has(video.id);
+                uniqueVideoIds.add(video.id);
+                return isUnique;
+            });
             const customer = await this.customerService.getUser(input);
-
             return { videos, customer, video: null };
+        } catch (error) {
+            console.error(`Error in getVideos: ${error.message}`);
+            throw new HttpException('Error in getVideos.', HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    async getVideosHashTag(input) {
+        try {
+            return await this.repo.createQueryBuilder('video')
+                .where('video.who = :who', { who: 'Public' })
+                .orderBy('video.createdAt', 'ASC')
+                .leftJoinAndSelect('video.user', 'user')
+                .leftJoinAndSelect('video.likers', 'likers')
+                .leftJoinAndSelect('video.comments', 'comments')
+                .leftJoinAndSelect('comments.video', 'video2')
+                .leftJoinAndSelect('comments.customer', 'customer')
+                .innerJoin('video.hashtags', 'hashtag', 'hashtag.name = :nameHashTag', { nameHashTag: input.nameHashTag })
+                .getMany()
+            // const { videos: videosFollowing, customer: customerFollowing } = await this.getVideosFollowing(input);
+            // let videos = [...publicVideos, ...videosFollowing];
+            // const customer = await this.customerService.getUser(input);
+            // return { videos, customer, video: null };
         } catch (error) {
             console.error(`Error in getVideos: ${error.message}`);
             throw new HttpException('Error in getVideos.', HttpStatus.INTERNAL_SERVER_ERROR);
