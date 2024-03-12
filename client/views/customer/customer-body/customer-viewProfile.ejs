@@ -365,7 +365,7 @@
         undefinedCountElement.textContent = '0';
         usernameElement.textContent = video.user.username;
         nameElement.textContent = video.user.name;
-        daysDifferenceElement.textContent = updateTimeDifference;
+        daysDifferenceElement.textContent = formatTimeDifference(video.createdAt);;
         captionElement.innerHTML = resultCaptionWithLinks;
         avatarImage.src = `${video.user.logo}`;
         videoThumbnail.src = `${video.thumbnail}`;
@@ -415,13 +415,6 @@
     </svg></div>
                 `
         } else {
-            childNodes[3].innerHTML = `
-<button class="tiktok-1pcikqk-Button">
-    <div class="tiktok-jp3752-ButtonContent e1v8cfre2">
-        <div class="tiktok-1djnsui-ButtonLabel e1v8cfre3">Follow</div>
-    </div>
-</button>
-`
             if (followedSet.has(userId)) {
                 followButton.classList = "tiktok-2cfmui-Button";
                 changeButton.innerHTML = "Following";
@@ -595,43 +588,19 @@
             <div class="tiktok-1qp5gj2-DivCommentListContainer">
                 <div class="tiktok-1xlna7p-DivProfileWrapper">
                     <div class="tiktok-pcqxr7-DivDescriptionContentWrapper e1mecfx011">
-    <div class="tiktok-85dfh6-DivInfoContainer evv7pft0">
-        <a rel="opener" target="_self" data-e2e="browse-user-avatar" class="evv7pft8 tiktok-1fng5o0-StyledLink er1vbsz0" href="">
-            <div class="tiktok-uha12h-DivContainer" style="width: 40px; height: 40px;">
-                <span shape="circle" data-e2e="" class="tiktok-gcksof-SpanAvatarContainer-StyledAvatar"
-                    style="width: 40px; height: 40px;">
-                    <img loading="lazy" alt="" src="" class="tiktok-1zpj2q-ImgAvatar">
-                </span>
-            </div>
-        </a>
-        <a target="_self" rel="opener" class="tiktok-n2qh4e-StyledLink-StyledLink" href="">
-            <span
-                data-e2e="browse-username" class="tiktok-1c7urt-SpanUniqueId"><span
-                    class="tiktok-pocgy1-SpanEllipsis"></span></span><br><span data-e2e="browser-nickname"
-                class="tiktok-gg0x0w-SpanOtherInfos"><span class="tiktok-pocgy1-SpanEllipsis"></span><span
-                    style="margin: 0px 4px;"> ·
-                </span><span></span></span></a>
-            <div data-e2e="video-setting" class="css-1dcgmzm-DivActionContainer"><svg
-                    class="css-1xafdg4-StyledEllipsisHorizontal" width="1em" data-e2e="" height="1em"
-                    viewBox="0 0 48 48" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                    <path fill-rule="evenodd" clip-rule="evenodd"
-                        d="M4 24C4 21.7909 5.79086 20 8 20C10.2091 20 12 21.7909 12 24C12 26.2091 10.2091 28 8 28C5.79086 28 4 26.2091 4 24ZM20 24C20 21.7909 21.7909 20 24 20C26.2091 20 28 21.7909 28 24C28 26.2091 26.2091 28 24 28C21.7909 28 20 26.2091 20 24ZM36 24C36 21.7909 37.7909 20 40 20C42.2091 20 44 21.7909 44 24C44 26.2091 42.2091 28 40 28C37.7909 28 36 26.2091 36 24Z">
-                    </path>
-                </svg>
-<div tabindex="-1" class="css-ejp1tv-DivContainer" style="right: -11px;display: none;";>
-    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="rgba(37, 37, 37, 1)"
-        class="css-1ny6agx-StyledTopArrow e2ipgxl1" style="right: 10px;">
-        <use xlink:href=""></use>
-    </svg>
-    <ul class="css-1n18b5h-UlPopupContainer e161jvwg2">
-        <li data-e2e="video-privacy-settings" class="css-rrnssd-LiPopupItem e161jvwg3"><button type="button"
-                class="css-1qijq2p-ButtonAction e161jvwg4">Privacy settings</button></li>
-        <li data-e2e="video-delete" class="css-rrnssd-LiPopupItem e161jvwg3"><button type="button"
-                class="css-1qijq2p-ButtonAction e161jvwg4">Delete</button></li>
-    </ul>
-</div>
-                </div>
-    </div>
+    <div class="tiktok-85dfh6-DivInfoContainer evv7pft0"><a rel="opener" target="_self" data-e2e="browse-user-avatar" class="evv7pft8 tiktok-1fng5o0-StyledLink er1vbsz0" href="">
+                                <div class="tiktok-uha12h-DivContainer" style="width: 40px; height: 40px;">
+                                    <span shape="circle" data-e2e="" class="tiktok-gcksof-SpanAvatarContainer-StyledAvatar" style="width: 40px; height: 40px;"><img loading="lazy" alt="" src="https://lh3.googleusercontent.com/a/ACg8ocKMDRYyuSrBYxDrjiiGj3vk_x0FR1Rw55uFTacpBawH=s96-c" class="tiktok-1zpj2q-ImgAvatar">
+                                    </span>
+                                </div>
+                            </a><a target="_self" rel="opener" class="tiktok-n2qh4e-StyledLink-StyledLink" href=""><span data-e2e="browse-username" class="tiktok-1c7urt-SpanUniqueId"><span class="tiktok-pocgy1-SpanEllipsis">userHùng</span></span><br><span data-e2e="browser-nickname" class="tiktok-gg0x0w-SpanOtherInfos"><span class="tiktok-pocgy1-SpanEllipsis">Hùng Nguyễn</span><span style="margin: 0px 4px;"> ·
+                                    </span><span>6d ago</span></span></a>
+                            <div data-e2e="browse-follow" class="tiktok-r4iroe-DivBtnWrapper"><button class="tiktok-2cfmui-Button">
+                                    <div class="tiktok-jp3752-ButtonContent e1v8cfre2">
+                                        <div class="tiktok-1djnsui-ButtonLabel e1v8cfre3">Following</div>
+                                    </div>
+                                </button></div>
+                        </div>
     <div class="tiktok-1nst91u-DivMainContent e1mecfx01">
         <div class="tiktok-bs495z-DivWrapper e1mzilcj0">
             <div class="tiktok-1rhses0-DivText e1mzilcj1" style="max-height: unset;">
@@ -900,7 +869,7 @@
                 sessionStorage.setItem('indexCurrentVideoProfile', index);
                 const divVideo = createVideoContainer();
                 document.body.appendChild(divVideo)
-                continuePlay(videos[index], divVideo);
+                continuePlay(JSON.parse(sessionStorage.getItem('videosData'))[index], divVideo);
             });
         });
     }
@@ -937,13 +906,10 @@
         const rightArrow = divVideo.querySelector('.tiktok-1s9jpf8-ButtonBasicButtonContainer-StyledVideoSwitch');
         const leftArrow = divVideo.querySelector('.tiktok-1w6o9i7-ButtonBasicButtonContainer-StyledVideoSwitch')
         let indexCurrent = sessionStorage.getItem('indexCurrentVideoProfile');
-        const editVideo = divVideo.querySelector(".css-ejp1tv-DivContainer");
-        const modalContent = divVideo.querySelector('.tiktok-17s26nl-ModalContentContainer');
-        const spanOtherInfos = divVideo.querySelector('.tiktok-gg0x0w-SpanOtherInfos');
-        const divProfileWrapper = divVideo.querySelector('.tiktok-1xlna7p-DivProfileWrapper')
-        const editVideoForm = document.getElementById('tux-portal-container')
-        const buttonActionVideo = document.querySelectorAll('.css-1qijq2p-ButtonAction.e161jvwg4');
         const divRigtVideo = divVideo.querySelector('.tiktok-1tunefa-DivVideoContainer')
+        const divFollowButton = document.querySelector('.tiktok-r4iroe-DivBtnWrapper')
+        const followButton = divFollowButton.querySelector('button')
+        const changeButton = document.querySelector('.tiktok-1djnsui-ButtonLabel')
         let isScrolling;
         let isMouseOver
         let isMuted = false
@@ -963,9 +929,45 @@
 
         handleLikeDetail(video.id, svgIcon);
 
+        handleFollowDetail(video.user.id, followButton, changeButton);
+
         removeCommentContainers();
 
         appendCommentsToContainer(video.comments, divCommentList);
+
+        followButton.addEventListener("click", () => {
+            if (changeButton.innerHTML === "Follow") {
+                followButton.classList = "tiktok-2cfmui-Button"
+                changeButton.innerHTML = "Following"
+                fetch(`/customer/follow/${video.user.id}`, {
+                    method: 'POST',
+                })
+                    .then(async (data) => {
+                        updateCustomer()
+                        let newVideo = await updateVideo(video)
+                        video = await newVideo
+                        await updateVideoDataAtIndex(indexCurrent, video);
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+            } else {
+                changeButton.innerHTML = "Follow"
+                followButton.classList = "tiktok-1pcikqk-Button"
+                fetch(`/customer/unfollow/${video.user.id}`, {
+                    method: 'POST',
+                })
+                    .then(async (data) => {
+                        updateCustomer()
+                        let newVideo = await updateVideo(video)
+                        video = await newVideo
+                        await updateVideoDataAtIndex(indexCurrent, video);
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+            }
+        })
 
         likeElement.addEventListener("click", () => {
             const fillValue = svgIcon.getAttribute('fill');
@@ -999,12 +1001,6 @@
                     .catch(error => {
                         console.error('Error:', error);
                     });
-            }
-        });
-
-        divProfileWrapper.addEventListener('mouseleave', function () {
-            if (editVideo.style.display === "flex") {
-                editVideo.style.display = "none";
             }
         });
 
@@ -1174,7 +1170,7 @@
             copyLinkText.innerHTML = `${host}/video/${video.id}`
             removeCommentContainers();
             updateVideoDetails(video, commentsCountElement, likeCountElement, commentCountElement, undefinedCountElement, usernameElement, nameElement, daysDifferenceElement, updateTimeDifference, captionElement, avatarImage, videoThumbnail, videoPlay, svgIcon);
-            // handleFollowDetail(video.user.id, followButton, changeButton);
+            handleFollowDetail(video.user.id, followButton, changeButton);
             handleLikeDetail(video.id, svgIcon);
             updateLeftArrowDisplay(indexCurrent, leftArrow);
             appendCommentsToContainer(video.comments, divCommentList);
@@ -1194,114 +1190,13 @@
                 removeCommentContainers();
                 updateLeftArrowDisplay(indexCurrent, leftArrow);
                 updateVideoDetails(video, commentsCountElement, likeCountElement, commentCountElement, undefinedCountElement, usernameElement, nameElement, daysDifferenceElement, updateTimeDifference, captionElement, avatarImage, videoThumbnail, videoPlay, svgIcon);
-                // handleFollowDetail(video.user.id, followButton, changeButton);
+                handleFollowDetail(video.user.id, followButton, changeButton);
                 handleLikeDetail(video.id, svgIcon);
                 appendCommentsToContainer(video.comments, divCommentList);
                 updateURL(`/video/${video.id}`, null, 'replace');
                 updateCustomer()
             }
 
-        });
-
-        buttonActionVideo.forEach(button => {
-            button.addEventListener('click', function (event) {
-                event.preventDefault()
-                const buttonText = this.innerText;
-                if (buttonText === "Delete") {
-                    showLoader()
-                    fetch(`/video/delete/${video.id}`, {
-                        method: 'DELETE',
-                    }).then((data) => {
-                        hideLoader()
-                        window.location.href = `/customer/profile/${customer.id}`
-                    })
-                        .catch(error => {
-                            console.error('Error:', error);
-                        });
-                } else {
-                    editVideoForm.style.display = 'block'
-                    const editWho = document.querySelector('.css-17hfips-DivContainer')
-                    const selectedElement = document.querySelector('.css-1bi8eji-PSelected');
-                    selectedElement.textContent = video.who
-
-                    function handleClick() {
-                        const edit = document.querySelector('.css-cyte9w-UlOptionsContainer')
-                        if (edit.style.display == 'none') {
-                            edit.style.display = 'block'
-                        } else {
-                            edit.style.display = 'none'
-                        }
-                        const optionsItems = document.querySelectorAll('.css-162z403-LiOptionsItem');
-                        optionsItems.forEach(item => {
-                            item.addEventListener('click', function () {
-                                const selectedTitle = this.getAttribute('title');
-                                selectedElement.textContent = selectedTitle;
-                            });
-                        })
-                    }
-
-                    editWho.addEventListener('click', handleClick);
-
-
-
-                    const divSwitchContainers = document.querySelectorAll('.css-3uij16-DivSwitchItemContainer');
-                    const switchWrapper = document.querySelector('.css-12xzmck-DivSwitchWrapper');
-                    const switchIcon = document.querySelector('.css-9lvgjp-SpanSwitchIcon');
-                    const doneButton = document.querySelector('.css-6fnltj-ButtonSave')
-                    let isSwitchOn = video.allowComment;
-                    if (!isSwitchOn) {
-                        switchWrapper.style.background = 'gray';
-                        switchIcon.style.left = '23px';
-                        isSwitchOn = false
-                    }
-                    divSwitchContainers.forEach(divSwitchContainer => {
-                        const buttonSwitch = divSwitchContainer.querySelector('.css-ge3lma-ButtonSwitchContainer');
-                        buttonSwitch.addEventListener('click', function () {
-                            const buttonText = divSwitchContainer.innerText.trim();
-                            if (buttonText === "Allow comments") {
-                                isSwitchOn = !isSwitchOn;
-                                if (isSwitchOn) {
-                                    switchWrapper.style.background = 'rgb(11, 224, 155)';
-                                    switchIcon.style.left = 'calc(100% - 2px)';
-                                    isSwitchOn = true
-                                } else {
-                                    switchWrapper.style.background = 'gray';
-                                    switchIcon.style.left = '23px';
-                                    isSwitchOn = false
-                                }
-                            }
-                        })
-                    })
-
-                    doneButton.addEventListener('click', function handleButtonClick(event) {
-                        editWho.removeEventListener('click', handleClick);
-                        showLoader();
-                        const data = {
-                            video: video.id,
-                            allowComment: isSwitchOn,
-                            who: selectedElement.textContent
-                        };
-                        fetch('/video/update', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify(data)
-                        })
-                            .then(async (response) => {
-                                let newVideo = await updateVideo(video);
-                                video = await newVideo;
-                                setSpanOtherInfosContent(spanOtherInfos, newVideo, customer, updateTimeDifference);
-                                hideLoader();
-                                editVideoForm.style.display = 'none';
-                                doneButton.removeEventListener('click', handleButtonClick);
-                            })
-                            .catch(error => {
-                                console.error('Error:', error);
-                            });
-                    });
-                }
-            });
         });
 
         document.addEventListener('keydown', function (event) {
@@ -1393,7 +1288,7 @@
                 return response.json();
             })
             .then(data => {
-                displayVideos(customer.likedVideos)
+                displayVideos(data.likedVideos)
             })
             .catch(error => { console.error("Error:", error) })
 
