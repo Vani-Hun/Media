@@ -315,12 +315,12 @@
         navMenu.style.zIndex = '0'
         navMenuMiddle.style.zIndex = '0'
         function showLoader() {
-            var loader = document.querySelector('.loader');
+            let loader = document.querySelector('.loader');
             loader.classList.add('visible');
         }
 
         function hideLoader() {
-            var loader = document.querySelector('.loader');
+            let loader = document.querySelector('.loader');
             loader.classList.remove('visible');
         }
 
@@ -429,15 +429,15 @@
     window.onpopstate = function (event) {
         window.location.href = window.location.pathname
     }
-    function showLoader() {
-        var loader = document.querySelector('.loader');
-        loader.classList.add('visible');
-    }
+    // function showLoader() {
+    //     let loader = document.querySelector('.loader');
+    //     loader.classList.add('visible');
+    // }
 
-    function hideLoader() {
-        var loader = document.querySelector('.loader');
-        loader.classList.remove('visible');
-    }
+    // function hideLoader() {
+    //     let loader = document.querySelector('.loader');
+    //     loader.classList.remove('visible');
+    // }
     function showCustomAlert(message) {
         const customAlert = document.getElementById('customAlert');
         const alertMessage = document.getElementById('alertMessage');
