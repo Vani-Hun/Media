@@ -279,11 +279,6 @@
         </div>
     </div>
 </form>
-<div class="loader">
-    <li class="ball"></li>
-    <li class="ball"></li>
-    <li class="ball"></li>
-</div>
 
 <script>
     const logo = document.querySelector('.tiktok-1zpj2q-ImgAvatar')
@@ -522,13 +517,13 @@
 
         commentDiv.innerHTML = `
         <div class="tiktok-ulyotp-DivCommentContentContainer e1g2efjf0">
-            <a data-e2e="comment-avatar-1" class="e1g2efjf5 tiktok-1jatens-StyledLink-StyledUserLinkAvatar er1vbsz0" href="/@${comment.customer.username}" style="flex: 0 0 40px;">
+            <a data-e2e="comment-avatar-1" class="e1g2efjf5 tiktok-1jatens-StyledLink-StyledUserLinkAvatar er1vbsz0" href="/customer/profile/${comment.customer.id}" style="flex: 0 0 40px;">
                 <span shape="circle" data-e2e="" class="tiktok-tuohvl-SpanAvatarContainer e1e9er4e0" style="width: 40px; height: 40px;">
                     <img loading="lazy" alt="" src="${comment.customer.logo}" class="tiktok-1zpj2q-ImgAvatar">
                 </span>
             </a>
             <div class="tiktok-1mf23fd-DivContentContainer e1g2efjf1">
-                <a class="e1g2efjf4 tiktok-fx1avz-StyledLink-StyledUserLinkName er1vbsz0" href="/@${comment.customer.username}">
+                <a class="e1g2efjf4 tiktok-fx1avz-StyledLink-StyledUserLinkName er1vbsz0" href="/customer/profile/${comment.customer.id}">
                     <span data-e2e="comment-username-1" class="tiktok-1665s4c-SpanUserNameText e1g2efjf3">${comment.customer.name}</span>
                 </a>
                 <p data-e2e="comment-level-1" class="tiktok-xm2h10-PCommentText e1g2efjf6">
@@ -676,7 +671,7 @@
             window.history.replaceState({}, unsed, url);
         }
     }
-    function createVideoContainer() {
+    function createVideoContainer(comment) {
         const divVideo = document.createElement('div');
         divVideo.classList = "tiktok-1qg2388-DivBrowserModeContainer"
         divVideo.style.display = "flex";
@@ -784,7 +779,7 @@
                 <div class="tiktok-1xlna7p-DivProfileWrapper">
                     <div class="tiktok-pcqxr7-DivDescriptionContentWrapper e1mecfx011">
     <div class="tiktok-85dfh6-DivInfoContainer evv7pft0"><a rel="opener" target="_self" data-e2e="browse-user-avatar"
-            class="evv7pft8 tiktok-1fng5o0-StyledLink er1vbsz0" href="">
+            class="evv7pft8 tiktok-1fng5o0-StyledLink er1vbsz0" href="/customer/profile/${customer.id}">
             <div class="tiktok-uha12h-DivContainer" style="width: 40px; height: 40px;">
                 <span shape="circle" data-e2e="" class="tiktok-gcksof-SpanAvatarContainer-StyledAvatar"
                     style="width: 40px; height: 40px;"><img loading="lazy" alt=""
@@ -792,7 +787,7 @@
                         class="tiktok-1zpj2q-ImgAvatar">
                 </span>
             </div>
-        </a><a target="_self" rel="opener" class="tiktok-n2qh4e-StyledLink-StyledLink" href=""><span
+        </a><a target="_self" rel="opener" class="tiktok-n2qh4e-StyledLink-StyledLink" href="/customer/profile/${customer.id}"><span
                 data-e2e="browse-username" class="tiktok-1c7urt-SpanUniqueId"><span
                     class="tiktok-pocgy1-SpanEllipsis"></span></span><br><span data-e2e="browser-nickname"
                 class="tiktok-gg0x0w-SpanOtherInfos"><span class="tiktok-pocgy1-SpanEllipsis"></span><span
@@ -1338,8 +1333,8 @@
                         commentDiv.innerHTML = `
                                 <div class="listComments">
                 <div class="tiktok-1i7ohvi-DivCommentItemContainer">
-                    <div id="7293732457551086344" class="tiktok-ulyotp-DivCommentContentContainer e1g2efjf0"><a data-e2e="comment-avatar-1" class="e1g2efjf5 tiktok-1jatens-StyledLink-StyledUserLinkAvatar er1vbsz0" href="/@dng.l.b4" style="flex: 0 0 40px;"><span shape="circle" data-e2e="" class="tiktok-tuohvl-SpanAvatarContainer e1e9er4e0" style="width: 40px; height: 40px;"><img loading="lazy" alt="" src="${customer.logo}" class="tiktok-1zpj2q-ImgAvatar"></span></a>
-                        <div class="tiktok-1mf23fd-DivContentContainer e1g2efjf1"><a class="e1g2efjf4 tiktok-fx1avz-StyledLink-StyledUserLinkName er1vbsz0" href="/@dng.l.b4"><span data-e2e="comment-username-1" class="tiktok-1665s4c-SpanUserNameText e1g2efjf3">${customer.name}</span></a>
+                    <div id="7293732457551086344" class="tiktok-ulyotp-DivCommentContentContainer e1g2efjf0"><a data-e2e="comment-avatar-1" class="e1g2efjf5 tiktok-1jatens-StyledLink-StyledUserLinkAvatar er1vbsz0" href="/customer/profile/${customer.id}" style="flex: 0 0 40px;"><span shape="circle" data-e2e="" class="tiktok-tuohvl-SpanAvatarContainer e1e9er4e0" style="width: 40px; height: 40px;"><img loading="lazy" alt="" src="${customer.logo}" class="tiktok-1zpj2q-ImgAvatar"></span></a>
+                        <div class="tiktok-1mf23fd-DivContentContainer e1g2efjf1"><a class="e1g2efjf4 tiktok-fx1avz-StyledLink-StyledUserLinkName er1vbsz0" href="/customer/profile/${customer.id}"><span data-e2e="comment-username-1" class="tiktok-1665s4c-SpanUserNameText e1g2efjf3">${customer.name}</span></a>
                             <p data-e2e="comment-level-1" class="tiktok-xm2h10-PCommentText e1g2efjf6"><span dir="">${inputElement.textContent.trim()}</span></p>
                             <p class="tiktok-1sun2p5-PCommentSubContent e1g2efjf9"><span data-e2e="comment-time-1" class="tiktok-4tru0g-SpanCreatedTime e1g2efjf8">0m ago</span><span aria-label="Reply" role="button" data-e2e="comment-reply-1" tabindex="0" class="tiktok-ro5z69-SpanReplyButton e1g2efjf10">Reply</span></p>
                         </div>

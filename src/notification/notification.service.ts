@@ -84,4 +84,8 @@ export class NotificationService extends BaseService<Notification> {
         // return this.repo.findOne();
     }
 
+    async delete(video) {
+        return await this.repo.delete({ video: video });
+    }
+
 }

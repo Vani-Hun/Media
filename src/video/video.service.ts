@@ -102,7 +102,7 @@ export class VideoService extends BaseService<Video> {
                 const imageBuffer = Buffer.from(base64Data, 'base64');
                 const videoStream = createReadStream(input.video.path);
                 const videoFile = this.firebaseConfig.bucket.file(`videos/${input.video.filename}`);
-                const imageFile = this.firebaseConfig.bucket.file(`thumbnail/${input.video.filename}`);
+                const imageFile = this.firebaseConfig.bucket.file(`thumbnails/${input.video.filename}`);
 
                 const uploadStream = await videoFile.createWriteStream({
                     metadata: {
@@ -363,6 +363,7 @@ export class VideoService extends BaseService<Video> {
         const video = await this.repo.createQueryBuilder('video')
             .leftJoinAndSelect('video.user', 'user')
             .leftJoinAndSelect('video.comments', 'comments')
+            .leftJoinAndSelect('video.hashtags', 'hashtags')
             .leftJoinAndSelect('comments.video', 'commentVideo')
             .leftJoinAndSelect('comments.customer', 'commentCustomer')
             .leftJoinAndSelect('video.likers', 'likers')
@@ -382,10 +383,11 @@ export class VideoService extends BaseService<Video> {
 
         if (video.user.id === input.id) {
             await this.commentService.delete(input.videoId)
+            await this.notificationService.delete(input.videoId)
             await this.repo.remove(video)
             return await this.firebaseConfig.firebaseAdmin.firestore().runTransaction(async () => {
                 await Promise.all([
-                    this.firebaseConfig.firebaseAdmin.storage().bucket().file(`covers/${video.name}`).delete(),
+                    this.firebaseConfig.firebaseAdmin.storage().bucket().file(`thumbnails/${video.name}`).delete(),
                     this.firebaseConfig.firebaseAdmin.storage().bucket().file(`videos/${video.name}`).delete()
                 ])
             })
