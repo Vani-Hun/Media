@@ -2003,7 +2003,20 @@
       cursor: pointer;
   }
 
+  .container.jsx-2459045679 {
+      height: 68px;
+      padding: 20px 30px 10px 24px;
+      display: flex;
+      cursor: pointer;
+      justify-content: space-between;
+  }
+
   .container.jsx-2459045678:hover {
+      background-color: #f0f0f0;
+      cursor: pointer;
+  }
+
+  .container.jsx-2459045679:hover {
       background-color: #f0f0f0;
       cursor: pointer;
   }
