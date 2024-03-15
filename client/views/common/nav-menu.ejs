@@ -334,11 +334,9 @@
     function hideNotifications2() {
         customer.conversations.forEach((conversation, index) => {
             let messages = conversation.messages
-            console.log("messages:", messages)
             messages.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt))
             let lastMessage = messages[conversation.messages.length - 1]
             if (lastMessage) {
-                console.log("lastMessage:", lastMessage)
                 if (lastMessage.user_id !== customer.id && lastMessage.status === null) {
                     numberNotification2.style.display = 'flex'
                 } else {
