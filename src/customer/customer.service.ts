@@ -136,13 +136,23 @@ export class CustomerService extends BaseService<Customer> {
 
   async signUp(input: InputSetAuth, res): Promise<void> {
     try {
-      const existingUser = await this.repo.findOne({
-        where: [{ username: input.username }, { email: input.username }],
-      });
+      const [existingUsername, existingPhoneUser] = await Promise.all([
+        this.repo.findOne({ where: { username: input.username } }),
+        this.repo.findOne({ where: { phone: input.phone } })
+      ]);
 
-      if (!existingUser) {
-        const otp = Math.floor(Math.random() * 1000000).toString();
-        const formattedPhoneNumber = `+84${input.phone.slice(1)}`;
+      if (existingUsername) {
+        throw new HttpException('Your username is already registered.', HttpStatus.CONFLICT);
+      }
+
+      if (existingPhoneUser) {
+        throw new HttpException('Your phone is already registered.', HttpStatus.CONFLICT);
+      }
+
+
+      if (!existingUsername && !existingPhoneUser) {
+        // const otp = Math.floor(Math.random() * 1000000).toString();
+        // const formattedPhoneNumber = `+84${input.phone.slice(1)}`;
         // await this.smsService.sendOtpViaSms(formattedPhoneNumber, otp);
 
         // const hashedOTP = await bcrypt.hash(otp, 10);
@@ -153,8 +163,6 @@ export class CustomerService extends BaseService<Customer> {
         // res.cookie('hashedOTP', hashedOTP, { httpOnly: true, maxAge: 60 * 1000 });
         return res.render('customer/sign-up-otp', { customer: null, message: null });
       }
-
-      throw new HttpException('Your username or email is already registered.', HttpStatus.CONFLICT);
     } catch (error) {
       // Handle the error, log, or rethrow if necessary
       console.error(`Error in signUp: ${error.message}`);
@@ -176,7 +184,7 @@ export class CustomerService extends BaseService<Customer> {
       const newUser = this.repo.create({ ...input });
       const createUser = await this.repo.save(newUser);
       return createUser;
-      // throw new HttpException('Your username or email is already registered.', HttpStatus.CONFLICT);
+      // throw new HttpException('Your username or phone is already registered.', HttpStatus.CONFLICT);
     } catch (error) {
       // Handle the error, log, or rethrow if necessary
       console.error(`Error in signUpOAuth2: ${error.message}`);
@@ -188,8 +196,7 @@ export class CustomerService extends BaseService<Customer> {
 
   async signUpVerify(input) {
     try {
-      return this.repo.save(this.repo.create({ username: input.username, name: `user${input.username}`, password: input.hashedPassword, phone: input.phone }));
-
+      return await this.repo.save(this.repo.create({ username: input.username, name: `user${input.username}`, password: input.hashedPassword, phone: input.phone }));
     } catch (error) {
       throw new HttpException('Error in signUp.', HttpStatus.CONFLICT);
     }
@@ -311,7 +318,7 @@ export class CustomerService extends BaseService<Customer> {
       } else {
         input.id = input.customerId
         const user = await this.getUser(input)
-        return res.render('customer/viewProfile', { customer, user, cursor: "Profile" })
+        return res.render('customer/viewProfile', { customer, user, cursor: null })
       }
     } catch (error) {
       console.error(`Error in getViewProfile: ${error.message}`);

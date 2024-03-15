@@ -88,7 +88,7 @@ export class VideoService extends BaseService<Video> {
     async getUploadVideo(input) {
         try {
             const customer = await this.customerService.getUser(input)
-            return { customer }
+            return { customer, cursor: null }
         } catch (error) {
             console.error(`Error in googleLogin: ${error.message}`);
             throw new HttpException('Internal Server Error', HttpStatus.INTERNAL_SERVER_ERROR);

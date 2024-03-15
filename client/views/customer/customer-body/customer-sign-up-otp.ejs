@@ -187,19 +187,22 @@
 
         if (window.confirmationResult) {
             window.confirmationResult.confirm(otpValue).then(function (result) {
-
                 fetch('/customer/verify-otp', {
                     method: 'POST'
                 })
                     .catch(error => {
+                        hideLoader()
+                        setOtpErrorText("Failed.")
+                        window.location.href = "/customer/sign-up";
                         console.error('Error:', error);
                     });
-
+                const buttonOtp = document.querySelector('.button-otp')
+                buttonOtp.style.display = 'none'
                 setTimeout(() => {
                     showCustomAlert("Success");
-                }, 2000);
-                hideLoader()
+                }, 1000);
                 setTimeout(() => {
+                    hideLoader()
                     window.location.href = "/customer/sign-in";
                 }, 4000);
             }).catch(function (error) {
