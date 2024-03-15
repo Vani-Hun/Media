@@ -307,11 +307,11 @@ export class CustomerService extends BaseService<Customer> {
     try {
       const customer = await this.getUser(input)
       if (input.id === input.customerId) {
-        return res.render('customer/profile', { customer, cursor: null })
+        return res.render('customer/profile', { customer, cursor: "Profile" })
       } else {
         input.id = input.customerId
         const user = await this.getUser(input)
-        return res.render('customer/viewProfile', { customer, user, cursor: null })
+        return res.render('customer/viewProfile', { customer, user, cursor: "Profile" })
       }
     } catch (error) {
       console.error(`Error in getViewProfile: ${error.message}`);

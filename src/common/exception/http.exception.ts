@@ -35,9 +35,10 @@ export class HttpExceptionFilter implements ExceptionFilter {
         return { mess: 'error' }
     }
     if (redirectUrl) {
-      return res.redirect(redirectUrl);
-    } else {
-      return this.render(res, 'error', { error });
+      console.log("redirectUrl:", redirectUrl)
+      //   return res.redirect(redirectUrl);
+      // } else {
+      //   return this.render(res, 'error', { error });
     }
   };
 

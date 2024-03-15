@@ -147,6 +147,12 @@
         if (!tagSpan || !tagSVG) return;
 
         switch (cursor) {
+            case "For You":
+                if (tagSpan.innerText === "For You") {
+                    tagSVG.setAttribute("fill", "rgba(254, 44, 85, 1)");
+                    tagSpan.classList.add('css-35pnuj-SpanMainNavText');
+                }
+                break;
             case "Following":
                 if (tagSpan.innerText === "Following") {
                     tagSVG.setAttribute("fill", "rgba(254, 44, 85, 1)");
@@ -159,8 +165,8 @@
                     tagSpan.classList.add('css-35pnuj-SpanMainNavText');
                 }
                 break;
-            case "For You":
-                if (tagSpan.innerText === "For You") {
+            case "Profile":
+                if (tagSpan.innerText === "Profile") {
                     tagSVG.setAttribute("fill", "rgba(254, 44, 85, 1)");
                     tagSpan.classList.add('css-35pnuj-SpanMainNavText');
                 }
