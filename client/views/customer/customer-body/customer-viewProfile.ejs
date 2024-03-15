@@ -231,7 +231,7 @@
             customAlert.style.display = 'none';
         }, 1500);
     }
-    function updateVolumeIcon(isMuted) {
+    function updateVolumeIcon(isMuted, volumeButton) {
         const svg = volumeButton.querySelector('svg');
         svg.innerHTML = ''
         if (isMuted) {
@@ -1109,9 +1109,9 @@
         volumeButton.addEventListener('click', () => {
             isMuted = !isMuted;
             if (isMuted) {
-                updateVolumeIcon(isMuted)
+                updateVolumeIcon(isMuted, volumeButton)
             } else {
-                updateVolumeIcon(isMuted)
+                updateVolumeIcon(isMuted, volumeButton)
             }
             if (videoPlay) {
                 if (videoPlay.muted) {

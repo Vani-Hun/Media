@@ -240,7 +240,7 @@
 
 
         // for detail video event
-        function updateVolumeIcon(isMuted) {
+        function updateVolumeIcon(isMuted, volumeButton) {
             const svg = volumeButton.querySelector('svg');
             svg.innerHTML = '';
             if (isMuted) {
@@ -887,6 +887,7 @@
             const placeholderDiv = document.getElementById('placeholder-erend');
             const xButton = document.querySelector('.tiktok-yg0pvs-ButtonBasicButtonContainer-StyledCloseIconContainer');
             const volumeButton = document.querySelector('.tiktok-6mttet-ButtonVoiceControlNew');
+            console.log("volumeButton:", volumeButton)
             const threeDot = document.querySelector(".tiktok-q969e7-DivIconWrapper");
             const playIcon = document.getElementById('playIcon');
             const xgwrapper = document.getElementById('xgwrapper-2-7273303434869198082')
@@ -1140,9 +1141,9 @@
             volumeButton.addEventListener('click', () => {
                 isMuted = !isMuted;
                 if (isMuted) {
-                    updateVolumeIcon(isMuted)
+                    updateVolumeIcon(isMuted, volumeButton)
                 } else {
-                    updateVolumeIcon(isMuted)
+                    updateVolumeIcon(isMuted, volumeButton)
                 }
                 if (videoPlay) {
                     if (videoPlay.muted) {
