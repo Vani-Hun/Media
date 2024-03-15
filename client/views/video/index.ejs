@@ -14,7 +14,7 @@
         <%- include("../common/nav-menu.ejs",customer) %>
             <%- include("../common/message.ejs") %>
                 <div class="css-14dcx2q-DivBodyContainer e1irlpdw0">
-                    <%- include("../common/nav-menu-middle.ejs") %>
+                    <%- include("../common/nav-menu-middle.ejs",{ cursor: cursor ? cursor : null }) %>
                         <%- include('./video-body/video-body.ejs',videos) %>
                 </div>
     </div>

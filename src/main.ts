@@ -7,7 +7,7 @@ import * as cookieParser from 'cookie-parser';
 import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
-  const app = await NestFactory.create<NestExpressApplication>(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule, { cors: true });
   app.setBaseViewsDir(viewsFolder);
   app.useStaticAssets(staticFolder);
   app.setViewEngine('ejs');

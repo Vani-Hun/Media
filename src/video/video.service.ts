@@ -267,7 +267,7 @@ export class VideoService extends BaseService<Video> {
                 return isUnique;
             });
             const customer = await this.customerService.getUser(input);
-            return { videos, customer, video: null };
+            return { videos, customer, video: null, cursor: "For You" };
         } catch (error) {
             console.error(`Error in getVideos: ${error.message}`);
             throw new HttpException('Error in getVideos.', HttpStatus.INTERNAL_SERVER_ERROR);
@@ -286,10 +286,6 @@ export class VideoService extends BaseService<Video> {
                 .leftJoinAndSelect('comments.customer', 'customer')
                 .innerJoin('video.hashtags', 'hashtag', 'hashtag.name = :nameHashTag', { nameHashTag: input.nameHashTag })
                 .getMany()
-            // const { videos: videosFollowing, customer: customerFollowing } = await this.getVideosFollowing(input);
-            // let videos = [...publicVideos, ...videosFollowing];
-            // const customer = await this.customerService.getUser(input);
-            // return { videos, customer, video: null };
         } catch (error) {
             console.error(`Error in getVideos: ${error.message}`);
             throw new HttpException('Error in getVideos.', HttpStatus.INTERNAL_SERVER_ERROR);
@@ -307,7 +303,7 @@ export class VideoService extends BaseService<Video> {
                     videos.push(foundVideo);
                 }
             }
-            return { videos, customer, video: null };
+            return { videos, customer, video: null, cursor: "Following" };
         } catch (error) {
             console.error('Error in getVideosFollowing:', error);
             throw new HttpException(`Failed: ${error.message}`, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -323,7 +319,7 @@ export class VideoService extends BaseService<Video> {
                 .map((user) => user.videos.find((video) => video.who === "Public" || video.who === "Friends"))
                 .filter((video) => video !== undefined);
 
-            return { videos: friendVideos, customer, video: null };
+            return { videos: friendVideos, customer, video: null, cursor: "Friends" };
         } catch (error) {
             console.error('Error in getVideosFollowing:', error);
             throw new HttpException(`Failed: ${error.message}`, HttpStatus.INTERNAL_SERVER_ERROR);

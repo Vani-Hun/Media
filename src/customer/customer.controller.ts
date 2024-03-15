@@ -102,7 +102,8 @@ export class CustomerController {
   @UseGuards(CusAuthGuard)
   @Render('customer/setting')
   async getSetting(@Req() request: Request,) {
-    return await this.customerService.getUser(request['user'])
+    const customer = await this.customerService.getUser(request['user'])
+    return { customer }
   }
 
   @Get('log-out')
