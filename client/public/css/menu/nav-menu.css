@@ -823,6 +823,24 @@
     top: -20%;
 }
 
+.css-1g1i6o0-SupBadge2 {
+    color: rgb(255, 255, 255);
+    font-family: TikTokFont, Arial, Tahoma, PingFangSC, sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 18px;
+    left: 16px;
+    background: rgb(255, 59, 92);
+    width: 10px;
+    height: 10px;
+    display: flex;
+    -webkit-box-pack: center;
+    justify-content: center;
+    border-radius: 10px;
+    position: absolute;
+    top: -2%;
+}
+
 .css-2yolk3-StyledLink-StyledLinkVideoCover {
     flex: 0 0 42px;
     width: 42px;
