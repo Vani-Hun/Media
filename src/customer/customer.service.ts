@@ -327,6 +327,12 @@ export class CustomerService extends BaseService<Customer> {
   }
 
   async postProfile(input) {
+    const isExist = await this.repo.createQueryBuilder('customer')
+      .where("customer.username = :username", { username: input.username })
+      .getOne();
+    if (isExist) {
+      throw new HttpException('Username exists.', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
     try {
       let downloadURL;
       let updateData;

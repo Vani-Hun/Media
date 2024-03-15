@@ -398,11 +398,14 @@
             formData.append('username', username);
             formData.append('name', name);
             formData.append('bio', bio);
+
+
             fetch('/customer/profile/update', {
                 method: 'POST',
                 body: formData
             })
                 .then(data => {
+                    console.log("data:", data)
                     hideLoader()
                     window.location.href = `/customer/profile/${customer.id}`
                 })
@@ -410,7 +413,9 @@
                     console.error('Error:', error);
                 });
 
+
         });
+
     });
 </script>
 

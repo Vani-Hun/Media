@@ -32,15 +32,12 @@ export class VideoService extends BaseService<Video> {
     }
 
     async create(url: object, input, res) {
-        console.log("input:", input);
         try {
             let hashtagRegex = /#(\w+)/g;
             let mentionRegex = /@(\w+)/g;
 
             let hashtags = (input.caption.match(hashtagRegex) || []).map(match => match.substring(1));
-            console.log("hashtags:", hashtags)
             let mentions = (input.caption.match(mentionRegex) || []).map(match => match.substring(1));
-            console.log("mentions:", mentions)
             let tags = []
 
             if (hashtags.length > 0) {
@@ -340,7 +337,6 @@ export class VideoService extends BaseService<Video> {
                 .getOne()
 
             if (video.user.id !== input.id && video.who === "Private") {
-                console.log("Private:")
                 video = null
             } else if (video.user.id !== input.id && video.who === "Friends") {
                 const isFollowing = customer.following.some(user => user.id === video.user.id);
