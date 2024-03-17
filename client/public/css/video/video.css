@@ -978,7 +978,7 @@
   }
 
   .tiktok-vy3jtp-AShareLink {
-      display: block;
+      display: none;
       font-size: 0px;
       margin-right: 8px;
   }
@@ -989,7 +989,7 @@
       outline: none;
       padding: 0px;
       position: relative;
-      display: flex;
+      display: none;
       width: 24px;
       height: 24px;
       -webkit-box-pack: center;

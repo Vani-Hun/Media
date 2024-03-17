@@ -339,6 +339,7 @@
         if (text.textContent.trim() !== '') {
             placeHolder.style.display = 'none'
             sendMessage.style.display = 'block'
+
         } else {
             sendMessage.style.display = 'none'
             placeHolder.style.display = 'block'
@@ -370,7 +371,7 @@
                         src="${customer.logo}"
                         class="css-1zpj2q-ImgAvatar e1e9er4e1"></span></a>
             <div class="css-1r46dss-DivTextContainer e9j91382">
-                <p class="css-1rdxtjl-PText e9j91385">${text.textContent.trim()}</p>
+                <p class="css-1rdxtjl-PText e9j91385">${text.textContent}</p>
             </div>
                 <div data-e2e="dm-warning"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em"
                         fill="currentColor" class="css-1b0h12s-StyledIconFail e9j91387">
@@ -438,6 +439,15 @@
         for (let i = 0; i < containers.length; i++) {
             if (containers[i]) {
                 containers[i].style.display = 'flex';
+            }
+        }
+    });
+
+    text.addEventListener('keydown', function (event) {
+        if (event.key === "Enter" && !event.shiftKey) {
+            event.preventDefault(); // Ngăn chặn sự kiện mặc định của Enter (thường là chuyển dòng)
+            if (text.textContent.trim() !== '') {
+                sendMessage.dispatchEvent(new Event('click'));
             }
         }
     });

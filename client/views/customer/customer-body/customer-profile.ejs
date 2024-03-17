@@ -563,7 +563,7 @@
 
         return commentDiv;
     }
-    async function updateVideoDetails(video, commentsCountElement, likeCountElement, commentCountElement, undefinedCountElement, usernameElement, nameElement, daysDifferenceElement, updateTimeDifference, captionElement, avatarImage, videoThumbnail, videoPlay, svgIcon) {
+    async function updateVideoDetails(video, commentsCountElement, likeCountElement, commentCountElement, usernameElement, nameElement, daysDifferenceElement, updateTimeDifference, captionElement, avatarImage, videoThumbnail, videoPlay, svgIcon) {
 
         const replaceHashtagsWithLinks = (match, p1) => {
             const foundHashtag = video.hashtags.find(hashtag => hashtag.name === p1);
@@ -580,7 +580,6 @@
         commentsCountElement.textContent = `Comments (${video.comments.length})`;
         likeCountElement.textContent = video.likes;
         commentCountElement.textContent = video.comments.length;
-        undefinedCountElement.textContent = '0';
         usernameElement.textContent = video.user.username;
         nameElement.textContent = video.user.name;
         daysDifferenceElement.textContent = formatTimeDifference(video.createdAt);;
@@ -590,7 +589,7 @@
         videoPlay.src = `${video.video}`;
         svgIcon.setAttribute('fill', 'rgba(22, 24, 35)');
     }
-    async function updateVideoDetailsNotSouce(video, commentsCountElement, likeCountElement, commentCountElement, undefinedCountElement, usernameElement, nameElement, daysDifferenceElement, updateTimeDifference, captionElement, avatarImage, videoThumbnail) {
+    async function updateVideoDetailsNotSouce(video, commentsCountElement, likeCountElement, commentCountElement, usernameElement, nameElement, daysDifferenceElement, updateTimeDifference, captionElement, avatarImage, videoThumbnail) {
         const replaceHashtagsWithLinks = (match, p1) => {
             const foundHashtag = video.hashtags.find(hashtag => hashtag.name === p1);
             if (foundHashtag) {
@@ -606,7 +605,6 @@
         commentsCountElement.textContent = `Comments (${video.comments.length})`;
         likeCountElement.textContent = video.likes;
         commentCountElement.textContent = video.comments.length;
-        undefinedCountElement.textContent = '0';
         usernameElement.textContent = video.user.username;
         nameElement.textContent = video.user.name;
         daysDifferenceElement.textContent = formatTimeDifference(video.createdAt);;
@@ -862,13 +860,6 @@
                                                 <use xlink:href="#Bubble_Ellipsis_Right_Fill-a497dc09"></use>
                                             </svg></span>
                                         <strong data-e2e="browse-comment-count"
-                                            class="tiktok-w1dlre-StrongText"></strong></button><button type="button"
-                                        class="tiktok-xakz2y-ButtonActionItem e1hk3hf90"><span data-e2e="undefined-icon"
-                                            class="tiktok-3ahw3w-SpanIconWrapper e1hk3hf91"><svg
-                                                xmlns="http://www.w3.org/2000/svg" width="20" height="20"
-                                                fill="currentColor" style="color: rgb(22, 24, 35);">
-                                                <use xlink:href="#uncollect-8a52664d"></use>
-                                            </svg></span><strong data-e2e="undefined-count"
                                             class="tiktok-w1dlre-StrongText"></strong></button>
                                 </div>
                                 <div data-e2e="browse-share-group" class="tiktok-1d39a26-DivFlexCenterRow ehlq8k31"><a
@@ -1225,7 +1216,6 @@
         const likeElement = actionElements.querySelector('[data-e2e="browse-like-icon"]');
         const likeCountElement = divVideo.querySelector('[data-e2e="browse-like-count"]');
         const commentCountElement = actionElements.querySelector('[data-e2e="browse-comment-count"]');
-        const undefinedCountElement = actionElements.querySelector('[data-e2e="undefined-count"]');
         const commentsCountElement = divVideo.querySelector('.tiktok-15wq8g0-DivTabItem');
         const postComment = divVideo.querySelector('.tiktok-n4wkvf-DivPostButton')
         const divCommentList = divVideo.querySelector('.tiktok-1qp5gj2-DivCommentListContainer')
@@ -1259,7 +1249,7 @@
 
         updateLeftArrowDisplay(indexCurrent, leftArrow);
 
-        updateVideoDetails(video, commentsCountElement, likeCountElement, commentCountElement, undefinedCountElement, usernameElement, nameElement, daysDifferenceElement, updateTimeDifference, captionElement, avatarImage, videoThumbnail, videoPlay, svgIcon);
+        updateVideoDetails(video, commentsCountElement, likeCountElement, commentCountElement, usernameElement, nameElement, daysDifferenceElement, updateTimeDifference, captionElement, avatarImage, videoThumbnail, videoPlay, svgIcon);
 
         handleLikeDetail(video.id, svgIcon);
 
@@ -1367,7 +1357,7 @@
 
                         let newVideo = await updateVideo(video)
                         video = await newVideo
-                        await updateVideoDetailsNotSouce(video, commentsCountElement, likeCountElement, commentCountElement, undefinedCountElement, usernameElement, nameElement, daysDifferenceElement, updateTimeDifference, captionElement, avatarImage, videoThumbnail);
+                        await updateVideoDetailsNotSouce(video, commentsCountElement, likeCountElement, commentCountElement, usernameElement, nameElement, daysDifferenceElement, updateTimeDifference, captionElement, avatarImage, videoThumbnail);
                         await updateVideoDataAtIndex(indexCurrent, video);
                     })
                     .catch(error => {
@@ -1483,7 +1473,7 @@
             playIcon.style.display = 'none';
             copyLinkText.innerHTML = `${host}/video/${video.id}`
             removeCommentContainers();
-            updateVideoDetails(video, commentsCountElement, likeCountElement, commentCountElement, undefinedCountElement, usernameElement, nameElement, daysDifferenceElement, updateTimeDifference, captionElement, avatarImage, videoThumbnail, videoPlay, svgIcon);
+            updateVideoDetails(video, commentsCountElement, likeCountElement, commentCountElement, usernameElement, nameElement, daysDifferenceElement, updateTimeDifference, captionElement, avatarImage, videoThumbnail, videoPlay, svgIcon);
             handleLikeDetail(video.id, svgIcon);
             updateLeftArrowDisplay(indexCurrent, leftArrow);
             appendCommentsToContainer(video.comments, divCommentList);
@@ -1503,7 +1493,7 @@
                 copyLinkText.innerHTML = `${host}/video/${video.id}`
                 removeCommentContainers();
                 updateLeftArrowDisplay(indexCurrent, leftArrow);
-                updateVideoDetails(video, commentsCountElement, likeCountElement, commentCountElement, undefinedCountElement, usernameElement, nameElement, daysDifferenceElement, updateTimeDifference, captionElement, avatarImage, videoThumbnail, videoPlay, svgIcon);
+                updateVideoDetails(video, commentsCountElement, likeCountElement, commentCountElement, usernameElement, nameElement, daysDifferenceElement, updateTimeDifference, captionElement, avatarImage, videoThumbnail, videoPlay, svgIcon);
                 handleLikeDetail(video.id, svgIcon);
                 appendCommentsToContainer(video.comments, divCommentList);
                 updateURL(`/video/${video.id}`, null, 'replace');
