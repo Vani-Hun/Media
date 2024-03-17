@@ -325,7 +325,7 @@ export class VideoService extends BaseService<Video> {
 
     async getVideoById(input) {
         try {
-            const { videos, customer } = await this.getVideos(input)
+            let { videos, customer } = await this.getVideos(input)
             let video = await this.repo.createQueryBuilder('video')
                 .where('video.id  = :id', { id: input.videoId })
                 .orderBy('video.createdAt', 'DESC')
@@ -345,7 +345,16 @@ export class VideoService extends BaseService<Video> {
                     video = null
                 }
             }
-            return { video, videos, customer }
+            const uniqueVideoIds = new Set<string>();
+            uniqueVideoIds.add(video.id)
+            videos = videos.filter(video2 => {
+                const isUnique = !uniqueVideoIds.has(video2.id);
+                uniqueVideoIds.add(video2.id);
+                return isUnique;
+            });
+
+
+            return { video, videos, customer, cursor: "For You" }
         } catch (error) {
             throw new HttpException(`Failed: ${error.message}`, HttpStatus.INTERNAL_SERVER_ERROR);
         }
