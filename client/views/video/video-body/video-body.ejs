@@ -472,11 +472,16 @@
                 commentContainer.remove();
             });
         }
-        function appendCommentsToContainer(comments, container) {
+        function appendCommentsToContainer(video, comments, container, divBottomCommentContainer) {
             comments.forEach(comment => {
                 const commentElement = createCommentElement(comment);
                 container.appendChild(commentElement);
             });
+            if (!video.allowComment) {
+                divBottomCommentContainer.style.display = 'none'
+            } else {
+                divBottomCommentContainer.style.display = 'block'
+            }
         }
         function updateVideoURL(url, type) {
             if (type === 'push') {
@@ -878,7 +883,6 @@
             const placeholderDiv = document.getElementById('placeholder-erend');
             const xButton = document.querySelector('.tiktok-yg0pvs-ButtonBasicButtonContainer-StyledCloseIconContainer');
             const volumeButton = document.querySelector('.tiktok-6mttet-ButtonVoiceControlNew');
-            console.log("volumeButton:", volumeButton)
             const threeDot = document.querySelector(".tiktok-q969e7-DivIconWrapper");
             const playIcon = document.getElementById('playIcon');
             const xgwrapper = document.getElementById('xgwrapper-2-7273303434869198082')
@@ -911,7 +915,7 @@
             const followButton = divFollowButton.querySelector('button')
             const changeButton = document.querySelector('.tiktok-1djnsui-ButtonLabel')
             let indexCurrent = sessionStorage.getItem('indexCurrent');
-
+            const divBottomCommentContainer = document.querySelector('.tiktok-19hqadz-DivBottomCommentContainer')
             let isMuted = false
             const divRigtVideo = divVideo.querySelector('.tiktok-1tunefa-DivVideoContainer')
             let isScrolling;
@@ -941,7 +945,7 @@
 
             removeCommentContainers();
 
-            appendCommentsToContainer(video.comments, divCommentList);
+            appendCommentsToContainer(video, video.comments, divCommentList, divBottomCommentContainer)
 
             followButton.addEventListener("click", () => {
                 if (changeButton.innerHTML === "Follow") {
@@ -1193,7 +1197,7 @@
                 handleFollowDetail(video.user.id, followButton, changeButton);
                 handleLikeDetail(video.id, svgIcon);
                 updateLeftArrowDisplay(indexCurrent, leftArrow);
-                appendCommentsToContainer(video.comments, divCommentList);
+                appendCommentsToContainer(video, video.comments, divCommentList, divBottomCommentContainer)
                 updateVideoURL(`/video/${video.id}`, 'replace');
                 updateCustomer()
             });
@@ -1212,7 +1216,7 @@
                     updateVideoDetails(video, commentsCountElement, likeCountElement, commentCountElement, usernameElement, nameElement, daysDifferenceElement, updateTimeDifference, captionElement, avatarImage, videoThumbnail, videoPlay, svgIcon);
                     handleFollowDetail(video.user.id, followButton, changeButton);
                     handleLikeDetail(video.id, svgIcon);
-                    appendCommentsToContainer(video.comments, divCommentList);
+                    appendCommentsToContainer(video, video.comments, divCommentList, divBottomCommentContainer)
                     updateVideoURL(`/video/${video.id}`, 'replace');
                     updateCustomer()
                 }

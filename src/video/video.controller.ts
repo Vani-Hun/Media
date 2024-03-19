@@ -60,11 +60,18 @@ export class VideoController {
         return await this.videoService.getVideos(req['user'])
     }
 
+    @Get('search')
+    @UseGuards(CusAuthGuard)
+    @Render('video/index')
+    async getVideosFromKeyword(@Query('keyword') keyword: string, @Req() req: Request): Promise<any> {
+        req['user'] = { ...req['user'], keyword };
+        return await this.videoService.getVideosFromKeyword(req['user']);
+    }
+
     @Get(':videoId')
     @UseGuards(CusAuthGuard)
     @Render('video/index')
     async getVideoById(@Param('videoId') videoId: string, @Req() req: Request) {
-        console.log("videoId:", videoId)
         req['user'] = { ...req['user'], videoId }
         return await this.videoService.getVideoById(req['user'])
     };
@@ -75,6 +82,7 @@ export class VideoController {
         req['user'] = { ...req['user'], videoId }
         return await this.videoService.getVideoById(req['user'])
     }
+
     @Post('view/:videoId')
     @UseGuards(CusAuthGuard)
     async viewVideo(@Param('videoId') videoId: string, @Req() req: Request) {

@@ -307,6 +307,27 @@ export class VideoService extends BaseService<Video> {
         }
     };
 
+    async getVideosFromKeyword(input) {
+        try {
+            const videos = await this.repo.createQueryBuilder('video')
+                .innerJoinAndSelect('video.user', 'user')
+                .leftJoinAndSelect('video.likers', 'likers')
+                .leftJoinAndSelect('video.comments', 'comments')
+                .leftJoinAndSelect('video.hashtags', 'hashtags')
+                .leftJoinAndSelect('comments.customer', 'customer')
+                .where('video.who = :who', { who: 'Public' })
+                .andWhere('user.id <> :userId', { userId: input.id })
+                .andWhere('(video.caption LIKE :caption OR hashtags.name LIKE :hashtags)', { caption: `%${input.keyword}%`, hashtags: `%${input.keyword}%` })
+                .orderBy('video.createdAt', 'DESC')
+                .getMany();
+            const customer = await this.customerService.getUser(input);
+            return { videos, customer, video: null, cursor: "For You" };
+        } catch (error) {
+            console.error('Error in getVideosFollowing:', error);
+            throw new HttpException(`Failed: ${error.message}`, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    };
+
     async getVideosFriends(input) {
         try {
             const customer = await this.customerService.getUserWithFollowingVideos(input);
