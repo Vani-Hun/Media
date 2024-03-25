@@ -13,8 +13,7 @@ import { CommentService } from 'src/comment/comment.service';
 import { NotificationService } from 'src/notification/notification.service';
 const { getStorage, getDownloadURL } = require('firebase-admin/storage');
 import { NotificationMess, NotificationType } from 'src/notification/notitfication.entity';
-// Imports the Google Cloud Video Intelligence library
-import { v1 as videoIntelligence } from '@google-cloud/video-intelligence';
+
 
 @Injectable()
 export class VideoService extends BaseService<Video> {
@@ -97,101 +96,53 @@ export class VideoService extends BaseService<Video> {
     }
     async uploadVideo(input) {
         try {
-            const uploadFirebase = await this.firebaseConfig.firebaseAdmin.firestore().runTransaction(async (transaction) => {
-                const base64Data = input.image.replace(/^data:image\/jpeg;base64,/, '');
-                const imageBuffer = Buffer.from(base64Data, 'base64');
-                const videoStream = createReadStream(input.video.path);
-                const videoFile = this.firebaseConfig.bucket.file(`videos/${input.video.filename}`);
-                const imageFile = this.firebaseConfig.bucket.file(`thumbnails/${input.video.filename}`);
+            const base64Data = input.image.replace(/^data:image\/jpeg;base64,/, '');
+            const imageBuffer = Buffer.from(base64Data, 'base64');
+            const videoStream = createReadStream(input.video.path);
+            const videoFile = this.firebaseConfig.bucket.file(`videos/${input.video.filename}`);
+            const imageFile = this.firebaseConfig.bucket.file(`thumbnails/${input.video.filename}`);
 
-                const uploadStream = await videoFile.createWriteStream({
-                    metadata: {
-                        contentType: 'video/mp4',
-                    },
-                });
-                await Promise.all([
-                    new Promise((resolve, reject) => {
-                        videoStream.pipe(uploadStream)
-                            .on('finish', resolve)
-                            .on('error', reject);
-                    }),
-                    imageFile.save(imageBuffer, {
-                        metadata: {
-                            contentType: 'image/jpeg',
-                        },
-                    }),
-                ]);
-
-                await uploadStream.end();
-
-                const [imgRef, fileRef] = await Promise.all([
-                    getStorage().bucket(`${this.firebaseConfig.bucket.name}`).file(`${imageFile.name}`),
-                    getStorage().bucket(`${this.firebaseConfig.bucket.name}`).file(`${videoFile.name}`),
-                ]);
-                const [imageURL, videoURL] = await Promise.all([
-                    getDownloadURL(imgRef),
-                    getDownloadURL(fileRef),
-                ]);
-                return { imageURL, videoURL };
+            const uploadStream = await videoFile.createWriteStream({
+                metadata: {
+                    contentType: 'video/mp4',
+                },
             });
 
+            await new Promise((resolve, reject) => {
+                videoStream.pipe(uploadStream)
+                    .on('finish', resolve)
+                    .on('error', reject);
+            });
 
+            const [imgRef, fileRef] = await Promise.all([
+                getStorage().bucket(this.firebaseConfig.bucket.name).file(imageFile.name),
+                getStorage().bucket(this.firebaseConfig.bucket.name).file(videoFile.name),
+            ]);
+
+            await Promise.all([
+                imageFile.save(imageBuffer, {
+                    metadata: {
+                        contentType: 'image/jpeg',
+                    },
+                }),
+                uploadStream.end(),
+            ]);
+
+            const [imageURL, videoURL] = await Promise.all([
+                getDownloadURL(imgRef),
+                getDownloadURL(fileRef),
+            ]);
 
             await this.clearTmp(input.video.path);
-            if (uploadFirebase) {
-                console.log("request: any.uploadFirebase.videoURL:", uploadFirebase.videoURL)
-                const client = new videoIntelligence.VideoIntelligenceServiceClient();
 
-                const request: any = {
-                    inputUri: uploadFirebase.videoURL,
-                    features: ['EXPLICIT_CONTENT_DETECTION'],
-                };
-
-
-                const likelihoods = [
-                    'UNKNOWN',
-                    'VERY_UNLIKELY',
-                    'UNLIKELY',
-                    'POSSIBLE',
-                    'LIKELY',
-                    'VERY_LIKELY',
-                ];
-
-                const [operation] = await client.annotateVideo(request).then(data => data);
-
-                console.log('Waiting for operation to complete...');
-                const [operationResult] = await operation.promise();
-
-                const explicitContentResults = await
-                    operationResult.annotationResults[0].explicitAnnotation;
-                console.log('Explicit annotation results:');
-                await explicitContentResults.frames.forEach(result => {
-                    if (result.timeOffset === undefined) {
-                        result.timeOffset = {};
-                    }
-                    if (result.timeOffset.seconds === undefined) {
-                        result.timeOffset.seconds = 0;
-                    }
-                    if (result.timeOffset.nanos === undefined) {
-                        result.timeOffset.nanos = 0;
-                    }
-                    console.log(
-                        `\tTime: ${result.timeOffset.seconds}` +
-                        `.${(result.timeOffset.nanos / 1e6).toFixed(0)}s`
-                    );
-                    console.log(
-                        `\t\tPornography likelihood: ${likelihoods[result.pornographyLikelihood]}`
-                    );
-                });
-
-                return uploadFirebase
-            }
+            return { imageURL, videoURL };
         } catch (error) {
-            console.log("error:", error)
+            console.log("error:", error);
             await this.clearTmp(input.video.path);
-            throw new HttpException(`Failed to upload video: ${error.message}`, HttpStatus.INTERNAL_SERVER_ERROR)
+            throw new HttpException(`Failed to upload video: ${error.message}`, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
 
     async update(input) {
         try {
