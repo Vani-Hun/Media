@@ -6,6 +6,7 @@ import { Response } from 'express';
 import { Request } from 'express';
 import { AuthGuard } from '@nestjs/passport';
 import { VideoService } from './video.service';
+import * as fs from 'fs';
 
 @Controller('video')
 export class VideoController {

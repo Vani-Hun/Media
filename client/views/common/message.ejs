@@ -174,7 +174,7 @@
         )
     }
 
-    function handleTabClick(divItemWrappers, divItemWrapper) {
+    function handleTabClickMess(divItemWrappers, divItemWrapper) {
         const spanNewMessage = document.querySelectorAll('.css-62oc03-SpanNewMessage')
         divItemWrappers.forEach(divItemWrapper => {
             divItemWrapper.classList = 'css-1gs3mwd-DivItemWrapper'
@@ -278,7 +278,7 @@
         divItemWrappers.forEach((div, index) => {
             div.addEventListener('click', function () {
                 indexCurrentContact = index
-                handleTabClick(divItemWrappers, this);
+                handleTabClickMess(divItemWrappers, this);
                 divDivChatHeader.style.display = 'flex'
                 divChatMain.style.display = 'flex'
                 divDivChatHeader.innerHTML = renderDivDivChatHeader(conversations[index])

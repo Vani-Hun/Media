@@ -13,6 +13,9 @@ import { CommentService } from 'src/comment/comment.service';
 import { NotificationService } from 'src/notification/notification.service';
 const { getStorage, getDownloadURL } = require('firebase-admin/storage');
 import { NotificationMess, NotificationType } from 'src/notification/notitfication.entity';
+// Imports the Google Cloud Video Intelligence library
+import { v1 as videoIntelligence } from '@google-cloud/video-intelligence';
+
 @Injectable()
 export class VideoService extends BaseService<Video> {
     constructor(@Inject('FIREBASE_CONFIG') protected readonly firebaseConfig,
@@ -131,11 +134,60 @@ export class VideoService extends BaseService<Video> {
                 ]);
                 return { imageURL, videoURL };
             });
+
+
+
             await this.clearTmp(input.video.path);
             if (uploadFirebase) {
+                console.log("request: any.uploadFirebase.videoURL:", uploadFirebase.videoURL)
+                const client = new videoIntelligence.VideoIntelligenceServiceClient();
+
+                const request: any = {
+                    inputUri: uploadFirebase.videoURL,
+                    features: ['EXPLICIT_CONTENT_DETECTION'],
+                };
+
+
+                const likelihoods = [
+                    'UNKNOWN',
+                    'VERY_UNLIKELY',
+                    'UNLIKELY',
+                    'POSSIBLE',
+                    'LIKELY',
+                    'VERY_LIKELY',
+                ];
+
+                const [operation] = await client.annotateVideo(request).then(data => data);
+
+                console.log('Waiting for operation to complete...');
+                const [operationResult] = await operation.promise();
+
+                const explicitContentResults = await
+                    operationResult.annotationResults[0].explicitAnnotation;
+                console.log('Explicit annotation results:');
+                await explicitContentResults.frames.forEach(result => {
+                    if (result.timeOffset === undefined) {
+                        result.timeOffset = {};
+                    }
+                    if (result.timeOffset.seconds === undefined) {
+                        result.timeOffset.seconds = 0;
+                    }
+                    if (result.timeOffset.nanos === undefined) {
+                        result.timeOffset.nanos = 0;
+                    }
+                    console.log(
+                        `\tTime: ${result.timeOffset.seconds}` +
+                        `.${(result.timeOffset.nanos / 1e6).toFixed(0)}s`
+                    );
+                    console.log(
+                        `\t\tPornography likelihood: ${likelihoods[result.pornographyLikelihood]}`
+                    );
+                });
+
                 return uploadFirebase
             }
         } catch (error) {
+            console.log("error:", error)
             await this.clearTmp(input.video.path);
             throw new HttpException(`Failed to upload video: ${error.message}`, HttpStatus.INTERNAL_SERVER_ERROR)
         }
@@ -262,7 +314,7 @@ export class VideoService extends BaseService<Video> {
                 const isUnique = !uniqueVideoIds.has(video.id);
                 uniqueVideoIds.add(video.id);
                 return isUnique;
-            });
+            })
             const customer = await this.customerService.getUser(input);
             return { videos, customer, video: null, cursor: "For You" };
         } catch (error) {
@@ -309,7 +361,7 @@ export class VideoService extends BaseService<Video> {
 
     async getVideosFromKeyword(input) {
         try {
-            const videos = await this.repo.createQueryBuilder('video')
+            let videos = await this.repo.createQueryBuilder('video')
                 .innerJoinAndSelect('video.user', 'user')
                 .leftJoinAndSelect('video.likers', 'likers')
                 .leftJoinAndSelect('video.comments', 'comments')
@@ -321,7 +373,20 @@ export class VideoService extends BaseService<Video> {
                 .orderBy('video.createdAt', 'DESC')
                 .getMany();
             const customer = await this.customerService.getUser(input);
-            return { videos, customer, video: null, cursor: "For You" };
+            if (videos.length === 0) {
+                videos = await this.repo.createQueryBuilder('video')
+                    .where('video.who = :who', { who: 'Public' })
+                    .andWhere('user.id  <> :userId', { userId: input.id })
+                    .orderBy('video.createdAt', 'DESC')
+                    .leftJoinAndSelect('video.user', 'user')
+                    .leftJoinAndSelect('video.likers', 'likers')
+                    .leftJoinAndSelect('video.comments', 'comments')
+                    .leftJoinAndSelect('video.hashtags', 'hashtags')
+                    .leftJoinAndSelect('comments.video', 'video2')
+                    .leftJoinAndSelect('comments.customer', 'customer')
+                    .getMany()
+            }
+            return { videos, customer, video: null, cursor: null };
         } catch (error) {
             console.error('Error in getVideosFollowing:', error);
             throw new HttpException(`Failed: ${error.message}`, HttpStatus.INTERNAL_SERVER_ERROR);

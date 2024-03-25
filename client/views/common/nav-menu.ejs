@@ -159,7 +159,7 @@
 <script type="text/javascript">
 
     let customer = JSON.parse('<%- JSON.stringify(customer) %>');
-    console.log(customer)
+    console.log("customer:", customer)
     const host = "<%= process.env.ORIGIN %>"
     const socket = io(host);
     const navMenu = document.querySelector('.nav-menu');

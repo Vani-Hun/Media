@@ -90,7 +90,7 @@ export class CustomerController {
   }
 
   @Get('sign-in')
-  @Render('customer/index')
+  @Render('customer/sign-in')
   getSignin(@Query('error') error: string) {
     if (error) {
       return { message: error, customer: null };
