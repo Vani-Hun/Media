@@ -1,4 +1,4 @@
-<div id="main-content-messages" style="display: none;" class="css-ppjb4t-DivLayout e1bs9h2k0">
+<div id="main-content-messages" class="css-ppjb4t-DivLayout e1bs9h2k0">
     <div mode="0" class="css-14y9fbm-DivConversationListContainer e1axnl2b0">
         <div tabindex="0" role="button" aria-label="Back" data-e2e="back-btn"
             class="css-1jkodm9-DivBackIconContainer e1axnl2b1"><svg width="20" data-e2e="" height="20"
@@ -85,7 +85,11 @@
     </div>
 </div>
 
+<script src="/socket.io/socket.io.js"></script>
 <script>
+    const host = "<%= process.env.ORIGIN %>"
+    const socket = io(host);
+    let admin = JSON.parse('<%- JSON.stringify(admin) %>');
     const mainMessages = document.getElementById('main-content-messages')
     const divScrollMessage = document.querySelector('.css-149gota-DivScrollMessage')
     const divChatBox = document.querySelector('.css-d0yksp-DivChatBox')
@@ -97,7 +101,7 @@
     let inputElement = divChatBox.querySelector('.DraftEditor-editorContainer');
     let sendMessage = divChatBox.querySelector('.css-d7yhdo-StyledSendButton')
     const divBackIconContainer = document.querySelector('.css-1jkodm9-DivBackIconContainer')
-
+    socket.emit('userConnected', { userId: null, customerId: admin.id });
     let conversations
     let indexCurrentContact
     function renderContact(conversations) {
@@ -109,25 +113,21 @@
             let messages = conversation.messages
             messages.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt))
             let lastMessage = messages[conversation.messages.length - 1]
-            let user = conversation.user_id ? conversation.user_id : conversation.admin_id;
-
             let participant = conversation.participant_id
             let divContact
-            if (user.id === customer.id) {
-                user = participant
-            }
+
             divContact = `
     <div id="more-acton-icon-0" tabindex="0" data-e2e="chat-list-item" class="css-1gs3mwd-DivItemWrapper">
         <div class="css-7d6k4j-DivItemInfo eii3f6d4">
             <div class="css-bvlt9t-DivInfoAvatarWrapper eii3f6d5"><span shape="circle" data-e2e=""
                     class="eii3f6d6 css-16n5gb9-SpanAvatarContainer-StyledAvatar e1e9er4e0"
                     style="width: 56px; height: 56px;"><img loading="lazy" alt=""
-                        src="${user.logo}"
+                        src="${participant.logo}"
                         class="css-1zpj2q-ImgAvatar e1e9er4e1"></span>
                 <div class="css-4gp65x-DivInfoAvatarMask eii3f6d7"></div>
             </div>
             <div class="css-hqqyyv-DivInfoTextWrapper eii3f6d8">
-                <p class="css-2tydh5-PInfoNickname eii3f6d9">${user.name}</p>
+                <p class="css-2tydh5-PInfoNickname eii3f6d9">${participant.name}</p>
             </div>
         </div>
         <span style="display:none" class="css-62oc03-SpanNewMessage"></span>
@@ -141,19 +141,19 @@
     </div>
         `
             if (lastMessage) {
-                if (lastMessage.user_id !== customer.id && lastMessage.status === null) {
+                if (lastMessage.user_id !== admin.id && lastMessage.status === null) {
                     divContact = `
     <div id="more-acton-icon-0" tabindex="0" data-e2e="chat-list-item" class="css-1gs3mwd-DivItemWrapper">
         <div class="css-7d6k4j-DivItemInfo eii3f6d4">
             <div class="css-bvlt9t-DivInfoAvatarWrapper eii3f6d5"><span shape="circle" data-e2e=""
                     class="eii3f6d6 css-16n5gb9-SpanAvatarContainer-StyledAvatar e1e9er4e0"
                     style="width: 56px; height: 56px;"><img loading="lazy" alt=""
-                        src="${user.logo}"
+                        src="${participant.logo}"
                         class="css-1zpj2q-ImgAvatar e1e9er4e1"></span>
                 <div class="css-4gp65x-DivInfoAvatarMask eii3f6d7"></div>
             </div>
             <div class="css-hqqyyv-DivInfoTextWrapper eii3f6d8">
-                <p class="css-2tydh5-PInfoNickname eii3f6d9">${user.name}</p>
+                <p class="css-2tydh5-PInfoNickname eii3f6d9">${participant.name}</p>
             </div>
         </div>
         <span class="css-62oc03-SpanNewMessage"></span>
@@ -194,16 +194,9 @@
     }
 
     function renderDivDivChatHeader(conversation) {
-        let user = conversation.user_id ? conversation.user_id : conversation.admin_id;
-
         let participant = conversation.participant_id
-        if (user.id !== customer.id) {
-            participant = user
 
-        }
-        let divHeader
-        if (participant.permission === "admin") {
-            divHeader = `
+        let divHeader = `
 <div tabindex="0" role="link" aria-label="${participant.name} profile"
     class="css-py020d-DivChatHeaderContentWrapper ediam1h2"><a target="_blank" rel="opener" tabindex="-1"
         aria-label="${participant.name} profile" class="css-1qxabns-StyledLink ediam1h8" ><span
@@ -218,23 +211,7 @@
 </div>
     </a></div>
 `
-        } else {
-            divHeader = `
-<div tabindex="0" role="link" aria-label="${participant.name} profile"
-    class="css-py020d-DivChatHeaderContentWrapper ediam1h2"><a target="_blank" rel="opener" tabindex="-1"
-        aria-label="${participant.name} profile" class="css-1qxabns-StyledLink ediam1h8" href="/customer/profile/${participant.id}"><span
-            shape="circle" data-e2e="top-chat-avatar" class="css-tuohvl-SpanAvatarContainer e1e9er4e0"
-            style="width: 48px; height: 48px;"><img loading="lazy" alt=""
-                src="${participant.logo}"
-                class="css-1zpj2q-ImgAvatar e1e9er4e1"></span></a><a target="_blank" rel="opener" tabindex="-1"
-        aria-label="Hùng Nguyễn23652’s profile" class="css-1qxabns-StyledLink ediam1h8" href="/customer/profile/${participant.id}">
-        <div class="css-mfs62b-DivNameContainer ediam1h3">
-    <p data-e2e="chat-nickname" class="css-jqv74s-PNickname ediam1h4">${participant.name}</p>
-    <p data-e2e="chat-uniqueid" class="css-1nlqpbq-PUniqueId ediam1h5">${participant.username}</p>
-</div>
-    </a></div>
-`
-        }
+
 
         return divHeader
     }
@@ -255,21 +232,15 @@
         for (let message of messages) {
             const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
             const formattedDate = new Date(message.createdAt).toLocaleDateString(undefined, options);
-            let logo = customer.logo
-            let userId = customer.id
+            let logo = admin.logo
             let divMessageContainer = 'css-101150x-DivMessageContainer'
-            let admin = false
-            let divMessage
-            if (message.user_id !== customer.id) {
+
+            if (message.user_id !== admin.id) {
                 divMessageContainer = 'css-qkrs52-DivMessageContainer'
-                userId = user.id
-                logo = message.user_id === participant.id ? participant.logo : user.logo
+                logo = participant.logo
             }
-            if (message.user_id === "1") {
-                admin = true
-            }
-            if (admin) {
-                divMessage = `
+
+            let divMessage = `
 <div class="css-okl125-DivChatMainContent ediam1h24">
     <div class="css-1jzidcu-DivTimeContainer ediam1h7"><span tabindex="0">${formattedDate}</span></div>
     <div data-e2e="chat-item" class="css-ca9jkb-DivChatItemWrapper e9j91380">
@@ -294,33 +265,6 @@
     </div>
 </div>
 `
-            } else {
-                divMessage = `
-<div class="css-okl125-DivChatMainContent ediam1h24">
-    <div class="css-1jzidcu-DivTimeContainer ediam1h7"><span tabindex="0">${formattedDate}</span></div>
-    <div data-e2e="chat-item" class="css-ca9jkb-DivChatItemWrapper e9j91380">
-        <div tabindex="0" class="${divMessageContainer}"><a tabindex="-1"
-                class="css-22xkqc-StyledLink er1vbsz0" href="/customer/profile/${userId}"><span shape="circle"
-                    data-e2e="chat-avatar" class="css-tuohvl-SpanAvatarContainer e1e9er4e0"
-                    style="width: 32px; height: 32px;"><img loading="lazy" alt=""
-                        src="${logo}"
-                        class="css-1zpj2q-ImgAvatar e1e9er4e1"></span></a>
-            <div class="css-1r46dss-DivTextContainer e9j91382">
-                <p class="css-1rdxtjl-PText e9j91385">${message.text}</p>
-            </div>
-            <div data-e2e="dm-warning"></div>
-            <div tabindex="0" role="button" aria-haspopup="true" aria-expanded="false"
-                class="css-1v4ad6m-DivIconMore e9j91388"><svg width="24" data-e2e="" height="24" viewBox="0 0 48 48"
-                    fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                    <path fill-rule="evenodd" clip-rule="evenodd"
-                        d="M4 24C4 21.7909 5.79086 20 8 20C10.2091 20 12 21.7909 12 24C12 26.2091 10.2091 28 8 28C5.79086 28 4 26.2091 4 24ZM20 24C20 21.7909 21.7909 20 24 20C26.2091 20 28 21.7909 28 24C28 26.2091 26.2091 28 24 28C21.7909 28 20 26.2091 20 24ZM36 24C36 21.7909 37.7909 20 40 20C42.2091 20 44 21.7909 44 24C44 26.2091 42.2091 28 40 28C37.7909 28 36 26.2091 36 24Z">
-                    </path>
-                </svg></div>
-        </div>
-    </div>
-</div>
-`
-            }
 
             divMessages += divMessage
         }
@@ -352,7 +296,7 @@
             if (!data) {
                 const newContact = {
                     participant_id: input,
-                    user_id: customer,
+                    user_id: admin,
                     messages: []
                 }
                 conversations.unshift(newContact)
@@ -362,10 +306,10 @@
         });
     }
 
-    function updateMessages(input) {
+    function updateMessagesAdmin(input) {
         return new Promise((resolve, reject) => {
-            socket.emit('updateMessages', { id: customer.id }, (err) => err ? reject(err) : null);
-            socket.on('updateMessages', (data) => {
+            socket.emit('updateMessagesAdmin', { id: admin.id }, (err) => err ? reject(err) : null);
+            socket.on('updateMessagesAdmin', (data) => {
                 conversations = data;
                 if (input) {
                     conversations.push(input);
@@ -379,7 +323,7 @@
 
     socket.on('sendMessage', async (data) => {
         try {
-            await updateMessages(null);
+            await updateMessagesAdmin(null);
             let convo = await renderDivChatMain(conversations[indexCurrentContact]);
             divChatMain.innerHTML = convo ? convo : '';
             divChatMain.scrollTop = divChatMain.scrollHeight;
@@ -388,7 +332,7 @@
         }
     });
 
-    updateMessages(null);
+    updateMessagesAdmin(null);
 
     text.addEventListener('input', function () {
         if (text.textContent.trim() !== '') {
@@ -406,12 +350,9 @@
         const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
         const formattedDate = new Date(today).toLocaleDateString(undefined, options);
         const divChatHeaderContentWrapper = document.querySelector('.css-py020d-DivChatHeaderContentWrapper a')
-        let receiver = conversations[indexCurrentContact].user_id ? conversations[indexCurrentContact].user_id : conversations[indexCurrentContact].admin_id
+        let receiver = conversations[indexCurrentContact].participant_id
         let receiverId = receiver.id
-        if (receiver.id === customer.id) {
-            receiverId = conversations[indexCurrentContact].participant_id.id
-        }
-        socket.emit('sendMessage', { senderId: customer.id, receiverId: receiverId, text: text.textContent.trim() }, (data, err) => {
+        socket.emit('adminSendMessage', { senderId: admin.id, receiverId: receiverId, text: text.textContent.trim() }, (data, err) => {
             let divMess
             if (err) {
                 divMess = `
@@ -419,10 +360,10 @@
     <div class="css-1jzidcu-DivTimeContainer ediam1h7"><span tabindex="0">${formattedDate}</span></div>
     <div data-e2e="chat-item" class="css-ca9jkb-DivChatItemWrapper e9j91380">
         <div tabindex="0" class="css-101150x-DivMessageContainer"><a tabindex="-1"
-                class="css-22xkqc-StyledLink er1vbsz0" href="/customer/profile/${customer.id}"><span shape="circle"
+                class="css-22xkqc-StyledLink er1vbsz0" href="/customer/profile/${admin.id}"><span shape="circle"
                     data-e2e="chat-avatar" class="css-tuohvl-SpanAvatarContainer e1e9er4e0"
                     style="width: 32px; height: 32px;"><img loading="lazy" alt=""
-                        src="${customer.logo}"
+                        src="${admin.logo}"
                         class="css-1zpj2q-ImgAvatar e1e9er4e1"></span></a>
             <div class="css-1r46dss-DivTextContainer e9j91382">
                 <p class="css-1rdxtjl-PText e9j91385">${text.textContent}</p>
@@ -450,10 +391,10 @@
     <div class="css-1jzidcu-DivTimeContainer ediam1h7"><span tabindex="0">${formattedDate}</span></div>
     <div data-e2e="chat-item" class="css-ca9jkb-DivChatItemWrapper e9j91380">
         <div tabindex="0" class="css-101150x-DivMessageContainer"><a tabindex="-1"
-                class="css-22xkqc-StyledLink er1vbsz0" href="/customer/profile/${customer.id}"><span shape="circle"
+                class="css-22xkqc-StyledLink er1vbsz0" href="/customer/profile/${admin.id}"><span shape="circle"
                     data-e2e="chat-avatar" class="css-tuohvl-SpanAvatarContainer e1e9er4e0"
                     style="width: 32px; height: 32px;"><img loading="lazy" alt=""
-                        src="${customer.logo}"
+                        src="${admin.logo}"
                         class="css-1zpj2q-ImgAvatar e1e9er4e1"></span></a>
             <div class="css-1r46dss-DivTextContainer e9j91382">
                 <p class="css-1rdxtjl-PText e9j91385">${text.textContent.trim()}</p>
@@ -476,7 +417,7 @@
             text.textContent = ''
             sendMessage.style.display = 'none'
             placeHolder.style.display = 'block'
-            updateMessages(null)
+            updateMessagesAdmin(null)
         });
     });
 

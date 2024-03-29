@@ -13,9 +13,7 @@ import { AdminService } from './admin.service';
   imports: [
     TypeOrmModule.forFeature([Admin]),
     forwardRef(() => CommonModule),
-    HomeModule,
-    CustomerModule,
-    MulterModule.register({ storage }),
+    forwardRef(() => CustomerModule),
   ],
   controllers: [AdminController],
   providers: [AdminService],

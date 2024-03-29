@@ -4,9 +4,14 @@ import { Column, Entity, OneToMany, ManyToOne, JoinColumn, ManyToMany, JoinTable
 import { Comment } from 'src/comment/comment.entity';
 import { Customer } from 'src/customer/customer.entity';
 import { Message } from 'src/message/message.entity';
+import { Admin } from 'src/admin/admin.entity';
 
 @Entity()
 export class Conversation extends BaseEntityUUID {
+
+    @ManyToOne(() => Admin, { nullable: true })
+    @JoinColumn({ name: 'admin_id' })
+    admin_id: Admin;
 
     @ManyToOne(() => Customer)
     @JoinColumn({ name: 'user_id' })

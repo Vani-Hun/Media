@@ -21,7 +21,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
       case HttpStatus.UNPROCESSABLE_ENTITY:
         return res.redirect(`/customer/verify-otp?error=${encodeURIComponent(error)}`);
       case HttpStatus.INTERNAL_SERVER_ERROR:
-        return { error }
+        return res.send({ mess: error });
       // const originalUrl = ctx.getRequest().url;
       // console.log("originalUrl:", originalUrl)
       // if (originalUrl && originalUrl !== '/') {

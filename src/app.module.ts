@@ -17,8 +17,8 @@ const EnvModule = ConfigModule.forRoot({
   imports: [
     HomeModule,
     EnvModule,
-    CustomerModule,
     AdminModule,
+    CustomerModule,
     MailboxModule,
     // MsgWebhookModule,
     DatabaseModule,

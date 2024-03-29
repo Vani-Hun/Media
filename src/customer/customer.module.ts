@@ -13,12 +13,16 @@ import { NotificationModule } from 'src/notification/notification.module';
 import { MessageModule } from 'src/message/message.module';
 import { ConversationModule } from 'src/conversation/conversation.module';
 import { HashtagModule } from 'src/hashtag/hashtag.module';
+import { AdminModule } from 'src/admin/admin.module';
+
 @Module({
   imports: [
     forwardRef(() => CommonModule),
+    forwardRef(() => AdminModule),
     forwardRef(() => VideoModule),
     forwardRef(() => ConversationModule),
     NotificationModule,
+    MessageModule,
     TypeOrmModule.forFeature([Customer]),
     MulterModule.register({ storage }),
     FirebaseConfigModule

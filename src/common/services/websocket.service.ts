@@ -41,7 +41,27 @@ export class NotificationGateway implements OnGatewayConnection, OnGatewayDiscon
     async sendMessage(client: any, payload: any): Promise<void> {
         try {
             const recieverId = this.userMap.find(user => user.customerId === payload.receiverId)
-            await this.conversationService.createConversation(payload)
+            if (payload.receiverId === '1') {
+                await this.conversationService.createConversationWithAdmin(payload)
+            } else {
+                await this.conversationService.createConversation(payload)
+            }
+
+            if (recieverId) {
+                this.server.to(recieverId.clientId).emit('sendMessage', payload.mess);
+            }
+            return payload
+        } catch (err) {
+            console.log("err:", err)
+            throw new HttpException('Failed.', HttpStatus.SERVICE_UNAVAILABLE);
+        }
+    }
+
+    @SubscribeMessage('adminSendMessage')
+    async adminSendMessage(client: any, payload: any): Promise<void> {
+        try {
+            const recieverId = this.userMap.find(user => user.customerId === payload.receiverId)
+            await this.conversationService.createConversationWithAdmin(payload)
             if (recieverId) {
                 this.server.to(recieverId.clientId).emit('sendMessage', payload.mess);
             }
@@ -54,8 +74,14 @@ export class NotificationGateway implements OnGatewayConnection, OnGatewayDiscon
 
     @SubscribeMessage('updateMessages')
     async updateMessages(client: any, payload: any): Promise<void> {
-        const getList = await this.conversationService.getListContact(payload)
+        let getList = await this.conversationService.getListContact(payload)
         this.server.to(client.id).emit('updateMessages', getList);
+    }
+
+    @SubscribeMessage('updateMessagesAdmin')
+    async updateMessagesAdmin(client: any, payload: any): Promise<void> {
+        let getList = await this.conversationService.getListContactForAdmin(payload)
+        this.server.to(client.id).emit('updateMessagesAdmin', getList);
     }
 
     @SubscribeMessage('updateMessage')

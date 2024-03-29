@@ -52,12 +52,56 @@ export class ConversationService extends BaseService<Conversation> {
         }
     }
 
+    async createConversationWithAdmin(input) {
+        try {
+            const isExistConversation = await this.repo.createQueryBuilder('conversation')
+                .where('(conversation.admin_id = :admin_id AND conversation.participant_id = :participant_id) OR (conversation.admin_id = :inverse_admin_id AND conversation.participant_id = :inverse_participant_id)',
+                    {
+                        admin_id: input.senderId,
+                        participant_id: input.receiverId,
+                        inverse_admin_id: input.receiverId,
+                        inverse_participant_id: input.senderId,
+                    })
+                .getOne();
+
+            let conversation;
+            if (!isExistConversation) {
+                conversation = await this.repo.save(this.repo.create({ admin_id: input.senderId, participant_id: input.receiverId }));
+            } else {
+                isExistConversation.count++
+                conversation = await this.repo.save(isExistConversation);
+            }
+
+            input.conversationId = conversation.id;
+
+            return await this.messageService.createMessage(input);
+        } catch (error) {
+            console.error(`Failed to create or update conversation: ${error}`);
+            throw error;
+        }
+    }
+
     async getListContact(input) {
         try {
             return await this.repo.createQueryBuilder('conversation')
                 .where('conversation.user_id = :user_id', { user_id: input.id })
                 .orWhere('conversation.participant_id = :participant_id', { participant_id: input.id })
                 .leftJoinAndSelect('conversation.user_id', 'user')
+                .leftJoinAndSelect('conversation.participant_id', 'participant')
+                .leftJoinAndSelect('conversation.admin_id', 'admin')
+                .leftJoinAndSelect('conversation.messages', 'messages')
+                .orderBy('conversation.updatedAt', 'DESC')
+                .getMany();
+        } catch (error) {
+            console.error(`Failed to get contact list: ${error}`);
+            throw error;
+        }
+    }
+
+    async getListContactForAdmin(input) {
+        try {
+            return await this.repo.createQueryBuilder('conversation')
+                .where('conversation.admin_id = :admin_id', { admin_id: input.id })
                 .leftJoinAndSelect('conversation.participant_id', 'participant')
                 .leftJoinAndSelect('conversation.messages', 'messages')
                 .orderBy('conversation.updatedAt', 'DESC')
@@ -99,6 +143,24 @@ export class ConversationService extends BaseService<Conversation> {
                 .where('conversation.user_id = :user_id', { user_id: input.id })
                 .orWhere('conversation.participant_id = :participant_id', { participant_id: input.id })
                 .leftJoinAndSelect('conversation.user_id', 'user')
+                .leftJoinAndSelect('conversation.participant_id', 'participant')
+                .leftJoinAndSelect('conversation.admin_id', 'admin_id')
+                .leftJoinAndSelect('conversation.messages', 'messages')
+                .orderBy('conversation.updatedAt', 'DESC')
+                .getOne();
+        } catch (error) {
+            console.error(`Failed to get contact: ${error}`);
+            throw error;
+        }
+
+
+    }
+    async getContactAdmin(input) {
+        try {
+            return await this.repo.createQueryBuilder('conversation')
+                .where('conversation.admin_id = :admin_id', { admin_id: input.admin_id })
+                .andWhere('conversation.participant_id = :participant_id', { participant_id: input.id })
+                .leftJoinAndSelect('conversation.admin_id', 'admin')
                 .leftJoinAndSelect('conversation.participant_id', 'participant')
                 .leftJoinAndSelect('conversation.messages', 'messages')
                 .orderBy('conversation.updatedAt', 'DESC')

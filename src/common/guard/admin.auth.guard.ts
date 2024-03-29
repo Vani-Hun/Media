@@ -1,0 +1,35 @@
+import { CanActivate, ExecutionContext, HttpException, HttpStatus, Injectable, UnauthorizedException } from '@nestjs/common';
+import { Request, Response } from 'express';
+import { Admin } from 'src/admin/admin.entity';
+import { CustomerService } from 'src/customer/customer.service';
+import { CacheService } from '../services/cache.service';
+import { TokenService } from '../services/token.service';
+import { Customer } from 'src/customer/customer.entity';
+import { AdminService } from 'src/admin/admin.service';
+
+@Injectable()
+export class AdminAuthGuard implements CanActivate {
+  constructor(
+    private adminService: AdminService,
+    private tokenService: TokenService,
+  ) { }
+
+  async canActivate(context: ExecutionContext): Promise<boolean> {
+    const request = await context.switchToHttp().getRequest<Request>();
+    const accessToken = request.cookies['accessToken'];
+    let status: boolean;
+    try {
+      const admin: Admin = await this.tokenService.verify(accessToken)
+      status = await this.adminService.isExist(admin);
+      if (status) {
+        request['user'] = await admin;
+      } else {
+        // throw new HttpException('Let login!!!', HttpStatus.UNAUTHORIZED);
+      }
+      return status;
+    } catch {
+      console.log("catchcanActivate")
+      // throw new UnauthorizedException('Let login!!!');
+    }
+  }
+}

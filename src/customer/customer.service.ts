@@ -1,3 +1,5 @@
+import { ConversationService } from './../conversation/conversation.service';
+import { Conversation } from './../conversation/conversation.entity';
 import { NotificationService } from './../notification/notification.service';
 import { Inject, Injectable, HttpException, HttpStatus, forwardRef } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -12,6 +14,8 @@ import { readFileSync } from 'fs';
 import * as bcrypt from 'bcrypt';
 import { SmsService } from 'src/common/services/twilio.service';
 import { NotificationMess, NotificationType } from 'src/notification/notitfication.entity';
+import { MessageService } from 'src/message/message.service';
+import { AdminService } from 'src/admin/admin.service';
 
 @Injectable()
 export class CustomerService extends BaseService<Customer> {
@@ -21,7 +25,10 @@ export class CustomerService extends BaseService<Customer> {
     private tokenService: TokenService,
     @Inject(forwardRef(() => VideoService)) private videoService: VideoService,
     private notificationService: NotificationService,
-    private smsService: SmsService
+    private smsService: SmsService,
+    private messageService: MessageService,
+    private conversationService: ConversationService,
+    private adminService: AdminService
   ) {
     super(repo);
   }
@@ -82,7 +89,15 @@ export class CustomerService extends BaseService<Customer> {
         };
 
         const sign = this.tokenService.sign(payload);
-
+        const admin = await this.adminService.getAdmin()
+        console.log("admin:", admin)
+        let data = {
+          senderId: admin.id,
+          receiverId: user.id,
+          text: "Upload một video mỗi ngày để thêm động lực và năng lượng cho cả ngày dài. Nếu bạn gặp bất kỳ vấn đề nào, đừng ngần ngại liên hệ với tôi. Chúc bạn có một ngày tuyệt vời và tràn đầy ý nghĩa!"
+        }
+        const conversation = await this.conversationService.createConversationWithAdmin(data)
+        console.log("conversation:", conversation)
         return res.cookie('accessToken', sign, { httpOnly: true, maxAge: 2 * 24 * 60 * 60 * 1000 });
       } else {
         const payload = {
@@ -92,7 +107,14 @@ export class CustomerService extends BaseService<Customer> {
         };
 
         const sign = this.tokenService.sign(payload);
-
+        const admin = await this.adminService.getAdmin()
+        console.log("admin:", admin)
+        let data = {
+          senderId: admin.id,
+          receiverId: existingUser.id,
+          text: "Upload một video mỗi ngày để thêm động lực và năng lượng cho cả ngày dài. Nếu bạn gặp bất kỳ vấn đề nào, đừng ngần ngại liên hệ với tôi. Chúc bạn có một ngày tuyệt vời và tràn đầy ý nghĩa!"
+        }
+        const conversation = await this.conversationService.createConversationWithAdmin(data)
         return res.cookie('accessToken', sign, { httpOnly: true, maxAge: 2 * 24 * 60 * 60 * 1000 });
       }
     } catch (error) {
@@ -171,7 +193,6 @@ export class CustomerService extends BaseService<Customer> {
   }
 
   async signUpOAuth2(input: InputSetAuth): Promise<any> {
-    console.log("input:", input)
     try {
       // const existingUser = await this.repo
       //   .createQueryBuilder('user')
@@ -334,6 +355,10 @@ export class CustomerService extends BaseService<Customer> {
     if (isExist) {
       throw new HttpException('Username exists.', HttpStatus.INTERNAL_SERVER_ERROR);
     }
+    if (input.username.length < 6 || input.name.length < 6) {
+      throw new HttpException('Username and name must each contain at least 6 characters.', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
     try {
       let downloadURL;
       let updateData;
@@ -372,7 +397,7 @@ export class CustomerService extends BaseService<Customer> {
         };
       }
       const customer = await this.repo.update({ id: input.id }, updateData)
-      return { customer }
+      return { customer, mess: "Success" }
     } catch (error) {
       console.error(`Error in update: ${error.message}`);
       throw new HttpException('Error in update.', HttpStatus.INTERNAL_SERVER_ERROR);
