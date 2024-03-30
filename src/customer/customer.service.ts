@@ -313,7 +313,7 @@ export class CustomerService extends BaseService<Customer> {
       throw new HttpException('Error in getUser.', HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-  }
+  };
 
   async getVideoLiked(userId) {
     try {
