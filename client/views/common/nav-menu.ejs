@@ -159,7 +159,6 @@
 <script type="text/javascript">
 
     let customer = JSON.parse('<%- JSON.stringify(customer) %>');
-    console.log("customer:", customer)
     const host = "<%= process.env.ORIGIN %>"
     const socket = io(host);
     const navMenu = document.querySelector('.nav-menu');
@@ -172,11 +171,12 @@
     const iconMess = document.querySelector('.css-9j9jz0-DivMessageIconContainer')
     const notifications = document.querySelector('.notifications')
     const numberNotification = document.querySelector('.css-1g1i6o0-SupBadge')
-    const numberNotification2 = document.querySelector('.css-1g1i6o0-SupBadge2')
+    let numberNotification2 = document.querySelector('.css-1g1i6o0-SupBadge2')
     let listItems = document.querySelectorAll('#header-setting-popup-list li');
     let listItem = document.querySelector('[data-e2e="logout-entrance"]');
     const listNotifications = document.querySelector('.css-1cz26jb-UlInboxItemListContainer')
     const buttons = document.querySelectorAll('#header-inbox-bar button');
+
     let timeSet
 
     socket.emit('userConnected', { userId: null, customerId: customer.id });
@@ -334,23 +334,7 @@
             document.removeEventListener('click', hideNotifications);
         }
     };
-    function hideNotifications2() {
-        customer.conversations.forEach((conversation, index) => {
-            let messages = conversation.messages
-            if (messages) {
-                messages.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt))
-                let lastMessage = messages[conversation.messages.length - 1]
-                if (lastMessage) {
-                    if (lastMessage.user_id !== customer.id && lastMessage.status === null) {
-                        numberNotification2.style.display = 'flex'
-                    } else {
-                        numberNotification2.style.display = 'none'
-                    }
-                }
-            }
 
-        })
-    };
     function showDropdownMenu() {
         clearTimeout(timeSet);
         if (dropdownMenu.style.display === "none") {
@@ -365,7 +349,6 @@
         }, 700)
     };
 
-    hideNotifications2()
 
     iconMess.addEventListener('click', (event) => {
         numberNotification2.style.display = 'none'

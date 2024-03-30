@@ -97,9 +97,24 @@
     let inputElement = divChatBox.querySelector('.DraftEditor-editorContainer');
     let sendMessage = divChatBox.querySelector('.css-d7yhdo-StyledSendButton')
     const divBackIconContainer = document.querySelector('.css-1jkodm9-DivBackIconContainer')
-
     let conversations
     let indexCurrentContact
+
+    function hideNotifications2() {
+        conversations.forEach((conversation, index) => {
+            let messages = conversation.messages
+            if (messages) {
+                messages.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt))
+                let lastMessage = messages[conversation.messages.length - 1]
+                if (lastMessage) {
+                    if (lastMessage.user_id !== customer.id && lastMessage.status === null) {
+                        numberNotification2.style.display = 'flex'
+                    }
+                    return
+                }
+            }
+        })
+    };
     function renderContact(conversations) {
         divScrollMessage.innerHTML = ''
         if (conversations.length <= 0) {
@@ -370,6 +385,7 @@
                 if (input) {
                     conversations.push(input);
                 }
+                hideNotifications2()
                 renderContact(conversations);
                 handleClickOnWrapper(conversations);
                 resolve();
