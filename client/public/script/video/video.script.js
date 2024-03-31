@@ -10,7 +10,6 @@ window.onpopstate = function (event) {
 }
 
 if (videos && videos.length > 0) {
-    const host = "<%= process.env.ORIGIN %>"
     const videosContainer = document.querySelector('.css-9fq6q2-DivOneColumnContainer')
     const containerMain = document.querySelector('.css-1t4vwes-DivMainContainer')
     const videoContainer = document.querySelector('.tiktok-1qg2388-DivBrowserModeContainer')
