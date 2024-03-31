@@ -27,7 +27,7 @@ export class HashtagService extends BaseService<Hashtag> {
         const videos = await this.videoService.getVideosHashTag(input)
 
         const customer = await this.customerService.getUser(input);
-        return { videos, customer, video: null };
+        return { videos, customer, video: null, cursor: null };
     }
 
     async getHashTag(input) {
