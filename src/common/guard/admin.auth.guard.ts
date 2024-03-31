@@ -16,11 +16,13 @@ export class AdminAuthGuard implements CanActivate {
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = await context.switchToHttp().getRequest<Request>();
-    const accessToken = request.cookies['accessToken'];
+    const accessToken = request.cookies['accessTokenAdmin'];
     let status: boolean;
     try {
       const admin: Admin = await this.tokenService.verify(accessToken)
+      console.log("admin:", admin)
       status = await this.adminService.isExist(admin);
+      console.log("status:", status)
       if (status) {
         request['user'] = await admin;
       } else {

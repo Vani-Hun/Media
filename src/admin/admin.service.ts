@@ -67,11 +67,11 @@ export class AdminService extends BaseService<Admin> {
 
       const sign = this.tokenService.sign(payload);
 
-      res.cookie('accessToken', sign, { httpOnly: true, maxAge: 2 * 24 * 60 * 60 * 1000 });
+      res.cookie('accessTokenAdmin', sign, { httpOnly: true, maxAge: 2 * 24 * 60 * 60 * 1000 });
       return res.redirect('/admin/message')
     } catch (error) {
       console.error(`Error in signIn: ${error.message}`);
-      throw new HttpException('Internal Server Error', HttpStatus.INTERNAL_SERVER_ERROR);
+      return res.redirect('/admin/sign-in')
     }
   }
 
