@@ -34,20 +34,19 @@ export class CustomerService extends BaseService<Customer> {
   }
 
   async signIn(input: InputSetAuth, res) {
+    const existingUser = await this.repo.findOne({
+      where: { username: input.username },
+    });
+
+    if (!existingUser) {
+      throw new HttpException('Your username is not exist!!', HttpStatus.UNAUTHORIZED);
+    }
+
+    const isPasswordValid = await bcrypt.compare(input.password, existingUser.password);
+    if (!isPasswordValid) {
+      throw new HttpException('Password is wrong!!', HttpStatus.UNAUTHORIZED);
+    }
     try {
-      const existingUser = await this.repo.findOne({
-        where: { username: input.username },
-      });
-
-      if (!existingUser) {
-        throw new HttpException('Your username is not exist!!', HttpStatus.UNAUTHORIZED);
-      }
-
-      const isPasswordValid = await bcrypt.compare(input.password, existingUser.password);
-
-      if (!isPasswordValid) {
-        throw new HttpException('Password is wrong!!', HttpStatus.UNAUTHORIZED);
-      }
 
       const payload = {
         id: existingUser.id,
@@ -58,10 +57,11 @@ export class CustomerService extends BaseService<Customer> {
       const sign = this.tokenService.sign(payload);
 
       res.cookie('accessToken', sign, { httpOnly: true, maxAge: 2 * 24 * 60 * 60 * 1000 });
+
       return res.redirect('/video/videos')
     } catch (error) {
       console.error(`Error in signIn: ${error.message}`);
-      throw new HttpException('Internal Server Error or Password is wrong', HttpStatus.UNAUTHORIZED);
+      throw new HttpException('Internal Server Error', HttpStatus.UNAUTHORIZED);
     }
   }
 
@@ -158,20 +158,19 @@ export class CustomerService extends BaseService<Customer> {
   }
 
   async signUp(input: InputSetAuth, res): Promise<void> {
+    const [existingUsername, existingPhoneUser] = await Promise.all([
+      this.repo.findOne({ where: { username: input.username } }),
+      this.repo.findOne({ where: { phone: input.phone } })
+    ]);
+
+    if (existingUsername) {
+      throw new HttpException('Your username is already registered.', HttpStatus.CONFLICT);
+    }
+
+    if (existingPhoneUser) {
+      throw new HttpException('Your phone is already registered.', HttpStatus.CONFLICT);
+    }
     try {
-      const [existingUsername, existingPhoneUser] = await Promise.all([
-        this.repo.findOne({ where: { username: input.username } }),
-        this.repo.findOne({ where: { phone: input.phone } })
-      ]);
-
-      if (existingUsername) {
-        throw new HttpException('Your username is already registered.', HttpStatus.CONFLICT);
-      }
-
-      if (existingPhoneUser) {
-        throw new HttpException('Your phone is already registered.', HttpStatus.CONFLICT);
-      }
-
 
       if (!existingUsername && !existingPhoneUser) {
         // const otp = Math.floor(Math.random() * 1000000).toString();
