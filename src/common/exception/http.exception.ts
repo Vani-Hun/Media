@@ -9,7 +9,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
     const status = exception.getStatus();
     const error = exception.message;
     let redirectUrl: string | undefined;
-    console.log("status:", status, ", errorHttpException:", error)
+    console.log("status:", status, ", errorHttpException:", error);
 
     switch (status) {
       case HttpStatus.UNAUTHORIZED:

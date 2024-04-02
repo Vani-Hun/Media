@@ -123,8 +123,7 @@ export class CustomerController {
 
   @Post('sign-in')
   async signIn(@Body() body: InputSetAuth, @Res() res: Response) {
-    await this.customerService.signIn(body, res)
-    return res.redirect('/video/videos');
+    return await this.customerService.signIn(body, res)
   }
 
   @Post('sign-up')

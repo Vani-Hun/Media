@@ -57,10 +57,11 @@ export class CustomerService extends BaseService<Customer> {
 
       const sign = this.tokenService.sign(payload);
 
-      return res.cookie('accessToken', sign, { httpOnly: true, maxAge: 2 * 24 * 60 * 60 * 1000 });
+      res.cookie('accessToken', sign, { httpOnly: true, maxAge: 2 * 24 * 60 * 60 * 1000 });
+      return res.redirect('/video/videos')
     } catch (error) {
       console.error(`Error in signIn: ${error.message}`);
-      throw new HttpException('Internal Server Error', HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new HttpException('Internal Server Error or Password is wrong', HttpStatus.UNAUTHORIZED);
     }
   }
 
