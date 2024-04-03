@@ -91,7 +91,6 @@ export class CustomerService extends BaseService<Customer> {
 
         const sign = this.tokenService.sign(payload);
         const admin = await this.adminService.getAdmin()
-        console.log("admin:", admin)
         let data = {
           senderId: admin.id,
           receiverId: user.id,
@@ -109,7 +108,6 @@ export class CustomerService extends BaseService<Customer> {
 
         const sign = this.tokenService.sign(payload);
         const admin = await this.adminService.getAdmin()
-        console.log("admin:", admin)
         let data = {
           senderId: admin.id,
           receiverId: existingUser.id,
@@ -254,6 +252,8 @@ export class CustomerService extends BaseService<Customer> {
         .leftJoinAndSelect('notifications.video', 'video')
         .leftJoinAndSelect('likedVideos.comments', 'commentslikedVideo')
         .leftJoinAndSelect('likedVideos.likers', 'likerslikedVideo')
+        .leftJoinAndSelect('likedVideos.hashtags', 'hashtagslikedVideo')
+        .leftJoinAndSelect('likedVideos.user', 'userlikedVideo')
         .leftJoinAndSelect('commentslikedVideo.customer', 'commentCustomer')
         .leftJoinAndSelect('commentsVideo.customer', 'commentsVideoCustomer')
         .orderBy('videos.createdAt', 'DESC')

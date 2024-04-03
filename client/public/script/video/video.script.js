@@ -1,13 +1,8 @@
-
-
-let likedVideoIds = customer.likedVideos
-
-
-sessionStorage.setItem('videosData', JSON.stringify(videos));
-
-window.onpopstate = function (event) {
+window.popstate = function (event) {
     window.location.href = window.location.pathname
 }
+let likedVideoIds = customer.likedVideos
+sessionStorage.setItem('videosData', JSON.stringify(videos));
 
 if (videos && videos.length > 0) {
     const videosContainer = document.querySelector('.css-9fq6q2-DivOneColumnContainer')

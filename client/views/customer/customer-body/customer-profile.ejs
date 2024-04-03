@@ -436,6 +436,7 @@
     const listVideoDiv = document.querySelector('.tiktok-10qtkim-DivShareLayoutBase-StyledShareLayoutV2')
     const bigDiv = document.getElementById('bigDiv')
     window.onpopstate = function (event) {
+        console.log("window.location.pathname:", window.location.pathname)
         window.location.href = window.location.pathname
     }
     // function showLoader() {
@@ -1194,7 +1195,9 @@
                 sessionStorage.setItem('indexCurrentVideoProfile', index);
                 const divVideo = createVideoContainer();
                 document.body.appendChild(divVideo)
-                continuePlay(JSON.parse(sessionStorage.getItem('videosData'))[index], divVideo);
+                let video = videosSpec ? videosSpec[index] : JSON.parse(sessionStorage.getItem('videosData'))[index]
+                console.log("video:", video)
+                continuePlay(video, divVideo);
             });
         });
     }
@@ -1487,6 +1490,11 @@
         });
 
         rightArrow.addEventListener('click', () => {
+            console.log("indexCurrent:", indexCurrent)
+
+            console.log("videos:", videos)
+            console.log("indexCurrent === videos.length - 1:", indexCurrent === videos.length - 1)
+
             if (indexCurrent === videos.length - 1) {
                 showCustomAlert("RUN OUT OF VIDEOs", 1500)
             } else {
@@ -1502,6 +1510,7 @@
                 appendCommentsToContainer(video.comments, divCommentList);
                 updateURL(`/video/${video.id}`, null, 'replace');
                 updateCustomer()
+                console.log("videos:", videos)
                 setSpanOtherInfosContent(spanOtherInfos, video, customer, updateTimeDifference);
             }
 
@@ -1698,12 +1707,14 @@
                 return response.json();
             })
             .then(data => {
+                videos = data.likedVideos
                 displayVideos(data.likedVideos)
             })
             .catch(error => { console.error("Error:", error) })
 
 
     })
+
 
 
     listPost.addEventListener('click', () => {

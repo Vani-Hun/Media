@@ -157,7 +157,6 @@
 
 <script src="/socket.io/socket.io.js"></script>
 <script type="text/javascript">
-
     let customer = JSON.parse('<%- JSON.stringify(customer) %>');
     const host = "<%= process.env.ORIGIN %>"
     const socket = io(host);
