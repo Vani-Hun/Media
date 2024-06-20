@@ -1,7 +1,7 @@
 window.popstate = function (event) {
     window.location.href = window.location.pathname
 }
-let likedVideoIds = customer.likedVideos
+let likedVideoIds = customer.liked_videos
 sessionStorage.setItem('videosData', JSON.stringify(videos));
 
 if (videos && videos.length > 0) {
@@ -66,7 +66,7 @@ if (videos && videos.length > 0) {
 
         socket.on('updateCustomer', (data) => {
             customer = data;
-            likedVideoIds = customer.likedVideos;
+            likedVideoIds = customer.liked_videos;
             likedVideoSet = new Set(likedVideoIds.map(video => video.id));
 
             if (likedVideoSet.has(video.id)) {
@@ -326,7 +326,7 @@ if (videos && videos.length > 0) {
 
         socket.on('updateCustomer', (data) => {
             customer = data;
-            likedVideoIds = customer.likedVideos;
+            likedVideoIds = customer.liked_videos;
             likedVideoSet = new Set(likedVideoIds.map(video => video.id));
             followedSet = new Set(customer.following.map(following => following.id));
         });
@@ -353,7 +353,7 @@ if (videos && videos.length > 0) {
             const commentElement = createCommentElement(comment);
             container.appendChild(commentElement);
         });
-        if (!video.allowComment) {
+        if (!video.allow_comment) {
             divBottomCommentContainer.style.display = 'none'
         } else {
             divBottomCommentContainer.style.display = 'block'
@@ -746,7 +746,7 @@ if (videos && videos.length > 0) {
 
             likesCount.innerHTML = video.likes;
             commentCount.innerHTML = video.comments.length;
-            shareCount.innerHTML = video.shareCount;
+            shareCount.innerHTML = video.share_count;
 
             handleLike(video.id, likeIcon);
             handleFollow(video.user.id, followButton, changeButton);
@@ -1257,7 +1257,7 @@ if (videos && videos.length > 0) {
                                 <button type="button" aria-label="Share video
 180.6K shares" aria-expanded="false" class="css-1ok4pbl-ButtonActionItem e1hk3hf90"><span data-e2e="share-icon" id="share-icon" class="css-6jur1x-SpanIconWrapper" style="color: rgb(22, 24, 35);"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor">
                                     <use xlink: href="#pc-share-44d9fe83"></use>
-                                </svg></span><strong data-e2e="share-count" class="css-w1dlre-StrongText">${video.shareCount}</strong></button></div>
+                                </svg></span><strong data-e2e="share-count" class="css-w1dlre-StrongText">${video.share_count}</strong></button></div>
                     </div>
                 </div>
             </div>

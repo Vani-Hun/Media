@@ -31,7 +31,7 @@ export class Customer extends BaseEntityUUID {
   password: string;
 
   @Column({ nullable: true, default: "Everyone" })
-  messageStatus: string;
+  message_status: string;
 
   @OneToMany(() => Conversation, conversation => conversation.user_id || conversation.participant_id, { cascade: true })
   conversations: Conversation[];
@@ -69,6 +69,6 @@ export class Customer extends BaseEntityUUID {
   comments: Comment[];
 
   @ManyToMany(() => Video, video => video.likers, { cascade: true })
-  likedVideos: Video[];
+  liked_videos: Video[];
 
 };

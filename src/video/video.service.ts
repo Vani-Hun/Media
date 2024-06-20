@@ -56,7 +56,7 @@ export class VideoService extends BaseService<Video> {
                 name: input.video.filename,
                 user: input.id,
                 who: input.who,
-                allowComment: Boolean(input.allowComment),
+                allow_comment: Boolean(input.allowComment),
                 caption: input.caption,
                 hashtags: tags
             });
@@ -148,7 +148,7 @@ export class VideoService extends BaseService<Video> {
         try {
             return await this.repo.query(`
       UPDATE video
-      SET who = ?, allowComment = ?
+      SET who = ?, allow_comment = ?
       WHERE id = ?;
     `, [input.who, input.allowComment, input.video]);
         } catch (error) {
@@ -218,7 +218,7 @@ export class VideoService extends BaseService<Video> {
     async updateShare(input) {
         try {
             const video = await this.repo.findOneOrFail({ where: { id: input.videoId } });
-            video.shareCount++;
+            video.share_count++;
             return await this.repo.save(video);
         } catch (error) {
             throw new HttpException(`Failed to update share: ${error.message}`, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -250,7 +250,7 @@ export class VideoService extends BaseService<Video> {
             const publicVideos = await this.repo.createQueryBuilder('video')
                 .where('video.who = :who', { who: 'Public' })
                 .andWhere('user.id  <> :userId', { userId: input.id })
-                .orderBy('video.createdAt', 'DESC')
+                .orderBy('video.created_at', 'DESC')
                 .leftJoinAndSelect('video.user', 'user')
                 .leftJoinAndSelect('video.likers', 'likers')
                 .leftJoinAndSelect('video.comments', 'comments')
@@ -275,13 +275,15 @@ export class VideoService extends BaseService<Video> {
     }
 
     async getVideosHashTag(input) {
+        console.log("input:", input)
         try {
             return await this.repo.createQueryBuilder('video')
                 .where('video.who = :who', { who: 'Public' })
-                .orderBy('video.createdAt', 'ASC')
+                .orderBy('video.created_at', 'ASC')
                 .leftJoinAndSelect('video.user', 'user')
                 .leftJoinAndSelect('video.likers', 'likers')
                 .leftJoinAndSelect('video.comments', 'comments')
+                .leftJoinAndSelect('video.hashtags', 'hashtags')
                 .leftJoinAndSelect('comments.video', 'video2')
                 .leftJoinAndSelect('comments.customer', 'customer')
                 .innerJoin('video.hashtags', 'hashtag', 'hashtag.name = :nameHashTag', { nameHashTag: input.nameHashTag })
@@ -321,14 +323,14 @@ export class VideoService extends BaseService<Video> {
                 .where('video.who = :who', { who: 'Public' })
                 .andWhere('user.id <> :userId', { userId: input.id })
                 .andWhere('(video.caption LIKE :caption OR hashtags.name LIKE :hashtags)', { caption: `%${input.keyword}%`, hashtags: `%${input.keyword}%` })
-                .orderBy('video.createdAt', 'DESC')
+                .orderBy('video.created_at', 'DESC')
                 .getMany();
             const customer = await this.customerService.getUser(input);
             if (videos.length === 0) {
                 videos = await this.repo.createQueryBuilder('video')
                     .where('video.who = :who', { who: 'Public' })
                     .andWhere('user.id  <> :userId', { userId: input.id })
-                    .orderBy('video.createdAt', 'DESC')
+                    .orderBy('video.created_at', 'DESC')
                     .leftJoinAndSelect('video.user', 'user')
                     .leftJoinAndSelect('video.likers', 'likers')
                     .leftJoinAndSelect('video.comments', 'comments')
@@ -365,10 +367,11 @@ export class VideoService extends BaseService<Video> {
             let { videos, customer } = await this.getVideos(input)
             let video = await this.repo.createQueryBuilder('video')
                 .where('video.id  = :id', { id: input.videoId })
-                .orderBy('video.createdAt', 'DESC')
+                .orderBy('video.created_at', 'DESC')
                 .leftJoinAndSelect('video.user', 'user')
                 .leftJoinAndSelect('video.likers', 'likers')
                 .leftJoinAndSelect('video.comments', 'comments')
+                .leftJoinAndSelect('video.hashtags', 'hashtags')
                 .leftJoinAndSelect('comments.video', 'video2')
                 .leftJoinAndSelect('comments.customer', 'customer')
                 .getOne()

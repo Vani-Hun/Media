@@ -111,7 +111,7 @@
         }
         conversations.forEach((conversation, index) => {
             let messages = conversation.messages
-            messages.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt))
+            messages.sort((a, b) => new Date(a.created_at) - new Date(b.created_at))
             let lastMessage = messages[conversation.messages.length - 1]
             let participant = conversation.participant_id
             let divContact
@@ -227,11 +227,11 @@
             return
         }
 
-        messages.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+        messages.sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
 
         for (let message of messages) {
             const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
-            const formattedDate = new Date(message.createdAt).toLocaleDateString(undefined, options);
+            const formattedDate = new Date(message.created_at).toLocaleDateString(undefined, options);
             let logo = admin.logo
             let divMessageContainer = 'css-101150x-DivMessageContainer'
 

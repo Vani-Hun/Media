@@ -203,7 +203,7 @@
 <script>
     let user = JSON.parse('<%- JSON.stringify(user) %>');
     let videos = user.videos
-    let likedVideoIds = customer.likedVideos
+    let likedVideoIds = customer.liked_videos
     let followedSet
     let likedVideoSet
     const listLike = document.querySelector('.css-r7ao4-PLike')
@@ -294,7 +294,7 @@
         }
     }
     function createCommentElement(comment) {
-        const updateTimeDifference = formatTimeDifference(comment.createdAt);
+        const updateTimeDifference = formatTimeDifference(comment.created_at);
 
         const commentDiv = document.createElement('div');
         commentDiv.classList.add("tiktok-1i7ohvi-DivCommentItemContainer");
@@ -360,7 +360,7 @@
         commentCountElement.textContent = video.comments.length;
         usernameElement.textContent = video.user.username;
         nameElement.textContent = video.user.name;
-        daysDifferenceElement.textContent = formatTimeDifference(video.createdAt);;
+        daysDifferenceElement.textContent = formatTimeDifference(video.created_at);;
         captionElement.innerHTML = resultCaptionWithLinks;
         avatarImage.src = `${video.user.logo}`;
         videoThumbnail.src = `${video.thumbnail}`;
@@ -439,7 +439,7 @@
         socket.emit('updateCustomer', { id: customer.id }, (err) => console.error(err));
         socket.on('updateCustomer', (data) => {
             customer = data;
-            likedVideoIds = customer.likedVideos;
+            likedVideoIds = customer.liked_videos;
             likedVideoSet = new Set(likedVideoIds.map(video => video.id));
             followedSet = new Set(customer.following.map(following => following.id));
         });
@@ -466,7 +466,7 @@
             const commentElement = createCommentElement(comment);
             container.appendChild(commentElement);
         });
-        if (!video.allowComment) {
+        if (!video.allow_comment) {
             divBottomCommentContainer.style.display = 'none'
         } else {
             divBottomCommentContainer.style.display = 'block'
@@ -893,7 +893,7 @@
         const svgIcon = likeElement.querySelector('svg');
         const copyLinkText = divVideo.querySelector('.tiktok-1v8b11s-PCopyLinkText')
         const buttonCopyLink = divVideo.querySelector('.tiktok-7e23lp-ButtonCopyLink')
-        const updateTimeDifference = formatTimeDifference(video.createdAt);
+        const updateTimeDifference = formatTimeDifference(video.created_at);
         const rightArrow = divVideo.querySelector('.tiktok-1s9jpf8-ButtonBasicButtonContainer-StyledVideoSwitch');
         const leftArrow = divVideo.querySelector('.tiktok-1w6o9i7-ButtonBasicButtonContainer-StyledVideoSwitch')
         let indexCurrent = sessionStorage.getItem('indexCurrentVideoProfile');

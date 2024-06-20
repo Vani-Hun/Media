@@ -158,6 +158,7 @@
 <script src="/socket.io/socket.io.js"></script>
 <script type="text/javascript">
     let customer = JSON.parse('<%- JSON.stringify(customer) %>');
+    console.log("customer:", customer)
     const host = "<%= process.env.ORIGIN %>"
     const socket = io(host);
     const navMenu = document.querySelector('.nav-menu');
@@ -220,7 +221,7 @@
         }
     }
     function createNotificationElement(notification) {
-        const updateTimeDifference = formatTimeDifference(notification.createdAt);
+        const updateTimeDifference = formatTimeDifference(notification.created_at);
         let shouldSkip = false;
         const notificationDiv = document.createElement('li');
         notificationDiv.classList.add("css-1lqaxb-LiInboxItemWrapper");

@@ -238,7 +238,7 @@ export class CustomerService extends BaseService<Customer> {
         .leftJoinAndSelect('customer.notifications', 'notifications')
         .leftJoinAndSelect('customer.conversations', 'conversations')
         .leftJoinAndSelect('customer.videos', 'videos')
-        .leftJoinAndSelect('customer.likedVideos', 'likedVideos')
+        .leftJoinAndSelect('customer.liked_videos', 'liked_videos')
         .leftJoinAndSelect('customer.following', 'following')
         .leftJoinAndSelect('customer.followers', 'followers')
         .leftJoinAndSelect('conversations.participant_id', 'participant_id')
@@ -250,14 +250,14 @@ export class CustomerService extends BaseService<Customer> {
         .leftJoinAndSelect('videos.hashtags', 'hashtags')
         .leftJoinAndSelect('notifications.interactingUser', 'interactingUser')
         .leftJoinAndSelect('notifications.video', 'video')
-        .leftJoinAndSelect('likedVideos.comments', 'commentslikedVideo')
-        .leftJoinAndSelect('likedVideos.likers', 'likerslikedVideo')
-        .leftJoinAndSelect('likedVideos.hashtags', 'hashtagslikedVideo')
-        .leftJoinAndSelect('likedVideos.user', 'userlikedVideo')
+        .leftJoinAndSelect('liked_videos.comments', 'commentslikedVideo')
+        .leftJoinAndSelect('liked_videos.likers', 'likerslikedVideo')
+        .leftJoinAndSelect('liked_videos.hashtags', 'hashtagslikedVideo')
+        .leftJoinAndSelect('liked_videos.user', 'userlikedVideo')
         .leftJoinAndSelect('commentslikedVideo.customer', 'commentCustomer')
         .leftJoinAndSelect('commentsVideo.customer', 'commentsVideoCustomer')
-        .orderBy('videos.createdAt', 'DESC')
-        .addOrderBy('notifications.createdAt', 'DESC')
+        .orderBy('videos.created_at', 'DESC')
+        .addOrderBy('notifications.created_at', 'DESC')
         .getOne();
 
     } catch (error) {
@@ -285,7 +285,7 @@ export class CustomerService extends BaseService<Customer> {
         .leftJoinAndSelect('customer.notifications', 'notifications')
         .leftJoinAndSelect('customer.conversations', 'conversations')
         .leftJoinAndSelect('customer.videos', 'videos')
-        .leftJoinAndSelect('customer.likedVideos', 'likedVideos')
+        .leftJoinAndSelect('customer.liked_videos', 'liked_videos')
         .leftJoinAndSelect('customer.following', 'following')
         .leftJoinAndSelect('customer.followers', 'followers')
         .leftJoinAndSelect('following.videos', 'followingVideos')
@@ -297,16 +297,16 @@ export class CustomerService extends BaseService<Customer> {
         // .leftJoinAndSelect('videos.likers', 'likers')
         .leftJoinAndSelect('notifications.interactingUser', 'interactingUser')
         .leftJoinAndSelect('notifications.video', 'video')
-        .leftJoinAndSelect('likedVideos.comments', 'commentslikedVideo')
-        .leftJoinAndSelect('likedVideos.likers', 'likerslikedVideo')
+        .leftJoinAndSelect('liked_videos.comments', 'commentslikedVideo')
+        .leftJoinAndSelect('liked_videos.likers', 'likerslikedVideo')
         // .leftJoinAndSelect('commentslikedVideo.customer', 'commentCustomer')
         // .leftJoinAndSelect('commentsVideo.customer', 'commentsVideoCustomer')
         .leftJoinAndSelect('followingVideos.user', 'followingVideosUser')
         .leftJoinAndSelect('followingVideos.comments', 'commentsVideo')
         .leftJoinAndSelect('followingVideos.likers', 'likers')
         .leftJoinAndSelect('commentsVideo.customer', 'commentsVideoCustomer')
-        .orderBy('videos.createdAt', 'DESC')
-        .addOrderBy('notifications.createdAt', 'DESC')
+        .orderBy('videos.created_at', 'DESC')
+        .addOrderBy('notifications.created_at', 'DESC')
         .getOne();
     } catch (error) {
       console.error(`Error in getUser: ${error.message}`);
@@ -318,10 +318,10 @@ export class CustomerService extends BaseService<Customer> {
   async getVideoLiked(userId) {
     try {
       const customer = await this.repo.createQueryBuilder('customer')
-        .leftJoinAndSelect('customer.likedVideos', 'likedVideos')
-        .leftJoinAndSelect('likedVideos.comments', 'comments')
+        .leftJoinAndSelect('customer.liked_videos', 'liked_videos')
+        .leftJoinAndSelect('liked_videos.comments', 'comments')
         .leftJoinAndSelect('comments.customer', 'commentCustomer')
-        .leftJoinAndSelect('likedVideos.likers', 'likers')
+        .leftJoinAndSelect('liked_videos.likers', 'likers')
         .where('customer.id = :id', { id: userId })
         .getOneOrFail();
       return { customer }

@@ -25,7 +25,7 @@ export class Video extends BaseEntityUUID {
     likes: number;
 
     @Column({ default: 0 }) // Số lượt comment, mặc định là 0
-    shareCount: number;
+    share_count: number;
 
     @Column()
     caption: string;
@@ -37,9 +37,9 @@ export class Video extends BaseEntityUUID {
     thumbnail: string;
 
     @Column()
-    allowComment: boolean;
+    allow_comment: boolean;
 
-    @ManyToMany(() => Customer, customer => customer.likedVideos)
+    @ManyToMany(() => Customer, customer => customer.liked_videos)
     @JoinTable({
         name: 'video_like',
         joinColumn: { name: 'video_id', referencedColumnName: 'id' },

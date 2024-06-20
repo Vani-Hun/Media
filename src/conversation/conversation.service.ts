@@ -90,7 +90,7 @@ export class ConversationService extends BaseService<Conversation> {
                 .leftJoinAndSelect('conversation.participant_id', 'participant')
                 .leftJoinAndSelect('conversation.admin_id', 'admin')
                 .leftJoinAndSelect('conversation.messages', 'messages')
-                .orderBy('conversation.updatedAt', 'DESC')
+                .orderBy('conversation.updated_at', 'DESC')
                 .getMany();
         } catch (error) {
             console.error(`Failed to get contact list: ${error}`);
@@ -104,7 +104,7 @@ export class ConversationService extends BaseService<Conversation> {
                 .where('conversation.admin_id = :admin_id', { admin_id: input.id })
                 .leftJoinAndSelect('conversation.participant_id', 'participant')
                 .leftJoinAndSelect('conversation.messages', 'messages')
-                .orderBy('conversation.updatedAt', 'DESC')
+                .orderBy('conversation.updated_at', 'DESC')
                 .getMany();
         } catch (error) {
             console.error(`Failed to get contact list: ${error}`);
@@ -120,7 +120,7 @@ export class ConversationService extends BaseService<Conversation> {
                 .leftJoinAndSelect('conversation.user_id', 'user')
                 .leftJoinAndSelect('conversation.participant_id', 'participant')
                 .leftJoinAndSelect('conversation.messages', 'messages')
-                .orderBy('messages.createdAt', 'ASC')
+                .orderBy('messages.created_at', 'ASC')
                 .getOne();
             if (conversation && conversation.messages && conversation.messages.length > 0) {
                 if (conversation.messages[conversation.messages.length - 1].user_id !== input.id) {
@@ -146,7 +146,7 @@ export class ConversationService extends BaseService<Conversation> {
                 .leftJoinAndSelect('conversation.participant_id', 'participant')
                 .leftJoinAndSelect('conversation.admin_id', 'admin_id')
                 .leftJoinAndSelect('conversation.messages', 'messages')
-                .orderBy('conversation.updatedAt', 'DESC')
+                .orderBy('conversation.updated_at', 'DESC')
                 .getOne();
         } catch (error) {
             console.error(`Failed to get contact: ${error}`);
@@ -163,7 +163,7 @@ export class ConversationService extends BaseService<Conversation> {
                 .leftJoinAndSelect('conversation.admin_id', 'admin')
                 .leftJoinAndSelect('conversation.participant_id', 'participant')
                 .leftJoinAndSelect('conversation.messages', 'messages')
-                .orderBy('conversation.updatedAt', 'DESC')
+                .orderBy('conversation.updated_at', 'DESC')
                 .getOne();
         } catch (error) {
             console.error(`Failed to get contact: ${error}`);
