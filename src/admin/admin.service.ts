@@ -54,8 +54,9 @@ export class AdminService extends BaseService<Admin> {
       const existingUser = await this.repo.findOne({
         where: { username: input.username },
       });
-
-      if (!existingUser || input.password !== existingUser.password) {
+      console.log("existingUser:", existingUser)
+      const isPasswordMatching = await bcrypt.compare(input.password, existingUser.password)
+      if (!existingUser || !isPasswordMatching) {
         return res.redirect('/admin/sign-in')
       }
 

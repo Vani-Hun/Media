@@ -480,7 +480,8 @@
             window.history.replaceState({}, unsed, url);
         }
     }
-    function createVideoContainer() {
+    function createVideoContainer(video) {
+        let user = video.user
         const divVideo = document.createElement('div');
         divVideo.classList = "tiktok-1qg2388-DivBrowserModeContainer"
         divVideo.style.display = "flex";
@@ -847,11 +848,12 @@
     }
 
     function displayVideos(videos) {
+        let videosFinal = videos ? videos : JSON.parse(sessionStorage.getItem('videosData'))
 
-        videos.forEach((video, index) => {
+        videosFinal.forEach((videocur, index) => {
             const videoElement = document.createElement('div');
             videoElement.classList = 'css-x6y88p-DivItemContainerV2'
-            videoElement.innerHTML = displayVideosTemplate(video)
+            videoElement.innerHTML = displayVideosTemplate(videocur)
             videoContainer.appendChild(videoElement);
             videoElement.addEventListener('click', () => {
                 listVideoDiv.style.display = 'none'
@@ -859,9 +861,10 @@
                 navMenuMiddle.style.display = 'none'
                 bigDiv.style.display = 'none'
                 sessionStorage.setItem('indexCurrentVideoProfile', index);
-                const divVideo = createVideoContainer();
+                const divVideo = createVideoContainer(videocur);
                 document.body.appendChild(divVideo)
-                continuePlay(JSON.parse(sessionStorage.getItem('videosData'))[index], divVideo);
+                let video = videos ? videos[index] : JSON.parse(sessionStorage.getItem('videosData'))[index]
+                continuePlay(video, divVideo);
             });
         });
     }
@@ -1280,7 +1283,9 @@
                 return response.json();
             })
             .then(data => {
-                displayVideos(data.likedVideos)
+                sessionStorage.setItem('videosData', JSON.stringify(data.liked_videos));
+                videos = data.liked_videos
+                displayVideos(videos)
             })
             .catch(error => { console.error("Error:", error) })
 

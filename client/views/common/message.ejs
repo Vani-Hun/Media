@@ -125,7 +125,6 @@
             messages.sort((a, b) => new Date(a.created_at) - new Date(b.created_at))
             let lastMessage = messages[conversation.messages.length - 1]
             let user = conversation.user_id ? conversation.user_id : conversation.admin_id;
-
             let participant = conversation.participant_id
             let divContact
             if (user.id === customer.id) {
@@ -427,6 +426,7 @@
         if (receiver.id === customer.id) {
             receiverId = conversations[indexCurrentContact].participant_id.id
         }
+
         socket.emit('sendMessage', { senderId: customer.id, receiverId: receiverId, text: text.textContent.trim() }, (data, err) => {
             let divMess
             if (err) {

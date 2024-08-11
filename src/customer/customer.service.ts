@@ -241,6 +241,7 @@ export class CustomerService extends BaseService<Customer> {
         .leftJoinAndSelect('customer.liked_videos', 'liked_videos')
         .leftJoinAndSelect('customer.following', 'following')
         .leftJoinAndSelect('customer.followers', 'followers')
+        .leftJoinAndSelect('customer.payments', 'payments')
         .leftJoinAndSelect('conversations.participant_id', 'participant_id')
         .leftJoinAndSelect('conversations.user_id', 'user_id')
         .leftJoinAndSelect('conversations.messages', 'messeages')
@@ -403,7 +404,25 @@ export class CustomerService extends BaseService<Customer> {
       throw new HttpException('Error in update.', HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
+  async postUpgradeProfile(input) {
+    console.log("input:", input)
+    const levels = ['Bronze', 'Silver', 'Gold', 'Platinum', 'Diamond'];
+    try {
+      let customer = await this.getUser(input)
+      if (customer.coin >= input.cost) {
+        customer.coin = customer.coin - input.cost
+        customer.rank = levels.indexOf(input.frame)
+        await this.repo.save(customer);
+        return { customer, mess: "Success" }
 
+      } else {
+        return { customer, mess: "Failed" }
+      }
+    } catch (error) {
+      console.error(`Error in UpgradeProfile: ${error.message}`);
+      throw new HttpException('Error in UpgradeProfile.', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
   async followUser(input) {
     try {
       const userRequest = await this.repo.createQueryBuilder('customer')
@@ -432,7 +451,17 @@ export class CustomerService extends BaseService<Customer> {
     }
   }
 
-
+  async updateCoin(input, coin) {
+    try {
+      let customer = await this.getUser(input)
+      customer.coin = coin / 100 + customer.coin
+      await this.repo.save(customer);
+      return customer
+    } catch (error) {
+      console.error(`Error in unfollowUser: ${error.message}`);
+      throw new HttpException('Error in unfollowUser.', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
   async unfollowUser(input) {
     try {
       input.type = NotificationType.FOLLOWER;

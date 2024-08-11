@@ -212,12 +212,101 @@
     border-width: 0.5px;
     cursor: pointer;
     background-color: rgba(136, 136, 136, 0.5);
+    overflow: visible !important;
 }
 
-.tiktok-1zpj2q-ImgAvatar {
+.card-container {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+.card {
+    position: relative;
+    width: 180px;
+    height: 240px;
+    margin: 20px;
+    background-color: #f0f0f0;
+    border-radius: 10px;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.card.selected {
+    transform: scale(1.05);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+    border: 1px solid black;
+}
+
+.card_load {
     width: 100%;
-    height: 100%;
-    object-fit: cover;
+    height: 180px;
+    background-color: #e0e0e0;
+}
+
+.card_load_extreme_title {
+    width: 80%;
+    height: 20px;
+    margin: 10px auto;
+    background-color: #e0e0e0;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-self: center;
+    align-items: center;
+}
+
+.card_load_extreme_descripion {
+    width: 90%;
+    height: 20px;
+    margin: 10px auto;
+    background-color: #e0e0e0;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-self: center;
+    align-items: center;
+}
+
+.vip-frame {
+    /* position: absolute;
+    top: -5%;
+    left: -5%;
+    width: 110%;
+    height: 110%; */
+    z-index: 1;
+    pointer-events: none;
+}
+
+.level-1 {
+    animation: rotate 20s linear infinite;
+}
+
+.level-2 {
+    animation: rotate 18s linear infinite;
+}
+
+.level-3 {
+    animation: rotate 15s linear infinite;
+}
+
+.level-4 {
+    animation: rotate 12s linear infinite;
+}
+
+.level-5 {
+    animation: rotate 10s linear infinite;
+}
+
+@keyframes rotate {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 .tiktok-1nbnul7-DivShareTitleContainer {
@@ -318,11 +407,15 @@
 }
 
 .tiktok-g5dwjs-DivEditContainer {
+    display: flex;
+    flex-direction: row;
     position: relative;
     height: 36px;
     padding: 0px;
     margin: 16px 0px 0px;
 }
+
+
 
 .tiktok-8i8qcr-PPost {
     font-family: TikTokFont, Arial, Tahoma, PingFangSC, sans-serif;
@@ -1276,30 +1369,8 @@ body.modal-open {
     margin-left: 128px;
 }
 
-.tiktok-gcksof-SpanAvatarContainer-StyledAvatar {
-    display: inline-block;
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    font-feature-settings: "tnum";
-    position: relative;
-    overflow: hidden;
-    color: #fff;
-    white-space: nowrap;
-    text-align: center;
-    vertical-align: middle;
-    line-height: 32px;
-    border-radius: 50%;
-    background-color: rgba(136, 136, 136, 0.5);
-    border-color: rgba(22, 24, 35, .12);
-    border-width: 0.5px;
-    cursor: pointer;
-    background-color: rgba(136, 136, 136, 0.5);
-}
-
-
-
 .tiktok-1zpj2q-ImgAvatarUpdate {
+    border-radius: 50%;
     width: 100%;
     height: 100%;
     object-fit: cover;

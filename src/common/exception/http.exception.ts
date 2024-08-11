@@ -22,6 +22,10 @@ export class HttpExceptionFilter implements ExceptionFilter {
         return res.redirect(`/customer/verify-otp?error=${encodeURIComponent(error)}`);
       case HttpStatus.INTERNAL_SERVER_ERROR:
         return res.send({ mess: error });
+      case HttpStatus.SERVICE_UNAVAILABLE:
+        return res.redirect(`/admin/sign-in`);
+      case HttpStatus.NOT_FOUND:
+        return { error }
       // const originalUrl = ctx.getRequest().url;
       // console.log("originalUrl:", originalUrl)
       // if (originalUrl && originalUrl !== '/') {

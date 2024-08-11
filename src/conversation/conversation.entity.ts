@@ -9,7 +9,7 @@ import { Admin } from 'src/admin/admin.entity';
 @Entity()
 export class Conversation extends BaseEntityUUID {
 
-    @ManyToOne(() => Admin, { nullable: true })
+    @ManyToOne(() => Admin)
     @JoinColumn({ name: 'admin_id' })
     admin_id: Admin;
 

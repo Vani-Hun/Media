@@ -292,12 +292,6 @@
       background-color: rgba(136, 136, 136, 0.5);
   }
 
-  .tiktok-1zpj2q-ImgAvatar {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-  }
-
   .tiktok-xhj3u2-StyledVideoBlurBackground img {
       object-fit: cover;
   }
@@ -1132,12 +1126,7 @@
   }
 
   .tiktok-1zpj2q-ImgAvatar {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-  }
-
-  .tiktok-1zpj2q-ImgAvatar {
+      border-radius: 50%;
       width: 100%;
       height: 100%;
       object-fit: cover;

@@ -127,7 +127,7 @@ export class VideoController {
             req['user'] = { ...req['user'], ...body }
             return await this.videoService.update(req['user'])
         }
-    }
+    };
     @Delete('delete/:videoId')
     @UseGuards(CusAuthGuard)
     async deleteVideo(@Param('videoId') videoId: string, @Req() req: Request) {

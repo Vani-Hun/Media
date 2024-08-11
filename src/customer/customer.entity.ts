@@ -6,6 +6,7 @@ import { Comment } from 'src/comment/comment.entity';
 import { Notification } from 'src/notification/notitfication.entity';
 import { Message } from 'src/message/message.entity';
 import { Conversation } from 'src/conversation/conversation.entity';
+import { Payment } from 'src/payment/payment.entity';
 @Entity()
 export class Customer extends BaseEntityUUID {
 
@@ -30,8 +31,14 @@ export class Customer extends BaseEntityUUID {
   @Column({ nullable: true })
   password: string;
 
+  @Column({ nullable: true, default: 0 })
+  rank: number;
+
   @Column({ nullable: true, default: "Everyone" })
   message_status: string;
+
+  @Column({ nullable: true, default: true })
+  video_liked_status: boolean;
 
   @OneToMany(() => Conversation, conversation => conversation.user_id || conversation.participant_id, { cascade: true })
   conversations: Conversation[];
@@ -71,4 +78,9 @@ export class Customer extends BaseEntityUUID {
   @ManyToMany(() => Video, video => video.likers, { cascade: true })
   liked_videos: Video[];
 
+  @Column({ default: 0 })
+  coin: number;
+
+  @OneToMany(() => Payment, payment => payment.user, { cascade: true })
+  payments: Payment[];
 };

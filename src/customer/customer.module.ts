@@ -14,6 +14,7 @@ import { MessageModule } from 'src/message/message.module';
 import { ConversationModule } from 'src/conversation/conversation.module';
 import { HashtagModule } from 'src/hashtag/hashtag.module';
 import { AdminModule } from 'src/admin/admin.module';
+import { PaymentModule } from 'src/payment/payment.module';
 
 @Module({
   imports: [
@@ -25,7 +26,8 @@ import { AdminModule } from 'src/admin/admin.module';
     MessageModule,
     TypeOrmModule.forFeature([Customer]),
     MulterModule.register({ storage }),
-    FirebaseConfigModule
+    FirebaseConfigModule,
+    PaymentModule
   ],
   providers: [CustomerService],
   controllers: [CustomerController],

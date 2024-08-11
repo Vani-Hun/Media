@@ -82,6 +82,7 @@ export class ConversationService extends BaseService<Conversation> {
     }
 
     async getListContact(input) {
+        console.log("input:", input)
         try {
             return await this.repo.createQueryBuilder('conversation')
                 .where('conversation.user_id = :user_id', { user_id: input.id })

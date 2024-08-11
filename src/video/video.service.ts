@@ -75,6 +75,15 @@ export class VideoService extends BaseService<Video> {
                     await this.notificationService.createNotification(input);
                 }));
             }
+            const webhookURL = 'http://localhost:8080/webhook/video';
+
+            await fetch(webhookURL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(video),
+            });
 
             return res.redirect(`/customer/profile/${input.id}`)
         } catch (error) {

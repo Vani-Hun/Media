@@ -1,0 +1,11 @@
+<%- include("../common/head.ejs") %>
+
+    <head>
+        <link rel="stylesheet" href="/css/common/bootstrap.min.css">
+        <link rel="stylesheet" href="/css/common/jumbotron-narrow.css">
+    </head>
+    <div id="bigDiv" style="min-height: 100vh;display: flex;flex-direction: column;justify-content: flex-start;">
+        <%- include('../common/nav-menu.ejs',customer) %>
+            <%- include("../common/message.ejs") %>
+                <%- include('./customer-body/customer-payment.ejs',payment) %>
+    </div>

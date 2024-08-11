@@ -1,3 +1,4 @@
+import { AdminService } from 'src/admin/admin.service';
 import { ConversationService } from './../../conversation/conversation.service';
 import { MessageService } from './../../message/message.service';
 import { VideoService } from 'src/video/video.service';
@@ -11,7 +12,8 @@ export class NotificationGateway implements OnGatewayConnection, OnGatewayDiscon
     constructor(
         private customerService: CustomerService,
         private videoService: VideoService,
-        private conversationService: ConversationService
+        private conversationService: ConversationService,
+        private adminService: AdminService
     ) { }
     private userMap = []
 
@@ -41,7 +43,10 @@ export class NotificationGateway implements OnGatewayConnection, OnGatewayDiscon
     async sendMessage(client: any, payload: any): Promise<void> {
         try {
             const recieverId = this.userMap.find(user => user.customerId === payload.receiverId)
-            if (payload.receiverId === '1') {
+            payload.id = payload.receiverId
+            let isExistAdmin = await this.adminService.getAdminByAdmin(payload)
+            console.log("isExistAdmin:", isExistAdmin)
+            if (isExistAdmin.admin) {
                 await this.conversationService.createConversationWithAdmin(payload)
             } else {
                 await this.conversationService.createConversation(payload)

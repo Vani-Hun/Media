@@ -5,7 +5,6 @@ import { AdminModule } from './admin/admin.module';
 import { DatabaseModule } from './common/utils/typeorm.config';
 import { CustomerModule } from './customer/customer.module';
 import { HomeModule } from './home/home.module';
-import { MailboxModule } from './mailbox/mailbox.module';
 import { NotificationGateway } from './common/services/websocket.service';
 
 const EnvModule = ConfigModule.forRoot({
@@ -19,7 +18,6 @@ const EnvModule = ConfigModule.forRoot({
     EnvModule,
     AdminModule,
     CustomerModule,
-    MailboxModule,
     // MsgWebhookModule,
     DatabaseModule,
   ]

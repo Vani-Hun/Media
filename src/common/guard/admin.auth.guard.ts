@@ -26,12 +26,13 @@ export class AdminAuthGuard implements CanActivate {
       if (status) {
         request['user'] = await admin;
       } else {
-        // throw new HttpException('Let login!!!', HttpStatus.UNAUTHORIZED);
+        throw new HttpException('Failed.', HttpStatus.SERVICE_UNAVAILABLE);
       }
       return status;
     } catch {
       console.log("catchcanActivate")
-      // throw new UnauthorizedException('Let login!!!');
+      throw new HttpException('Failed.', HttpStatus.SERVICE_UNAVAILABLE);
+
     }
   }
 }

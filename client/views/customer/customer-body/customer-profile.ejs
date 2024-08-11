@@ -100,12 +100,21 @@
                 <div class="tiktok-1nbnul7-DivShareTitleContainer ekmpd5l3">
                     <h1 data-e2e="user-title" class="tiktok-1xo9k5n-H1ShareTitle"></h1>
                     <h2 data-e2e="user-subtitle" class="tiktok-10pb43i-H2ShareSubTitle ekmpd5l7"></h2>
-                    <div data-e2e="edit-profile-entrance" class="tiktok-g5dwjs-DivEditContainer e33dl3i0"><button
-                            type="button" class="e33dl3i1 tiktok-16gecda-Button-StyledEditButton ehk74z00"><svg
+                    <div data-e2e="edit-profile-entrance" class="tiktok-g5dwjs-DivEditContainer e33dl3i0">
+                        <button type="button" class="e33dl3i1 tiktok-16gecda-Button-StyledEditButton ehk74z00"><svg
                                 xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor"
                                 class="tiktok-l7zpu2-StyledEditIcon e33dl3i3">
                                 <use xlink:href="#edit-5f4d9ed9"></use>
-                            </svg><span>Edit profile</span></button></div>
+                            </svg><span>Edit profile</span></button>
+                        <button id="upgrade-button" type="button"
+                            class="e33dl3i1 tiktok-16gecda-Button-StyledEditButton ehk74z00">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em"
+                                class="tiktok-l7zpu2-StyledEditIcon e33dl3i3" viewBox="0 0 512 512">
+                                <path fill="#000000"
+                                    d="M256 29.816l-231 154v106.368l231-154 231 154V183.816zm0 128.043L105 259.783v90.283l151-101.925 151 101.925v-90.283zm0 112l-87 58.725v67.6l87-58 87 58v-67.6zm0 89.957l-87 58v64.368l87-58 87 58v-64.368z" />
+                            </svg>
+                            <span>Upgrade account</span></button>
+                    </div>
                 </div>
             </div>
             <h3 class="tiktok-12ijsdd-H3CountInfos e1457k4r0">
@@ -147,12 +156,8 @@
                         </path>
                     </svg><span class="tiktok-1w1pypo-SpanLiked e1jjp0pq4">Favorites</span></p>
                 <p aria-selected="false" role="tab" data-e2e="liked-tab" tabindex="0"
-                    class="tiktok-r7ao4-PLike e1jjp0pq3"><svg width="1em" data-e2e="" height="1em" viewBox="0 0 48 48"
-                        fill="currentColor" xmlns="http://www.w3.org/2000/svg" style="transform: translateY(2px);">
-                        <path fill-rule="evenodd" clip-rule="evenodd"
-                            d="M24 3C17.9249 3 13 7.92487 13 14V21H8C6.89543 21 6 21.8954 6 23V41C6 42.1046 6.89543 43 8 43H40C41.1046 43 42 42.1046 42 41V23C42 21.8954 41.1046 21 40 21H35V14C35 7.92487 30.0751 3 24 3ZM31 21V14C31 10.134 27.866 7 24 7C20.134 7 17 10.134 17 14V21H31Z">
-                        </path>
-                    </svg><span class="tiktok-1w1pypo-SpanLiked e1jjp0pq4">Liked</span></p>
+                    class="tiktok-r7ao4-PLike e1jjp0pq3"><span class="tiktok-1w1pypo-SpanLiked e1jjp0pq4">Liked</span>
+                </p>
                 <div class="tiktok-1f8gh88-DivBottomLine e1jjp0pq5" style="transform: translateX(0px); width: 122px;">
                 </div>
             </div>
@@ -279,7 +284,91 @@
         </div>
     </div>
 </form>
+<form id="upgradeForm" action="">
+    <div id="upgradeAccountForm" class="tiktok-d84lpe-ModalContainer e1wuf0b30" style="display: none;">
+        <div class="tiktok-ai36k9-ModalBackdrop e1wuf0b35"></div>
+        <div tabindex="-1" class="tiktok-17s26nl-ModalContentContainer e1wuf0b31">
+            <div class="tiktok-15neh3t-ModalContentVerticalPositionContainer e1wuf0b32">
+                <div class="tiktok-ihckm8-ModalContentVerticalPositionPadding e1wuf0b33">
+                    <section role="dialog" aria-modal="true" aria-labelledby="tux-1_header"
+                        aria-describedby="tux-1_body" class="tiktok-19l8hzs-ModalContentSection e1wuf0b34">
+                        <div aria-label="Edit profile" role="dialog" data-e2e="edit-profile-popup"
+                            class="tiktok-o2w5fl-DivModalContainer e13yu7jj0">
+                            <div data-e2e="edit-profile-header" class="tiktok-6y62q3-DivHeaderContainer e13yu7jj1">
+                                <h1 class="tiktok-1twl9p4-H1Header e13yu7jj2">To be better</h1>
+                                <div aria-label="Close_button" role="button" tabindex="0"
+                                    data-e2e="upgrade-account-close" class="tiktok-g4salc-DivCloseContainer e13yu7jj3">
+                                    <svg width="24" data-e2e="" height="24" viewBox="0 0 48 48"
+                                        fill="rgba(22, 24, 35, .75)" xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd" clip-rule="evenodd"
+                                            d="M21.1718 23.9999L10.2931 13.1212C9.90261 12.7307 9.90261 12.0975 10.2931 11.707L11.7074 10.2928C12.0979 9.90228 12.731 9.90228 13.1216 10.2928L24.0002 21.1715L34.8789 10.2928C35.2694 9.90228 35.9026 9.90228 36.2931 10.2928L37.7073 11.707C38.0979 12.0975 38.0979 12.7307 37.7073 13.1212L26.8287 23.9999L37.7073 34.8786C38.0979 35.2691 38.0979 35.9023 37.7073 36.2928L36.2931 37.707C35.9026 38.0975 35.2694 38.0975 34.8789 37.707L24.0002 26.8283L13.1216 37.707C12.731 38.0975 12.0979 38.0975 11.7074 37.707L10.2931 36.2928C9.90261 35.9023 9.90261 35.2691 10.2931 34.8786L21.1718 23.9999Z">
+                                        </path>
+                                    </svg>
+                                </div>
+                            </div>
+                            <div class="tiktok-gr0dyb-DivContentContainer">
+                                <div class="tiktok-oldb3k-DivItemContainer-StyledItemContainerWithLine e13yu7jj10">
+                                    <div data-e2e="edit-profile-photo" class="tiktok-1wo2vh7-DivLabel e13yu7jj11">
+                                        Profile photo
+                                    </div>
+                                    <div data-e2e="edit-profile-avatar"
+                                        class="tiktok-1vo5gtq-DivAvatarContent e13yu7jj12">
+                                        <div class="e13yu7jj21 tiktok-1t7819m-DivContainer-StyledAvatar e1vl87hj1"
+                                            style="width: 96px; height: 96px;">
+                                            <span shape="circle" data-e2e=""
+                                                class="e1vl87hj2 tiktok-gcksof-SpanAvatarContainer-StyledAvatar e1e9er4e0"
+                                                style="width: 96px; height: 96px;">
+                                                <img id="ImgAvatarUpgrade" loading="lazy" alt="" src=""
+                                                    class="tiktok-1zpj2q-ImgAvatarUpdate">
 
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tiktok-gr0dyb-DivContentContainer">
+                                <div class="card-container">
+                                    <div class="card" data-level="1">
+                                        <div class="card_load"></div>
+                                        <div class="card_load_extreme_title"></div>
+                                        <div class="card_load_extreme_descripion"></div>
+                                    </div>
+                                    <div class="card" data-level="2">
+                                        <div class="card_load"></div>
+                                        <div class="card_load_extreme_title"></div>
+                                        <div class="card_load_extreme_descripion"></div>
+                                    </div>
+                                    <div class="card" data-level="3">
+                                        <div class="card_load"></div>
+                                        <div class="card_load_extreme_title"></div>
+                                        <div class="card_load_extreme_descripion"></div>
+                                    </div>
+                                    <div class="card" data-level="4">
+                                        <div class="card_load"></div>
+                                        <div class="card_load_extreme_title"></div>
+                                        <div class="card_load_extreme_descripion"></div>
+                                    </div>
+                                    <div class="card" data-level="5">
+                                        <div class="card_load"></div>
+                                        <div class="card_load_extreme_title"></div>
+                                        <div class="card_load_extreme_descripion"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tiktok-dwj06y-DivFooterContainer e13yu7jj4"><button type="button"
+                                    data-e2e="upgrade-account-cancel"
+                                    class="e13yu7jj5 tiktok-1khwp92-Button-StyledBtn ehk74z00">Cancel</button><button
+                                    type="submit" type="button" data-e2e="edit-profile-save" disabled="" id="saveButton"
+                                    type="submit"
+                                    class="e13yu7jj5 tiktok-95m0zs-Button-StyledBtn ehk74z00">Save</button>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
 <script>
     const logo = document.querySelector('.tiktok-1zpj2q-ImgAvatar')
     const userName = document.querySelector('.tiktok-1xo9k5n-H1ShareTitle');
@@ -290,7 +379,6 @@
     const userBio = document.querySelector('.tiktok-4ac4gk-H2ShareDesc');
     const editProfileForm = document.getElementById('editProfileForm');
     const editProfileButton = document.querySelector('.tiktok-16gecda-Button-StyledEditButton');
-
     logo.src = customer.logo ? customer.logo : "";
     userName.textContent = customer.username;
     userSubtitle.textContent = customer.name;
@@ -313,7 +401,7 @@
         const avatarPreview = document.querySelector('.tiktok-1zpj2q-ImgAvatarUpdate');
         const Form = document.getElementById('Form');
         navMenu.style.zIndex = '0'
-        navMenuMiddle.style.zIndex = '0'
+        navMenuMiddle.style.zIndex = '-1'
         function showLoader() {
             let loader = document.querySelector('.loader');
             loader.classList.add('visible');
@@ -422,7 +510,310 @@
 
     });
 </script>
+<script>
+    const upgradeAccountButton = document.getElementById('upgrade-button')
+    const upgradeAccountForm = document.getElementById('upgradeAccountForm');
+    const container = document.querySelector('.tiktok-gcksof-SpanAvatarContainer-StyledAvatar');
+    const avatarImg = container.querySelector('img');
 
+    function handleFrame(num) {
+
+        const level = levels[num];
+        const index = num;
+
+        const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        svg.setAttribute('class', `vip-frame level-${index + 1}`);
+        svg.setAttribute('viewBox', '0 0 100 100');
+        svg.style.position = 'absolute';
+        svg.style.top = '-5%';
+        svg.style.left = '-5%';
+        svg.style.width = '110%';
+        svg.style.height = '110%';
+        svg.style.zIndex = '1';
+        svg.style.pointerEvents = 'none';
+
+        const defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
+        const gradient = document.createElementNS('http://www.w3.org/2000/svg', 'linearGradient');
+        gradient.setAttribute('id', `${level.name.toLowerCase()}-gradient-${index}`);
+        gradient.setAttribute('x1', '0%');
+        gradient.setAttribute('y1', '0%');
+        gradient.setAttribute('x2', '100%');
+        gradient.setAttribute('y2', '100%');
+
+        level.gradient.forEach((color, stopIndex) => {
+            const stop = document.createElementNS('http://www.w3.org/2000/svg', 'stop');
+            stop.setAttribute('offset', `${stopIndex * 50}%`);
+            stop.setAttribute('stop-color', color);
+            gradient.appendChild(stop);
+        });
+
+        defs.appendChild(gradient);
+        svg.appendChild(defs);
+
+        const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        circle.setAttribute('cx', '50');
+        circle.setAttribute('cy', '50');
+        circle.setAttribute('r', '48');
+        circle.setAttribute('fill', 'none');
+        circle.setAttribute('stroke', `url(#${level.name.toLowerCase()}-gradient-${index})`);
+        circle.setAttribute('stroke-width', '3');
+        svg.appendChild(circle);
+
+        if (index >= 1) {
+            const innerCircle1 = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+            innerCircle1.setAttribute('cx', '50');
+            innerCircle1.setAttribute('cy', '50');
+            innerCircle1.setAttribute('r', '44');
+            innerCircle1.setAttribute('fill', 'none');
+            innerCircle1.setAttribute('stroke', `url(#${level.name.toLowerCase()}-gradient-${index})`);
+            innerCircle1.setAttribute('stroke-width', '1');
+            svg.appendChild(innerCircle1);
+
+            const innerCircle2 = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+            innerCircle2.setAttribute('cx', '50');
+            innerCircle2.setAttribute('cy', '50');
+            innerCircle2.setAttribute('r', '40');
+            innerCircle2.setAttribute('fill', 'none');
+            innerCircle2.setAttribute('stroke', `url(#${level.name.toLowerCase()}-gradient-${index})`);
+            innerCircle2.setAttribute('stroke-width', '1');
+            innerCircle2.setAttribute('stroke-dasharray', '3,3');
+            svg.appendChild(innerCircle2);
+        }
+
+        if (index >= 3) {
+            const decorPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            decorPath.setAttribute('d', 'M50 15 Q 60 50 50 85 M50 15 Q 40 50 50 85');
+            decorPath.setAttribute('fill', 'none');
+            decorPath.setAttribute('stroke', `url(#${level.name.toLowerCase()}-gradient-${index})`);
+            decorPath.setAttribute('stroke-width', '1');
+            svg.appendChild(decorPath);
+        }
+
+        if (index === 4) {
+            const diamondGlow = document.createElementNS('http://www.w3.org/2000/svg', 'filter');
+            diamondGlow.setAttribute('id', `diamond-glow-${index}`);
+            const feGaussianBlur = document.createElementNS('http://www.w3.org/2000/svg', 'feGaussianBlur');
+            feGaussianBlur.setAttribute('stdDeviation', '3.5');
+            feGaussianBlur.setAttribute('result', 'coloredBlur');
+            diamondGlow.appendChild(feGaussianBlur);
+            const feMerge = document.createElementNS('http://www.w3.org/2000/svg', 'feMerge');
+            const feMergeNode1 = document.createElementNS('http://www.w3.org/2000/svg', 'feMergeNode');
+            feMergeNode1.setAttribute('in', 'coloredBlur');
+            const feMergeNode2 = document.createElementNS('http://www.w3.org/2000/svg', 'feMergeNode');
+            feMergeNode2.setAttribute('in', 'SourceGraphic');
+            feMerge.appendChild(feMergeNode1);
+            feMerge.appendChild(feMergeNode2);
+            diamondGlow.appendChild(feMerge);
+            defs.appendChild(diamondGlow);
+
+            circle.setAttribute('filter', `url(#diamond-glow-${index})`);
+
+            const extraDecorPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            extraDecorPath.setAttribute('d', 'M15 50 Q 50 40 85 50 M15 50 Q 50 60 85 50');
+            extraDecorPath.setAttribute('fill', 'none');
+            extraDecorPath.setAttribute('stroke', `url(#${level.name.toLowerCase()}-gradient-${index})`);
+            extraDecorPath.setAttribute('stroke-width', '1');
+            svg.appendChild(extraDecorPath);
+        }
+        container.appendChild(svg);
+
+    }
+    handleFrame(customer.rank)
+    upgradeAccountButton.addEventListener('click', function () {
+        const closeButton = document.querySelector('[data-e2e="upgrade-account-close"]');
+        const cancelButton = document.querySelector('[data-e2e="upgrade-account-cancel"]');
+        const avatarPreview = document.getElementById('ImgAvatarUpgrade');
+        const saveButton = upgradeAccountForm.querySelector('.tiktok-dwj06y-DivFooterContainer').querySelector('[data-e2e="edit-profile-save"]');;
+        const upgradeForm = document.getElementById('upgradeForm')
+        navMenu.style.zIndex = '0'
+        navMenuMiddle.style.zIndex = '-1'
+        avatarPreview.src = customer.logo
+        document.body.classList.add('modal-open');
+        saveButton.disabled = true;
+        upgradeAccountForm.style.display = 'flex';
+
+
+        function hideEditProfileForm() {
+            upgradeAccountForm.style.display = 'none';
+            navMenu.style.zIndex = '11'
+            navMenuMiddle.style.zIndex = '10'
+            document.body.classList.remove('modal-open');
+            const cards = document.querySelectorAll('.card'); // Giả sử các card có class 'card'
+            cards.forEach(card => {
+                const svg = card.querySelector('svg');
+                if (svg) {
+                    svg.remove();
+                }
+            });
+            upgradeAccountButton.removeEventListener('click', this);
+        }
+
+        function createVipFrame(level, index) {
+            const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+            svg.setAttribute('class', `vip-frame level-${index + 1}`);
+            svg.setAttribute('viewBox', '0 0 100 100');
+
+            const defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
+            const gradient = document.createElementNS('http://www.w3.org/2000/svg', 'linearGradient');
+            gradient.setAttribute('id', `${level.name.toLowerCase()}-gradient-${index}`);
+            gradient.setAttribute('x1', '0%');
+            gradient.setAttribute('y1', '0%');
+            gradient.setAttribute('x2', '100%');
+            gradient.setAttribute('y2', '100%');
+
+            level.gradient.forEach((color, stopIndex) => {
+                const stop = document.createElementNS('http://www.w3.org/2000/svg', 'stop');
+                stop.setAttribute('offset', `${stopIndex * 50}%`);
+                stop.setAttribute('stop-color', color);
+                gradient.appendChild(stop);
+            });
+
+            defs.appendChild(gradient);
+            svg.appendChild(defs);
+
+            const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+            circle.setAttribute('cx', '50');
+            circle.setAttribute('cy', '50');
+            circle.setAttribute('r', '48');
+            circle.setAttribute('fill', 'none');
+            circle.setAttribute('stroke', `url(#${level.name.toLowerCase()}-gradient-${index})`);
+            circle.setAttribute('stroke-width', '3');
+            svg.appendChild(circle);
+
+            if (index >= 1) {
+                const innerCircle1 = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                innerCircle1.setAttribute('cx', '50');
+                innerCircle1.setAttribute('cy', '50');
+                innerCircle1.setAttribute('r', '44');
+                innerCircle1.setAttribute('fill', 'none');
+                innerCircle1.setAttribute('stroke', `url(#${level.name.toLowerCase()}-gradient-${index})`);
+                innerCircle1.setAttribute('stroke-width', '1');
+                svg.appendChild(innerCircle1);
+
+                const innerCircle2 = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                innerCircle2.setAttribute('cx', '50');
+                innerCircle2.setAttribute('cy', '50');
+                innerCircle2.setAttribute('r', '40');
+                innerCircle2.setAttribute('fill', 'none');
+                innerCircle2.setAttribute('stroke', `url(#${level.name.toLowerCase()}-gradient-${index})`);
+                innerCircle2.setAttribute('stroke-width', '1');
+                innerCircle2.setAttribute('stroke-dasharray', '3,3');
+                svg.appendChild(innerCircle2);
+            }
+
+            if (index >= 3) {
+                const decorPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                decorPath.setAttribute('d', 'M50 15 Q 60 50 50 85 M50 15 Q 40 50 50 85');
+                decorPath.setAttribute('fill', 'none');
+                decorPath.setAttribute('stroke', `url(#${level.name.toLowerCase()}-gradient-${index})`);
+                decorPath.setAttribute('stroke-width', '1');
+                svg.appendChild(decorPath);
+            }
+
+            if (index === 4) {
+                const diamondGlow = document.createElementNS('http://www.w3.org/2000/svg', 'filter');
+                diamondGlow.setAttribute('id', `diamond-glow-${index}`);
+                const feGaussianBlur = document.createElementNS('http://www.w3.org/2000/svg', 'feGaussianBlur');
+                feGaussianBlur.setAttribute('stdDeviation', '3.5');
+                feGaussianBlur.setAttribute('result', 'coloredBlur');
+                diamondGlow.appendChild(feGaussianBlur);
+                const feMerge = document.createElementNS('http://www.w3.org/2000/svg', 'feMerge');
+                const feMergeNode1 = document.createElementNS('http://www.w3.org/2000/svg', 'feMergeNode');
+                feMergeNode1.setAttribute('in', 'coloredBlur');
+                const feMergeNode2 = document.createElementNS('http://www.w3.org/2000/svg', 'feMergeNode');
+                feMergeNode2.setAttribute('in', 'SourceGraphic');
+                feMerge.appendChild(feMergeNode1);
+                feMerge.appendChild(feMergeNode2);
+                diamondGlow.appendChild(feMerge);
+                defs.appendChild(diamondGlow);
+
+                circle.setAttribute('filter', `url(#diamond-glow-${index})`);
+
+                const extraDecorPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                extraDecorPath.setAttribute('d', 'M15 50 Q 50 40 85 50 M15 50 Q 50 60 85 50');
+                extraDecorPath.setAttribute('fill', 'none');
+                extraDecorPath.setAttribute('stroke', `url(#${level.name.toLowerCase()}-gradient-${index})`);
+                extraDecorPath.setAttribute('stroke-width', '1');
+                svg.appendChild(extraDecorPath);
+            }
+
+            return svg;
+        }
+
+        function initVipFrames() {
+            const cards = document.querySelectorAll('.card');
+            cards.forEach((card, index) => {
+                const cardLoad = card.querySelector('.card_load')
+                const cardTitle = card.querySelector('.card_load_extreme_title')
+                const cardDescription = card.querySelector('.card_load_extreme_descripion')
+
+                const level = parseInt(card.dataset.level) - 1;
+                if (level >= 0 && level < levels.length) {
+                    const frame = createVipFrame(levels[level], index);
+                    cardLoad.appendChild(frame);
+                }
+
+                card.addEventListener('click', function () {
+                    const costFrame = parseInt(this.querySelector('.card_load_extreme_descripion').textContent.trim().replace(/\./g, ''), 10)
+                    if (customer.coin >= costFrame) {
+                        saveButton.disabled = false;
+                    } else {
+                        saveButton.disabled = true;
+                    }
+                    document.querySelectorAll('.card').forEach(c => c.classList.remove('selected'));
+                    this.classList.add('selected');
+
+                });
+                cardTitle.innerText = levels[level].name
+                if (customer.rank === index) {
+                    cardDescription.innerText = (0 * 100000).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+                } else {
+                    cardDescription.innerText = (level * 100000).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+                }
+            });
+        }
+
+        initVipFrames()
+
+        closeButton.addEventListener('click', hideEditProfileForm);
+
+        cancelButton.addEventListener('click', hideEditProfileForm);
+        upgradeForm.addEventListener('submit', function (event) {
+            showLoader()
+            event.preventDefault()
+            const card = upgradeForm.querySelector('.card.selected')
+            console.log("card:", card)
+            const cardTitle = card.querySelector('.card_load_extreme_title').textContent
+            const cardDescription = card.querySelector('.card_load_extreme_descripion').textContent
+
+            const frame = cardTitle;
+            const cost = parseInt(cardDescription.trim().replace(/\./g, ''), 10)
+
+            const formData = new FormData();
+            formData.append('frame', frame);
+            formData.append('cost', cost);
+
+
+            fetch('/customer/profile/upgrade', {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => response.json()) // Parse JSON response
+                .then(data => {
+                    console.log("data:", data);
+                    showCustomAlert(data.mess, 3000)
+                    setTimeout(() => {
+                        hideLoader();
+                        window.location.href = `/customer/profile/${customer.id}`
+                    }, 3500);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    window.location.href = `/customer/profile/${customer.id}`
+                });
+        });
+    })
+</script>
 <script>
     let videos = customer.videos
     let likedVideoIds = customer.liked_videos
@@ -643,7 +1034,7 @@
         socket.emit('updateCustomer', { id: customer.id }, (err) => console.error(err));
         socket.on('updateCustomer', (data) => {
             customer = data;
-            videos = customer.videos
+            // videos = customer.videos
             likedVideoIds = customer.liked_videos;
             likedVideoSet = new Set(likedVideoIds.map(video => video.id));
             followedSet = new Set(customer.following.map(following => following.id));
@@ -680,7 +1071,8 @@
             window.history.replaceState({}, unsed, url);
         }
     }
-    function createVideoContainer(comment) {
+    function createVideoContainer(video) {
+        let customer = video.user
         const divVideo = document.createElement('div');
         divVideo.classList = "tiktok-1qg2388-DivBrowserModeContainer"
         divVideo.style.display = "flex";
@@ -1155,9 +1547,11 @@
     }
 
     function setSpanOtherInfosContent(spanOtherInfos, video, customer, updateTimeDifference) {
-        if (video.who === 'Private') {
+        if (video.user.id === customer.id) {
 
-            spanOtherInfos.innerHTML = `<span class="tiktok-pocgy1-SpanEllipsis evv7pft2">${customer.name}</span>
+            if (video.who === 'Private') {
+
+                spanOtherInfos.innerHTML = `<span class="tiktok-pocgy1-SpanEllipsis evv7pft2">${customer.name}</span>
                                     <span style="margin: 0px 4px;"> · </span><span>${updateTimeDifference} </span>
                                         <span style="margin: 0px 4px;"> · </span><svg width="16" data-e2e="" height="16"
                                         viewBox="0 0 48 48" fill="currentColor" xmlns="http://www.w3.org/2000/svg"
@@ -1166,8 +1560,8 @@
                                             d="M24 3C17.9249 3 13 7.92487 13 14V21H8C6.89543 21 6 21.8954 6 23V41C6 42.1046 6.89543 43 8 43H40C41.1046 43 42 42.1046 42 41V23C42 21.8954 41.1046 21 40 21H35V14C35 7.92487 30.0751 3 24 3ZM31 21V14C31 10.134 27.866 7 24 7C20.134 7 17 10.134 17 14V21H31Z">
                                         </path>
                                     </svg><span>${video.who}</span></span>`;
-        } else if (video.who === 'Friends') {
-            spanOtherInfos.innerHTML = `<span class="tiktok-pocgy1-SpanEllipsis evv7pft2">${customer.name}</span>
+            } else if (video.who === 'Friends') {
+                spanOtherInfos.innerHTML = `<span class="tiktok-pocgy1-SpanEllipsis evv7pft2">${customer.name}</span>
                                     <span style="margin: 0px 4px;"> · </span><span>${updateTimeDifference} </span>
                                         <span style="margin: 0px 4px;"> · </span><svg width="20" height="20" viewBox="0 0 48 48" fill="currentColor" xmlns="http://www.w3.org/2000/svg" style="margin: 0px 4px;">
                                     <path d="M25.5 17C25.5 21.1421 22.1421 24.5 18 24.5C13.8579 24.5 10.5 21.1421 10.5 17C10.5 12.8579 13.8579 9.5 18 9.5C22.1421 9.5 25.5 12.8579 25.5 17Z"></path>
@@ -1175,18 +1569,19 @@
                                     <path d="M40.6308 37H32C31.2264 34.1633 30.0098 31.5927 28.144 29.7682C29.5384 28.9406 31.1829 28.5 33 28.5C37.239 28.5 40.536 30.8992 41.9148 35.0108C42.2516 36.0154 41.5423 37 40.6308 37Z"></path>
                                     <path d="M33 26.5C36.0376 26.5 38.5 24.0376 38.5 21C38.5 17.9624 36.0376 15.5 33 15.5C29.9624 15.5 27.5 17.9624 27.5 21C27.5 24.0376 29.9624 26.5 33 26.5Z"></path>
                                 </svg><span>${video.who}</span></span>`;
-        } else {
-            spanOtherInfos.innerHTML = `<span class="tiktok-pocgy1-SpanEllipsis evv7pft2">${customer.name}</span>
+            } else {
+                spanOtherInfos.innerHTML = `<span class="tiktok-pocgy1-SpanEllipsis evv7pft2">${customer.name}</span>
                                     <span style="margin: 0px 4px;"> · </span><span>${updateTimeDifference} </span>`;
+            }
         }
     }
 
     function displayVideos(videosSpec) {
         let videosFinal = videosSpec ? videosSpec : JSON.parse(sessionStorage.getItem('videosData'))
-        videosFinal.forEach((video, index) => {
+        videosFinal.forEach((videocur, index) => {
             const videoElement = document.createElement('div');
             videoElement.classList = 'tiktok-x6y88p-DivItemContainerV2'
-            videoElement.innerHTML = displayVideosTemplate(video)
+            videoElement.innerHTML = displayVideosTemplate(videocur)
             videoContainer.appendChild(videoElement);
             videoElement.addEventListener('click', () => {
                 listVideoDiv.style.display = 'none'
@@ -1194,10 +1589,9 @@
                 navMenuMiddle.style.display = 'none'
                 bigDiv.style.display = 'none'
                 sessionStorage.setItem('indexCurrentVideoProfile', index);
-                const divVideo = createVideoContainer();
+                const divVideo = createVideoContainer(videocur);
                 document.body.appendChild(divVideo)
                 let video = videosSpec ? videosSpec[index] : JSON.parse(sessionStorage.getItem('videosData'))[index]
-                console.log("video:", video)
                 continuePlay(video, divVideo);
             });
         });
@@ -1708,12 +2102,12 @@
                 return response.json();
             })
             .then(data => {
-                videos = data.likedVideos
-                displayVideos(data.likedVideos)
+                console.log("data:", data)
+                sessionStorage.setItem('videosData', JSON.stringify(data.liked_videos));
+                videos = data.liked_videos
+                displayVideos(videos)
             })
             .catch(error => { console.error("Error:", error) })
-
-
     })
 
 
@@ -1725,6 +2119,7 @@
         while (parentElement.firstChild) {
             parentElement.removeChild(parentElement.firstChild);
         }
+        sessionStorage.setItem('videosData', JSON.stringify(customer.videos));
         displayVideos(customer.videos)
     })
 

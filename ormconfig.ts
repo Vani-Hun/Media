@@ -10,9 +10,10 @@ export const connectionSource = new DataSource({
   password: process.env.DB_PASS,
   database: process.env.DB_NAME,
   logging: false,
-  synchronize: false,
   name: 'default',
   entities: ['dist/**/*.entity.js'],
+  synchronize: true,
+  charset: "utf8mb4",
   // migrations: ['src/migrations/**/*{.ts,.js}'],
   // subscribers: ['src/subscriber/**/*{.ts,.js}'],
 })

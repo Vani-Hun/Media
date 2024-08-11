@@ -1,8 +1,8 @@
 <div class="nav-menu">
     <div class="nav-menu-brand">
         <div class="logo-brand"><a id="home-link" href="/video/videos"><img
-                    src="https://www.clipartmax.com/png/middle/101-1016995_gudetama-3-stickers-by-crazycitrus1-gudetama-lazy-egg.png"
-                    alt="logo vani"></a></div>
+                    src="https://i.pinimg.com/564x/64/15/98/641598505c35111cbb828df0c3c4bdba.jpg" alt="logo vani"></a>
+        </div>
     </div>
     <div class="css-3z2zs6-DivHeaderCenterContainer">
         <div class="css-1asq5wp-DivSearchFormContainer">
@@ -26,6 +26,10 @@
         </div>
     </div>
     <div class="css-q8q040-DivHeaderRightContainer e13wiwn60">
+        <div class="css-coin">
+            <span>0</span>
+        </div>
+
         <div data-e2e="upload-icon" class="css-szsi1x-DivUploadContainer e18d3d940"><a href="/video/upload"
                 target="_self" class="e18d3d942 css-2gvzau-ALink-StyledLink er1vbsz1" aria-label="Upload a video">
                 <div class="css-1qup28j-DivUpload e18d3d944"><svg class="css-qeydvm-StyledPlusIcon e18d3d945"
@@ -132,7 +136,7 @@
                                 <path fill-rule="evenodd" clip-rule="evenodd"
                                     d="M24 6C14.0589 6 6 14.0589 6 24C6 33.9411 14.0589 42 24 42C33.9411 42 42 33.9411 42 24C42 14.0589 33.9411 6 24 6ZM2 24C2 11.8497 11.8497 2 24 2C36.1503 2 46 11.8497 46 24C46 36.1503 36.1503 46 24 46C11.8497 46 2 36.1503 2 24ZM24.0909 15C22.172 15 20.3433 16.2292 19.2617 18.61C19.0332 19.1128 18.4726 19.4 17.9487 19.2253L16.0513 18.5929C15.5274 18.4182 15.2406 17.8497 15.4542 17.3405C16.9801 13.7031 20.0581 11 24.0909 11C28.459 11 32 14.541 32 18.9091C32 21.2138 30.7884 23.4606 29.2167 25.074C27.8157 26.5121 25.5807 27.702 22.9988 27.9518C22.4491 28.0049 22.0001 27.5523 22.0001 27V25C22.0001 24.4477 22.4504 24.0057 22.9955 23.9167C24.2296 23.7153 25.5034 23.1533 26.3515 22.2828C27.4389 21.1666 28 19.8679 28 18.9091C28 16.7502 26.2498 15 24.0909 15ZM24 36C22.3431 36 21 34.6569 21 33C21 31.3431 22.3431 30 24 30C25.6569 30 27 31.3431 27 33C27 34.6569 25.6569 36 24 36Z">
                                 </path>
-                            </svg><span>Feedback and help</span></a></li>
+                            </svg><span>Payment</span></a></li>
                     <li data-e2e="logout-entrance" tabindex="0" role="option"
                         class="css-1hji1mo-LiItemWrapper exws2ct1">
                         <div class="css-1r76y3-DivSettingItem exws2ct4"><svg class="css-g0144v" width="1em" data-e2e=""
@@ -176,8 +180,17 @@
     let listItem = document.querySelector('[data-e2e="logout-entrance"]');
     const listNotifications = document.querySelector('.css-1cz26jb-UlInboxItemListContainer')
     const buttons = document.querySelectorAll('#header-inbox-bar button');
+    const coin = document.querySelector('.css-coin span');
 
     let timeSet
+    const formattedTotal = customer.coin.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+    const levels = [
+        { name: 'Bronze', gradient: ['#CD7F32', '#8B4513'] },
+        { name: 'Silver', gradient: ['#C0C0C0', '#808080'] },
+        { name: 'Gold', gradient: ['#FFD700', '#FFA500'] },
+        { name: 'Platinum', gradient: ['#E5E4E2', '#A0A0A0', '#E5E4E2'] },
+        { name: 'Diamond', gradient: ['#B9F2FF', '#00BFFF', '#B9F2FF'] }
+    ];
 
     socket.emit('userConnected', { userId: null, customerId: customer.id });
 
@@ -187,6 +200,110 @@
         });
     });
 
+    coin.innerText = formattedTotal;
+    function handleFrame(num) {
+        const container = document.querySelector('.css-15iwytd-DivProfileContainer');
+
+        const level = levels[num];
+        const index = num;
+
+        const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        svg.setAttribute('class', `vip-frame level-${index + 1}`);
+        svg.setAttribute('viewBox', '0 0 100 100');
+        svg.style.position = 'absolute';
+        svg.style.top = '-5%';
+        svg.style.left = '-5%';
+        svg.style.width = '110%';
+        svg.style.height = '110%';
+        svg.style.zIndex = '1';
+        svg.style.pointerEvents = 'none';
+
+        const defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
+        const gradient = document.createElementNS('http://www.w3.org/2000/svg', 'linearGradient');
+        gradient.setAttribute('id', `${level.name.toLowerCase()}-gradient-${index}`);
+        gradient.setAttribute('x1', '0%');
+        gradient.setAttribute('y1', '0%');
+        gradient.setAttribute('x2', '100%');
+        gradient.setAttribute('y2', '100%');
+
+        level.gradient.forEach((color, stopIndex) => {
+            const stop = document.createElementNS('http://www.w3.org/2000/svg', 'stop');
+            stop.setAttribute('offset', `${stopIndex * 50}%`);
+            stop.setAttribute('stop-color', color);
+            gradient.appendChild(stop);
+        });
+
+        defs.appendChild(gradient);
+        svg.appendChild(defs);
+
+        const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        circle.setAttribute('cx', '50');
+        circle.setAttribute('cy', '50');
+        circle.setAttribute('r', '48');
+        circle.setAttribute('fill', 'none');
+        circle.setAttribute('stroke', `url(#${level.name.toLowerCase()}-gradient-${index})`);
+        circle.setAttribute('stroke-width', '3');
+        svg.appendChild(circle);
+
+        if (index >= 1) {
+            const innerCircle1 = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+            innerCircle1.setAttribute('cx', '50');
+            innerCircle1.setAttribute('cy', '50');
+            innerCircle1.setAttribute('r', '44');
+            innerCircle1.setAttribute('fill', 'none');
+            innerCircle1.setAttribute('stroke', `url(#${level.name.toLowerCase()}-gradient-${index})`);
+            innerCircle1.setAttribute('stroke-width', '1');
+            svg.appendChild(innerCircle1);
+
+            const innerCircle2 = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+            innerCircle2.setAttribute('cx', '50');
+            innerCircle2.setAttribute('cy', '50');
+            innerCircle2.setAttribute('r', '40');
+            innerCircle2.setAttribute('fill', 'none');
+            innerCircle2.setAttribute('stroke', `url(#${level.name.toLowerCase()}-gradient-${index})`);
+            innerCircle2.setAttribute('stroke-width', '1');
+            innerCircle2.setAttribute('stroke-dasharray', '3,3');
+            svg.appendChild(innerCircle2);
+        }
+
+        if (index >= 3) {
+            const decorPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            decorPath.setAttribute('d', 'M50 15 Q 60 50 50 85 M50 15 Q 40 50 50 85');
+            decorPath.setAttribute('fill', 'none');
+            decorPath.setAttribute('stroke', `url(#${level.name.toLowerCase()}-gradient-${index})`);
+            decorPath.setAttribute('stroke-width', '1');
+            svg.appendChild(decorPath);
+        }
+
+        if (index === 4) {
+            const diamondGlow = document.createElementNS('http://www.w3.org/2000/svg', 'filter');
+            diamondGlow.setAttribute('id', `diamond-glow-${index}`);
+            const feGaussianBlur = document.createElementNS('http://www.w3.org/2000/svg', 'feGaussianBlur');
+            feGaussianBlur.setAttribute('stdDeviation', '3.5');
+            feGaussianBlur.setAttribute('result', 'coloredBlur');
+            diamondGlow.appendChild(feGaussianBlur);
+            const feMerge = document.createElementNS('http://www.w3.org/2000/svg', 'feMerge');
+            const feMergeNode1 = document.createElementNS('http://www.w3.org/2000/svg', 'feMergeNode');
+            feMergeNode1.setAttribute('in', 'coloredBlur');
+            const feMergeNode2 = document.createElementNS('http://www.w3.org/2000/svg', 'feMergeNode');
+            feMergeNode2.setAttribute('in', 'SourceGraphic');
+            feMerge.appendChild(feMergeNode1);
+            feMerge.appendChild(feMergeNode2);
+            diamondGlow.appendChild(feMerge);
+            defs.appendChild(diamondGlow);
+
+            circle.setAttribute('filter', `url(#diamond-glow-${index})`);
+
+            const extraDecorPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            extraDecorPath.setAttribute('d', 'M15 50 Q 50 40 85 50 M15 50 Q 50 60 85 50');
+            extraDecorPath.setAttribute('fill', 'none');
+            extraDecorPath.setAttribute('stroke', `url(#${level.name.toLowerCase()}-gradient-${index})`);
+            extraDecorPath.setAttribute('stroke-width', '1');
+            svg.appendChild(extraDecorPath);
+        }
+        container.appendChild(svg);
+
+    }
     function showLoader() {
         let loader = document.querySelector('.loader');
         loader.classList.add('visible');
@@ -349,6 +466,7 @@
         }, 700)
     };
 
+    handleFrame(customer.rank)
 
     iconMess.addEventListener('click', (event) => {
         numberNotification2.style.display = 'none'
@@ -405,7 +523,7 @@
     listItems.forEach(function (listItem, index) {
         let link = listItem.querySelector('a');
         if (link) {
-            const hrefPaths = ['/customer/profile', '/customer/setting', '/customer/feedback'];
+            const hrefPaths = ['/customer/profile', '/customer/setting', '/customer/payment'];
             if (index < hrefPaths.length) {
                 listItem.onclick = function () {
                     if (index == 0) {

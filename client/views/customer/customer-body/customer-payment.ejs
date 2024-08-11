@@ -1,0 +1,161 @@
+<div class="container">
+    <div class="header clearfix">
+        <h3 class="text-muted">VNPAY DEMO</h3>
+    </div>
+    <div class="content">
+        <!-- Success/Failure Message -->
+        <div id="result" style="text-align: center; display: none;">
+            <p id="resultMessage"></p>
+            <p>
+                <a class="btn btn-default" href='/video/videos'>Về danh sách</a>
+            </p>
+        </div>
+        <!-- Create Payment URL Form -->
+        <h3>Tạo mới giao dịch thanh toán</h3>
+        <div class="table-responsive">
+            <form id="createOrder" action='create_payment_url' method='POST'>
+                <div class="form-group">
+                    <label aria-required="true">Số tiền</label>
+                    <input class="form-control" id="amount" name='amount' placeholder='Số tiền' value="">
+                </div>
+
+                <div class="form-group">
+                    <label>Chọn Phương thức thanh toán:</label>
+                    <div class="controls">
+                        <label class="radio-inline">
+                            <input type="radio" name="bankCode" id="defaultPaymentMethod" value="" checked="true"> Cổng
+                            thanh toán VNPAYQR
+                        </label>
+                    </div>
+                    <div class="controls">
+                        <label class="radio-inline">
+                            <input type="radio" name="bankCode" id="vnpayqrPaymentMethod" value="VNPAYQR"> Thanh toán
+                            qua ứng dụng hỗ trợ VNPAYQR
+                        </label>
+                    </div>
+                    <div class="controls">
+                        <label class="radio-inline">
+                            <input type="radio" name="bankCode" id="vnbankPaymentMethod" value="VNBANK"> Thanh toán qua
+                            ATM-Tài khoản ngân hàng nội địa
+                        </label>
+                    </div>
+                    <div class="controls">
+                        <label class="radio-inline">
+                            <input type="radio" name="bankCode" id="intcardPaymentMethod" value="INTCARD"> Thanh toán
+                            qua thẻ quốc tế
+                        </label>
+                    </div>
+                </div>
+                <button class="btn btn-default" id="btnPopup" type='submit'>Thanh toán</button>
+            </form>
+        </div>
+
+        <!-- Query DR Form -->
+        <h3>Truy vấn kết quả thanh toán</h3>
+        <div class="table-responsive">
+            <form action='querydr' method='POST'>
+                <div class="form-group">
+                    <label>Mã giao dịch:</label>
+                    <input class="form-control" name='orderId' placeholder='Mã giao dịch'>
+                </div>
+                <div class="form-group">
+                    <label>Thời gian tạo giao dịch:</label>
+                    <input class="form-control" name='transDate' placeholder='yyyyMMddHHmmss'>
+                </div>
+                <button class="btn btn-default" type='submit'>Truy vấn</button>
+            </form>
+        </div>
+
+        <!-- Refund Form -->
+        <h3>Hoàn tiền giao dịch</h3>
+        <div class="table-responsive">
+            <!-- <form action='refund' method='POST'>
+                <div class="form-group">
+                    <label>Mã giao dịch:</label>
+                    <input class="form-control" name='orderId'>
+                </div>
+                <div class="form-group">
+                    <label>Số tiền hoàn:</label>
+                    <input class="form-control" name='amount'>
+                </div>
+                <div class="form-group">
+                    <label>Kiểu hoàn tiền:</label>
+                    <select class="form-control" name='transType'>
+                        <option value='02'>Hoàn toàn phần</option>
+                        <option value='03'>Hoàn một phần</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Thời gian tạo giao dịch</label>
+                    <input class="form-control" name='transDate' placeholder='yyyyMMddHHmmss'>
+                </div>
+                <div class="form-group">
+                    <label>User thực hiện hoàn:</label>
+                    <input class="form-control" name='user'>
+                </div>
+                <button class="btn btn-default" type='submit'>Hoàn tiền</button>
+            </form> -->
+            <span>Đang cập nhật</span>
+        </div>
+
+
+    </div>
+
+    <footer class="footer">
+        <p>&copy; VNPAY
+            <script>document.write(new Date().getFullYear())</script>
+        </p>
+    </footer>
+</div>
+
+<script>
+    const payment = JSON.parse('<%- JSON.stringify(payment) %>');
+    console.log("payment:", payment);
+
+    if (payment) {
+        const code = payment.vnp_ResponseCode || payment.vnp_response_code;
+        const message = getErrorMessage(code);
+        console.log("code:", code)
+
+        showResult(message, code, payment);
+    }
+    function showResult(message, code, payment) {
+        const resultDiv = document.getElementById('result');
+        const resultMessage = document.getElementById('resultMessage');
+
+        if (code === "00") {
+            const orderInfo = payment.vnp_OrderInfo || '';
+            const amount = payment.vnp_Amount ? (payment.vnp_Amount / 100).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' }) : '';
+            resultMessage.innerHTML = `${message}<br>${orderInfo}<br>${amount}`;
+            resultMessage.style.color = "black";
+        } else {
+            resultMessage.textContent = `${message}`;
+            resultMessage.style.color = "red";
+        }
+
+        resultDiv.style.display = 'block';
+    }
+
+    function getErrorMessage(code) {
+        const errorMessages = {
+            "00": "Giao dịch thanh toán thành công",
+            "01": "Giao dịch chưa hoàn tất",
+            "02": "Mã định danh kết nối không hợp lệ (Giao dịch bị lỗi)",
+            "03": "Dữ liệu gửi sang không đúng định dạng",
+            "04": "Giao dịch đảo (Khách hàng đã bị trừ tiền tại Ngân hàng nhưng GD chưa thành công ở VNPAY)",
+            "05": "VNPAY đang xử lý giao dịch này (GD hoàn tiền)",
+            "06": "VNPAY đã gửi yêu cầu hoàn tiền sang Ngân hàng (GD hoàn tiền)",
+            "07": "Giao dịch bị nghi ngờ gian lận",
+            "07": "Giao dịch bị nghi ngờ gian lận",
+            "09": "GD Hoàn trả bị từ chối",
+            "91": "Không tìm thấy giao dịch yêu cầu",
+            "94": "Yêu cầu trùng lặp, duplicate request trong thời gian giới hạn của payment hoặc Giao dịch đã được gửi yêu cầu hoàn tiền trước đó. Yêu cầu này VNPAY đang xử lý",
+            "95": "Giao dịch này không thành công bên VNPAY. VNPAY từ chối xử lý yêu cầu",
+            "97": "Checksum không hợp lệ",
+            "99": "Các lỗi khác (lỗi còn lại, không có trong danh sách mã lỗi đã liệt kê)",
+        };
+
+        return errorMessages[code] || "Lỗi không xác định";
+    }
+
+</script>
